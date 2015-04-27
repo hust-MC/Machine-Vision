@@ -1,0 +1,179 @@
+package com.machineversion.option;
+
+import android.app.Activity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+
+import com.machineversion.sub_option.DialogBuilder;
+import com.machineversion.terminal.MainActivity;
+import com.machineversion.terminal.R;
+
+/**
+ * 用于封装控制面板功能 。继承此类之后，必须在setContentView方法之后调用setListData()来设置面板左侧的内容
+ * 
+ * @author MC
+ */
+abstract class ControlPannelActivity extends Activity
+{
+	/**
+	 * 记录当前显示的Listview内容，方便按键切换
+	 * 
+	 * @author MC
+	 */
+	private int position;
+
+	protected ListView listview;
+
+	protected MenuWithSubMenu wholeMenu;
+
+	protected void onSpecialItemClicked(int position)
+	{
+	}
+
+	/**
+	 * 初始化listview控件
+	 * 
+	 * @author MC
+	 */
+	protected void init_widget()
+	{
+		listview = (ListView) findViewById(R.id.listview);
+		listview.setAdapter(new ArrayAdapter<String>(this,
+				R.layout.menu_list_item, wholeMenu.menu));
+	}
+	/**
+	 * 设置统一的菜单点击事件
+	 */
+	protected void setListViewClicked()
+	{
+		listview.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id)
+			{
+				if (!wholeMenu.subMenu[position].equals(""))
+				{
+					DialogBuilder builder = new DialogBuilder(
+							ControlPannelActivity.this);
+					builder.build(wholeMenu.menu[position],
+							wholeMenu.subMenu[position],
+							wholeMenu.subMenuType[position]);
+				}
+				else
+				{
+					onSpecialItemClicked(position);
+				}
+			}
+		});
+	}
+	/**
+	 * 关闭时触发切换动画
+	 * 
+	 * @author MC
+	 */
+	private void finishWithAnim()
+	{
+		finish();
+		overridePendingTransition(0, R.anim.top_out);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+		{
+			finishWithAnim();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	/**
+	 * 方向键的按键触发事件
+	 * 
+	 * @param resId
+	 *            按键ID
+	 * @author MC
+	 */
+	public void onDirectionClicked(int resId)
+	{
+
+		switch (resId)
+		{
+		case R.id.bt_control_pannel_top:
+			position = listview.getFirstVisiblePosition() - 2;
+			if (position < 0)
+			{
+				position = 0;
+			}
+			break;
+		case R.id.bt_control_pannel_bottom:
+			position = listview.getLastVisiblePosition() + 2;
+			if (position >= wholeMenu.menu.length)
+			{
+				position = wholeMenu.menu.length - 1;
+			}
+			break;
+		default:
+			break;
+		}
+		listview.smoothScrollToPosition(position);
+
+	}
+
+	/**
+	 * 确认、取消按键的触发事件
+	 * 
+	 * @param resId
+	 *            按键的ID
+	 * @author MC
+	 */
+	public void onButtonClicked(int resId)
+	{
+		switch (resId)
+		{
+		case R.id.bt_control_pannel_confirm:
+			setResult(RESULT_OK);
+			break;
+		case R.id.bt_control_pannel_cancel:
+			setResult(RESULT_CANCELED);
+		}
+		finishWithAnim();
+	}
+
+	/**
+	 * 完整菜单类。menu表示界面下的所有菜单，subMenu表示相应菜单下的所有子菜单，subMenuType表示对应子菜单的所有类型和内容
+	 * 
+	 * @author M
+	 * 
+	 */
+	class MenuWithSubMenu
+	{
+		protected String[] menu;
+		protected String[] subMenu;
+		protected String[] subMenuType;
+
+		public MenuWithSubMenu(int menuId, int subMenuId)
+		{
+			menu = menuId != 0 ? getResources().getStringArray(menuId) : null;
+			subMenu = subMenuId != 0 ? getResources().getStringArray(subMenuId)
+					: null;
+			subMenuType = new String[]
+			{ "0" };
+		}
+
+		public MenuWithSubMenu(int menuId, int subMenuId, int typeId)
+		{
+			menu = menuId != 0 ? getResources().getStringArray(menuId) : null;
+			subMenu = subMenuId != 0 ? getResources().getStringArray(subMenuId)
+					: null;
+			subMenuType = typeId != 0 ? getResources().getStringArray(typeId)
+					: null;
+		}
+	}
+}

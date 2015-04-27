@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">机器视觉控制终端</string>
+    <string name="hello_world">Hello world!</string>
+
+    <!-- 菜单名称 -->
+    <string name="title_activity_file_manager">文件管理</string>
+    <string name="titile_activity_camera_params">相机参数</string>
+    <string name="title_activity_sys_settings">系统设置</string>
+    <string name="title_activity_fastener_settings">纽扣设置</string>
+    <string name="title_activity_machine_learning">机器学习</string>
+    <string name="title_activity_help">帮助</string>
+
+    <!-- 文件管理菜单 -->
+    <string-array name="option_file_manager">
+        <item>调入配置文件</item>
+        <item>保存配置文件</item>
+        <item>调入样品照片</item>
+        <item>保存样品照片</item>
+        <item>从U盘读取到SD卡</item>
+        <item>从sd卡保存到U盘</item>
+        <item>退出系统</item>
+    </string-array>
+
+    <!-- 相机参数菜单 -->
+    <string-array name="option_camera_params">
+        <item>图像采集参数</item>
+        <item>网卡设置</item>
+        <item>CAN设置</item>
+        <item>Uart设置</item>
+        <item>时钟设置</item>
+        <item>保存设置文件</item>
+    </string-array>
+    <!-- 相机参数子菜单（一一对应） -->
+    <string-array name="option_camera_params_sub">
+        <item>曝光时间,照明时间</item>
+        <item>IP地址,端口地址,MAC地址</item>
+        <item></item>
+        <item>波特率,校验方式</item>
+        <item>日期,时间</item>
+        <item></item>
+    </string-array>
+    <!-- 相机子菜单类型 -->
+    <string-array name="option_camera_params_type">
+        <item>0,0</item>
+        <item>0,0,0</item>
+        <item></item>
+        <item>19600n19200n38400n115200,1无校验n奇校验n偶校验</item>
+        <item>0,0</item>
+        <item></item>
+    </string-array>
+
+    <!-- 系统设置菜单数组 -->
+    <string-array name="option_sys_settings">
+        <item>工作模式设置</item>
+        <item>主要参数设置</item>
+    </string-array>
+    <!-- 系统设置子菜单 -->
+    <string-array name="option_sys_settings_sub">
+        <item>模式选择</item>
+        <item>皮带速度,上料速度,触发距离,分选距离</item>
+    </string-array>
+    <!-- 系统设置子菜单类型 -->
+    <string-array name="option_sys_settings_type">
+        <item>1调试模式n演示模式n分捡模式</item>
+        <item>0,0,0,0</item>
+    </string-array>
+
+    <!-- 纽扣设置菜单选项 -->
+    <string-array name="option_fastener_settings">
+        <item>编辑配置文件</item>
+        <item>加载配置文件</item>
+        <item>存储配置文件</item>
+    </string-array>
+    <!-- 纽扣设置子菜单 -->
+    <string-array name="option_fastener_settings_sub">
+        <item>纽扣编号,缺陷种类和阈值,纽扣图像样本</item>
+        <item></item>
+        <item></item>
+    </string-array>
+    <string-array name="option_fastener_settings_type">
+        <item>0,0,0</item>
+        <item></item>
+        <item></item>
+    </string-array>
+
+    <!-- 机器学习选项 -->
+    <string-array name="option_machine_learning">
+        <item>人工辅助学习</item>
+        <item>SVM学习</item>
+    </string-array>
+
+    <!-- 帮助菜单选项 -->
+    <string-array name="option_help">
+        <item>帮助文档</item>
+        <item>版本信息</item>
+    </string-array>
+
+    <!-- 连接结果提示 -->
+    <string name="connection_fail">网络连接失败！</string>
+    <string name="connection_break">网络连接断开！</string>
+
+    <!-- IP设置 -->
+    <string name="ip">192.168.0.112</string>
+
+    <!-- 主界面菜单项 -->
+    <string name="parameter1">相机参数设置</string>
+    <string name="parameter2">色彩选项:</string>
+    <string name="parameter3">流水线设置</string>
+    <string name="gray">灰度</string>
+    <string name="colors">彩色</string>
+    <string name="savePic">保存图片</string>
+    <string name="saveOption">保存设置</string>
+    <string name="openSCI_sucssess">串口打开成功</string>
+    <string name="closeSCI_sucssess">串口关闭</string>
+
+    <!-- 其他资源 -->
+    <string name="photo_imv">相机图片显示框 </string>
+
+    <!-- 电机速度 -->
+    <string-array name="motor_speed">
+        <item>慢速</item>
+        <item>正常</item>
+        <item>快速</item>
+    </string-array>
+
+    <!-- 左侧菜单 -->
+    <string-array name="menu_array">
+        <item>网络设置</item>
+        <item>串口设置</item>
+        <item>CAN总线设置</item>
+        <item>电机设置</item>
+        <item>其他</item>
+    </string-array>
+
+    <!-- SCI菜单选项 -->
+    <string-array name="sci_menu">
+        <item>设置NET的参数</item>
+        <item>设置Uart和HECC</item>
+        <item>设置SC280工作方式</item>
+        <item>设置AD9849</item>
+        <item>恢复出厂设置</item>
+        <item>读取系统参数</item>
+        <item>设置系统时间</item>
+        <item>读取计数结果</item>
+        <item>设置传输状态</item>
+        <item>设置时间显示</item>
+        <item>设置温度显示</item>
+        <item>选择算法</item>
+    </string-array>
+
+    <string name="action_settings">Settings</string>
+
+</resources>

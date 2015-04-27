@@ -1,0 +1,201 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="8dp" >
+
+        <Button
+            android:id="@+id/main_bt_file_manager"
+            style="@style/top_button"
+            android:layout_marginLeft="0dp"
+            android:text="文件管理" />
+
+        <Button
+            android:id="@+id/main_bt_camera_params"
+            style="@style/top_button"
+            android:text="相机参数" />
+
+        <Button
+            android:id="@+id/main_bt_sys_settings"
+            style="@style/top_button"
+            android:text="系统设置" />
+
+        <Button
+            android:id="@+id/main_bt_fastener_settings"
+            style="@style/top_button"
+            android:text="纽扣设置" />
+
+        <Button
+            android:id="@+id/main_bt_machine_learning"
+            style="@style/top_button"
+            android:text="机器学习" />
+
+        <Button
+            android:id="@+id/main_bt_help"
+            style="@style/top_button"
+            android:text="帮助" />
+    </LinearLayout>
+
+    <!-- 中间图片显示区域 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.5"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.4"
+            android:background="@drawable/pic_bg" >
+
+            <!-- 左侧相机1区域 -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="5dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="相机1"
+                    android:textColor="#464ADC"
+                    android:textSize="17sp" >
+                </TextView>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/qualified" >
+                </ImageView>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/correct" >
+                </ImageView>
+            </LinearLayout>
+            <!-- 右侧相机2区域 -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="5dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="相机2"
+                    android:textColor="#464ADC"
+                    android:textSize="17sp" >
+                </TextView>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/disqualified" >
+                </ImageView>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/wrong" >
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
+        <!-- 中间右侧按钮 -->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/bt_control_test"
+                style="@style/control_button"
+                android:text="检测" />
+
+            <Button
+                android:id="@+id/bt_control_pause"
+                style="@style/control_button"
+                android:layout_marginLeft="12dp"
+                android:text="暂停" />
+
+            <Button
+                android:id="@+id/bt_control_stop"
+                style="@style/control_button"
+                android:layout_marginLeft="12dp"
+                android:text="停止" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:paddingBottom="3dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="3dp" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@drawable/bg_state" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="状态窗口"
+                android:textColor="#3F48CC"
+                android:textSize="30sp" >
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3" >
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
