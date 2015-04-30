@@ -17,15 +17,12 @@ public class NetThread extends Thread implements CommunicationInterface
 {
 	final int timeout = 5000;
 	final String ip = "192.168.137.251";
-	final int port = 6666;			
-	final int CameraMode = 1;			//CameraMode为1表示后摄像头，0表示前摄像头
+	final int listenBroadCastPort = 6019;
+	final int sendIpPort = 6018;
+	final int port = 6020;
 
 	Socket socket;
 	Handler handler;
-
-	final int width = 1500;
-	final int height = 100;
-	final int quality = 50;
 
 	public NetThread(Handler netHandler)
 	{
@@ -122,29 +119,29 @@ public class NetThread extends Thread implements CommunicationInterface
 	@Override
 	public void run()
 	{
-		try
-		{
-			socket = new Socket();
-			SocketAddress sa = new InetSocketAddress(ip, port);
-			socket.connect(sa, timeout);
-			MainActivity.netFlag = true;										// 切换网络标志
-			OutputStream os = socket.getOutputStream();
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			DataOutputStream dos = new DataOutputStream(baos);
-			dos.writeInt(CameraMode);
-			dos.writeInt(width);
-			dos.writeInt(height);
-			dos.writeInt(quality);
-			DataPack.sendDataPack(baos.toByteArray(), os, -1);
-
-		} catch (Exception e)
-		{
-			MainActivity.netFlag = false;
-		} finally
-		{
-			MainActivity.dialog.dismiss();
-			receivePic();
-		}
+		// try
+		// {
+		// socket = new Socket();
+		// SocketAddress sa = new InetSocketAddress(ip, port);
+		// socket.connect(sa, timeout);
+		// MainActivity.netFlag = true; // 切换网络标志
+		// OutputStream os = socket.getOutputStream();
+		// ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		// DataOutputStream dos = new DataOutputStream(baos);
+		// // dos.writeInt(CameraMode);
+		// // dos.writeInt(width);
+		// // dos.writeInt(height);
+		// // dos.writeInt(quality);
+		// DataPack.sendDataPack(baos.toByteArray(), os, -1);
+		//
+		// } catch (Exception e)
+		// {
+		// MainActivity.netFlag = false;
+		// } finally
+		// {
+		// MainActivity.dialog.dismiss();
+		// receivePic();
+		// }
 	}
 
 	@Override
@@ -173,6 +170,6 @@ public class NetThread extends Thread implements CommunicationInterface
 	@Override
 	public void close()
 	{
-		
+
 	}
 }
