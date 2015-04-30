@@ -29,10 +29,9 @@ public class UdpServerSocket
 	 *            端口
 	 * @throws Exception
 	 */
-	public UdpServerSocket(String host, int port) throws Exception
+	public UdpServerSocket(int port) throws Exception
 	{
-		socketAddress = new InetSocketAddress(host, port);
-		ds = new DatagramSocket(socketAddress);
+		ds = new DatagramSocket(port);
 		System.out.println("服务端启动!");
 	}
 
@@ -106,10 +105,18 @@ public class UdpServerSocket
 	{
 		System.out.println("客户端地址 : " + packet.getAddress().getHostAddress()
 				+ ",端口：" + packet.getPort());
-		DatagramPacket dp = new DatagramPacket(buffer, buffer.length,
+		DatagramPacket dPacket = new DatagramPacket(buffer, buffer.length,
 				packet.getSocketAddress());
-		dp.setData(info.getBytes());
-		ds.send(dp);
+		dPacket.setData(info.getBytes());
+		ds.send(dPacket);
+	}
+
+	public final void response(String info, int port) throws IOException
+	{
+		DatagramPacket dPacket = new DatagramPacket(buffer, buffer.length,
+				packet.getAddress(), port);
+		dPacket.setData(info.getBytes());
+		ds.send(dPacket);
 	}
 
 	/**
@@ -154,26 +161,6 @@ public class UdpServerSocket
 		} catch (Exception ex)
 		{
 			ex.printStackTrace();
-		}
-	}
-
-	/**
-	 * 测试方法.
-	 * 
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception
-	{
-		String serverHost = "127.0.0.1";
-		int serverPort = 3344;
-		UdpServerSocket udpServerSocket = new UdpServerSocket(serverHost,
-				serverPort);
-		while (true)
-		{
-			udpServerSocket.receive();
-			udpServerSocket.response("你好,sterning!");
-
 		}
 	}
 }

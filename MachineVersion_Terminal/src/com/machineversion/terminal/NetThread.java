@@ -5,9 +5,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+
+import com.machineversion.net.NetUtils;
+import com.machineversion.net.UdpServerSocket;
 
 import android.os.Handler;
 import android.os.Message;
@@ -17,16 +22,16 @@ public class NetThread extends Thread implements CommunicationInterface
 {
 	final int timeout = 5000;
 	final String ip = "192.168.137.251";
-	final int listenBroadCastPort = 6019;
-	final int sendIpPort = 6018;
-	final int port = 6020;
 
 	Socket socket;
 	Handler handler;
 
+	private boolean udpConnecteSuccess = false;					// UDP连接是否成功
+
 	public NetThread(Handler netHandler)
 	{
-		if (ip.isEmpty() || (port <= 0 || port >= 65536))
+		if (ip.isEmpty()
+				|| (NetUtils.port <= 0 || NetUtils.port >= 65536))
 		{
 			Log.d("MC", "PORT error");
 		}
@@ -119,6 +124,41 @@ public class NetThread extends Thread implements CommunicationInterface
 	@Override
 	public void run()
 	{
+
+		new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					ServerSocket serverSocket = new ServerSocket(
+							NetUtils.port);
+					Socket socket = serverSocket.accept();
+					udpConnecteSuccess = true;
+				} catch (IOException e)
+				{
+				}
+			}
+		}).start();
+
+		try
+		{
+			UdpServerSocket udpSocket = new UdpServerSocket(
+					NetUtils.listenBroadCastPort);
+			while (!udpConnecteSuccess)
+			{
+				if (udpSocket.receive() != "Get Server IP")
+				{
+					udpSocket.response(InetAddress.getLocalHost().getAddress()
+							.toString(), NetUtils.sendIpPort);
+				}
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		// try
 		// {
 		// socket = new Socket();
@@ -143,7 +183,6 @@ public class NetThread extends Thread implements CommunicationInterface
 		// receivePic();
 		// }
 	}
-
 	@Override
 	public void open()
 	{
