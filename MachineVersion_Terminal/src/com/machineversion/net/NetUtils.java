@@ -82,7 +82,6 @@ public class NetUtils
 				type = 1;
 				block = 50000;
 				break;
-			case 
 			}
 		}
 

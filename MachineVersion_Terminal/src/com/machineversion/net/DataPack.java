@@ -1,4 +1,4 @@
-package com.machineversion.terminal;
+package com.machineversion.net;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
