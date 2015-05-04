@@ -38,19 +38,41 @@ public class NetUtils
 	/**
 	 * 网络数据包
 	 */
-	class NetPacket
+	public static class NetPacket
 	{
-		final int magic = 0x695a695a;
-		final int version = 0;
 		int type;
 		int block;
-		int length;
-		final int offset = 20;
 		int minid;
 		byte[] data;
 
-		public NetPacket(int minid)
+		public NetPacket()
 		{
+
+		}
+
+		/**
+		 * 生成带子命令的网络包
+		 * 
+		 * @param minid
+		 *            主命令
+		 * @param subminid
+		 *            子命令
+		 */
+		public NetPacket(int minid, int subminid, byte[] data)
+		{
+
+		}
+
+		/**
+		 * 生成不带子命令的网络包
+		 * 
+		 * @param minid
+		 *            命令
+		 */
+		public NetPacket(int minid, byte[] data)
+		{
+			this.data = data;
+
 			this.minid = minid;
 			switch (minid)
 			{
