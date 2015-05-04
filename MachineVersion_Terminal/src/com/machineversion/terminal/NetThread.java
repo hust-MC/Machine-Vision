@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 import com.machineversion.net.DataPack;
 import com.machineversion.net.NetUtils;
@@ -37,94 +38,74 @@ public class NetThread extends Thread implements CommunicationInterface
 		handler = netHandler;
 	}
 
-	private void receivePic()
+	private void receivePic() throws IOException
 	{
-		Runnable r = new Runnable()
+		OutputStream os = socket.getOutputStream();
+		InputStream is = socket.getInputStream();
+
+		NetPacket sendPacket = new NetPacket(NetUtils.MSG_NET_GET_VIDEO, null), revPacket = new NetPacket();
+
+		while (true) // 循环接收相机发来的数据
+		{
+			DataPack.sendDataPack(sendPacket, os);
+
+			revPacket = DataPack.recvDataPack(is);
+
+			if (revPacket != null) // 如果数据正常，表示网络通畅
+			{
+				Message message = Message.obtain();
+				message.obj = revPacket;
+				handler.sendMessage(message);
+			}
+			else
+			// 接收的数据不正常，表示网络故障
+			// Close
+			{
+				try
+				{
+					if (socket != null)
+					{
+						socket.close();
+						socket = null;
+					}
+				} catch (Exception e)
+				{
+					Log.d("MC", "break");
+				}
+				break;
+			}
+		}
+
+	}
+	@Override
+	public void run()
+	{
+		boolean flag = false;
+		Thread tcpServer = new Thread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
 				try
 				{
-					InputStream is = socket.getInputStream();
-					while (true) // 循环接收相机发来的数据
-					{
-						NetPacket netPacket = DataPack.recvDataPack(is);
+					Log.d("MC", "netConnectint");
+					ServerSocket serverSocket = new ServerSocket(NetUtils.port);
+					socket = serverSocket.accept();
+					udpConnecteSuccess = true;
 
-						if (netPacket != null) // 如果数据正常，表示网络通畅
-						{
+					Log.d("MC", "netConnected");
+					Message message = handler.obtainMessage();
+					message.what = 0x55;
+					message.setTarget(handler);
 
-						}
-						else
-						// 接收的数据不正常，表示网络故障
-						// Close
-						{
-							try
-							{
-								if (socket != null)
-								{
-									socket.close();
-									socket = null;
-								}
-							} catch (Exception e)
-							{
-								Log.d("MC", "break");
-							}
-							break;
-						}
-					}
-				} catch (Exception e)
+					receivePic();
+				} catch (IOException e)
 				{
-				} finally
-				{
-					Message message = Message.obtain();
-					message.obj = null;
-					handler.sendMessage(message);
 				}
 			}
-		};
+		});
 
-		if (MainActivity.netFlag)							// netFlag为true表示连接成功，启动进程接收图片
-		{
-			Thread t = new Thread(r);
-			t.start();
-		}
-		else
-		// netFlag为false表示连接失败，通知主线程显示失败信息提示
-		{
-			Message message = Message.obtain();
-			message.what = 0x55;	    		// what 为0x55表示连接失败
-			handler.sendMessage(message);
-		}
-	}
-
-	@Override
-	public void run()
-	{
-
-		// new Thread(new Runnable()
-		// {
-		// @Override
-		// public void run()
-		// {
-		// try
-		// {
-		// Log.d("MC", "netConnectint");
-		// ServerSocket serverSocket = new ServerSocket(NetUtils.port);
-		// socket = serverSocket.accept();
-		// udpConnecteSuccess = true;
-		//
-		// Log.d("MC", "netConnected");
-		// Message message = handler.obtainMessage();
-		// message.what = 0x55;
-		// message.setTarget(handler);
-		//
-		// receivePic();
-		// } catch (IOException e)
-		// {
-		// }
-		// }
-		// }).start();
+		tcpServer.start();
 
 		try
 		{
@@ -132,11 +113,15 @@ public class NetThread extends Thread implements CommunicationInterface
 					NetUtils.listenBroadCastPort);
 			while (!udpConnecteSuccess)
 			{
-				Log.d("MC", udpSocket.receive());
-				if (udpSocket.receive() != "Get Server IP")
+				if (udpSocket.receive().subSequence(0, 13)
+						.equals("Get Server IP"))
 				{
-					udpSocket.response(InetAddress.getLocalHost().getAddress()
-							.toString(), NetUtils.sendIpPort);
+					// if (!flag)
+					// {
+					// flag = true;
+					// tcpServer.start();
+					// }
+					udpSocket.response("115.156.211.22\0", NetUtils.sendIpPort);
 				}
 			}
 		} catch (Exception e)

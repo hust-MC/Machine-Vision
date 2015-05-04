@@ -15,8 +15,7 @@ public class DataPack
 	final static int version = 0;
 	final static int offset = 28;
 
-	public static boolean sendDataPack(NetUtils.NetPacket packet,
-			OutputStream os)
+	public static boolean sendDataPack(NetPacket packet, OutputStream os)
 	{
 		DataOutputStream dos = new DataOutputStream(os);
 		try
@@ -28,8 +27,10 @@ public class DataPack
 			dos.writeInt(packet.data.length + offset);
 			dos.writeInt(offset);
 			dos.writeInt(packet.minid);
-			dos.write(packet.data);
-
+			if (packet.data != null)
+			{
+				dos.write(packet.data);
+			}
 			dos.flush();
 			return true;
 		} catch (IOException e)
@@ -38,7 +39,7 @@ public class DataPack
 		return false;
 	}
 
-	public static NetUtils.NetPacket recvDataPack(InputStream is)
+	public static NetPacket recvDataPack(InputStream is)
 	{
 		int type = 0, block = 0;
 		NetPacket revPacket = new NetPacket();

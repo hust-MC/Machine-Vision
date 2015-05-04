@@ -40,10 +40,10 @@ public class NetUtils
 	 */
 	public static class NetPacket
 	{
-		int type;
-		int block;
-		int minid;
-		byte[] data;
+		public int type;
+		public int block;
+		public int minid;
+		public byte[] data;
 
 		public NetPacket()
 		{

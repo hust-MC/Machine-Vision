@@ -1,9 +1,10 @@
 package com.machineversion.terminal;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 
+import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.option.CameraParams;
 import com.machineversion.option.FastenerSettings;
 import com.machineversion.option.FileManager;
@@ -19,12 +20,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.Config;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -37,12 +37,12 @@ public class MainActivity extends Activity
 	final int REQUEST_CODE_MACHINE_LEARNING = 5;
 	final int REQUEST_CODE_HELP = 6;
 
-	static boolean netFlag = false; 				// 网络连接状态标志
+	static boolean netFlag = false; 					// 网络连接状态标志
 	static ProgressDialog dialog;
 
-	ToggleButton net_btn;							// 网络开关按钮
-	ToggleButton sci_btn; 							// 串口开关按钮
-	ImageView photo_imv;							// 图片显示区域
+	ToggleButton net_btn;								// 网络开关按钮
+	ToggleButton sci_btn; 								// 串口开关按钮
+	ImageView photo_imv1, photo_imv2;							// 图片显示区域
 
 	Button bt_fileManager, bt_cameraParams, bt_sysSettings,
 			bt_fasternerSettings, bt_machineLearning, bt_help;
@@ -97,58 +97,33 @@ public class MainActivity extends Activity
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg)
 		{
-			if (msg.what == 0x55)						// 连接失败处理
+			if (msg.what == 0x55)						// 连接成功
 			{
-				netFlag = false;
-				net_btn.setChecked(false);
-				Toast.makeText(getApplicationContext(),
-						getResources().getString(R.string.connection_fail),
-						Toast.LENGTH_SHORT).show();
+				dialog.dismiss();
+				Toast.makeText(MainActivity.this, "网络连接成功", Toast.LENGTH_SHORT);
 			}
-			else if (msg.obj == null || !netFlag)		// 网络断开处理。包括两种情况：1、网络断开；2、相机关闭
+			else if (msg.obj instanceof NetPacket)
 			{
-				netFlag = false;
-				net_btn.setChecked(false);
-				photo_imv.setImageBitmap(null);
-				try
-				{
-					if (socket != null)
-					{
-						socket.close();
-						socket = null;
-					}
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-				Toast.makeText(getApplicationContext(),
-						getResources().getString(R.string.connection_break),
-						Toast.LENGTH_SHORT).show();
-			}
-			else if (msg.obj instanceof Socket)			// 用于保存图片
-			{
-				// Socket s = (Socket) msg.obj;
-				// CameraClientView.socket = s;
-				// Intent intent = new Intent(CameraClientActivity.this,
-				// CameraClientView.class);
-				// startActivity(intent);
-			}
-			else if (msg.obj instanceof Object[])		// 接收数据并显示
-			{
-				Object[] rets = (Object[]) msg.obj;
-				byte[] data = (byte[]) rets[0];
-				if (data != null)
-				{
-					Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0,
-							data.length);
+				NetPacket packet = (NetPacket) msg.obj;
+				byte[] data = packet.data;
 
-					photo_imv.setImageBitmap(bitmap);
-					photo_imv.setScaleType(ScaleType.CENTER_CROP);
-				}
-				else
+				int len = Integer.parseInt(Arrays.copyOfRange(data, 0, 4)
+						.toString());
+				int width = Integer.parseInt(Arrays.copyOfRange(data, 4, 8)
+						.toString());
+				int height = Integer.parseInt(Arrays.copyOfRange(data, 8, 12)
+						.toString());
+				byte[] imageBuf = Arrays.copyOfRange(data, 100, len);
+				
+				int[] image = new int[imageBuf.length];
+				for (int i = 0; i < image.length; i++)
 				{
-					finish();
+					int temp;
+					temp = imageBuf[i] & 0xff;
+					image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
 				}
+				photo_imv1.setImageBitmap(Bitmap.createBitmap(image, width,
+						height, Config.RGB_565));
 			}
 		}
 	};
@@ -175,6 +150,8 @@ public class MainActivity extends Activity
 		bt_machineLearning.setOnClickListener(buttonListern);
 		bt_help.setOnClickListener(buttonListern);
 
+		photo_imv1 = (ImageView) findViewById(R.id.main_imv_photo1);
+		photo_imv2 = (ImageView) findViewById(R.id.main_imv_photo2);
 	}
 
 	@Override
@@ -253,9 +230,8 @@ public class MainActivity extends Activity
 	 */
 	public void onClick_net(View view)
 	{
-		// dialog = ProgressDialog.show(this, null, "正在努力连接智能相机，请稍候...",
-		// true,
-		// false); // 进程弹窗
+		dialog = ProgressDialog.show(this, null, "正在努力连接智能相机，请稍候...", true,
+				false); // 进程弹窗
 
 		netThread = new NetThread(netHandler);
 		netThread.start();
