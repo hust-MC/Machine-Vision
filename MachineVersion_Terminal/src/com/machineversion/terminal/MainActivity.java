@@ -107,12 +107,9 @@ public class MainActivity extends Activity
 				NetPacket packet = (NetPacket) msg.obj;
 				byte[] data = packet.data;
 
-				int len = Integer.parseInt(Arrays.copyOfRange(data, 0, 4)
-						.toString());
-				int width = Integer.parseInt(Arrays.copyOfRange(data, 4, 8)
-						.toString());
-				int height = Integer.parseInt(Arrays.copyOfRange(data, 8, 12)
-						.toString());
+				int len = data[0] + data[1] << 1 + data[2] << 2 + data[3] << 3;
+				int width = data[4] + data[5] << 1 + data[6] << 2 + data[7] << 3;
+				int height = data[8] + data[9] << 1 + data[10] << 2 + data[11] << 3;
 				byte[] imageBuf = Arrays.copyOfRange(data, 100, len);
 
 				int[] image = new int[imageBuf.length];

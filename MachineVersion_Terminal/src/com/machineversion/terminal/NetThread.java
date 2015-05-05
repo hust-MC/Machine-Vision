@@ -22,7 +22,7 @@ import android.util.Log;
 public class NetThread extends Thread implements CommunicationInterface
 {
 	final int timeout = 5000;
-	final String ip = "192.168.137.251";
+	final String ip = "115.156.211.22";
 
 	Socket socket;
 	Handler handler;
@@ -31,10 +31,6 @@ public class NetThread extends Thread implements CommunicationInterface
 
 	public NetThread(Handler netHandler)
 	{
-		if (ip.isEmpty() || (NetUtils.port <= 0 || NetUtils.port >= 65536))
-		{
-			Log.d("MC", "PORT error");
-		}
 		handler = netHandler;
 	}
 
@@ -47,13 +43,15 @@ public class NetThread extends Thread implements CommunicationInterface
 
 		while (true) // 循环接收相机发来的数据
 		{
-			DataPack.sendDataPack(sendPacket, os);
+			// DataPack.sendDataPack(sendPacket, os);
 
+			revPacket = DataPack.recvDataPack(is);
+			DataPack.sendDataPack(sendPacket, os);
 			revPacket = DataPack.recvDataPack(is);
 
 			if (revPacket != null) // 如果数据正常，表示网络通畅
 			{
-				Message message = Message.obtain();
+				Message message = handler.obtainMessage();
 				message.obj = revPacket;
 				handler.sendMessage(message);
 			}
@@ -75,7 +73,6 @@ public class NetThread extends Thread implements CommunicationInterface
 				break;
 			}
 		}
-
 	}
 	@Override
 	public void run()
@@ -96,7 +93,7 @@ public class NetThread extends Thread implements CommunicationInterface
 					Log.d("MC", "netConnected");
 					Message message = handler.obtainMessage();
 					message.what = 0x55;
-					message.setTarget(handler);
+					handler.sendMessage(message);
 
 					receivePic();
 				} catch (IOException e)
@@ -121,7 +118,7 @@ public class NetThread extends Thread implements CommunicationInterface
 					// flag = true;
 					// tcpServer.start();
 					// }
-					udpSocket.response("115.156.211.22\0", NetUtils.sendIpPort);
+					udpSocket.response(ip + "\0", NetUtils.sendIpPort);
 				}
 			}
 		} catch (Exception e)
