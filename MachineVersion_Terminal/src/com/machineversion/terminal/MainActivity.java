@@ -114,7 +114,7 @@ public class MainActivity extends Activity
 				int height = Integer.parseInt(Arrays.copyOfRange(data, 8, 12)
 						.toString());
 				byte[] imageBuf = Arrays.copyOfRange(data, 100, len);
-				
+
 				int[] image = new int[imageBuf.length];
 				for (int i = 0; i < image.length; i++)
 				{
