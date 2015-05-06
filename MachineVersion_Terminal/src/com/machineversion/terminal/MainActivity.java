@@ -236,8 +236,8 @@ public class MainActivity extends Activity
 	 */
 	public void onClick_net(View view)
 	{
-		dialog = ProgressDialog.show(this, null, "正在努力连接智能相机，请稍候...", true,
-				false); // 进程弹窗
+		// dialog = ProgressDialog.show(this, null, "正在努力连接智能相机，请稍候...", true,
+		//		false); // 进程弹窗
 
 		netThread = new NetThread(netHandler);
 		netThread.start();

@@ -52,13 +52,11 @@ public class DataPack
 	public static NetPacket recvDataPack(InputStream is) throws IOException
 	{
 		int type = 0, block = 0;
-		byte[] headBuf = new byte[28];
+		// byte[] headBuf = new byte[28];
 
 		NetPacket revPacket = new NetPacket();
 		DataInputStream dis = new DataInputStream(is);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-		dis.read(headBuf);
 
 		try
 		{
@@ -73,7 +71,7 @@ public class DataPack
 			int length = readLittleInt(dis);
 
 			int len = length - offset;
-			revPacket.data = new byte[(int) len];
+			revPacket.data = new byte[len];
 
 			if (readLittleInt(dis) != offset)
 			{
@@ -87,10 +85,13 @@ public class DataPack
 			 */
 			int count = 0, pos = 0;
 			byte[] temp = new byte[1024];
-			while ((count = dis.read(temp)) != -1)
+
+			do
 			{
-				// tbd
-			}
+				count = dis.read(temp);
+				System.arraycopy(temp, 0, revPacket.data, pos, count);
+				pos += count;
+			} while (count != -1 && count == 1024);
 			Log.d("MC", "break");
 			return revPacket;
 		} catch (Exception e)

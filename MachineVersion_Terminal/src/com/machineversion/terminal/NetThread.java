@@ -72,7 +72,6 @@ public class NetThread extends Thread implements CommunicationInterface
 					{
 						Log.d("MC", "break");
 					}
-					break;
 				}
 			}
 		}
@@ -94,9 +93,9 @@ public class NetThread extends Thread implements CommunicationInterface
 					udpConnecteSuccess = true;
 
 					Log.d("MC", "netConnected");
-					Message message = handler.obtainMessage();
-					message.what = 0x55;
-					handler.sendMessage(message);
+					// Message message = handler.obtainMessage();
+					// message.what = 0x55;
+					// handler.sendMessage(message);
 
 					receivePic();
 				} catch (IOException e)
