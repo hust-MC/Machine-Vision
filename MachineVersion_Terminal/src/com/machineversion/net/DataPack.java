@@ -40,8 +40,8 @@ public class DataPack
 			if (packet.data != null)
 			{
 				tempDos.write(packet.data);
+				tempDos.flush();
 			}
-			tempDos.flush();
 
 			dos.write(baos.toByteArray());
 			dos.flush();
@@ -59,7 +59,6 @@ public class DataPack
 
 		NetPacket revPacket = new NetPacket();
 		DataInputStream socketDis = new DataInputStream(is);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 		socketDis.read(headBuf);
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(
@@ -67,8 +66,12 @@ public class DataPack
 
 		try
 		{
-			if (readLittleInt(dis) != magic || readLittleInt(dis) != version)
+			int magicData = readLittleInt(dis);
+			int versionData = readLittleInt(dis);
+			if (magicData != magic || versionData != version)
 			{
+				Log.d("MC", "magic=" + magicData + " " + "version="
+						+ versionData);
 				return null;
 			}
 
@@ -77,7 +80,6 @@ public class DataPack
 
 			int length = readLittleInt(dis);
 
-			Log.d("MC", "length = " + length);
 			int len = length - offset;
 			revPacket.data = new byte[len];
 
@@ -99,10 +101,11 @@ public class DataPack
 				count = socketDis.read(temp);
 				System.arraycopy(temp, 0, revPacket.data, pos, count);
 				pos += count;
-			} while (count != -1 && count == 1024);
+			} while (count != -1 && pos < len);
 			return revPacket;
 		} catch (Exception e)
 		{
+			Log.d("MC", "datapack exception");
 			e.printStackTrace();
 		}
 		return null;
@@ -165,7 +168,7 @@ public class DataPack
 	private static int readLittleInt(DataInputStream dis) throws IOException
 	{
 		int data = dis.readInt();
-		int ret = swapShortToLittleEndian((short) ((data >> 16) & 0xFFFF))
+		int ret = swapShortToLittleEndian((short) (data >> 16)) & 0xFFFF
 				| (swapShortToLittleEndian((short) data) << 16);
 		return ret;
 	}

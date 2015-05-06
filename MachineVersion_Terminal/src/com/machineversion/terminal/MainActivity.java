@@ -1,9 +1,12 @@
 package com.machineversion.terminal;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
 
+import com.machineversion.net.DataPack;
+import com.machineversion.net.NetUtils;
 import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.option.CameraParams;
 import com.machineversion.option.FastenerSettings;
@@ -47,8 +50,6 @@ public class MainActivity extends Activity
 
 	Button bt_fileManager, bt_cameraParams, bt_sysSettings,
 			bt_fasternerSettings, bt_machineLearning, bt_help;
-
-	Socket socket;
 
 	String sciRevBuf;						// 串口接收数据
 
@@ -98,39 +99,17 @@ public class MainActivity extends Activity
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg)
 		{
+
 			if (msg.what == 0x55)						// 连接成功
 			{
 				dialog.dismiss();
 				Toast.makeText(MainActivity.this, "网络连接成功", Toast.LENGTH_SHORT);
 			}
-			else if (msg.obj instanceof NetPacket)
+			else if (msg.obj instanceof Bitmap)
 			{
-				NetPacket packet = (NetPacket) msg.obj;
-				int[] data = new int[12];
-				for (int i = 0; i < 12; i++)
-				{
-					data[i] = packet.data[i] & 0xFF;
-				}
-
-				int len = data[0] | data[1] << 8 | data[2] << 16
-						| data[3] << 24;
-				int width = data[4] | data[5] << 8 | data[6] << 16
-						| data[7] << 24;
-				int height = data[8] | data[9] << 8 | data[10] << 16
-						| data[11] << 24;
-				byte[] imageBuf = Arrays.copyOfRange(packet.data, 100,
-						len + 100);
-
-				int[] image = new int[imageBuf.length];
-				for (int i = 0; i < image.length; i++)
-				{
-					int temp;
-					temp = imageBuf[i] & 0xff;
-					image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
-				}
-				photo_imv1.setImageBitmap(Bitmap.createBitmap(image, width,
-						height, Config.RGB_565));
-				NetThread.sendSwitch = false;
+				Log.d("MC", "display");
+				Bitmap bitmap = (Bitmap) msg.obj;
+				photo_imv1.setImageBitmap(bitmap);
 			}
 		}
 	};

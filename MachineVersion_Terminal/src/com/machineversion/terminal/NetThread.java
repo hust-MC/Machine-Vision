@@ -7,12 +7,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 import com.machineversion.net.DataPack;
 import com.machineversion.net.NetUtils;
 import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.net.UdpServerSocket;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -33,46 +36,68 @@ public class NetThread extends Thread implements CommunicationInterface
 		handler = netHandler;
 	}
 
-	private void receivePic() throws IOException
+	private void receivePic() throws IOException, InterruptedException
 	{
 		OutputStream os = socket.getOutputStream();
 		InputStream is = socket.getInputStream();
 
 		NetPacket sendPacket = new NetPacket(NetUtils.MSG_NET_GET_VIDEO, null), revPacket = new NetPacket();
 
-		while (true) // 循环接收相机发来的数据
+		revPacket = DataPack.recvDataPack(is);
+
+		while (true)
 		{
-
+			DataPack.sendDataPack(sendPacket, os);
+			Log.d("MC", "send");
 			revPacket = DataPack.recvDataPack(is);
-			while (true)
-			{
-				while (sendSwitch);
-				DataPack.sendDataPack(sendPacket, os);
-				revPacket = DataPack.recvDataPack(is);
-				sendSwitch = true;
+			Log.d("MC", "rev");
 
-				if (revPacket != null) // 如果数据正常，表示网络通畅
+			if (revPacket != null) // 如果数据正常，表示网络通畅
+			{
+				int[] data = new int[12];
+				for (int i = 0; i < 12; i++)
 				{
-					Message message = handler.obtainMessage();
-					message.obj = revPacket;
-					handler.sendMessage(message);
+					data[i] = revPacket.data[i] & 0xFF;
 				}
-				else
-				// 接收的数据不正常，表示网络故障
-				// Close
+
+				int len = data[0] | data[1] << 8 | data[2] << 16
+						| data[3] << 24;
+				int width = data[4] | data[5] << 8 | data[6] << 16
+						| data[7] << 24;
+				int height = data[8] | data[9] << 8 | data[10] << 16
+						| data[11] << 24;
+				byte[] imageBuf = Arrays.copyOfRange(revPacket.data, 100,
+						len + 100);
+
+				int[] image = new int[imageBuf.length];
+				for (int i = 0; i < image.length; i++)
 				{
-					try
-					{
-						if (socket != null)
-						{
-							socket.close();
-							socket = null;
-						}
-					} catch (Exception e)
-					{
-						Log.d("MC", "break");
-					}
+					int temp;
+					temp = imageBuf[i] & 0xff;
+					image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
 				}
+
+				Message message = Message.obtain();
+				message.obj = Bitmap.createBitmap(image, width, height,
+						Config.RGB_565);
+				handler.sendMessage(message);
+			}
+			else
+			// 接收的数据不正常，表示网络故障
+			// Close
+			{
+				Log.d("MC", "packet == null");
+				// try
+				// {
+				// if (socket != null)
+				// {
+				// socket.close();
+				// socket = null;
+				// }
+				// } catch (Exception e)
+				// {
+				// Log.d("MC", "break");
+				// }
 			}
 		}
 	}
@@ -100,6 +125,10 @@ public class NetThread extends Thread implements CommunicationInterface
 					receivePic();
 				} catch (IOException e)
 				{
+				} catch (InterruptedException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		});
