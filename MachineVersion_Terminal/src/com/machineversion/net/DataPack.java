@@ -49,26 +49,19 @@ public class DataPack
 		return false;
 	}
 
-	public static NetPacket recvDataPack(InputStream is)
+	public static NetPacket recvDataPack(InputStream is) throws IOException
 	{
 		int type = 0, block = 0;
+		byte[] headBuf = new byte[28];
+
 		NetPacket revPacket = new NetPacket();
-
 		DataInputStream dis = new DataInputStream(is);
-
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		dis.read(headBuf);
 
 		try
 		{
-			// Log.d("MC", Integer.toHexString(readLittleInt(dis)));
-			// Log.d("MC", Integer.toHexString(readLittleInt(dis)));
-			// Log.d("MC", Integer.toHexString(readLittleInt(dis)));
-			// Log.d("MC", Integer.toHexString(readLittleInt(dis)));
-			// Log.d("MC", Integer.toHexString(readLittleInt(dis)));
-			// Log.d("MC", Integer.toHexString(readLittleInt(dis)));
-			// Log.d("MC", Integer.toHexString(readLittleInt(dis)));
-			// Log.d("MC", Integer.toHexString(readLittleInt(dis)));
-
 			if (readLittleInt(dis) != magic || readLittleInt(dis) != version)
 			{
 				return null;
@@ -77,7 +70,9 @@ public class DataPack
 			type = readLittleInt(dis);
 			block = readLittleInt(dis);
 
-			int len = readLittleInt(dis) - offset;
+			int length = readLittleInt(dis);
+
+			int len = length - offset;
 			revPacket.data = new byte[(int) len];
 
 			if (readLittleInt(dis) != offset)
@@ -90,9 +85,13 @@ public class DataPack
 			/*
 			 * 接收data数组
 			 */
-			int count = 0;
-			dis.read(revPacket.data);
-
+			int count = 0, pos = 0;
+			byte[] temp = new byte[1024];
+			while ((count = dis.read(temp)) != -1)
+			{
+				// tbd
+			}
+			Log.d("MC", "break");
 			return revPacket;
 		} catch (Exception e)
 		{

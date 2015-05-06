@@ -21,6 +21,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -105,12 +106,20 @@ public class MainActivity extends Activity
 			else if (msg.obj instanceof NetPacket)
 			{
 				NetPacket packet = (NetPacket) msg.obj;
-				byte[] data = packet.data;
+				int[] data = new int[12];
+				for (int i = 0; i < 12; i++)
+				{
+					data[i] = packet.data[i] & 0xFF;
+				}
 
-				int len = data[0] + data[1] << 1 + data[2] << 2 + data[3] << 3;
-				int width = data[4] + data[5] << 1 + data[6] << 2 + data[7] << 3;
-				int height = data[8] + data[9] << 1 + data[10] << 2 + data[11] << 3;
-				byte[] imageBuf = Arrays.copyOfRange(data, 100, len);
+				int len = data[0] | data[1] << 8 | data[2] << 16
+						| data[3] << 24;
+				int width = data[4] | data[5] << 8 | data[6] << 16
+						| data[7] << 24;
+				int height = data[8] | data[9] << 8 | data[10] << 16
+						| data[11] << 24;
+				byte[] imageBuf = Arrays.copyOfRange(packet.data, 100,
+						len + 100);
 
 				int[] image = new int[imageBuf.length];
 				for (int i = 0; i < image.length; i++)

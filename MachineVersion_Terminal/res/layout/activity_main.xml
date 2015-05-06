@@ -86,7 +86,7 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="4"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerInside"
                     android:src="@drawable/qualified" >
                 </ImageView>
 

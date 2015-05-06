@@ -46,31 +46,34 @@ public class NetThread extends Thread implements CommunicationInterface
 			// DataPack.sendDataPack(sendPacket, os);
 
 			revPacket = DataPack.recvDataPack(is);
-			DataPack.sendDataPack(sendPacket, os);
-			revPacket = DataPack.recvDataPack(is);
+			while (true)
+			{
+				DataPack.sendDataPack(sendPacket, os);
+				revPacket = DataPack.recvDataPack(is);
 
-			if (revPacket != null) // 如果数据正常，表示网络通畅
-			{
-				Message message = handler.obtainMessage();
-				message.obj = revPacket;
-				handler.sendMessage(message);
-			}
-			else
-			// 接收的数据不正常，表示网络故障
-			// Close
-			{
-				try
+				if (revPacket != null) // 如果数据正常，表示网络通畅
 				{
-					if (socket != null)
-					{
-						socket.close();
-						socket = null;
-					}
-				} catch (Exception e)
-				{
-					Log.d("MC", "break");
+					Message message = handler.obtainMessage();
+					message.obj = revPacket;
+					handler.sendMessage(message);
 				}
-				break;
+				else
+				// 接收的数据不正常，表示网络故障
+				// Close
+				{
+					try
+					{
+						if (socket != null)
+						{
+							socket.close();
+							socket = null;
+						}
+					} catch (Exception e)
+					{
+						Log.d("MC", "break");
+					}
+					break;
+				}
 			}
 		}
 	}
