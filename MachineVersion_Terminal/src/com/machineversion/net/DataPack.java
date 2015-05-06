@@ -1,12 +1,15 @@
 package com.machineversion.net;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 
+import android.provider.ContactsContract.Contacts.Data;
 import android.util.Log;
 
 import com.machineversion.net.NetUtils.NetPacket;
@@ -52,11 +55,15 @@ public class DataPack
 	public static NetPacket recvDataPack(InputStream is) throws IOException
 	{
 		int type = 0, block = 0;
-		// byte[] headBuf = new byte[28];
+		byte[] headBuf = new byte[offset];
 
 		NetPacket revPacket = new NetPacket();
-		DataInputStream dis = new DataInputStream(is);
+		DataInputStream socketDis = new DataInputStream(is);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		socketDis.read(headBuf);
+		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(
+				headBuf));
 
 		try
 		{
@@ -70,6 +77,7 @@ public class DataPack
 
 			int length = readLittleInt(dis);
 
+			Log.d("MC", "length = " + length);
 			int len = length - offset;
 			revPacket.data = new byte[len];
 
@@ -88,11 +96,10 @@ public class DataPack
 
 			do
 			{
-				count = dis.read(temp);
+				count = socketDis.read(temp);
 				System.arraycopy(temp, 0, revPacket.data, pos, count);
 				pos += count;
 			} while (count != -1 && count == 1024);
-			Log.d("MC", "break");
 			return revPacket;
 		} catch (Exception e)
 		{
@@ -142,9 +149,8 @@ public class DataPack
 	private static void sendLittleInt(DataOutputStream dos, int data)
 			throws IOException
 	{
-		int ret = swapShortToLittleEndian((short) (data >> 16))
+		int ret = swapShortToLittleEndian((short) ((data >> 16) & 0xFFFF))
 				| (swapShortToLittleEndian((short) data) << 16);
-		Log.d("MC", Integer.toHexString(ret));
 		dos.writeInt(ret);
 	}
 
@@ -159,13 +165,9 @@ public class DataPack
 	private static int readLittleInt(DataInputStream dis) throws IOException
 	{
 		int data = dis.readInt();
-		if (data < 0)
-		{
-			data = ~data + 1;
-		}
-
-		return swapShortToLittleEndian((short) (data >> 16))
+		int ret = swapShortToLittleEndian((short) ((data >> 16) & 0xFFFF))
 				| (swapShortToLittleEndian((short) data) << 16);
+		return ret;
 	}
 	/**
 	 * 大小端蝶形交换
@@ -176,7 +178,9 @@ public class DataPack
 	 */
 	private static short swapShortToLittleEndian(int data)
 	{
-		return (short) ((data << 8) | (data >> 8) & 0x00FF);
+		short ret = (short) ((data << 8) | (data >> 8) & 0x00FF);
+		ret = (short) (ret & 0xFFFF);
+		return ret;
 	}
 
 }

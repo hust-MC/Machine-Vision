@@ -5,10 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 
 import com.machineversion.net.DataPack;
 import com.machineversion.net.NetUtils;
@@ -21,6 +19,7 @@ import android.util.Log;
 
 public class NetThread extends Thread implements CommunicationInterface
 {
+	public static boolean sendSwitch = false;
 	final int timeout = 5000;
 	final String ip = "115.156.211.22";
 
@@ -43,13 +42,14 @@ public class NetThread extends Thread implements CommunicationInterface
 
 		while (true) // 循环接收相机发来的数据
 		{
-			// DataPack.sendDataPack(sendPacket, os);
 
 			revPacket = DataPack.recvDataPack(is);
 			while (true)
 			{
+				while (sendSwitch);
 				DataPack.sendDataPack(sendPacket, os);
 				revPacket = DataPack.recvDataPack(is);
+				sendSwitch = true;
 
 				if (revPacket != null) // 如果数据正常，表示网络通畅
 				{

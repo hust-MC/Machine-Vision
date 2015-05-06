@@ -104,6 +104,10 @@ public class NetUtils
 				type = 1;
 				block = 50000;
 				break;
+			case MSG_NET_GET_PARAM:
+				type = 1;
+				block = 1000;
+				break;
 			}
 		}
 
