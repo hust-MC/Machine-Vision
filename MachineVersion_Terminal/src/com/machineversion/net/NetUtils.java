@@ -72,7 +72,6 @@ public class NetUtils
 		public NetPacket(int minid, byte[] data)
 		{
 			this.data = data;
-
 			this.minid = minid;
 			switch (minid)
 			{
@@ -110,7 +109,5 @@ public class NetUtils
 				break;
 			}
 		}
-
 	}
-
 }

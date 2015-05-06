@@ -27,6 +27,7 @@ public class NetThread extends Thread implements CommunicationInterface
 	final String ip = "115.156.211.22";
 
 	Socket socket;
+	UdpServerSocket udpSocket;
 	Handler handler;
 
 	private boolean udpConnecteSuccess = false;					// UDP连接是否成功
@@ -48,10 +49,8 @@ public class NetThread extends Thread implements CommunicationInterface
 		while (true)
 		{
 			DataPack.sendDataPack(sendPacket, os);
-			Log.d("MC", "send");
 			revPacket = DataPack.recvDataPack(is);
 			Log.d("MC", "rev");
-
 			if (revPacket != null) // 如果数据正常，表示网络通畅
 			{
 				int[] data = new int[12];
@@ -104,8 +103,7 @@ public class NetThread extends Thread implements CommunicationInterface
 	@Override
 	public void run()
 	{
-		boolean flag = false;
-		Thread tcpServer = new Thread(new Runnable()
+		new Thread(new Runnable()
 		{
 			@Override
 			public void run()
@@ -116,9 +114,10 @@ public class NetThread extends Thread implements CommunicationInterface
 					ServerSocket serverSocket = new ServerSocket(NetUtils.port);
 					socket = serverSocket.accept();
 					udpConnecteSuccess = true;
+					udpSocket.close();
 
 					Log.d("MC", "netConnected");
-					// Message message = handler.obtainMessage();
+					// Message message = Message.obtain();
 					// message.what = 0x55;
 					// handler.sendMessage(message);
 
@@ -127,30 +126,23 @@ public class NetThread extends Thread implements CommunicationInterface
 				{
 				} catch (InterruptedException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+
 				}
 			}
-		});
-
-		tcpServer.start();
+		}).start();
 
 		try
 		{
-			UdpServerSocket udpSocket = new UdpServerSocket(
-					NetUtils.listenBroadCastPort);
+			udpSocket = new UdpServerSocket(NetUtils.listenBroadCastPort);
 			while (!udpConnecteSuccess)
 			{
 				if (udpSocket.receive().subSequence(0, 13)
 						.equals("Get Server IP"))
 				{
-					// if (!flag)
-					// {
-					// flag = true;
-					// tcpServer.start();
-					// }
 					udpSocket.response(ip + "\0", NetUtils.sendIpPort);
 				}
+
 			}
 		} catch (Exception e)
 		{
@@ -183,6 +175,16 @@ public class NetThread extends Thread implements CommunicationInterface
 	@Override
 	public void close()
 	{
-
+		try
+		{
+			if (socket != null)
+			{
+				Log.d("MC", "close");
+				socket.close();
+			}
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

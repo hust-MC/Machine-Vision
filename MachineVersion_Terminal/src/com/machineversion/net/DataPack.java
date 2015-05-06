@@ -44,6 +44,7 @@ public class DataPack
 			}
 
 			dos.write(baos.toByteArray());
+			Log.d("MC", "send size=" + baos.size());
 			dos.flush();
 			return true;
 		} catch (IOException e)
@@ -89,6 +90,7 @@ public class DataPack
 			}
 
 			revPacket.minid = readLittleInt(dis);
+			Log.d("MC", "id =" + revPacket.minid);
 
 			/*
 			 * 接收data数组

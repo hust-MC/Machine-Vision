@@ -54,7 +54,7 @@ public class MainActivity extends Activity
 	String sciRevBuf;						// 串口接收数据
 
 	SciThread serialThread;					// 创建串口线程
-	Thread netThread;						// 创建网络线程
+	NetThread netThread;						// 创建网络线程
 
 	/*
 	 * 与串口子线程通信函数
@@ -99,11 +99,11 @@ public class MainActivity extends Activity
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg)
 		{
-
 			if (msg.what == 0x55)						// 连接成功
 			{
 				dialog.dismiss();
-				Toast.makeText(MainActivity.this, "网络连接成功", Toast.LENGTH_SHORT);
+				Toast.makeText(MainActivity.this, "网络连接成功", Toast.LENGTH_SHORT)
+						.show();
 			}
 			else if (msg.obj instanceof Bitmap)
 			{
@@ -149,6 +149,16 @@ public class MainActivity extends Activity
 		setContentView(R.layout.activity_main);
 
 		init_widgit(); // 初始化控件
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		if (netThread != null)
+		{
+			netThread.close();
+		}
 	}
 
 	class ButtonListern implements android.view.View.OnClickListener
@@ -216,8 +226,8 @@ public class MainActivity extends Activity
 	 */
 	public void onClick_net(View view)
 	{
-		// dialog = ProgressDialog.show(this, null, "正在努力连接智能相机，请稍候...", true,
-		// false); // 进程弹窗
+		// dialog = ProgressDialog
+		// .show(this, null, "正在连接智能相机，请稍候...", true, false); // 进程弹窗
 
 		netThread = new NetThread(netHandler);
 		netThread.start();
