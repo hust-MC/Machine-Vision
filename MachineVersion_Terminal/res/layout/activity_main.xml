@@ -203,6 +203,12 @@
                 android:layout_height="wrap_content"
                 android:onClick="onClick_net"
                 android:text="网络连接" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick_close_net"
+                android:text="断开连接" />
         </LinearLayout>
     </LinearLayout>
 

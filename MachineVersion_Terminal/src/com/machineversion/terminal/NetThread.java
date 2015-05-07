@@ -24,7 +24,6 @@ public class NetThread extends Thread implements CommunicationInterface
 {
 	public static boolean sendSwitch = false;
 	final int timeout = 5000;
-	final String ip = "115.156.211.22";
 
 	Socket socket;
 	UdpServerSocket udpSocket;
@@ -46,6 +45,9 @@ public class NetThread extends Thread implements CommunicationInterface
 
 		revPacket = DataPack.recvDataPack(is);
 
+		/*
+		 * 处理
+		 */
 		while (true)
 		{
 			DataPack.sendDataPack(sendPacket, os);
@@ -140,7 +142,7 @@ public class NetThread extends Thread implements CommunicationInterface
 				if (udpSocket.receive().subSequence(0, 13)
 						.equals("Get Server IP"))
 				{
-					udpSocket.response(ip + "\0", NetUtils.sendIpPort);
+					udpSocket.response(NetUtils.ip + "\0", NetUtils.sendIpPort);
 				}
 
 			}
@@ -172,6 +174,7 @@ public class NetThread extends Thread implements CommunicationInterface
 		}
 	}
 
+	
 	@Override
 	public void close()
 	{

@@ -2,12 +2,8 @@ package com.machineversion.terminal;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.Socket;
-import java.util.Arrays;
+import java.io.InputStream;
 
-import com.machineversion.net.DataPack;
-import com.machineversion.net.NetUtils;
-import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.option.CameraParams;
 import com.machineversion.option.FastenerSettings;
 import com.machineversion.option.FileManager;
@@ -23,7 +19,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -139,12 +134,61 @@ public class MainActivity extends Activity
 		photo_imv1 = (ImageView) findViewById(R.id.main_imv_photo1);
 		photo_imv2 = (ImageView) findViewById(R.id.main_imv_photo2);
 	}
+	public static final String read(InputStream in) throws IOException
+	{
+		StringBuilder sb = new StringBuilder();
 
+		int ch;
+
+		while (-1 != (ch = in.read()))
+			sb.append((char) ch);
+
+		return sb.toString();
+	}
+
+	/**
+	 * 设置IP（待用）
+	 * 
+	 * @param ip
+	 *            本地IP地址
+	 */
+	private void setIp(String ip)
+	{
+		StringBuffer sb = new StringBuffer();
+		String[] cmd =
+		{ "sh", "/data/local/setip.sh" };
+		try
+		{
+			// Process p = Runtime.getRuntime().exec(new String[]
+			// { "su" });
+			Process p = Runtime.getRuntime().exec(cmd);
+			Log.d("MC", "right");
+			String error = read(p.getErrorStream());
+			String outInfo = read(p.getInputStream());
+
+			String resultCode = "0";// 脚本中输出0表示命令执行成功
+
+			if (error.length() != 0)
+			{ // 如果错误流中有内容，表明脚本执行有问题
+				resultCode = "1";
+			}
+
+			sb.append(resultCode);
+			sb.append(error);
+			sb.append(outInfo);
+		} catch (IOException e)
+		{
+			Log.d("MC", "wrong");
+			e.printStackTrace();
+		}
+		Log.d("MC", sb.toString());
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// setIp(NetUtils.ip);
 
 		setContentView(R.layout.activity_main);
 
@@ -231,6 +275,11 @@ public class MainActivity extends Activity
 
 		netThread = new NetThread(netHandler);
 		netThread.start();
+	}
+
+	public void onClick_close_net(View view)
+	{
+		netThread.close();
 	}
 
 	/*

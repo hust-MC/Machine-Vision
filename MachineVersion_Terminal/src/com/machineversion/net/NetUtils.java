@@ -3,6 +3,10 @@ package com.machineversion.net;
 public class NetUtils
 {
 	/**
+	 * 设置本地IP地址
+	 */
+	public final static String ip = "115.156.211.22";
+	/**
 	 * 三种端口定义
 	 */
 	public final static int listenBroadCastPort = 6019;
