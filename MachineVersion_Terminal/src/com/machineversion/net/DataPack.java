@@ -44,8 +44,8 @@ public class DataPack
 			}
 
 			dos.write(baos.toByteArray());
-			Log.d("MC", "send size=" + baos.size());
 			dos.flush();
+			Log.d("MC", "send size=" + baos.size());
 			return true;
 		} catch (IOException e)
 		{
@@ -68,6 +68,7 @@ public class DataPack
 		try
 		{
 			int magicData = readLittleInt(dis);
+			Log.d("MC", "magic=" + magicData);
 			int versionData = readLittleInt(dis);
 			if (magicData != magic || versionData != version)
 			{
@@ -82,7 +83,6 @@ public class DataPack
 			int length = readLittleInt(dis);
 
 			int len = length - offset;
-			revPacket.data = new byte[len];
 
 			if (readLittleInt(dis) != offset)
 			{
@@ -90,20 +90,25 @@ public class DataPack
 			}
 
 			revPacket.minid = readLittleInt(dis);
-			Log.d("MC", "id =" + revPacket.minid);
+			Log.d("MC", "minid =" + revPacket.minid);
 
 			/*
 			 * 接收data数组
 			 */
-			int count = 0, pos = 0;
-			byte[] temp = new byte[1024];
-
-			do
+			if (len > 0)
 			{
-				count = socketDis.read(temp);
-				System.arraycopy(temp, 0, revPacket.data, pos, count);
-				pos += count;
-			} while (count != -1 && pos < len);
+				revPacket.data = new byte[len];
+				int count = 0, pos = 0;
+				byte[] temp = new byte[1024];
+
+				do
+				{
+					count = socketDis.read(temp);
+					System.arraycopy(temp, 0, revPacket.data, pos, count);
+					pos += count;
+				} while (count != -1 && pos < len);
+				Log.d("MC", "pos=" + pos);
+			}
 			return revPacket;
 		} catch (Exception e)
 		{

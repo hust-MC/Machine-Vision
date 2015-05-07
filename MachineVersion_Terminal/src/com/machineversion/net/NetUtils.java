@@ -1,5 +1,11 @@
 package com.machineversion.net;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import android.provider.ContactsContract.Contacts.Data;
+
 public class NetUtils
 {
 	/**
@@ -49,69 +55,108 @@ public class NetUtils
 		public int minid;
 		public byte[] data;
 
-		public NetPacket()
-		{
-
-		}
-
-		/**
-		 * 生成带子命令的网络包
-		 * 
-		 * @param minid
-		 *            主命令
-		 * @param subminid
-		 *            子命令
-		 */
-		public NetPacket(int minid, int subminid, byte[] data)
-		{
-
-		}
-
-		/**
-		 * 生成不带子命令的网络包
-		 * 
-		 * @param minid
-		 *            命令
-		 */
-		public NetPacket(int minid, byte[] data)
+		public void setData(byte[] data)
 		{
 			this.data = data;
-			this.minid = minid;
-			switch (minid)
+		}
+		public void send(OutputStream os)
+		{
+			DataPack.sendDataPack(this, os);
+		}
+		public void recvDataPack(InputStream is) throws IOException
+		{
+			NetPacket packet = DataPack.recvDataPack(is);
+
+			if (packet == null)
 			{
-			case MSG_NET_GET_VIDEO:
-				type = 1;
-				block = 5000;
-				break;
-			case MSG_NET_GENERAL:
-				type = 0;
-				block = 0;
-				break;
-			case MSG_NET_ISL12026:
-				type = 1;
-				block = 50000;
-				break;
-			case MSG_NET_AD9849:
-				type = 0;
-				block = 0;
-				break;
-			case MSG_NET_AT25040:
-				type = 1;
-				block = 50000;
-				break;
-			case MSG_NET_NORMAL:
-				type = 0;
-				block = 0;
-				break;
-			case MSG_NET_FLASH:
-				type = 1;
-				block = 50000;
-				break;
-			case MSG_NET_GET_PARAM:
-				type = 1;
-				block = 1000;
-				break;
+				type = 0xaa;
+			}
+			else
+			{
+				type = packet.type;
+				block = packet.block;
+				minid = packet.minid;
+
+				if (packet.data != null)
+				{
+					data = packet.data;
+				}
 			}
 		}
+		// public NetPacket()
+		// {
+		//
+		// }
+		//
+		// /**
+		// * 生成带子命令的网络包
+		// *
+		// * @param minid
+		// * 主命令
+		// * @param subminid
+		// * 子命令
+		// */
+		// public NetPacket(int minid, int subminid, byte[] data)
+		// {
+		//
+		// }
+		//
+		// /**
+		// * 生成不带子命令的网络包
+		// *
+		// * @param minid
+		// * 命令
+		// */
+		// public NetPacket(int minid, byte[] data)
+		// {
+		// this.data = data;
+		// this.minid = minid;
+		// switch (minid)
+		// {
+		// case MSG_NET_GET_VIDEO:
+		// type = 1;
+		// block = 5000;
+		// break;
+		// case MSG_NET_GENERAL:
+		// type = 0;
+		// block = 0;
+		// break;
+		// case MSG_NET_ISL12026:
+		// type = 1;
+		// block = 50000;
+		// break;
+		// case MSG_NET_AD9849:
+		// type = 0;
+		// block = 0;
+		// break;
+		// case MSG_NET_AT25040:
+		// type = 1;
+		// block = 50000;
+		// break;
+		// case MSG_NET_NORMAL:
+		// type = 0;
+		// block = 0;
+		// break;
+		// case MSG_NET_FLASH:
+		// type = 1;
+		// block = 50000;
+		// break;
+		// case MSG_NET_GET_PARAM:
+		// type = 1;
+		// block = 1000;
+		// break;
+		// }
+		// }
 	}
+
+	public static class GetVideoPacket extends NetPacket
+	{
+		public GetVideoPacket()
+		{
+			minid = MSG_NET_GET_VIDEO;
+			type = 1;
+			block = 5000;
+		}
+	}
+
 }

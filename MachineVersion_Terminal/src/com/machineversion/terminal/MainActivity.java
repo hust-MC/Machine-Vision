@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -96,7 +97,7 @@ public class MainActivity extends Activity
 		{
 			if (msg.what == 0x55)						// 连接成功
 			{
-				dialog.dismiss();
+				// dialog.dismiss();
 				Toast.makeText(MainActivity.this, "网络连接成功", Toast.LENGTH_SHORT)
 						.show();
 			}
@@ -279,7 +280,14 @@ public class MainActivity extends Activity
 
 	public void onClick_close_net(View view)
 	{
-		netThread.close();
+		String toastText = "连接尚未建立";
+		if (netThread != null)
+		{
+			toastText = "连接已断开";
+			netThread.close();
+			netThread = null;
+		}
+		Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
 	}
 
 	/*

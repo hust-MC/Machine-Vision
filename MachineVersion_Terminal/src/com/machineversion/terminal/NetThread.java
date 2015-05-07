@@ -9,10 +9,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 
-import com.machineversion.net.DataPack;
 import com.machineversion.net.NetUtils;
 import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.net.UdpServerSocket;
+import com.machineversion.net.NetFactoryClass.*;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -41,19 +41,19 @@ public class NetThread extends Thread implements CommunicationInterface
 		OutputStream os = socket.getOutputStream();
 		InputStream is = socket.getInputStream();
 
-		NetPacket sendPacket = new NetPacket(NetUtils.MSG_NET_GET_VIDEO, null), revPacket = new NetPacket();
+		NetPacket sendPacket = new GetVideoFactory().CreatePacket(), revPacket = new NetPacket();
 
-		revPacket = DataPack.recvDataPack(is);
+		revPacket.recvDataPack(is);
 
 		/*
 		 * 处理
 		 */
 		while (true)
 		{
-			DataPack.sendDataPack(sendPacket, os);
-			revPacket = DataPack.recvDataPack(is);
+			sendPacket.send(os);
+			revPacket.recvDataPack(is);
 			Log.d("MC", "rev");
-			if (revPacket != null) // 如果数据正常，表示网络通畅
+			if (revPacket.type != 0xaa) // 如果数据正常，表示网络通畅
 			{
 				int[] data = new int[12];
 				for (int i = 0; i < 12; i++)
@@ -142,14 +142,17 @@ public class NetThread extends Thread implements CommunicationInterface
 				if (udpSocket.receive().subSequence(0, 13)
 						.equals("Get Server IP"))
 				{
+					Log.d("MC", "send udp");
 					udpSocket.response(NetUtils.ip + "\0", NetUtils.sendIpPort);
 				}
 
 			}
 		} catch (Exception e)
 		{
+			Log.d("MC", "udp close");
 			e.printStackTrace();
 		}
+		Log.d("MC", "stop UDP thread");
 	}
 	@Override
 	public void open()
@@ -174,7 +177,6 @@ public class NetThread extends Thread implements CommunicationInterface
 		}
 	}
 
-	
 	@Override
 	public void close()
 	{
@@ -182,8 +184,13 @@ public class NetThread extends Thread implements CommunicationInterface
 		{
 			if (socket != null)
 			{
-				Log.d("MC", "close");
 				socket.close();
+				socket = null;
+			}
+			if (udpSocket != null)
+			{
+				udpSocket.close();
+				udpSocket = null;
 			}
 		} catch (IOException e)
 		{
