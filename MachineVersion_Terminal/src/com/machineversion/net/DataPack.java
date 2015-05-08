@@ -7,9 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
 
-import android.provider.ContactsContract.Contacts.Data;
 import android.util.Log;
 
 import com.machineversion.net.NetUtils.NetPacket;
@@ -53,22 +51,25 @@ public class DataPack
 		return false;
 	}
 
-	public static NetPacket recvDataPack(InputStream is) throws IOException
+	public static NetPacket recvDataPack(InputStream is)
 	{
+
 		int type = 0, block = 0;
 		byte[] headBuf = new byte[offset];
 
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		NetPacket revPacket = new NetPacket();
 		DataInputStream socketDis = new DataInputStream(is);
-
-		socketDis.read(headBuf);
-		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(
-				headBuf));
+		Log.d("MC", "start recv");
 
 		try
 		{
+			socketDis.read(headBuf);
+			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(
+					headBuf));
+
 			int magicData = readLittleInt(dis);
-			Log.d("MC", "magic=" + magicData);
+
 			int versionData = readLittleInt(dis);
 			if (magicData != magic || versionData != version)
 			{
@@ -83,14 +84,12 @@ public class DataPack
 			int length = readLittleInt(dis);
 
 			int len = length - offset;
-
 			if (readLittleInt(dis) != offset)
 			{
 				return null;
 			}
 
 			revPacket.minid = readLittleInt(dis);
-			Log.d("MC", "minid =" + revPacket.minid);
 
 			/*
 			 * 接收data数组
@@ -99,20 +98,43 @@ public class DataPack
 			{
 				revPacket.data = new byte[len];
 				int count = 0, pos = 0;
-				byte[] temp = new byte[1024];
-
+				byte[] temp = new byte[len];
+				int n = 0;
 				do
 				{
 					count = socketDis.read(temp);
 					System.arraycopy(temp, 0, revPacket.data, pos, count);
 					pos += count;
+					// if (n-- == 0)
+					// {
+					// Log.d("MC", "pos=" + pos);
+					// n = 4;
+					// }
 				} while (count != -1 && pos < len);
-				Log.d("MC", "pos=" + pos);
 			}
+			// if (len > 0)
+			// {
+			// int buf_len = len;
+			// byte[] data = new byte[buf_len];
+			// int i = 0;
+			// while (i < len)
+			// {
+			// int nread = buf_len - i;
+			// nread = socketDis.read(data, 0, nread);
+			// if (nread <= 0)
+			// {
+			// continue;
+			// }
+			// i += nread;
+			//
+			// baos.write(data, 0, nread);
+			// }
+			// revPacket.data = baos.toByteArray();
+			// }
 			return revPacket;
 		} catch (Exception e)
 		{
-			Log.d("MC", "datapack exception");
+			Log.d("zy", "datapack exception");
 			e.printStackTrace();
 		}
 		return null;

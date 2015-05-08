@@ -23,10 +23,12 @@ import android.util.Log;
 public class NetThread extends Thread implements CommunicationInterface
 {
 	public static boolean sendSwitch = false;
-	final int timeout = 5000;
+	private final int TIMEOUT = 1000;
+	private final int RXBUF_SIZE = 300 * 1024;
 
 	Socket socket;
 	UdpServerSocket udpSocket;
+	ServerSocket serverSocket;
 	Handler handler;
 
 	private boolean udpConnecteSuccess = false;					// UDP连接是否成功
@@ -46,7 +48,7 @@ public class NetThread extends Thread implements CommunicationInterface
 		revPacket.recvDataPack(is);
 
 		/*
-		 * 处理
+		 * 处理图像数据
 		 */
 		while (true)
 		{
@@ -113,8 +115,10 @@ public class NetThread extends Thread implements CommunicationInterface
 				try
 				{
 					Log.d("MC", "netConnectint");
-					ServerSocket serverSocket = new ServerSocket(NetUtils.port);
+					serverSocket = new ServerSocket(NetUtils.port);
 					socket = serverSocket.accept();
+					socket.setSoTimeout(TIMEOUT);
+					socket.setReceiveBufferSize(RXBUF_SIZE);
 					udpConnecteSuccess = true;
 					udpSocket.close();
 
@@ -128,9 +132,11 @@ public class NetThread extends Thread implements CommunicationInterface
 				{
 				} catch (InterruptedException e)
 				{
+					Log.d("MC", "tcp thread exception");
 					e.printStackTrace();
 
 				}
+				Log.d("MC", "tcp thread stop");
 			}
 		}).start();
 
@@ -182,6 +188,11 @@ public class NetThread extends Thread implements CommunicationInterface
 	{
 		try
 		{
+			if (serverSocket != null)
+			{
+				serverSocket.close();
+				serverSocket = null;
+			}
 			if (socket != null)
 			{
 				socket.close();
