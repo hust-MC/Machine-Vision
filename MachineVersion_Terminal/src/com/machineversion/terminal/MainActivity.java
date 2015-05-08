@@ -106,6 +106,8 @@ public class MainActivity extends Activity
 				Log.d("MC", "display");
 				Bitmap bitmap = (Bitmap) msg.obj;
 				photo_imv1.setImageBitmap(bitmap);
+				bitmap.recycle();						// 释放内存
+				bitmap = null;
 			}
 		}
 	};
