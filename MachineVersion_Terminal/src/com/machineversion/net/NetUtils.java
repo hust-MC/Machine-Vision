@@ -159,4 +159,15 @@ public class NetUtils
 		}
 	}
 
+	public static class State extends NetPacket
+	{
+		public State()
+		{
+			minid = MSG_NET_STATE;
+			type = 1;
+			block = 50000;
+			data = new byte[]
+			{ 0x01, 0, 0, 0 };							// 设置子命令
+		}
+	}
 }

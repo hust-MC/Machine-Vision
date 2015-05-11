@@ -61,11 +61,13 @@ public class DataPack
 
 		try
 		{
-			int headCount = 0;
+			int headCount = 0, headPos = 0;
+
 			do
 			{
 				headCount = socketDis.read(headBuf);
-			} while (headCount != -1 && headCount < offset);
+				headPos += headCount;
+			} while (headCount != -1 && headPos < offset);
 
 			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(
 					headBuf));
@@ -105,11 +107,6 @@ public class DataPack
 					count = socketDis.read(temp);
 					System.arraycopy(temp, 0, revPacket.data, pos, count);
 					pos += count;
-					// if (n-- == 0)
-					// {
-					// Log.d("MC", "pos=" + pos);
-					// n = 4;
-					// }
 				} while (count != -1 && pos < len);
 			}
 			// if (len > 0)

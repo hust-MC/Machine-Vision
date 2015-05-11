@@ -9,6 +9,15 @@ public class NetFactoryClass
 		NetPacket CreatePacket();
 	}
 
+	public static class GetStateFactory implements NetFactory
+	{
+		@Override
+		public NetPacket CreatePacket()
+		{
+			return new State();
+		}
+	}
+
 	public static class GetVideoFactory implements NetFactory
 	{
 		@Override
@@ -17,4 +26,5 @@ public class NetFactoryClass
 			return new GetVideoPacket();
 		}
 	}
+
 }

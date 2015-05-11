@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.machineversion.net.NetUtils;
 import com.machineversion.option.CameraParams;
 import com.machineversion.option.FastenerSettings;
 import com.machineversion.option.FileManager;
@@ -94,17 +95,25 @@ public class MainActivity extends Activity
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg)
 		{
-			if (msg.what == 0x55)						// 连接成功
+			switch (msg.what)
 			{
+			case 0x55:							// 网络连接成功
 				// dialog.dismiss();
 				Toast.makeText(MainActivity.this, "网络连接成功", Toast.LENGTH_SHORT)
 						.show();
-			}
-			else if (msg.obj instanceof Bitmap)
-			{
+				break;
+
+			case NetUtils.MSG_NET_GET_VIDEO:	// 获取图像
 				Log.d("MC", "display");
 				Bitmap bitmap = (Bitmap) msg.obj;
 				photo_imv1.setImageBitmap(bitmap);
+				break;
+
+			case NetUtils.MSG_NET_STATE:
+				
+				
+			default:
+				break;
 			}
 		}
 	};
