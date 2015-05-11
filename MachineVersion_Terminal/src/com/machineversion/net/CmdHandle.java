@@ -41,7 +41,6 @@ public class CmdHandle
 		{
 			sendPacket.send(os);
 			revPacket.recvDataPack(is);
-			Log.d("MC", "rev");
 			if (revPacket.type != 0xaa) // 如果数据正常，表示网络通畅
 			{
 				int[] data = new int[12];

@@ -43,7 +43,6 @@ public class DataPack
 
 			dos.write(baos.toByteArray());
 			dos.flush();
-			Log.d("MC", "send size=" + baos.size());
 			return true;
 		} catch (IOException e)
 		{
@@ -57,14 +56,17 @@ public class DataPack
 		int type = 0, block = 0;
 		byte[] headBuf = new byte[offset];
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		NetPacket revPacket = new NetPacket();
 		DataInputStream socketDis = new DataInputStream(is);
-		Log.d("MC", "start recv");
 
 		try
 		{
-			socketDis.read(headBuf);
+			int headCount = 0;
+			do
+			{
+				headCount = socketDis.read(headBuf);
+			} while (headCount != -1 && headCount < offset);
+
 			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(
 					headBuf));
 
@@ -73,8 +75,6 @@ public class DataPack
 			int versionData = readLittleInt(dis);
 			if (magicData != magic || versionData != version)
 			{
-				Log.d("MC", "magic=" + magicData + " " + "version="
-						+ versionData);
 				return null;
 			}
 
@@ -86,6 +86,7 @@ public class DataPack
 			int len = length - offset;
 			if (readLittleInt(dis) != offset)
 			{
+				Log.d("MC", "offset=" + offset);
 				return null;
 			}
 
@@ -99,7 +100,6 @@ public class DataPack
 				revPacket.data = new byte[len];
 				int count = 0, pos = 0;
 				byte[] temp = new byte[len];
-				int n = 0;
 				do
 				{
 					count = socketDis.read(temp);
