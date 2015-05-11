@@ -47,9 +47,9 @@ public class MainActivity extends Activity
 	Button bt_fileManager, bt_cameraParams, bt_sysSettings,
 			bt_fasternerSettings, bt_machineLearning, bt_help;
 
-	String sciRevBuf;						// 串口接收数据
+	String sciRevBuf;							// 串口接收数据
 
-	SciThread serialThread;					// 创建串口线程
+	SciThread serialThread;						// 创建串口线程
 	NetThread netThread;						// 创建网络线程
 
 	/*
@@ -106,8 +106,6 @@ public class MainActivity extends Activity
 				Log.d("MC", "display");
 				Bitmap bitmap = (Bitmap) msg.obj;
 				photo_imv1.setImageBitmap(bitmap);
-				bitmap.recycle();						// 释放内存
-				bitmap = null;
 			}
 		}
 	};
