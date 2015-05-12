@@ -17,6 +17,7 @@ import com.machineversion.net.NetUtils.NetPacket;
 
 public class CmdHandle
 {
+	public static boolean getVideoFlag = true;
 	Socket socket;
 
 	public CmdHandle(Socket socket)
@@ -37,42 +38,47 @@ public class CmdHandle
 		/*
 		 * 处理图像数据
 		 */
-		sendPacket.send(os);
-		revPacket.recvDataPack(is);
-		if (revPacket.type != 0xaa) // 如果数据正常，表示网络通畅
+		while (getVideoFlag)
 		{
-			int[] data = new int[12];
-			for (int i = 0; i < 12; i++)
+			sendPacket.send(os);
+			revPacket.recvDataPack(is);
+			if (revPacket.type != 0xaa) // 如果数据正常，表示网络通畅
 			{
-				data[i] = revPacket.data[i] & 0xFF;
+				int[] data = new int[12];
+				for (int i = 0; i < 12; i++)
+				{
+					data[i] = revPacket.data[i] & 0xFF;
+				}
+
+				int len = data[0] | data[1] << 8 | data[2] << 16
+						| data[3] << 24;
+				int width = data[4] | data[5] << 8 | data[6] << 16
+						| data[7] << 24;
+				int height = data[8] | data[9] << 8 | data[10] << 16
+						| data[11] << 24;
+				byte[] imageBuf = Arrays.copyOfRange(revPacket.data, 100,
+						len + 100);
+
+				int[] image = new int[imageBuf.length];
+				for (int i = 0; i < image.length; i++)
+				{
+					int temp;
+					temp = imageBuf[i] & 0xff;
+					image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
+				}
+
+				Message message = Message.obtain();
+				message.what = NetUtils.MSG_NET_GET_VIDEO;
+				message.obj = Bitmap.createBitmap(image, width, height,
+						Config.RGB_565);
+				handler.sendMessage(message);
 			}
-
-			int len = data[0] | data[1] << 8 | data[2] << 16 | data[3] << 24;
-			int width = data[4] | data[5] << 8 | data[6] << 16 | data[7] << 24;
-			int height = data[8] | data[9] << 8 | data[10] << 16
-					| data[11] << 24;
-			byte[] imageBuf = Arrays
-					.copyOfRange(revPacket.data, 100, len + 100);
-
-			int[] image = new int[imageBuf.length];
-			for (int i = 0; i < image.length; i++)
+			else
+			// 接收的数据不正常，表示网络故障
+			// Close
 			{
-				int temp;
-				temp = imageBuf[i] & 0xff;
-				image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
+				Log.d("MC", "packet == null");
 			}
-
-			Message message = Message.obtain();
-			message.what = NetUtils.MSG_NET_GET_VIDEO;
-			message.obj = Bitmap.createBitmap(image, width, height,
-					Config.RGB_565);
-			handler.sendMessage(message);
-		}
-		else
-		// 接收的数据不正常，表示网络故障
-		// Close
-		{
-			Log.d("MC", "packet == null");
 		}
 	}
 
@@ -84,13 +90,14 @@ public class CmdHandle
 		InputStream is = socket.getInputStream();
 		NetPacket sendPacket = new GetStateFactory().CreatePacket(), revPacket = new NetPacket();
 
+		revPacket.recvDataPack(is);
 		sendPacket.send(os);
 		revPacket.recvDataPack(is);
 
 		byte[] data = revPacket.data;
 		switch (getIntFromArray(Arrays.copyOf(data, 4)))
 		{
-		case 0x01:
+		case 0x01000000:
 			tempInteger = getIntFromArray(Arrays.copyOfRange(data, 4, 8));
 			tempFloat = getIntFromArray(Arrays.copyOfRange(data, 8, 12));
 

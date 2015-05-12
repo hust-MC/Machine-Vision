@@ -57,7 +57,6 @@ public class SciThread extends Thread implements CommunicationInterface
 				{
 					try
 					{
-						// while ((n = sci.read(fd, buf)) != -1);
 						n = sci.read(buf);
 					} catch (IOException e)
 					{

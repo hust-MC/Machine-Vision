@@ -43,16 +43,18 @@ public class DataPack
 
 			dos.write(baos.toByteArray());
 			dos.flush();
+			Log.d("MC", "send over:" + baos.toByteArray().length);
 			return true;
 		} catch (IOException e)
 		{
+			Log.d("zy", "send failed");
 		}
 		return false;
 	}
 
 	public static NetPacket recvDataPack(InputStream is)
 	{
-
+		Log.d("MC", "start read");
 		int type = 0, block = 0;
 		byte[] headBuf = new byte[offset];
 
@@ -62,11 +64,14 @@ public class DataPack
 		try
 		{
 			int headCount = 0, headPos = 0;
+			byte[] headTemp = new byte[offset];
 
 			do
 			{
-				headCount = socketDis.read(headBuf);
+				headCount = socketDis.read(headTemp);
+				System.arraycopy(headTemp, 0, headBuf, headPos, headCount);
 				headPos += headCount;
+				Log.d("MC", "headPos=" + headPos);
 			} while (headCount != -1 && headPos < offset);
 
 			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(
@@ -77,6 +82,7 @@ public class DataPack
 			int versionData = readLittleInt(dis);
 			if (magicData != magic || versionData != version)
 			{
+				Log.d("MC", "magic=" + magic);
 				return null;
 			}
 
@@ -109,29 +115,11 @@ public class DataPack
 					pos += count;
 				} while (count != -1 && pos < len);
 			}
-			// if (len > 0)
-			// {
-			// int buf_len = len;
-			// byte[] data = new byte[buf_len];
-			// int i = 0;
-			// while (i < len)
-			// {
-			// int nread = buf_len - i;
-			// nread = socketDis.read(data, 0, nread);
-			// if (nread <= 0)
-			// {
-			// continue;
-			// }
-			// i += nread;
-			//
-			// baos.write(data, 0, nread);
-			// }
-			// revPacket.data = baos.toByteArray();
-			// }
 			return revPacket;
 		} catch (Exception e)
 		{
-			Log.d("zy", "datapack exception");
+			// Log.d("zy", "datapack exception");
+			Log.d("MC", "datapack exception");
 			e.printStackTrace();
 		}
 		return null;

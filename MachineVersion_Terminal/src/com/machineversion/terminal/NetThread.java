@@ -24,7 +24,7 @@ import android.util.Log;
 public class NetThread extends Thread implements CommunicationInterface
 {
 	public static boolean sendSwitch = false;
-	private final int TIMEOUT = 5000;
+	private final int TIMEOUT = 7000;
 	private final int RXBUF_SIZE = 300 * 1024;
 
 	Socket socket;
@@ -129,13 +129,11 @@ public class NetThread extends Thread implements CommunicationInterface
 					// message.what = 0x55;
 					// handler.sendMessage(message);
 
-					new CmdHandle(socket).getVideo(handler);
+					CmdHandle cmdHandle = new CmdHandle(socket);
+					CmdHandle.getVideoFlag = true;
+					cmdHandle.getState(handler);
 				} catch (IOException e)
 				{
-				} catch (InterruptedException e)
-				{
-					Log.d("MC", "tcp thread exception");
-					e.printStackTrace();
 				}
 				Log.d("MC", "tcp thread stop");
 			}
@@ -177,7 +175,6 @@ public class NetThread extends Thread implements CommunicationInterface
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			DataOutputStream dos = new DataOutputStream(baos);
 			dos.write(data);
-			// DataPack.sendDataPack(baos.toByteArray(), os);
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -189,6 +186,7 @@ public class NetThread extends Thread implements CommunicationInterface
 	{
 		try
 		{
+			CmdHandle.getVideoFlag = false;
 			if (serverSocket != null)
 			{
 				serverSocket.close();
