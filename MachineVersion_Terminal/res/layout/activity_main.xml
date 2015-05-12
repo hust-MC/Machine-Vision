@@ -181,16 +181,28 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
-            android:background="@drawable/bg_state" >
+            android:background="@drawable/bg_state"
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="状态窗口"
                 android:textColor="#3F48CC"
-                android:textSize="30sp" >
-            </TextView>
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="温度："
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout

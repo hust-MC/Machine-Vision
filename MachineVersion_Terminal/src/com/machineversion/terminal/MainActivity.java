@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -40,6 +41,7 @@ public class MainActivity extends Activity
 	static boolean netFlag = false; 					// 网络连接状态标志
 	static ProgressDialog dialog;
 
+	TextView temperature_tv;
 	ToggleButton net_btn;								// 网络开关按钮
 	ToggleButton sci_btn; 								// 串口开关按钮
 	ImageView photo_imv1, photo_imv2;							// 图片显示区域
@@ -110,8 +112,8 @@ public class MainActivity extends Activity
 				break;
 
 			case NetUtils.MSG_NET_STATE:
-				
-				
+				temperature_tv.setText(msg.arg1 + "." + msg.arg2);
+				break;
 			default:
 				break;
 			}
@@ -125,6 +127,8 @@ public class MainActivity extends Activity
 	 */
 	private void init_widgit()
 	{
+		temperature_tv = (TextView) findViewById(R.id.tv_temperature);
+
 		bt_fileManager = (Button) findViewById(R.id.main_bt_file_manager);
 		bt_cameraParams = (Button) findViewById(R.id.main_bt_camera_params);
 		bt_sysSettings = (Button) findViewById(R.id.main_bt_sys_settings);

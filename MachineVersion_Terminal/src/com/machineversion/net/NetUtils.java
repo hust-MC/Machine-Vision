@@ -159,6 +159,18 @@ public class NetUtils
 		}
 	}
 
+	public static class Normal extends NetPacket
+	{
+		public Normal(int algorithm)
+		{
+			minid = MSG_NET_NORMAL;
+			type = 0;
+			block = 0;
+			data = new byte[]
+			{ (byte) algorithm };
+		}
+	}
+
 	public static class State extends NetPacket
 	{
 		public State()

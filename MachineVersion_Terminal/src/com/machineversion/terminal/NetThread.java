@@ -130,7 +130,7 @@ public class NetThread extends Thread implements CommunicationInterface
 					// handler.sendMessage(message);
 
 					CmdHandle cmdHandle = new CmdHandle(socket);
-					CmdHandle.getVideoFlag = true;
+					
 					cmdHandle.getState(handler);
 				} catch (IOException e)
 				{
@@ -186,7 +186,6 @@ public class NetThread extends Thread implements CommunicationInterface
 	{
 		try
 		{
-			CmdHandle.getVideoFlag = false;
 			if (serverSocket != null)
 			{
 				serverSocket.close();
