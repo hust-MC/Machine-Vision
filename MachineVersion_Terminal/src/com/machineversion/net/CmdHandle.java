@@ -77,6 +77,14 @@ public class CmdHandle
 		}
 	}
 
+	public void normal(Handler handler, int algorithm)
+	{
+		NetPacket sendPacket = new GetNormalFactory().CreatePacket();
+		sendPacket.setData(new byte[]
+		{ (byte) algorithm });
+		sendPacket.send(os);
+	}
+
 	public void getState(Handler handler) throws IOException
 	{
 		int tempInteger = 0, tempFloat = 0;

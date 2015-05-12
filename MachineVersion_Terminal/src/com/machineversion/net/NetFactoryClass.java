@@ -18,6 +18,16 @@ public class NetFactoryClass
 		}
 	}
 
+	public static class GetNormalFactory implements NetFactory
+	{
+		@Override
+		public NetPacket CreatePacket()
+		{
+			return new Normal();
+		}
+
+	}
+
 	public static class GetVideoFactory implements NetFactory
 	{
 		@Override

@@ -112,7 +112,7 @@ public class MainActivity extends Activity
 				break;
 
 			case NetUtils.MSG_NET_STATE:
-				temperature_tv.setText(msg.arg1 + "." + msg.arg2);
+				temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
 				break;
 			default:
 				break;

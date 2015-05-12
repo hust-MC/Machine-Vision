@@ -161,13 +161,11 @@ public class NetUtils
 
 	public static class Normal extends NetPacket
 	{
-		public Normal(int algorithm)
+		public Normal()
 		{
 			minid = MSG_NET_NORMAL;
 			type = 0;
 			block = 0;
-			data = new byte[]
-			{ (byte) algorithm };
 		}
 	}
 

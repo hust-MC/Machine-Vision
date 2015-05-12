@@ -130,8 +130,8 @@ public class NetThread extends Thread implements CommunicationInterface
 					// handler.sendMessage(message);
 
 					CmdHandle cmdHandle = new CmdHandle(socket);
-					
-					cmdHandle.getState(handler);
+
+					cmdHandle.normal(handler, 0);
 				} catch (IOException e)
 				{
 				}
