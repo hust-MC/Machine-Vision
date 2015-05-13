@@ -76,9 +76,7 @@ public class DataPack
 
 			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(
 					headBuf));
-
 			int magicData = readLittleInt(dis);
-
 			int versionData = readLittleInt(dis);
 			if (magicData != magic || versionData != version)
 			{
@@ -193,7 +191,7 @@ public class DataPack
 	 *            待交换的short数据
 	 * @return 转换后的short数
 	 */
-	private static short swapShortToLittleEndian(int data)
+	private static short swapShortToLittleEndian(short data)
 	{
 		short ret = (short) ((data << 8) | (data >> 8) & 0x00FF);
 		ret = (short) (ret & 0xFFFF);

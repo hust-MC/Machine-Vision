@@ -159,7 +159,7 @@ public class FileManager_fileExplorer extends ListActivity
 		// intent.putExtras(conData);
 
 		Intent intent = new Intent();
-		Uri startDir = Uri.fromFile(new File(path));
+		// Uri startDir = Uri.fromFile(new File(path));
 		intent.setDataAndType(startDir,
 				"vnd.android.cursor.dir/lysesoft.andexplorer.file");
 		setResult(RESULT_OK, intent);

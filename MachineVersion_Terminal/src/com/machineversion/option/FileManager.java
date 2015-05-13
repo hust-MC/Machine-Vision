@@ -1,5 +1,7 @@
 package com.machineversion.option;
 
+import java.io.File;
+
 import com.machineversion.sub_option.FileManager_fileExplorer;
 import com.machineversion.terminal.R;
 
@@ -8,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class FileManager extends ControlPannelActivity
@@ -50,6 +51,7 @@ public class FileManager extends ControlPannelActivity
 			if (requestCode == REQUEST_FILE)
 			{
 				Uri uri = intent.getData();
+				File file = new File(uri);
 			}
 		}
 	}
