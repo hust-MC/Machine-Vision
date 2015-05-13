@@ -158,6 +158,14 @@ abstract class ControlPannelActivity extends Activity
 		protected String[] subMenu;
 		protected String[] subMenuType;
 
+		/**
+		 * 生成整个菜单项
+		 * 
+		 * @param menuId
+		 *            主菜单项的资源ID
+		 * @param subMenuId
+		 *            子菜单项的资源ID，0则为无子菜单
+		 */
 		public MenuWithSubMenu(int menuId, int subMenuId)
 		{
 			menu = menuId != 0 ? getResources().getStringArray(menuId) : null;
@@ -167,6 +175,16 @@ abstract class ControlPannelActivity extends Activity
 			{ "0" };
 		}
 
+		/**
+		 * 生成整个菜单项
+		 * 
+		 * @param menuId
+		 *            主菜单资源ID
+		 * @param subMenuId
+		 *            子菜单资源ID，0则为无子菜单
+		 * @param typeId
+		 *            子菜单的类型。0为输入框，1为选项框
+		 */
 		public MenuWithSubMenu(int menuId, int subMenuId, int typeId)
 		{
 			menu = menuId != 0 ? getResources().getStringArray(menuId) : null;

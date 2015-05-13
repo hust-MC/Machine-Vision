@@ -4,13 +4,17 @@ import com.machineversion.sub_option.FileManager_fileExplorer;
 import com.machineversion.terminal.R;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class FileManager extends ControlPannelActivity
 {
+	final int REQUEST_FILE = 1;
+
 	@Override
 	protected void init_widget()
 	{
@@ -22,8 +26,8 @@ public class FileManager extends ControlPannelActivity
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3)
 			{
-				startActivity(new Intent(FileManager.this,
-						FileManager_fileExplorer.class));
+				startActivityForResult(new Intent(FileManager.this,
+						FileManager_fileExplorer.class), REQUEST_FILE);
 			}
 		});
 	}
@@ -38,4 +42,15 @@ public class FileManager extends ControlPannelActivity
 		init_widget();
 	}
 
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent)
+	{
+		if (resultCode == RESULT_OK)
+		{
+			if (requestCode == REQUEST_FILE)
+			{
+				Uri uri = intent.getData();
+			}
+		}
+	}
 }

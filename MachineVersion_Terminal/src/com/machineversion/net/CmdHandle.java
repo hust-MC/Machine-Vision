@@ -47,7 +47,6 @@ public class CmdHandle
 			{
 				data[i] = revPacket.data[i] & 0xFF;
 			}
-
 			int len = data[0] | data[1] << 8 | data[2] << 16 | data[3] << 24;
 			int width = data[4] | data[5] << 8 | data[6] << 16 | data[7] << 24;
 			int height = data[8] | data[9] << 8 | data[10] << 16

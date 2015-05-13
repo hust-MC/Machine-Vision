@@ -25,7 +25,7 @@ import java.io.File;
 
 import com.machineversion.terminal.R;
 
-public class FileManager_fileExplorer extends ListActivity 
+public class FileManager_fileExplorer extends ListActivity
 {
 	private List<Map<String, Object>> mData;
 	private String mDir = "/sdcard";
@@ -96,13 +96,6 @@ public class FileManager_fileExplorer extends ListActivity
 		}
 	}
 
-	public final class ViewHolder
-	{
-		public ImageView img;
-		public TextView title;
-		public TextView info;
-	}
-
 	public class MyAdapter extends BaseAdapter
 	{
 		private LayoutInflater mInflater;
@@ -152,12 +145,20 @@ public class FileManager_fileExplorer extends ListActivity
 		}
 	}
 
+	public final class ViewHolder
+	{
+		public ImageView img;
+		public TextView title;
+		public TextView info;
+	}
+
 	private void finishWithResult(String path)
 	{
-		Bundle conData = new Bundle();
-		conData.putString("results", "Thanks Thanks");
+		// Bundle conData = new Bundle();
+		// conData.putString("results", "Thanks Thanks");
+		// intent.putExtras(conData);
+
 		Intent intent = new Intent();
-		intent.putExtras(conData);
 		Uri startDir = Uri.fromFile(new File(path));
 		intent.setDataAndType(startDir,
 				"vnd.android.cursor.dir/lysesoft.andexplorer.file");
