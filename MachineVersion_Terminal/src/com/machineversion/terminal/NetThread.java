@@ -125,11 +125,13 @@ public class NetThread extends Thread implements CommunicationInterface
 					udpSocket.close();
 
 					Log.d("MC", "netConnected");
-					// Message message = Message.obtain();
-					// message.what = 0x55;
-					// handler.sendMessage(message);
+					Message message = Message.obtain();
+					message.what = 0x55;				// 返回0x55说明连接成功
+					handler.sendMessage(message);
 
-					CmdHandle cmdHandle = new CmdHandle(socket);
+					new NetPacket().recvDataPack(socket.getInputStream());
+
+					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
 
 					cmdHandle.normal(handler, 0);
 				} catch (IOException e)

@@ -2,12 +2,15 @@ package com.machineversion.option;
 
 import java.io.File;
 
+import com.machineversion.net.CmdHandle;
 import com.machineversion.sub_option.FileManager_fileExplorer;
 import com.machineversion.terminal.R;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,7 +56,9 @@ public class FileManager extends ControlPannelActivity
 			{
 				Bundle bundle = intent.getExtras();
 				File picFile = new File(bundle.getString("file path"));
-				Log.d("MC", picFile.getAbsolutePath());
+				CmdHandle cmd = CmdHandle.getInstance();
+				cmd.sendImage(null, 30, 50, 100, new int[]
+				{ 1, 2, 3 });
 			}
 		}
 	}

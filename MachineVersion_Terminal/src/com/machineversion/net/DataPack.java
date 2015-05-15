@@ -177,7 +177,7 @@ public class DataPack
 	 * @return 小端形式的int数
 	 * @throws IOException
 	 */
-	private static int readLittleInt(DataInputStream dis) throws IOException
+	public static int readLittleInt(DataInputStream dis) throws IOException
 	{
 		int data = dis.readInt();
 		int ret = swapShortToLittleEndian((short) (data >> 16)) & 0xFFFF

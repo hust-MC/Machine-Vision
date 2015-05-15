@@ -14,20 +14,36 @@ import android.util.Log;
 
 import com.machineversion.net.NetFactoryClass.*;
 import com.machineversion.net.NetUtils.NetPacket;
+import com.machineversion.net.NetUtils.Normal;
 
 public class CmdHandle
 {
+	private static CmdHandle cmdHandle;
+
 	private Socket socket;
 	private OutputStream os;
 	private InputStream is;
 
-	public CmdHandle(Socket socket) throws IOException
+	private CmdHandle(Socket socket) throws IOException
 	{
 		this.socket = socket;
 		os = socket.getOutputStream();
 		os = socket.getOutputStream();
 	}
 
+	public static CmdHandle getInstance()
+	{
+		return cmdHandle;
+	}
+
+	public static CmdHandle getInstance(Socket socket) throws IOException
+	{
+		if (cmdHandle == null)
+		{
+			cmdHandle = new CmdHandle(socket);
+		}
+		return cmdHandle;
+	}
 	public void getVideo(Handler handler) throws IOException,
 			InterruptedException
 	{
@@ -90,8 +106,6 @@ public class CmdHandle
 
 		NetPacket sendPacket = new GetStateFactory().CreatePacket(), revPacket = new NetPacket();
 
-		revPacket.recvDataPack(is);
-
 		sendPacket.send(os);
 		revPacket.recvDataPack(is);
 
@@ -111,9 +125,11 @@ public class CmdHandle
 		}
 	}
 
-	public void sendImage(Handler handler)
+	public void sendImage(Handler handler, int width, int height, int length,
+			int[] image)
 	{
-		
+		NetPacket sendPacket = new GetSendImageFactory().CreatePacket(), revNetPacket = new NetPacket();
+		sendPacket.setData(getArrayFromInt(width, height));
 	}
 
 	/**
@@ -134,5 +150,17 @@ public class CmdHandle
 			return data[0] & 0xff | (data[1] << 8) & 0xff00 | (data[2] << 16)
 					& 0xff0000 | data[3] << 24;
 		}
+	}
+	private byte[] getArrayFromInt(int... data)
+	{
+		int i = -1;
+		byte[] result = new byte[data.length * 4];
+
+		while (++i < result.length)
+		{
+			result[i] = (byte) ((data[i / 4] >>> ((3 - i % 4) * 8)) & 0xFF);
+		}
+
+		return result;
 	}
 }
