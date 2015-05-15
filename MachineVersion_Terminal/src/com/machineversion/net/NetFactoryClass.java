@@ -1,5 +1,6 @@
 package com.machineversion.net;
 
+import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.net.NetUtils.*;
 
 public class NetFactoryClass
@@ -9,12 +10,12 @@ public class NetFactoryClass
 		NetPacket CreatePacket();
 	}
 
-	public static class GetStateFactory implements NetFactory
+	public static class GetVideoFactory implements NetFactory
 	{
 		@Override
 		public NetPacket CreatePacket()
 		{
-			return new State();
+			return new GetVideoPacket();
 		}
 	}
 
@@ -28,13 +29,21 @@ public class NetFactoryClass
 
 	}
 
-	public static class GetVideoFactory implements NetFactory
+	public static class GetStateFactory implements NetFactory
 	{
 		@Override
 		public NetPacket CreatePacket()
 		{
-			return new GetVideoPacket();
+			return new State();
 		}
 	}
 
+	public static class GetSendImageFactory implements NetFactory
+	{
+		@Override
+		public NetPacket CreatePacket()
+		{
+			return new SendImage();
+		}
+	}
 }

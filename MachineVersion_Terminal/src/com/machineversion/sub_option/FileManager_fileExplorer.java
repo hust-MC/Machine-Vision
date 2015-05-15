@@ -158,10 +158,14 @@ public class FileManager_fileExplorer extends ListActivity
 		// conData.putString("results", "Thanks Thanks");
 		// intent.putExtras(conData);
 
-		Intent intent = new Intent();
 		// Uri startDir = Uri.fromFile(new File(path));
-		intent.setDataAndType(startDir,
-				"vnd.android.cursor.dir/lysesoft.andexplorer.file");
+		// intent.setDataAndType(startDir,
+		// "vnd.android.cursor.dir/lysesoft.andexplorer.file");
+
+		Intent intent = new Intent();
+		Bundle bundle = new Bundle();
+		bundle.putString("file path", path);
+		intent.putExtras(bundle);
 		setResult(RESULT_OK, intent);
 		finish();
 	}

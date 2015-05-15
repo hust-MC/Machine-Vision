@@ -110,6 +110,19 @@ public class CmdHandle
 			handler.sendMessage(message);
 		}
 	}
+
+	public void sendImage(Handler handler)
+	{
+		
+	}
+
+	/**
+	 * 从字节数组中获取整形数据
+	 * 
+	 * @param data
+	 *            大小为4的字节数组
+	 * @return 又四个字节组成的整形数
+	 */
 	private int getIntFromArray(byte[] data)
 	{
 		if (data.length != 4)

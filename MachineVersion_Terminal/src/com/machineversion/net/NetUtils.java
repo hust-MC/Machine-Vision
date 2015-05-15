@@ -83,70 +83,6 @@ public class NetUtils
 				}
 			}
 		}
-		// public NetPacket()
-		// {
-		//
-		// }
-		//
-		// /**
-		// * 生成带子命令的网络包
-		// *
-		// * @param minid
-		// * 主命令
-		// * @param subminid
-		// * 子命令
-		// */
-		// public NetPacket(int minid, int subminid, byte[] data)
-		// {
-		//
-		// }
-		//
-		// /**
-		// * 生成不带子命令的网络包
-		// *
-		// * @param minid
-		// * 命令
-		// */
-		// public NetPacket(int minid, byte[] data)
-		// {
-		// this.data = data;
-		// this.minid = minid;
-		// switch (minid)
-		// {
-		// case MSG_NET_GET_VIDEO:
-		// type = 1;
-		// block = 5000;
-		// break;
-		// case MSG_NET_GENERAL:
-		// type = 0;
-		// block = 0;
-		// break;
-		// case MSG_NET_ISL12026:
-		// type = 1;
-		// block = 50000;
-		// break;
-		// case MSG_NET_AD9849:
-		// type = 0;
-		// block = 0;
-		// break;
-		// case MSG_NET_AT25040:
-		// type = 1;
-		// block = 50000;
-		// break;
-		// case MSG_NET_NORMAL:
-		// type = 0;
-		// block = 0;
-		// break;
-		// case MSG_NET_FLASH:
-		// type = 1;
-		// block = 50000;
-		// break;
-		// case MSG_NET_GET_PARAM:
-		// type = 1;
-		// block = 1000;
-		// break;
-		// }
-		// }
 	}
 
 	public static class GetVideoPacket extends NetPacket
@@ -178,6 +114,16 @@ public class NetUtils
 			block = 50000;
 			data = new byte[]
 			{ 0x01, 0, 0, 0 };							// 设置子命令
+		}
+	}
+
+	public static class SendImage extends NetPacket
+	{
+		public SendImage()
+		{
+			minid = MSG_NET_SEND_IMAGE;
+			type = 2;
+			block = 0;				// 可设为任意值
 		}
 	}
 }
