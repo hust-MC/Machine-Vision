@@ -126,10 +126,10 @@ public class CmdHandle
 	}
 
 	public void sendImage(Handler handler, int width, int height, int length,
-			int[] image)
+			byte[] image)
 	{
 		NetPacket sendPacket = new GetSendImageFactory().CreatePacket(), revNetPacket = new NetPacket();
-		sendPacket.setData(getArrayFromInt(width, height));
+		sendPacket.setData(getArrayFromInt(width, height, length));
 	}
 
 	/**
