@@ -15,6 +15,8 @@ import com.machineversion.terminal.R;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -22,6 +24,15 @@ import android.widget.AdapterView.OnItemClickListener;
 public class FileManager extends ControlPannelActivity
 {
 	final int REQUEST_FILE = 1;
+
+	static Handler handler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+		}
+
+	};
 
 	@Override
 	protected void init_widget()
@@ -50,50 +61,59 @@ public class FileManager extends ControlPannelActivity
 		init_widget();
 	}
 
-	protected void onActivityResult(int requestCode, int resultCode,
-			Intent intent)
+	protected void onActivityResult(int requestCode, int resultCode, Intent i)
 	{
 		if (resultCode == RESULT_OK)
 		{
 			if (requestCode == REQUEST_FILE)
 			{
-				Bundle bundle = intent.getExtras();
-				File picFile = new File(bundle.getString("file path"));
-				BufferedImage bi = null;
-				try
-				{
-					bi = ImageIO.read(picFile);
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				final Intent intent = i;
 
-				FileInputStream in = null;
-				ByteArrayOutputStream out = null;
-				try
+				new Thread(new Runnable()
 				{
-					int n;
-					in = new FileInputStream(picFile);
-					out = new ByteArrayOutputStream(4096);
-					byte[] b = new byte[4096];
-
-					while ((n = in.read(b)) != -1)
+					@Override
+					public void run()
 					{
-						out.write(b, 0, n);
-					}
-					in.close();
-					out.close();
-				} catch (FileNotFoundException e)
-				{
-					e.printStackTrace();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+						Bundle bundle = intent.getExtras();
+						File picFile = new File(bundle.getString("file path"));
+						BufferedImage bi = null;
+						try
+						{
+							bi = ImageIO.read(picFile);
+						} catch (IOException e)
+						{
+							e.printStackTrace();
+						}
 
-				CmdHandle cmd = CmdHandle.getInstance();
-				cmd.sendImage(null, bi.getWidth(), bi.getHeight(),
-						(int) picFile.length(), out.toByteArray());
+						FileInputStream in = null;
+						ByteArrayOutputStream out = null;
+						try
+						{
+							int n;
+							in = new FileInputStream(picFile);
+							out = new ByteArrayOutputStream(4096);
+							byte[] b = new byte[4096];
+
+							while ((n = in.read(b)) != -1)
+							{
+								out.write(b, 0, n);
+							}
+							in.close();
+							out.close();
+						} catch (FileNotFoundException e)
+						{
+							e.printStackTrace();
+						} catch (IOException e)
+						{
+							e.printStackTrace();
+						}
+
+						CmdHandle cmd = CmdHandle.getInstance();
+						cmd.sendImage(null, bi.getWidth(), bi.getHeight(),
+								(int) picFile.length(), out.toByteArray());
+
+					}
+				}).start();
 			}
 		}
 	}
