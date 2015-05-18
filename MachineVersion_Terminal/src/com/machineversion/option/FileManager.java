@@ -5,15 +5,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
 
 import com.machineversion.net.CmdHandle;
 import com.machineversion.sub_option.FileManager_fileExplorer;
 import com.machineversion.terminal.R;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -74,32 +72,19 @@ public class FileManager extends ControlPannelActivity
 					@Override
 					public void run()
 					{
-						Bundle bundle = intent.getExtras();
-						File picFile = new File(bundle.getString("file path"));
-						BufferedImage bi = null;
+						int count = 0;
+						byte[] buffer = new byte[1024];
+
+						String path = intent.getExtras().getString("file path");
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						FileInputStream fis;
 						try
 						{
-							bi = ImageIO.read(picFile);
-						} catch (IOException e)
-						{
-							e.printStackTrace();
-						}
-
-						FileInputStream in = null;
-						ByteArrayOutputStream out = null;
-						try
-						{
-							int n;
-							in = new FileInputStream(picFile);
-							out = new ByteArrayOutputStream(4096);
-							byte[] b = new byte[4096];
-
-							while ((n = in.read(b)) != -1)
+							fis = new FileInputStream(path);
+							while ((count = fis.read(buffer)) != -1)
 							{
-								out.write(b, 0, n);
+								baos.write(buffer, 0, count);
 							}
-							in.close();
-							out.close();
 						} catch (FileNotFoundException e)
 						{
 							e.printStackTrace();
@@ -108,9 +93,14 @@ public class FileManager extends ControlPannelActivity
 							e.printStackTrace();
 						}
 
+						BitmapFactory.Options option = new BitmapFactory.Options();
+						option.inJustDecodeBounds = true;
+						BitmapFactory.decodeFile(path, option);
+
 						CmdHandle cmd = CmdHandle.getInstance();
-						cmd.sendImage(null, bi.getWidth(), bi.getHeight(),
-								(int) picFile.length(), out.toByteArray());
+						cmd.sendImage(null, option.outWidth, option.outHeight,
+								(int) new File(path).length(),
+								baos.toByteArray());
 
 					}
 				}).start();

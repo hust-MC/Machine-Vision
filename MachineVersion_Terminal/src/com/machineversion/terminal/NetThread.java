@@ -9,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 
-import com.machineversion.net.CmdHandle;
 import com.machineversion.net.NetUtils;
 import com.machineversion.net.UdpServerSocket;
 import com.machineversion.net.NetFactoryClass.GetVideoFactory;
@@ -131,11 +130,12 @@ public class NetThread extends Thread implements CommunicationInterface
 
 					new NetPacket().recvDataPack(socket.getInputStream());
 
-					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
-
-					cmdHandle.normal(handler, 0);
+					getVideo();
 				} catch (IOException e)
 				{
+				} catch (InterruptedException e)
+				{
+					e.printStackTrace();
 				}
 				Log.d("MC", "tcp thread stop");
 			}
