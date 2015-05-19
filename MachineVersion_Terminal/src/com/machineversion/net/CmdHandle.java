@@ -7,9 +7,7 @@ import java.net.Socket;
 import java.util.Arrays;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory.Options;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -50,7 +48,8 @@ public class CmdHandle
 	{
 		NetPacket sendPacket = new GetVideoFactory().CreatePacket(), revPacket = new NetPacket();
 
-		while (socket != null)
+		int c = 10;
+		while (c-- > 0)
 		{
 			/*
 			 * 处理图像数据
@@ -81,12 +80,6 @@ public class CmdHandle
 					temp = rxBuf[100 + i] & 0xff;
 					image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
 				}
-
-				// byte[] imageBuf = Arrays.copyOfRange(revPacket.data, 100,
-				// revPacket.data.length);
-
-				// BitmapFactory.Options options = new BitmapFactory.Options();
-				// options.inPreferredConfig = Config.ALPHA_8;
 
 				Message message = Message.obtain();
 				message.what = NetUtils.MSG_NET_GET_VIDEO;
@@ -119,19 +112,26 @@ public class CmdHandle
 		sendPacket.send(os);
 		revPacket.recvDataPack(is);
 
-		byte[] data = Arrays.copyOfRange(revPacket.data,
-				revPacket.data.length - 12, revPacket.data.length);
-		switch (getIntFromArray(Arrays.copyOf(data, 4)))
+		if (revPacket.type == 0x55)
 		{
-		case 0x01:
-			tempInteger = getIntFromArray(Arrays.copyOfRange(data, 4, 8));
-			tempFloat = getIntFromArray(Arrays.copyOfRange(data, 8, 12));
+			byte[] data = Arrays.copyOfRange(revPacket.data,
+					revPacket.data.length - 12, revPacket.data.length);
+			switch (getIntFromArray(Arrays.copyOf(data, 4)))
+			{
+			case 0x01:
+				tempInteger = getIntFromArray(Arrays.copyOfRange(data, 4, 8));
+				tempFloat = getIntFromArray(Arrays.copyOfRange(data, 8, 12));
 
-			Message message = Message.obtain();
-			message.what = NetUtils.MSG_NET_STATE;
-			message.arg1 = tempInteger;
-			message.arg2 = tempFloat;
-			handler.sendMessage(message);
+				Message message = Message.obtain();
+				message.what = NetUtils.MSG_NET_STATE;
+				message.arg1 = tempInteger;
+				message.arg2 = tempFloat;
+				handler.sendMessage(message);
+			}
+		}
+		else
+		{
+			Log.d("MC", "packet == null");
 		}
 	}
 

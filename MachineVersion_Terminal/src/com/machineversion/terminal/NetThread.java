@@ -64,7 +64,11 @@ public class NetThread extends Thread implements CommunicationInterface
 
 					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
 					new NetPacket().recvDataPack(socket.getInputStream());
-					cmdHandle.getVideo(handler);
+					while (true)
+					{
+						cmdHandle.getVideo(handler);
+						cmdHandle.getState(handler);
+					}
 				} catch (IOException e)
 				{
 				} catch (InterruptedException e)
