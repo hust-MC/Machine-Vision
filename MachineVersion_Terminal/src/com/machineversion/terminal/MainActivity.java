@@ -54,6 +54,8 @@ public class MainActivity extends Activity
 	SciThread serialThread;						// 创建串口线程
 	NetThread netThread;						// 创建网络线程
 
+	
+	
 	/*
 	 * 与串口子线程通信函数
 	 */
