@@ -7,14 +7,15 @@ import java.net.Socket;
 import java.util.Arrays;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory.Options;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import com.machineversion.net.NetFactoryClass.*;
 import com.machineversion.net.NetUtils.NetPacket;
-import com.machineversion.net.NetUtils.Normal;
 
 public class CmdHandle
 {
@@ -28,7 +29,7 @@ public class CmdHandle
 	{
 		this.socket = socket;
 		os = socket.getOutputStream();
-		os = socket.getOutputStream();
+		is = socket.getInputStream();
 	}
 
 	public static CmdHandle getInstance()
@@ -49,8 +50,6 @@ public class CmdHandle
 	{
 		NetPacket sendPacket = new GetVideoFactory().CreatePacket(), revPacket = new NetPacket();
 
-		revPacket.recvDataPack(is);
-
 		/*
 		 * 处理图像数据
 		 */
@@ -58,30 +57,37 @@ public class CmdHandle
 		revPacket.recvDataPack(is);
 		if (revPacket.type != 0xaa) // 如果数据正常，表示网络通畅
 		{
-			int[] data = new int[12];
-			for (int i = 0; i < 12; i++)
-			{
-				data[i] = revPacket.data[i] & 0xFF;
-			}
-			int len = data[0] | data[1] << 8 | data[2] << 16 | data[3] << 24;
-			int width = data[4] | data[5] << 8 | data[6] << 16 | data[7] << 24;
-			int height = data[8] | data[9] << 8 | data[10] << 16
-					| data[11] << 24;
-			byte[] imageBuf = Arrays
-					.copyOfRange(revPacket.data, 100, len + 100);
+			// int[] data = new int[12];
+			// for (int i = 0; i < 12; i++)
+			// {
+			// data[i] = revPacket.data[i] & 0xFF;
+			// }
+			// int len = data[0] | data[1] << 8 | data[2] << 16 | data[3] << 24;
+			// int width = data[4] | data[5] << 8 | data[6] << 16 | data[7] <<
+			// 24;
+			// int height = data[8] | data[9] << 8 | data[10] << 16
+			// | data[11] << 24;
+			// int[] imageBuf = Arrays.copyOfRange(revPacket.data, 100, len +
+			// 100);
+			//
+			// int[] image = new int[imageBuf.length];
+			// for (int i = 0; i < image.length; i++)
+			// {
+			// int temp;
+			// temp = imageBuf[i] & 0xff;
+			// image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
+			// }
 
-			int[] image = new int[imageBuf.length];
-			for (int i = 0; i < image.length; i++)
-			{
-				int temp;
-				temp = imageBuf[i] & 0xff;
-				image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
-			}
+			byte[] imageBuf = Arrays.copyOfRange(revPacket.data, 100,
+					revPacket.data.length);
+
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inPreferredConfig = Config.ALPHA_8;
 
 			Message message = Message.obtain();
 			message.what = NetUtils.MSG_NET_GET_VIDEO;
-			message.obj = Bitmap.createBitmap(image, width, height,
-					Config.RGB_565);
+			message.obj = BitmapFactory.decodeByteArray(imageBuf, 0,
+					imageBuf.length, options);
 			handler.sendMessage(message);
 		}
 		else
@@ -91,7 +97,6 @@ public class CmdHandle
 			Log.d("MC", "packet == null");
 		}
 	}
-
 	public void normal(Handler handler, int algorithm)
 	{
 		NetPacket sendPacket = new GetNormalFactory().CreatePacket();

@@ -101,7 +101,6 @@ public class FileManager extends ControlPannelActivity
 						cmd.sendImage(null, option.outWidth, option.outHeight,
 								(int) new File(path).length(),
 								baos.toByteArray());
-
 					}
 				}).start();
 			}
