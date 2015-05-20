@@ -19,13 +19,11 @@ public class CmdHandle
 {
 	private static CmdHandle cmdHandle;
 
-	private Socket socket;
 	private OutputStream os;
 	private InputStream is;
 
 	private CmdHandle(Socket socket) throws IOException
 	{
-		this.socket = socket;
 		os = socket.getOutputStream();
 		is = socket.getInputStream();
 	}
@@ -43,6 +41,11 @@ public class CmdHandle
 		}
 		return cmdHandle;
 	}
+	public static void clear()
+	{
+		cmdHandle = null;
+	}
+
 	public void getVideo(Handler handler) throws IOException,
 			InterruptedException
 	{
@@ -112,7 +115,7 @@ public class CmdHandle
 		sendPacket.send(os);
 		revPacket.recvDataPack(is);
 
-		if (revPacket.type == 0x55)
+		if (revPacket.type != 0xaa)
 		{
 			byte[] data = Arrays.copyOfRange(revPacket.data,
 					revPacket.data.length - 12, revPacket.data.length);

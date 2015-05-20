@@ -27,12 +27,23 @@ public class NetThread extends Thread implements CommunicationInterface
 	private final int TIMEOUT = 7000;
 	private final int RXBUF_SIZE = 300 * 1024;
 
+	private CurrentState currentState = CurrentState.onStop;
+
 	Socket socket;
 	UdpServerSocket udpSocket;
 	ServerSocket serverSocket;
 	Handler handler;
 
 	private boolean udpConnecteSuccess = false;					// UDP连接是否成功
+
+	public CurrentState getCurrentState()
+	{
+		return currentState;
+	}
+	public void setCurrentState(CurrentState currentState)
+	{
+		this.currentState = currentState;
+	}
 
 	public NetThread(Handler netHandler)
 	{
@@ -59,16 +70,20 @@ public class NetThread extends Thread implements CommunicationInterface
 
 					Log.d("MC", "netConnected");
 					Message message = Message.obtain();
-					message.what = 0x55;				// 返回0x55说明连接成功
+					message.what = 0x55;								// 返回0x55说明连接成功
 					handler.sendMessage(message);
+
+					currentState = CurrentState.onReady;				// 转换为发送状态
 
 					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
 					new NetPacket().recvDataPack(socket.getInputStream());
-					while (true)
+					currentState = CurrentState.onSending;
+					while (currentState == CurrentState.onSending)
 					{
 						cmdHandle.getVideo(handler);
 						cmdHandle.getState(handler);
 					}
+					CmdHandle.clear();									// 清空单例cmdhandle，便于之后重新生成
 				} catch (IOException e)
 				{
 				} catch (InterruptedException e)
@@ -124,6 +139,7 @@ public class NetThread extends Thread implements CommunicationInterface
 	@Override
 	public void close()
 	{
+		setCurrentState(CurrentState.onStop);
 		try
 		{
 			if (serverSocket != null)
@@ -145,5 +161,11 @@ public class NetThread extends Thread implements CommunicationInterface
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static enum CurrentState
+	{
+		onReady, onSending, onPause, onStop
+
 	}
 }

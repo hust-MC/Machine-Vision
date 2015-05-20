@@ -54,8 +54,6 @@ public class MainActivity extends Activity
 	SciThread serialThread;						// 创建串口线程
 	NetThread netThread;						// 创建网络线程
 
-	
-	
 	/*
 	 * 与串口子线程通信函数
 	 */
@@ -209,15 +207,26 @@ public class MainActivity extends Activity
 
 		init_widgit(); // 初始化控件
 	}
-
+	// @Override
+	// protected void onRestart()
+	// {
+	// netThread.setCurrentState(NetThread.CurrentState.onReady);
+	// super.onResume();
+	// }
+	// @Override
+	// protected void onPause()
+	// {
+	// netThread.setCurrentState(NetThread.CurrentState.onPause);
+	// super.onPause();
+	// }
 	@Override
 	protected void onDestroy()
 	{
-		super.onDestroy();
 		if (netThread != null)
 		{
 			netThread.close();
 		}
+		super.onDestroy();
 	}
 
 	class ButtonListern implements android.view.View.OnClickListener
@@ -234,6 +243,7 @@ public class MainActivity extends Activity
 			case R.id.main_bt_camera_params:
 				startActivityForResult(new Intent(MainActivity.this,
 						CameraParams.class), REQUEST_CODE_CAMERA_PARAMS);
+				Log.d("ZY", "button2");
 				break;
 			case R.id.main_bt_sys_settings:
 				startActivityForResult(new Intent(MainActivity.this,

@@ -14,6 +14,7 @@ public class CameraParams extends ControlPannelActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		Log.d("ZY", "button2 in");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_option);
 		wholeMenu = new MenuWithSubMenu(R.array.option_camera_params,
