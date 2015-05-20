@@ -3,20 +3,18 @@ package com.machineversion.terminal;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.machineversion.net.CmdHandle;
 import com.machineversion.net.NetUtils;
 import com.machineversion.net.UdpServerSocket;
-import com.machineversion.net.NetFactoryClass.GetVideoFactory;
 import com.machineversion.net.NetUtils.NetPacket;
 
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -28,6 +26,8 @@ public class NetThread extends Thread implements CommunicationInterface
 	private final int RXBUF_SIZE = 300 * 1024;
 
 	private CurrentState currentState = CurrentState.onStop;
+	private Lock lock = new ReentrantLock();
+	private Condition cond = lock.newCondition();
 
 	Socket socket;
 	UdpServerSocket udpSocket;
@@ -50,6 +50,13 @@ public class NetThread extends Thread implements CommunicationInterface
 		handler = netHandler;
 	}
 
+	public void signalThread()
+	{
+		lock.lock();
+		cond.signalAll();
+		currentState = CurrentState.onReady;
+		lock.unlock();
+	}
 	@Override
 	public void run()
 	{
@@ -78,11 +85,27 @@ public class NetThread extends Thread implements CommunicationInterface
 					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
 					new NetPacket().recvDataPack(socket.getInputStream());
 					currentState = CurrentState.onSending;
-					while (currentState == CurrentState.onSending)
+
+					/*
+					 * 以下代码正式开始发送
+					 */
+
+					while (currentState != CurrentState.onStop)
 					{
-						cmdHandle.getVideo(handler);
-						cmdHandle.getState(handler);
+						lock.lock();
+						if (currentState == CurrentState.onPause)
+						{
+							cond.await();
+						}
+						else
+						{
+							currentState = CurrentState.onSending;
+							cmdHandle.getVideo(handler);
+							cmdHandle.getState(handler);
+						}
+						lock.unlock();
 					}
+
 					CmdHandle.clear();									// 清空单例cmdhandle，便于之后重新生成
 				} catch (IOException e)
 				{
@@ -114,6 +137,7 @@ public class NetThread extends Thread implements CommunicationInterface
 		}
 		Log.d("MC", "stop UDP thread");
 	}
+
 	@Override
 	public void open()
 	{

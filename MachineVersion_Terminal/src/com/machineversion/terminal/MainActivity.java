@@ -11,8 +11,10 @@ import com.machineversion.option.FileManager;
 import com.machineversion.option.Help;
 import com.machineversion.option.MachineLearning;
 import com.machineversion.option.SysSettings;
+import com.machineversion.terminal.NetThread.CurrentState;
 
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.annotation.SuppressLint;
@@ -38,13 +40,13 @@ public class MainActivity extends Activity
 	final int REQUEST_CODE_MACHINE_LEARNING = 5;
 	final int REQUEST_CODE_HELP = 6;
 
-	static boolean netFlag = false; 					// 网络连接状态标志
+	static boolean netFlag = false; 						// 网络连接状态标志
 	static ProgressDialog dialog;
 
 	TextView temperature_tv;
-	ToggleButton net_btn;								// 网络开关按钮
-	ToggleButton sci_btn; 								// 串口开关按钮
-	ImageView photo_imv1, photo_imv2;							// 图片显示区域
+	ToggleButton net_btn;									// 网络开关按钮
+	ToggleButton sci_btn; 									// 串口开关按钮
+	ImageView photo_imv1, photo_imv2;						// 图片显示区域
 
 	Button bt_fileManager, bt_cameraParams, bt_sysSettings,
 			bt_fasternerSettings, bt_machineLearning, bt_help;
@@ -53,6 +55,8 @@ public class MainActivity extends Activity
 
 	SciThread serialThread;						// 创建串口线程
 	NetThread netThread;						// 创建网络线程
+
+	private boolean netHandleFlag = true;
 
 	/*
 	 * 与串口子线程通信函数
@@ -97,26 +101,28 @@ public class MainActivity extends Activity
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg)
 		{
-			switch (msg.what)
-			{
-			case 0x55:							// 网络连接成功
-				// dialog.dismiss();
-				Toast.makeText(MainActivity.this, "网络连接成功", Toast.LENGTH_SHORT)
-						.show();
-				break;
+			if (netHandleFlag)
+				switch (msg.what)
+				{
+				case 0x55: // 网络连接成功
+					// dialog.dismiss();
+					Toast.makeText(MainActivity.this, "网络连接成功",
+							Toast.LENGTH_SHORT).show();
+					break;
 
-			case NetUtils.MSG_NET_GET_VIDEO:	// 获取图像
-				Log.d("MC", "display");
-				Bitmap bitmap = (Bitmap) msg.obj;
-				photo_imv1.setImageBitmap(bitmap);
-				break;
+				case NetUtils.MSG_NET_GET_VIDEO: // 获取图像
+					Log.d("ZY", "display");
+					Bitmap bitmap = (Bitmap) msg.obj;
+					photo_imv1.setImageBitmap(bitmap);
+					break;
 
-			case NetUtils.MSG_NET_STATE:
-				temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
-				break;
-			default:
-				break;
-			}
+				case NetUtils.MSG_NET_STATE:
+					Log.d("ZY", "getstate");
+					temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
+					break;
+				default:
+					break;
+				}
 		}
 	};
 
@@ -179,10 +185,11 @@ public class MainActivity extends Activity
 			String error = read(p.getErrorStream());
 			String outInfo = read(p.getInputStream());
 
-			String resultCode = "0";// 脚本中输出0表示命令执行成功
+			String resultCode = "0";			// 脚本中输出0表示命令执行成功
 
 			if (error.length() != 0)
-			{ // 如果错误流中有内容，表明脚本执行有问题
+			{
+				// 如果错误流中有内容，表明脚本执行有问题
 				resultCode = "1";
 			}
 
@@ -207,23 +214,34 @@ public class MainActivity extends Activity
 
 		init_widgit(); // 初始化控件
 	}
-	// @Override
-	// protected void onRestart()
-	// {
-	// netThread.setCurrentState(NetThread.CurrentState.onReady);
-	// super.onResume();
-	// }
-	// @Override
-	// protected void onPause()
-	// {
-	// netThread.setCurrentState(NetThread.CurrentState.onPause);
-	// super.onPause();
-	// }
+	@Override
+	protected void onRestart()
+	{
+		Log.d("ZY", "restart");
+		netHandleFlag = true;
+		if (netThread != null)
+		{
+			netThread.signalThread();
+		}
+		super.onResume();
+	}
+	@Override
+	protected void onPause()
+	{
+		netHandleFlag = false;
+		Log.d("ZY", "A : onPause");
+		if (netThread != null)
+		{
+			netThread.setCurrentState(CurrentState.onPause);
+		}
+		super.onPause();
+	}
 	@Override
 	protected void onDestroy()
 	{
 		if (netThread != null)
 		{
+			Log.d("MC", "onDestroy");
 			netThread.close();
 		}
 		super.onDestroy();
@@ -234,6 +252,8 @@ public class MainActivity extends Activity
 		@Override
 		public void onClick(View v)
 		{
+			Debug.startMethodTracing();
+			netHandler.removeMessages(NetUtils.MSG_NET_GET_VIDEO);
 			switch (v.getId())
 			{
 			case R.id.main_bt_file_manager:
@@ -266,7 +286,7 @@ public class MainActivity extends Activity
 				Toast.makeText(MainActivity.this, "选择错误", Toast.LENGTH_SHORT)
 						.show();
 			}
-			overridePendingTransition(R.anim.top_in, R.anim.stay_here);
+			// overridePendingTransition(R.anim.top_in, R.anim.stay_here);
 		}
 	}
 
