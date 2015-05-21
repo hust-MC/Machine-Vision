@@ -14,7 +14,6 @@ import com.machineversion.option.SysSettings;
 import com.machineversion.terminal.NetThread.CurrentState;
 
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.annotation.SuppressLint;
@@ -252,7 +251,6 @@ public class MainActivity extends Activity
 		@Override
 		public void onClick(View v)
 		{
-			Debug.startMethodTracing();
 			netHandler.removeMessages(NetUtils.MSG_NET_GET_VIDEO);
 			switch (v.getId())
 			{
