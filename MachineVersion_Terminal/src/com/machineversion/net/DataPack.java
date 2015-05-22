@@ -56,7 +56,17 @@ public class DataPack
 	{
 		Log.d("MC", "start read");
 		int type = 0, block = 0;
-		byte[] headBuf = new byte[offset];
+		int bufCount = 0;
+		byte[] rxBuf = new byte[2 * 1024 * 1024];
+
+		bufCount = is.read(rxBuf);
+		for (int i = 0; i < bufCount - 1; i++)
+		{
+			if (rxBuf[i] == 0x5a69 && rxBuf[i + 1] == 0x5a69)
+			{
+
+			}
+		}
 
 		NetPacket revPacket = new NetPacket();
 		DataInputStream socketDis = new DataInputStream(is);
@@ -80,7 +90,7 @@ public class DataPack
 			int versionData = readLittleInt(dis);
 			if (magicData != magic || versionData != version)
 			{
-				Log.d("MC", "magic=" + magic);
+				Log.d("MC", "magic=" + magicData + "   Version=" + versionData);
 				return null;
 			}
 

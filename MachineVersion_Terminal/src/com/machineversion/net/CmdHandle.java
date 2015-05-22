@@ -62,8 +62,9 @@ public class CmdHandle
 
 			byte[] rxBuf = revPacket.data;
 
-			if (revPacket.type != 0xaa) // 如果数据正常，表示网络通畅
-	{
+			if (revPacket.type != 0xaa
+					&& revPacket.minid == NetUtils.MSG_NET_GET_VIDEO) // 如果数据正常，表示网络通畅
+			{
 				int[] data = new int[12];
 				for (int i = 0; i < 12; i++)
 				{
@@ -92,7 +93,7 @@ public class CmdHandle
 				Message message = Message.obtain();
 				message.what = NetUtils.MSG_NET_GET_VIDEO;
 				message.obj = Bitmap.createBitmap(image, width, height,
-				Config.RGB_565);
+						Config.RGB_565);
 				handler.sendMessage(message);
 			}
 			else
@@ -120,7 +121,7 @@ public class CmdHandle
 		sendPacket.send(os);
 		revPacket.recvDataPack(is);
 
-		if (revPacket.type != 0xaa)
+		if (revPacket.type != 0xaa && revPacket.minid == NetUtils.MSG_NET_STATE)
 		{
 			byte[] data = Arrays.copyOfRange(revPacket.data,
 					revPacket.data.length - 12, revPacket.data.length);

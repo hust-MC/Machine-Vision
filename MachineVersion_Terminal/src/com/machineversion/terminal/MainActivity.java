@@ -213,28 +213,28 @@ public class MainActivity extends Activity
 
 		init_widgit(); // 初始化控件
 	}
-	@Override
-	protected void onRestart()
-	{
-		Log.d("ZY", "restart");
-		netHandleFlag = true;
-		if (netThread != null)
-		{
-			netThread.signalThread();
-		}
-		super.onResume();
-	}
-	@Override
-	protected void onPause()
-	{
-		netHandleFlag = false;
-		Log.d("ZY", "A : onPause");
-		if (netThread != null)
-		{
-			netThread.setCurrentState(CurrentState.onPause);
-		}
-		super.onPause();
-	}
+	// @Override
+	// protected void onRestart()
+	// {
+	// Log.d("ZY", "restart");
+	// netHandleFlag = true;
+	// if (netThread != null)
+	// {
+	// netThread.signalThread();
+	// }
+	// super.onResume();
+	// }
+	// @Override
+	// protected void onPause()
+	// {
+	// netHandleFlag = false;
+	// Log.d("ZY", "A : onPause");
+	// if (netThread != null)
+	// {
+	// netThread.setCurrentState(CurrentState.onPause);
+	// }
+	// super.onPause();
+	// }
 	@Override
 	protected void onDestroy()
 	{
