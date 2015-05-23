@@ -64,7 +64,6 @@ public class DataPack
 		{
 			if (rxBuf[i] == 0x5a69 && rxBuf[i + 1] == 0x5a69)
 			{
-
 			}
 		}
 
