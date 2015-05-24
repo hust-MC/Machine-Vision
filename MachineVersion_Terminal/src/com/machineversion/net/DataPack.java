@@ -7,7 +7,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
+import android.provider.ContactsContract.Contacts.Data;
 import android.util.Log;
 
 import com.machineversion.net.NetUtils.NetPacket;
@@ -54,81 +56,97 @@ public class DataPack
 
 	public static NetPacket recvDataPack(InputStream is)
 	{
+		NetPacket revPacket = new NetPacket();
 		Log.d("MC", "start read");
 		int type = 0, block = 0;
 		int bufCount = 0;
+		int startPos = 0;
+		int availableCount = 0;
+
 		byte[] rxBuf = new byte[2 * 1024 * 1024];
-
-		bufCount = is.read(rxBuf);
-		for (int i = 0; i < bufCount - 1; i++)
-		{
-			if (rxBuf[i] == 0x5a69 && rxBuf[i + 1] == 0x5a69)
-			{
-			}
-		}
-
-		NetPacket revPacket = new NetPacket();
-		DataInputStream socketDis = new DataInputStream(is);
 
 		try
 		{
-			int headCount = 0, headPos = 0;
-			byte[] headTemp = new byte[offset];
-
-			do
-			{
-				headCount = socketDis.read(headTemp);
-				System.arraycopy(headTemp, 0, headBuf, headPos, headCount);
-				headPos += headCount;
-				Log.d("MC", "headPos=" + headPos);
-			} while (headCount != -1 && headPos < offset);
-
-			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(
-					headBuf));
-			int magicData = readLittleInt(dis);
-			int versionData = readLittleInt(dis);
-			if (magicData != magic || versionData != version)
-			{
-				Log.d("MC", "magic=" + magicData + "   Version=" + versionData);
-				return null;
-			}
-
-			type = readLittleInt(dis);
-			block = readLittleInt(dis);
-
-			int length = readLittleInt(dis);
-
-			int len = length - offset;
-			if (readLittleInt(dis) != offset)
-			{
-				Log.d("MC", "offset=" + offset);
-				return null;
-			}
-
-			revPacket.minid = readLittleInt(dis);
+			bufCount = is.read(rxBuf);
 
 			/*
-			 * 接收data数组
+			 * 判断帧头标示
 			 */
-			if (len > 0)
+			for (int i = 0; i < bufCount - 1; i++)
 			{
-				revPacket.data = new byte[len];
-				int count = 0, pos = 0;
-				byte[] temp = new byte[len];
-				do
+				if (rxBuf[i] == 0x5a && rxBuf[i + 1] == 0x69
+						&& rxBuf[i + 2] == 0x5a && rxBuf[i + 3] == 0x69)
 				{
-					count = socketDis.read(temp);
-					System.arraycopy(temp, 0, revPacket.data, pos, count);
-					pos += count;
-				} while (count != -1 && pos < len);
+					startPos = i;
+					break;
+				}
 			}
-			return revPacket;
-		} catch (Exception e)
+			availableCount = bufCount - startPos;
+
+			if (availableCount >= 28)
+			{
+				DataInputStream dis = new DataInputStream(
+						new ByteArrayInputStream(Arrays.copyOfRange(rxBuf,
+								startPos + 4, bufCount)));
+
+				int versionData = readLittleInt(dis);
+				if (versionData != version)
+				{
+					Log.d("MC", "Version=" + versionData);
+					return null;
+				}
+
+				type = readLittleInt(dis);
+				block = readLittleInt(dis);
+
+				int length = readLittleInt(dis);
+
+				int len = length - offset;
+				if (readLittleInt(dis) != offset)
+				{
+					Log.d("MC", "offset=" + offset);
+					return null;
+				}
+
+				revPacket.minid = readLittleInt(dis);
+
+				if (availableCount < length)
+				{
+					int tempCount = 0;
+					int tempPos = 0;
+					byte[] temp = new byte[length - availableCount];
+					do
+					{
+						tempCount = is.read(temp);
+						System.arraycopy(temp, 0, rxBuf, tempPos, tempCount);
+						tempPos += tempCount;
+					} while (tempPos < length - availableCount);
+				}
+
+				/*
+				 * 接收data数组
+				 */
+				if (len > 0)
+				{
+					revPacket.data = new byte[len];
+					int count = 0, pos = 0;
+					byte[] temp = new byte[len];
+					do
+					{
+						count = dis.read(temp);
+						System.arraycopy(temp, 0, revPacket.data, pos, count);
+						pos += count;
+					} while (count != -1 && pos < len);
+				}
+				return revPacket;
+			}
+
+		} catch (IOException e)
 		{
-			// Log.d("zy", "datapack exception");
-			Log.d("MC", "datapack exception");
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return null;
 	}
 	/**
@@ -206,5 +224,4 @@ public class DataPack
 		ret = (short) (ret & 0xFFFF);
 		return ret;
 	}
-
 }
