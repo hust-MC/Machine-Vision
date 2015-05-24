@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 
 import android.provider.ContactsContract.Contacts.Data;
+import android.text.InputFilter.LengthFilter;
 import android.util.Log;
 
 import com.machineversion.net.NetUtils.NetPacket;
@@ -87,7 +88,7 @@ public class DataPack
 			{
 				DataInputStream dis = new DataInputStream(
 						new ByteArrayInputStream(Arrays.copyOfRange(rxBuf,
-								startPos + 4, bufCount)));
+								startPos + 4, rxBuf.length)));
 
 				int versionData = readLittleInt(dis);
 				if (versionData != version)
@@ -118,7 +119,8 @@ public class DataPack
 					do
 					{
 						tempCount = is.read(temp);
-						System.arraycopy(temp, 0, rxBuf, tempPos, tempCount);
+						System.arraycopy(temp, 0, rxBuf, tempPos + bufCount,
+								tempCount);
 						tempPos += tempCount;
 					} while (tempPos < length - availableCount);
 				}
