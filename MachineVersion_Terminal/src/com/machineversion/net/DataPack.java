@@ -59,7 +59,6 @@ public class DataPack
 	{
 		NetPacket revPacket = new NetPacket();
 		Log.d("MC", "start read");
-		int type = 0, block = 0;
 		int bufCount = 0;
 		int startPos = 0;
 		int availableCount = 0;
@@ -82,13 +81,20 @@ public class DataPack
 					break;
 				}
 			}
-			availableCount = bufCount - startPos;
 
-			if (availableCount >= 28)
+			availableCount = bufCount - startPos;						// 计算有效长度
+
+			/*
+			 * 如果有效长度大于offset，则帧头接收完毕
+			 */
+			if (availableCount >= offset)
 			{
+				/*
+				 * 解析帧头
+				 */
 				DataInputStream dis = new DataInputStream(
-						new ByteArrayInputStream(Arrays.copyOfRange(rxBuf,
-								startPos + 4, rxBuf.length)));
+						new ByteArrayInputStream(rxBuf));
+				dis.skip(startPos + 4);
 
 				int versionData = readLittleInt(dis);
 				if (versionData != version)
@@ -97,11 +103,9 @@ public class DataPack
 					return null;
 				}
 
-				type = readLittleInt(dis);
-				block = readLittleInt(dis);
-
+				int type = readLittleInt(dis);
+				int block = readLittleInt(dis);
 				int length = readLittleInt(dis);
-
 				int len = length - offset;
 				if (readLittleInt(dis) != offset)
 				{
@@ -111,8 +115,9 @@ public class DataPack
 
 				revPacket.minid = readLittleInt(dis);
 
-				if (availableCount < length)
+				if (availableCount < length)								// 判断整包是否接收完毕
 				{
+					// 将剩余部分接受完并拼接到一起
 					int tempCount = 0;
 					int tempPos = 0;
 					byte[] temp = new byte[length - availableCount];
@@ -148,7 +153,6 @@ public class DataPack
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 	/**
