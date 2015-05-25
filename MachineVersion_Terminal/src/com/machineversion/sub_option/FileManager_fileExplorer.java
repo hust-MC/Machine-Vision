@@ -1,7 +1,10 @@
 package com.machineversion.sub_option;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
@@ -14,8 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.util.Log;
 import android.content.Intent;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.view.WindowManager;
 import android.view.Display;
@@ -32,16 +38,14 @@ import com.machineversion.terminal.R;
 public class FileManager_fileExplorer extends ListActivity
 {
 	private List<Map<String, Object>> mData;
-	private String mDir = "/sdcard";
+	private String mDir = Environment.getExternalStorageDirectory().getPath();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
-		mData = getData();
-		MyAdapter adapter = new MyAdapter(this);
-		setListAdapter(adapter);
+		refreshListView();
 		registerForContextMenu(getListView());
 		WindowManager m = getWindowManager();
 		Display d = m.getDefaultDisplay();
@@ -82,6 +86,13 @@ public class FileManager_fileExplorer extends ListActivity
 		return list;
 	}
 
+	private void refreshListView()
+	{
+		mData = getData();
+		MyAdapter adapter = new MyAdapter(this);
+		setListAdapter(adapter);
+	}
+
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
@@ -89,9 +100,7 @@ public class FileManager_fileExplorer extends ListActivity
 		if ((Integer) mData.get(position).get("img") == R.drawable.ex_folder)				// Object对象只能转为Integer
 		{
 			mDir = (String) mData.get(position).get("info");
-			mData = getData();
-			MyAdapter adapter = new MyAdapter(this);
-			setListAdapter(adapter);
+			refreshListView();
 		}
 		else
 		{
@@ -171,20 +180,78 @@ public class FileManager_fileExplorer extends ListActivity
 	{
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
-
+		final File file = new File((String) mData.get(info.position)
+				.get("info"));
 		switch (item.getItemId())
 		{
 		case 1:
-			Log.d("ZY", "id = " + info.id);
-			Log.d("ZY", "position = " + info.position);
-			Log.d("ZY", "view = " + info.targetView);
+			/*
+			 * 新建文件夹
+			 */
+			File newFile = new File(file.getParentFile(), "新建文件夹");
+			newFile.mkdir();
+			refreshListView();
+			break;
 
+		case 2:
+			/*
+			 * 重命名
+			 */
+			LinearLayout layout = (LinearLayout) LayoutInflater.from(
+					FileManager_fileExplorer.this).inflate(
+					R.layout.filemanager_rename, null);
+			final EditText editText = (EditText) layout
+					.findViewById(R.id.filemanager_rename);
+			editText.setHint(file.getName());
+			new AlertDialog.Builder(FileManager_fileExplorer.this)
+					.setTitle("文件重命名").setView(layout)
+					.setPositiveButton("确定", new OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							File newFile = new File(file.getParentFile(),
+									editText.getText().toString());
+							file.renameTo(newFile);
+							refreshListView();
+						}
+					}).setNegativeButton("取消", null).show();
+			break;
+
+		case 3:
+			/*
+			 * 刪除文件
+			 */
+			deleteDirectory(file);
+			refreshListView();
 			break;
 
 		default:
 			break;
 		}
 		return super.onContextItemSelected(item);
+	}
+	private void deleteDirectory(File file)
+	{
+		if (file.isFile())
+		{
+			file.delete();
+		}
+		else if (file.isDirectory())
+		{
+			File[] files = file.listFiles();
+			if (files == null || files.length == 0)
+			{
+				file.delete();
+			}
+			else
+			{
+				for (File subFile : files)
+				{
+					deleteDirectory(subFile);
+				}
+			}
+		}
 	}
 	private void finishWithResult(String path)
 	{
