@@ -11,7 +11,6 @@ import com.machineversion.option.FileManager;
 import com.machineversion.option.Help;
 import com.machineversion.option.MachineLearning;
 import com.machineversion.option.SysSettings;
-import com.machineversion.terminal.NetThread.CurrentState;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -110,13 +109,11 @@ public class MainActivity extends Activity
 					break;
 
 				case NetUtils.MSG_NET_GET_VIDEO: // 获取图像
-					Log.d("ZY", "display");
 					Bitmap bitmap = (Bitmap) msg.obj;
 					photo_imv1.setImageBitmap(bitmap);
 					break;
 
 				case NetUtils.MSG_NET_STATE:
-					Log.d("ZY", "getstate");
 					temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
 					break;
 				default:

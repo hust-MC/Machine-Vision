@@ -7,10 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 
-import android.provider.ContactsContract.Contacts.Data;
-import android.text.InputFilter.LengthFilter;
 import android.util.Log;
 
 import com.machineversion.net.NetUtils.NetPacket;
@@ -59,6 +56,7 @@ public class DataPack
 	{
 		NetPacket revPacket = new NetPacket();
 		Log.d("MC", "start read");
+		boolean hasMagicRead = false;
 		int bufCount = 0;
 		int startPos = 0;
 		int availableCount = 0;
@@ -68,7 +66,7 @@ public class DataPack
 		try
 		{
 			bufCount = is.read(rxBuf);
-
+			Log.d("MC", "rxBuf read finish");
 			/*
 			 * 判断帧头标示
 			 */
@@ -78,14 +76,20 @@ public class DataPack
 						&& rxBuf[i + 2] == 0x5a && rxBuf[i + 3] == 0x69)
 				{
 					startPos = i;
+					hasMagicRead = true;
+
 					if (startPos != 0)
 					{
-						Log.d("MC", "startPos=" + startPos);
+						Log.d("ZY", "startPos=" + startPos);
 					}
 					break;
 				}
 			}
-
+			if (!hasMagicRead)
+			{
+				Log.d("ZY", "hasn't read magic");
+				return null;
+			}
 			availableCount = bufCount - startPos;						// 计算有效长度
 
 			/*
@@ -103,7 +107,7 @@ public class DataPack
 				int versionData = readLittleInt(dis);
 				if (versionData != version)
 				{
-					Log.e("MC", "Version=" + versionData);
+					Log.e("ZY", "Version=" + versionData);
 					return null;
 				}
 
@@ -121,7 +125,7 @@ public class DataPack
 
 				if (availableCount < length)								// 判断整包是否接收完毕
 				{
-					// 将剩余部分接受完并拼接到一起
+					// 将剩余部分接收完并拼接到一起
 					int tempCount = 0;
 					int tempPos = 0;
 					byte[] temp = new byte[length - availableCount];
@@ -150,6 +154,10 @@ public class DataPack
 					} while (count != -1 && pos < len);
 				}
 				return revPacket;
+			}
+			else
+			{
+				Log.d("ZY", "bufCount = " + bufCount);
 			}
 
 		} catch (IOException e)

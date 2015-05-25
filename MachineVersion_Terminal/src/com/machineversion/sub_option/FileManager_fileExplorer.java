@@ -1,17 +1,21 @@
 package com.machineversion.sub_option;
 
 import android.os.Bundle;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.BaseAdapter;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.content.Context;
 import android.util.Log;
 import android.content.Intent;
-import android.net.Uri;
 import android.app.ListActivity;
 import android.view.WindowManager;
 import android.view.Display;
@@ -38,7 +42,7 @@ public class FileManager_fileExplorer extends ListActivity
 		mData = getData();
 		MyAdapter adapter = new MyAdapter(this);
 		setListAdapter(adapter);
-
+		registerForContextMenu(getListView());
 		WindowManager m = getWindowManager();
 		Display d = m.getDefaultDisplay();
 		LayoutParams p = getWindow().getAttributes();
@@ -46,7 +50,6 @@ public class FileManager_fileExplorer extends ListActivity
 		p.width = (int) (d.getWidth() * 0.95);
 		getWindow().setAttributes(p);
 	}
-
 	private List<Map<String, Object>> getData()
 	{
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -83,7 +86,7 @@ public class FileManager_fileExplorer extends ListActivity
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
 		Log.d("MyListView4-click", (String) mData.get(position).get("info"));
-		if ((Integer) mData.get(position).get("img") == R.drawable.ex_folder)
+		if ((Integer) mData.get(position).get("img") == R.drawable.ex_folder)				// Object对象只能转为Integer
 		{
 			mDir = (String) mData.get(position).get("info");
 			mData = getData();
@@ -152,16 +155,39 @@ public class FileManager_fileExplorer extends ListActivity
 		public TextView info;
 	}
 
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo)
+	{
+		int menuOrder = Menu.FIRST;
+		menu.setHeaderTitle("文件操作");
+		menu.add(0, 1, menuOrder++, "新建文件夹");
+		menu.add(0, 2, menuOrder++, "重命名");
+		menu.add(0, 3, menuOrder, "删除");
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item)
+	{
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+
+		switch (item.getItemId())
+		{
+		case 1:
+			Log.d("ZY", "id = " + info.id);
+			Log.d("ZY", "position = " + info.position);
+			Log.d("ZY", "view = " + info.targetView);
+
+			break;
+
+		default:
+			break;
+		}
+		return super.onContextItemSelected(item);
+	}
 	private void finishWithResult(String path)
 	{
-		// Bundle conData = new Bundle();
-		// conData.putString("results", "Thanks Thanks");
-		// intent.putExtras(conData);
-
-		// Uri startDir = Uri.fromFile(new File(path));
-		// intent.setDataAndType(startDir,
-		// "vnd.android.cursor.dir/lysesoft.andexplorer.file");
-
 		Intent intent = new Intent();
 		Bundle bundle = new Bundle();
 		bundle.putString("file path", path);
