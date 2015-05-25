@@ -78,6 +78,10 @@ public class DataPack
 						&& rxBuf[i + 2] == 0x5a && rxBuf[i + 3] == 0x69)
 				{
 					startPos = i;
+					if (startPos != 0)
+					{
+						Log.d("MC", "startPos=" + startPos);
+					}
 					break;
 				}
 			}
@@ -99,7 +103,7 @@ public class DataPack
 				int versionData = readLittleInt(dis);
 				if (versionData != version)
 				{
-					Log.d("MC", "Version=" + versionData);
+					Log.e("MC", "Version=" + versionData);
 					return null;
 				}
 
@@ -150,7 +154,7 @@ public class DataPack
 
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
+			Log.d("MC", "time out");
 			e.printStackTrace();
 		}
 		return null;

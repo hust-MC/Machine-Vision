@@ -101,7 +101,7 @@ public class NetThread extends Thread implements CommunicationInterface
 						{
 							currentState = CurrentState.onSending;
 							cmdHandle.getVideo(handler);
-							// cmdHandle.getState(handler);
+							cmdHandle.getState(handler);
 						}
 						lock.unlock();
 					}
