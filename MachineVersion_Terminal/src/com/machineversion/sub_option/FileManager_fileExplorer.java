@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -19,7 +20,6 @@ import android.view.LayoutInflater;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.util.Log;
 import android.content.Intent;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -38,7 +38,11 @@ import com.machineversion.terminal.R;
 public class FileManager_fileExplorer extends ListActivity
 {
 	private List<Map<String, Object>> mData;
-	private String mDir = Environment.getExternalStorageDirectory().getPath();
+	private final String ROOT_DIRECTORY = Environment
+			.getExternalStorageDirectory().getPath();
+	private String mDir = ROOT_DIRECTORY;
+
+	private final Context CONTEXT = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -61,7 +65,7 @@ public class FileManager_fileExplorer extends ListActivity
 		File f = new File(mDir);
 		File[] files = f.listFiles();
 
-		if (!mDir.equals("/sdcard"))
+		if (!mDir.equals(ROOT_DIRECTORY))
 		{
 			map = new HashMap<String, Object>();
 			map.put("title", "..");
@@ -96,15 +100,14 @@ public class FileManager_fileExplorer extends ListActivity
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
-		Log.d("MyListView4-click", (String) mData.get(position).get("info"));
-		if ((Integer) mData.get(position).get("img") == R.drawable.ex_folder)				// Object对象只能转为Integer
+		if ((Integer) mData.get(position).get("img") == R.drawable.ex_folder)		// Object对象只能转为Integer
 		{
 			mDir = (String) mData.get(position).get("info");
 			refreshListView();
 		}
 		else
 		{
-			finishWithResult((String) mData.get(position).get("info"));
+			// finishWithResult((String) mData.get(position).get("info"));
 		}
 	}
 
@@ -171,6 +174,11 @@ public class FileManager_fileExplorer extends ListActivity
 		int menuOrder = Menu.FIRST;
 		menu.setHeaderTitle("文件操作");
 		menu.add(0, 1, menuOrder++, "新建文件夹");
+		if (((AdapterContextMenuInfo) menuInfo).position == 0
+				&& mDir != ROOT_DIRECTORY)
+		{
+			return;
+		}
 		menu.add(0, 2, menuOrder++, "重命名");
 		menu.add(0, 3, menuOrder, "删除");
 	}
@@ -178,8 +186,10 @@ public class FileManager_fileExplorer extends ListActivity
 	@Override
 	public boolean onContextItemSelected(MenuItem item)
 	{
+
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
+
 		final File file = new File((String) mData.get(info.position)
 				.get("info"));
 		switch (item.getItemId())
@@ -188,7 +198,7 @@ public class FileManager_fileExplorer extends ListActivity
 			/*
 			 * 新建文件夹
 			 */
-			File newFile = new File(file.getParentFile(), "新建文件夹");
+			File newFile = new File(mDir, "新建文件夹");
 			newFile.mkdir();
 			refreshListView();
 			break;
@@ -197,14 +207,12 @@ public class FileManager_fileExplorer extends ListActivity
 			/*
 			 * 重命名
 			 */
-			LinearLayout layout = (LinearLayout) LayoutInflater.from(
-					FileManager_fileExplorer.this).inflate(
-					R.layout.filemanager_rename, null);
+			LinearLayout layout = (LinearLayout) LayoutInflater.from(CONTEXT)
+					.inflate(R.layout.filemanager_rename, null);
 			final EditText editText = (EditText) layout
 					.findViewById(R.id.filemanager_rename);
 			editText.setHint(file.getName());
-			new AlertDialog.Builder(FileManager_fileExplorer.this)
-					.setTitle("文件重命名").setView(layout)
+			new AlertDialog.Builder(CONTEXT).setTitle("文件重命名").setView(layout)
 					.setPositiveButton("确定", new OnClickListener()
 					{
 						@Override
@@ -222,8 +230,18 @@ public class FileManager_fileExplorer extends ListActivity
 			/*
 			 * 刪除文件
 			 */
-			deleteDirectory(file);
-			refreshListView();
+			new AlertDialog.Builder(CONTEXT).setTitle("是否删除文件？")
+					.setPositiveButton("确定", new OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							deleteDirectory(file);
+							refreshListView();
+							Toast.makeText(CONTEXT, "文件已删除", Toast.LENGTH_SHORT)
+									.show();
+						}
+					}).setNegativeButton("取消", null).show();
 			break;
 
 		default:
@@ -262,4 +280,4 @@ public class FileManager_fileExplorer extends ListActivity
 		setResult(RESULT_OK, intent);
 		finish();
 	}
-};
+}
