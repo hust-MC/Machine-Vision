@@ -41,16 +41,18 @@ public class FileManager_fileExplorer extends ListActivity
 	private final String ROOT_DIRECTORY = Environment
 			.getExternalStorageDirectory().getPath();
 	private String mDir = ROOT_DIRECTORY;
-
+	MyAdapter adapter;
 	private final Context CONTEXT = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		adapter = new MyAdapter(this);
+		mData = getData();
+		setListAdapter(adapter);
 
-		refreshListView();
-		registerForContextMenu(getListView());
+		registerForContextMenu(getListView());			// 注册上下文菜单
 		WindowManager m = getWindowManager();
 		Display d = m.getDefaultDisplay();
 		LayoutParams p = getWindow().getAttributes();
@@ -90,11 +92,13 @@ public class FileManager_fileExplorer extends ListActivity
 		return list;
 	}
 
+	/**
+	 * 刷新列表数据
+	 */
 	private void refreshListView()
 	{
 		mData = getData();
-		MyAdapter adapter = new MyAdapter(this);
-		setListAdapter(adapter);
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override

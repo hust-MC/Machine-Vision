@@ -21,7 +21,7 @@ import com.machineversion.terminal.R;
 abstract class ControlPannelActivity extends Activity
 {
 	/**
-	 * 记录当前显示的Listview内容，方便按键切换
+	 * 记录当前显示的Listview内容，用于按键切换
 	 * 
 	 * @author MC
 	 */
