@@ -12,11 +12,11 @@ import com.machineversion.option.FileManager;
 import com.machineversion.option.Help;
 import com.machineversion.option.MachineLearning;
 import com.machineversion.option.SysSettings;
+import com.machineversion.terminal.NetThread.CurrentState;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract.Contacts.Data;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -214,28 +214,26 @@ public class MainActivity extends Activity
 
 		init_widgit(); // 初始化控件
 	}
-	// @Override
-	// protected void onRestart()
-	// {
-	// Log.d("ZY", "restart");
-	// netHandleFlag = true;
-	// if (netThread != null)
-	// {
-	// netThread.signalThread();
-	// }
-	// super.onResume();
-	// }
-	// @Override
-	// protected void onPause()
-	// {
-	// netHandleFlag = false;
-	// Log.d("ZY", "A : onPause");
-	// if (netThread != null)
-	// {
-	// netThread.setCurrentState(CurrentState.onPause);
-	// }
-	// super.onPause();
-	// }
+	@Override
+	protected void onRestart()
+	{
+		netHandleFlag = true;
+		if (netThread != null)
+		{
+			netThread.signalThread();
+		}
+		super.onResume();
+	}
+	@Override
+	protected void onPause()
+	{
+		netHandleFlag = false;
+		if (netThread != null)
+		{
+			netThread.setCurrentState(CurrentState.onPause);
+		}
+		super.onPause();
+	}
 	@Override
 	protected void onDestroy()
 	{

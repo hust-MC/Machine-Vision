@@ -63,7 +63,7 @@
     </string-array>
     <!-- 系统设置子菜单类型 -->
     <string-array name="option_sys_settings_type">
-        <item>1调试模式n演示模式n分捡模式</item>
+        <item>1分捡模式n演示模式n调试模式</item>
         <item>0,0,0,0</item>
     </string-array>
 
@@ -151,5 +151,6 @@
     </string-array>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_debug_mode">DebugMode</string>
 
 </resources>

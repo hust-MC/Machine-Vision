@@ -1,6 +1,6 @@
 package com.machineversion.option;
 
-import com.machineversion.sub_option.OnDialogClicked;
+import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.terminal.R;
 
 import android.os.Bundle;

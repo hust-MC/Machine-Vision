@@ -65,6 +65,10 @@
             android:name="com.machineversion.sub_option.FileManager_fileExplorer"
             android:label="@string/title_activity_file_manager" >
         </activity>
+        <activity
+            android:name="com.machineversion.sub_option.DebugMode"
+            android:label="@string/title_activity_debug_mode" >
+        </activity>
     </application>
 
 </manifest>

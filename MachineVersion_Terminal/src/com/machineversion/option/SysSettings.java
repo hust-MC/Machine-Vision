@@ -1,8 +1,10 @@
 package com.machineversion.option;
 
-import com.machineversion.sub_option.OnDialogClicked;
+import com.machineversion.sub_option.DebugMode;
+import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.terminal.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -13,7 +15,6 @@ public class SysSettings extends ControlPannelActivity implements
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
-		
 	}
 
 	@Override
@@ -32,6 +33,7 @@ public class SysSettings extends ControlPannelActivity implements
 	@Override
 	public void onPositiveButtonClicked(String[] value)
 	{
+		startActivity(new Intent(this, DebugMode.class));
 		Toast.makeText(this, "数据保存成功", Toast.LENGTH_SHORT).show();
 	}
 }
