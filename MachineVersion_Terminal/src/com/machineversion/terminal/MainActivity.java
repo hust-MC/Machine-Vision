@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.machineversion.net.DataPack;
 import com.machineversion.net.NetUtils;
 import com.machineversion.option.CameraParams;
 import com.machineversion.option.FastenerSettings;
@@ -15,6 +16,7 @@ import com.machineversion.option.SysSettings;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract.Contacts.Data;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -48,6 +50,7 @@ public class MainActivity extends Activity
 
 	Button bt_fileManager, bt_cameraParams, bt_sysSettings,
 			bt_fasternerSettings, bt_machineLearning, bt_help;
+	Button bt_check;
 
 	String sciRevBuf;							// 串口接收数据
 
@@ -137,6 +140,7 @@ public class MainActivity extends Activity
 		bt_fasternerSettings = (Button) findViewById(R.id.main_bt_fastener_settings);
 		bt_machineLearning = (Button) findViewById(R.id.main_bt_machine_learning);
 		bt_help = (Button) findViewById(R.id.main_bt_help);
+		bt_check = (Button) findViewById(R.id.bt_control_test);
 
 		ButtonListern buttonListern = new ButtonListern();
 		bt_fileManager.setOnClickListener(buttonListern);
@@ -300,6 +304,11 @@ public class MainActivity extends Activity
 				break;
 			}
 		}
+	}
+
+	public void onClick_check(View view)
+	{
+		bt_check.setText(DataPack.timeoutCount + "");
 	}
 
 	/**

@@ -18,6 +18,8 @@ public class DataPack
 	final static int version = 0;
 	final static int offset = 28;
 
+	public static int timeoutCount = 0;
+
 	public static boolean sendDataPack(NetPacket packet, OutputStream os)
 	{
 		DataOutputStream dos = new DataOutputStream(os);
@@ -163,6 +165,7 @@ public class DataPack
 		} catch (IOException e)
 		{
 			Log.d("MC", "time out");
+			timeoutCount++;
 			e.printStackTrace();
 		}
 		return null;

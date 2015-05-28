@@ -151,6 +151,7 @@
             <Button
                 android:id="@+id/bt_control_test"
                 style="@style/control_button"
+                android:onClick="onClick_check"
                 android:text="检测" />
 
             <Button
