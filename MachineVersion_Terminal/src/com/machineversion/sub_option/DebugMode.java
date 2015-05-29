@@ -5,6 +5,7 @@ import java.lang.ref.WeakReference;
 
 import javax.crypto.spec.IvParameterSpec;
 
+import android.R.menu;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.machineversion.net.CmdHandle;
 import com.machineversion.terminal.R;
@@ -52,6 +54,12 @@ public class DebugMode extends Activity
 			public void run()
 			{
 				CmdHandle cmdHandle = CmdHandle.getInstance();
+				if (cmdHandle == null)
+				{
+					Message message = handler.obtainMessage();
+					message.what = 0x55;
+					message.sendToTarget();
+				}
 				try
 				{
 					while (!stopFlag)
@@ -91,8 +99,16 @@ public class DebugMode extends Activity
 			{
 				return;
 			}
-			((DebugMode) mActivity.get()).iv_fullImage
-					.setImageBitmap((Bitmap) msg.obj);
+			if (msg.what != 0x55)
+			{
+				((DebugMode) mActivity.get()).iv_fullImage
+						.setImageBitmap((Bitmap) msg.obj);
+			}
+			else
+			{
+				Toast.makeText(mActivity.get(), "网络未连接", Toast.LENGTH_SHORT)
+						.show();
+			}
 		}
 	}
 

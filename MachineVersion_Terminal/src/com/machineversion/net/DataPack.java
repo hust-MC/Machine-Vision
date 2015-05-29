@@ -161,7 +161,6 @@ public class DataPack
 			{
 				Log.d("ZY", "bufCount = " + bufCount);
 			}
-
 		} catch (IOException e)
 		{
 			Log.d("MC", "time out");
