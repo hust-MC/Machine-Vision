@@ -31,6 +31,12 @@ abstract class ControlPannelActivity extends Activity
 
 	protected MenuWithSubMenu wholeMenu;
 
+	/**
+	 * 如果当前菜单没有子菜单时触发此函数
+	 * 
+	 * @param position
+	 *            当前点击菜单的位置
+	 */
 	protected void onSpecialItemClicked(int position)
 	{
 	}

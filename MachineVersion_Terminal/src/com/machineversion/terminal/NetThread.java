@@ -95,7 +95,9 @@ public class NetThread extends Thread implements CommunicationInterface
 						lock.lock();
 						if (currentState == CurrentState.onPause)
 						{
+							Log.d("ZY", "lock");
 							cond.await();
+							Log.d("ZY", "unlock");
 						}
 						else
 						{

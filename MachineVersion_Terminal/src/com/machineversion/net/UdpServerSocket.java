@@ -1,12 +1,13 @@
 package com.machineversion.net;
 
 import java.io.IOException;
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+
+import android.util.Log;
 
 public class UdpServerSocket
 {
@@ -84,10 +85,17 @@ public class UdpServerSocket
 	 * @return 返回接收的数据串信息
 	 * @throws IOException
 	 */
-	public final String receive() throws IOException
+	public final String receive()
 	{
 		packet = new DatagramPacket(buffer, buffer.length);
-		ds.receive(packet);
+		try
+		{
+			ds.receive(packet);
+		} catch (IOException e)
+		{
+			Log.d("MC", "udp exception");
+			e.printStackTrace();
+		}
 		orgIp = packet.getAddress().getHostAddress();
 		String info = new String(packet.getData(), 0, packet.getLength());
 		System.out.println("接收信息：" + info);

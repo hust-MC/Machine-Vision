@@ -11,7 +11,6 @@ import android.widget.Toast;
 public class SysSettings extends ControlPannelActivity implements
 		OnDialogClicked
 {
-
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{

@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ public class DebugMode extends Activity
 {
 	private Handler handler = new DebugHandler(this);
 	private ImageView iv_fullImage;
+	private boolean stopFlag = false;
 
 	private void init_widget()
 	{
@@ -52,7 +54,7 @@ public class DebugMode extends Activity
 				CmdHandle cmdHandle = CmdHandle.getInstance();
 				try
 				{
-					while (true)
+					while (!stopFlag)
 					{
 						cmdHandle.getVideo(handler);
 					}
@@ -66,7 +68,12 @@ public class DebugMode extends Activity
 
 			}
 		}).start();
-
+	}
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		stopFlag = true;
 	}
 
 	static class DebugHandler extends Handler
