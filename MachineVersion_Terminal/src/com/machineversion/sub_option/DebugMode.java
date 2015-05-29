@@ -87,12 +87,12 @@ public class DebugMode extends Activity
 		@Override
 		public void handleMessage(Message msg)
 		{
-			((DebugMode) mActivity.get()).iv_fullImage
-					.setImageBitmap((Bitmap) msg.obj);
 			if (mActivity.get() == null)
 			{
 				return;
 			}
+			((DebugMode) mActivity.get()).iv_fullImage
+					.setImageBitmap((Bitmap) msg.obj);
 		}
 	}
 
