@@ -20,8 +20,8 @@ public class CmdHandle
 	private static CmdHandle cmdHandle;
 
 	/*
-	*f
-	*/
+	 * f
+	 */
 	private OutputStream os;
 	private InputStream is;
 
@@ -49,9 +49,21 @@ public class CmdHandle
 		cmdHandle = null;
 	}
 
+	/**
+	 * 向相机端发送获取一张图片的命令
+	 * 
+	 * @param handler
+	 *            处理网络数据的handler
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	@SuppressWarnings("null")
 	public void getVideo(Handler handler) throws IOException,
 			InterruptedException
 	{
+		CmdHandle cmdHandler =
+ null;
+		cmdHandler.normal(handler, 0);
 		NetPacket sendPacket = new GetVideoFactory().CreatePacket(), revPacket = new NetPacket();
 
 		int c = 10;
@@ -107,6 +119,15 @@ public class CmdHandle
 			}
 		}
 	}
+
+	/**
+	 * 发送选择算法命令
+	 * 
+	 * @param handler
+	 *            处理网络数据的handler
+	 * @param algorithm
+	 *            要选择的算法编号
+	 */
 	public void normal(Handler handler, int algorithm)
 	{
 		NetPacket sendPacket = new GetNormalFactory().CreatePacket();
@@ -156,7 +177,7 @@ public class CmdHandle
 
 	/**
 	 * 从字节数组中获取整形数据
-	 *
+	 * 
 	 * @param data
 	 *            大小为4的字节数组
 	 * @return 又四个字节组成的整形数
