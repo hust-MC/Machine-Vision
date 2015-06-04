@@ -19,6 +19,9 @@ public class CmdHandle
 {
 	private static CmdHandle cmdHandle;
 
+	/*
+	*f
+	*/
 	private OutputStream os;
 	private InputStream is;
 
@@ -153,7 +156,7 @@ public class CmdHandle
 
 	/**
 	 * 从字节数组中获取整形数据
-	 * 
+	 *
 	 * @param data
 	 *            大小为4的字节数组
 	 * @return 又四个字节组成的整形数
