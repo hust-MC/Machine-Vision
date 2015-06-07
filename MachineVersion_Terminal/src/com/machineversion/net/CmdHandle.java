@@ -57,13 +57,9 @@ public class CmdHandle
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	@SuppressWarnings("null")
 	public void getVideo(Handler handler) throws IOException,
 			InterruptedException
 	{
-		CmdHandle cmdHandler =
- null;
-		cmdHandler.normal(handler, 0);
 		NetPacket sendPacket = new GetVideoFactory().CreatePacket(), revPacket = new NetPacket();
 
 		int c = 10;
