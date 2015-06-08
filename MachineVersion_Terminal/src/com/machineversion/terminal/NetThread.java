@@ -101,8 +101,8 @@ public class NetThread extends Thread implements CommunicationInterface
 						}
 						else
 						{
+
 							currentState = CurrentState.onSending;
-							cmdHandle.normal(handler, 1);
 							cmdHandle.getVideo(handler);
 							cmdHandle.getState(handler);
 						}
@@ -140,7 +140,6 @@ public class NetThread extends Thread implements CommunicationInterface
 		}
 		Log.d("MC", "stop UDP thread");
 	}
-
 	@Override
 	public void open()
 	{

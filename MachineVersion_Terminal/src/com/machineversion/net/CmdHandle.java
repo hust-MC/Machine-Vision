@@ -137,7 +137,7 @@ public class CmdHandle
 		int tempInteger = 0, tempFloat = 0;
 
 		NetPacket sendPacket = new GetStateFactory().CreatePacket(), revPacket = new NetPacket();
-
+		long timer1 = System.currentTimeMillis();
 		sendPacket.send(os);
 		revPacket.recvDataPack(is);
 
@@ -162,6 +162,7 @@ public class CmdHandle
 		{
 			Log.d("MC", "packet == null");
 		}
+		Log.d("timer", System.currentTimeMillis() - timer1 + "");
 	}
 
 	public void sendImage(Handler handler, int width, int height, int length,
