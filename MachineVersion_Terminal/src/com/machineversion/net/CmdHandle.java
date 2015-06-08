@@ -36,7 +36,8 @@ public class CmdHandle
 		return cmdHandle;
 	}
 
-	public static CmdHandle getInstance(Socket socket) throws IOException
+	public synchronized static CmdHandle getInstance(Socket socket)
+			throws IOException
 	{
 		if (cmdHandle == null)
 		{
@@ -63,58 +64,56 @@ public class CmdHandle
 		NetPacket sendPacket = new GetVideoFactory().CreatePacket(), revPacket = new NetPacket();
 
 		int c = 10;
-		while (c-- > 0)
+		// while (c-- > 0)
+		// {
+		/*
+		 * 处理图像数据
+		 */
+		sendPacket.send(os);
+		revPacket.recvDataPack(is);
+		Thread.sleep(10);
+		byte[] rxBuf = revPacket.data;
+
+		if (revPacket.type != 0xaa
+				&& revPacket.minid == NetUtils.MSG_NET_GET_VIDEO) // 如果数据正常，表示网络通畅
 		{
-			/*
-			 * 处理图像数据
-			 */
-			sendPacket.send(os);
-			revPacket.recvDataPack(is);
-
-			byte[] rxBuf = revPacket.data;
-
-			if (revPacket.type != 0xaa
-					&& revPacket.minid == NetUtils.MSG_NET_GET_VIDEO) // 如果数据正常，表示网络通畅
+			int[] data = new int[12];
+			for (int i = 0; i < 12; i++)
 			{
-				int[] data = new int[12];
-				for (int i = 0; i < 12; i++)
-				{
-					data[i] = rxBuf[i] & 0xFF;
-				}
-				int len = data[0] | data[1] << 8 | data[2] << 16
-						| data[3] << 24;
-				int width = data[4] | data[5] << 8 | data[6] << 16
-						| data[7] << 24;
-				int height = data[8] | data[9] << 8 | data[10] << 16
-						| data[11] << 24;
-
-				int[] image = new int[len];
-				for (int i = 0; i < len; i++)
-				{
-					int temp;
-					temp = rxBuf[100 + i] & 0xff;
-					image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
-				}
-
-				if (len <= 0)
-				{
-					Log.d("MC", "len=" + len);
-				}
-
-				Message message = Message.obtain();
-				message.what = NetUtils.MSG_NET_GET_VIDEO;
-				message.obj = Bitmap.createBitmap(image, width, height,
-						Config.RGB_565);
-				handler.sendMessage(message);
+				data[i] = rxBuf[i] & 0xFF;
 			}
-			else
-			// 接收的数据不正常，表示网络故障
-			// Close
+			int len = data[0] | data[1] << 8 | data[2] << 16 | data[3] << 24;
+			int width = data[4] | data[5] << 8 | data[6] << 16 | data[7] << 24;
+			int height = data[8] | data[9] << 8 | data[10] << 16
+					| data[11] << 24;
+
+			int[] image = new int[len];
+			for (int i = 0; i < len; i++)
 			{
-				Log.d("MC", "packet == null");
+				int temp;
+				temp = rxBuf[100 + i] & 0xff;
+				image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
 			}
+
+			if (len <= 0)
+			{
+				Log.d("MC", "len=" + len);
+			}
+
+			Message message = Message.obtain();
+			message.what = NetUtils.MSG_NET_GET_VIDEO;
+			message.obj = Bitmap.createBitmap(image, width, height,
+					Config.RGB_565);
+			handler.sendMessage(message);
+		}
+		else
+		// 接收的数据不正常，表示网络故障
+		// Close
+		{
+			Log.d("MC", "packet == null");
 		}
 	}
+	// }
 
 	/**
 	 * 发送选择算法命令
@@ -137,7 +136,6 @@ public class CmdHandle
 		int tempInteger = 0, tempFloat = 0;
 
 		NetPacket sendPacket = new GetStateFactory().CreatePacket(), revPacket = new NetPacket();
-		long timer1 = System.currentTimeMillis();
 		sendPacket.send(os);
 		revPacket.recvDataPack(is);
 
@@ -162,7 +160,6 @@ public class CmdHandle
 		{
 			Log.d("MC", "packet == null");
 		}
-		Log.d("timer", System.currentTimeMillis() - timer1 + "");
 	}
 
 	public void sendImage(Handler handler, int width, int height, int length,

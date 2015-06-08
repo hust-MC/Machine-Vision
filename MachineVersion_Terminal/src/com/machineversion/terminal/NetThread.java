@@ -70,7 +70,7 @@ public class NetThread extends Thread implements CommunicationInterface
 					Log.d("MC", "netConnectint");
 					serverSocket = new ServerSocket(NetUtils.port);
 					socket = serverSocket.accept();
-					socket.setSoTimeout(TIMEOUT);
+					// socket.setSoTimeout(TIMEOUT);
 					socket.setReceiveBufferSize(RXBUF_SIZE);
 					udpConnecteSuccess = true;
 					udpSocket.close();
@@ -104,7 +104,8 @@ public class NetThread extends Thread implements CommunicationInterface
 
 							currentState = CurrentState.onSending;
 							cmdHandle.getVideo(handler);
-							cmdHandle.getState(handler);
+
+							// cmdHandle.getState(handler);
 						}
 						lock.unlock();
 					}

@@ -49,11 +49,12 @@ public class DataPack
 			return true;
 		} catch (IOException e)
 		{
-			Log.d("zy", "send failed");
+			e.printStackTrace();
+			Log.d("ZY", "send failed");
+			Log.d("ZY", "e's Message " + e.getMessage());
 		}
 		return false;
 	}
-
 	public static NetPacket recvDataPack(InputStream is)
 	{
 		NetPacket revPacket = new NetPacket();
@@ -119,7 +120,7 @@ public class DataPack
 				int len = length - offset;
 				if (readLittleInt(dis) != offset)
 				{
-					Log.d("MC", "offset=" + offset);
+					Log.e("MC", "offset=" + offset);
 					return null;
 				}
 
@@ -133,11 +134,11 @@ public class DataPack
 					byte[] temp = new byte[length - availableCount];
 					do
 					{
-						tempCount = is.read(temp);
-						System.arraycopy(temp, 0, rxBuf, tempPos + bufCount,
-								tempCount);
+						tempCount = is.read(temp, tempPos, temp.length
+								- tempPos);
 						tempPos += tempCount;
 					} while (tempPos < length - availableCount);
+					System.arraycopy(temp, 0, rxBuf, availableCount, tempPos);
 				}
 
 				/*
@@ -150,10 +151,10 @@ public class DataPack
 					byte[] temp = new byte[len];
 					do
 					{
-						count = dis.read(temp);
-						System.arraycopy(temp, 0, revPacket.data, pos, count);
+						count = dis.read(temp, pos, temp.length - pos);
 						pos += count;
-					} while (count != -1 && pos < len);
+					} while (count > 0 && pos < len);
+					System.arraycopy(temp, 0, revPacket.data, 0, pos);
 				}
 				return revPacket;
 			}
@@ -163,7 +164,7 @@ public class DataPack
 			}
 		} catch (IOException e)
 		{
-			Log.d("MC", "time out");
+			Log.d("ZY", "time out");
 			timeoutCount++;
 			e.printStackTrace();
 		}
