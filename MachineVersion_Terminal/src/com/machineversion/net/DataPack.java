@@ -136,6 +136,10 @@ public class DataPack
 					{
 						tempCount = is.read(temp, tempPos, temp.length
 								- tempPos);
+						if(tempCount <= 0)
+						{
+							Log.e("MC", "tempCount" + tempCount);
+						}
 						tempPos += tempCount;
 					} while (tempPos < length - availableCount);
 					System.arraycopy(temp, 0, rxBuf, availableCount, tempPos);

@@ -69,17 +69,20 @@
 
     <!-- 纽扣设置菜单选项 -->
     <string-array name="option_fastener_settings">
+        <item>选择算法</item>
         <item>编辑配置文件</item>
         <item>加载配置文件</item>
         <item>存储配置文件</item>
     </string-array>
     <!-- 纽扣设置子菜单 -->
     <string-array name="option_fastener_settings_sub">
+        <item>算法号</item>
         <item>纽扣编号,缺陷种类和阈值,纽扣图像样本</item>
         <item></item>
         <item></item>
     </string-array>
     <string-array name="option_fastener_settings_type">
+        <item>1算法0n算法1</item>
         <item>0,0,0</item>
         <item></item>
         <item></item>

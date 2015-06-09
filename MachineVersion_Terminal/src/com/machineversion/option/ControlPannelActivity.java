@@ -10,6 +10,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.machineversion.sub_option.DialogBuilder;
+import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.terminal.MainActivity;
 import com.machineversion.terminal.R;
 

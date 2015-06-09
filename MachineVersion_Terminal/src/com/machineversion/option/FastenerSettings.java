@@ -1,10 +1,13 @@
 package com.machineversion.option;
 
+import com.machineversion.net.CmdHandle;
+import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.terminal.R;
 
 import android.os.Bundle;
 
-public class FastenerSettings extends ControlPannelActivity
+public class FastenerSettings extends ControlPannelActivity implements
+		OnDialogClicked
 {
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -19,4 +22,10 @@ public class FastenerSettings extends ControlPannelActivity
 		setListViewClicked();
 	}
 
+	@Override
+	public void onPositiveButtonClicked(String[] value)
+	{
+		CmdHandle cmdHandle = CmdHandle.getInstance();
+		cmdHandle.normal(Integer.parseInt(value[0]));
+	}
 }
