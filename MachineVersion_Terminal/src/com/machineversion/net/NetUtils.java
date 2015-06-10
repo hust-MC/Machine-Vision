@@ -11,7 +11,7 @@ public class NetUtils
 	/**
 	 * 设置本地IP地址
 	 */
-	public final static String ip = "192.168.3.1";
+	public final static String ip = "115.156.211.20";
 	/**
 	 * 三种端口定义
 	 */
@@ -59,9 +59,11 @@ public class NetUtils
 		{
 			this.data = data;
 		}
-		public void send(OutputStream os)
+		public void send(OutputStream os) throws InterruptedException
 		{
 			DataPack.sendDataPack(this, os);
+			Thread.sleep(100);			//线程延时100ms,降低发送频率
+			
 		}
 		public void recvDataPack(InputStream is) throws IOException
 		{

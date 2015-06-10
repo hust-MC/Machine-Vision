@@ -25,7 +25,7 @@ public class NetThread extends Thread implements CommunicationInterface
 	private final int TIMEOUT = 7000;
 	private final int RXBUF_SIZE = 300 * 1024;
 
-	private CurrentState currentState = CurrentState.onStop;
+	public static CurrentState currentState = CurrentState.onStop;
 	private Lock lock = new ReentrantLock();
 	private Condition cond = lock.newCondition();
 
@@ -42,7 +42,7 @@ public class NetThread extends Thread implements CommunicationInterface
 	}
 	public void setCurrentState(CurrentState currentState)
 	{
-		this.currentState = currentState;
+		NetThread.currentState = currentState;
 	}
 
 	public NetThread(Handler netHandler)
@@ -81,6 +81,9 @@ public class NetThread extends Thread implements CommunicationInterface
 					handler.sendMessage(message);
 
 					currentState = CurrentState.onReady;				// 转换为发送状态
+
+					new NetReceiveThread(socket.getInputStream(), handler)
+							.start();
 
 					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
 					new NetPacket().recvDataPack(socket.getInputStream());

@@ -14,13 +14,14 @@ import android.util.Log;
 
 import com.machineversion.net.NetFactoryClass.*;
 import com.machineversion.net.NetUtils.NetPacket;
+import com.machineversion.terminal.NetReceiveThread;
 
 public class CmdHandle
 {
 	private static CmdHandle cmdHandle;
 
 	/*
-	 * f
+	 * 
 	 */
 	private OutputStream os;
 	private InputStream is;
@@ -61,64 +62,15 @@ public class CmdHandle
 	public void getVideo(Handler handler) throws IOException,
 			InterruptedException
 	{
-		NetPacket sendPacket = new GetVideoFactory().CreatePacket(), revPacket = new NetPacket();
+		NetPacket sendPacket = new GetVideoFactory().CreatePacket();
 
 		int c = 10;
 		while (c-- > 0)
 		{
-			/*
-			 * 处理图像数据
-			 */
-			// long timer = System.currentTimeMillis();
+			NetReceiveThread.handler = handler;
 			sendPacket.send(os);
-			revPacket.recvDataPack(is);
-			// Log.d("ZY", "time = " + (System.currentTimeMillis() - timer));
-			// Thread.sleep(10);
-			byte[] rxBuf = revPacket.data;
-
-			if (revPacket.type != 0xaa
-					&& revPacket.minid == NetUtils.MSG_NET_GET_VIDEO) // 如果数据正常，表示网络通畅
-			{
-				int[] data = new int[12];
-				for (int i = 0; i < 12; i++)
-				{
-					data[i] = rxBuf[i] & 0xFF;
-				}
-				int len = data[0] | data[1] << 8 | data[2] << 16
-						| data[3] << 24;
-				int width = data[4] | data[5] << 8 | data[6] << 16
-						| data[7] << 24;
-				int height = data[8] | data[9] << 8 | data[10] << 16
-						| data[11] << 24;
-
-				int[] image = new int[len];
-				for (int i = 0; i < len; i++)
-				{
-					int temp;
-					temp = rxBuf[100 + i] & 0xff;
-					image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
-				}
-
-				if (len <= 0)
-				{
-					Log.d("MC", "len=" + len);
-				}
-
-				Message message = Message.obtain();
-				message.what = NetUtils.MSG_NET_GET_VIDEO;
-				message.obj = Bitmap.createBitmap(image, width, height,
-						Config.RGB_565);
-				handler.sendMessage(message);
-			}
-			else
-			// 接收的数据不正常，表示网络故障
-			// Close
-			{
-				Log.d("MC", "packet == null");
-			}
 		}
 	}
-
 	/**
 	 * 发送选择算法命令
 	 * 
