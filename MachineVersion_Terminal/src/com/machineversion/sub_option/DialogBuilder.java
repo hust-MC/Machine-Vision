@@ -112,7 +112,7 @@ public class DialogBuilder
 		AlertDialog dialog = new AlertDialog.Builder(context).setTitle(title)
 				.setView(scrollView)
 				.setPositiveButton("确定", new ConfirmButton())
-				.setNegativeButton("取消", new CancerButton()).show();
+				.setNegativeButton("取消", new CancelButton()).show();
 		WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
 		params.width = LayoutParams.WRAP_CONTENT;
 		params.height = LayoutParams.WRAP_CONTENT;
@@ -146,7 +146,7 @@ public class DialogBuilder
 		}
 	}
 
-	private class CancerButton implements OnClickListener
+	private class CancelButton implements OnClickListener
 	{
 		@Override
 		public void onClick(DialogInterface dialog, int which)
@@ -161,7 +161,7 @@ public class DialogBuilder
 		 * 处理对话框的确定按钮点击事件
 		 * 
 		 * @param value
-		 *            对话框的EditText接收的数据
+		 *            对话框接收的数据
 		 * 
 		 */
 		void onPositiveButtonClicked(String[] value);

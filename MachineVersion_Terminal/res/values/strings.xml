@@ -82,7 +82,7 @@
         <item></item>
     </string-array>
     <string-array name="option_fastener_settings_type">
-        <item>1算法0n算法1</item>
+        <item>1算法0n算法1n算法2</item>
         <item>0,0,0</item>
         <item></item>
         <item></item>
