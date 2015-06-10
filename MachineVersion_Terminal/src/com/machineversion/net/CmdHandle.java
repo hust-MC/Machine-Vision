@@ -52,7 +52,7 @@ public class CmdHandle
 	}
 
 	/**
-	 * 向相机端发送获取一张图片的命令
+	 * 向相机端发送获取一张图片的命令，在发送前修改接收handler
 	 * 
 	 * @param handler
 	 *            处理网络数据的handler
@@ -69,6 +69,7 @@ public class CmdHandle
 		{
 			NetReceiveThread.handler = handler;
 			sendPacket.send(os);
+			Log.d("send", "send over");
 		}
 	}
 	/**
@@ -78,6 +79,7 @@ public class CmdHandle
 	 *            处理网络数据的handler
 	 * @param algorithm
 	 *            要选择的算法编号
+	 * @throws InterruptedException
 	 */
 	public void normal(int algorithm)
 	{
@@ -87,7 +89,7 @@ public class CmdHandle
 		sendPacket.send(os);
 	}
 
-	public void getState(Handler handler) throws IOException
+	public void getState(Handler handler)
 	{
 		int tempInteger = 0, tempFloat = 0;
 

@@ -58,7 +58,7 @@ public class DataPack
 	public static NetPacket recvDataPack(InputStream is)
 	{
 		NetPacket revPacket = new NetPacket();
-		Log.d("MC", "start read");
+		Log.d("MC", "start read:");
 		boolean hasMagicRead = false;
 		int bufCount = 0;
 		int startPos = 0;
@@ -69,7 +69,7 @@ public class DataPack
 		try
 		{
 			bufCount = is.read(rxBuf);
-			Log.d("MC", "rxBuf read finish");
+			Log.d("MC", "rxBuf read finish,count = " + bufCount);
 			/*
 			 * 判断帧头标示
 			 */
@@ -83,7 +83,7 @@ public class DataPack
 
 					if (startPos != 0)
 					{
-						Log.d("ZY", "startPos=" + startPos);
+						Log.e("MC", "startPos=" + startPos);
 					}
 					break;
 				}
@@ -136,13 +136,10 @@ public class DataPack
 					{
 						tempCount = is.read(temp, tempPos, temp.length
 								- tempPos);
-						if(tempCount <= 0)
-						{
-							Log.e("MC", "tempCount" + tempCount);
-						}
 						tempPos += tempCount;
 					} while (tempPos < length - availableCount);
-					System.arraycopy(temp, 0, rxBuf, availableCount, tempPos);
+					System.arraycopy(temp, 0, rxBuf, startPos + availableCount,
+							tempPos);
 				}
 
 				/*

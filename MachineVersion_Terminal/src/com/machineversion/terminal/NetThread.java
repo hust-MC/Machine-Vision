@@ -82,11 +82,10 @@ public class NetThread extends Thread implements CommunicationInterface
 
 					currentState = CurrentState.onReady;				// 转换为发送状态
 
-					new NetReceiveThread(socket.getInputStream(), handler)
+					new NetReceiveThread(socket.getInputStream())
 							.start();
 
 					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
-					new NetPacket().recvDataPack(socket.getInputStream());
 					currentState = CurrentState.onSending;
 
 					/*

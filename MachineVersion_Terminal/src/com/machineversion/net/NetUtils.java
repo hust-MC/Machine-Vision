@@ -5,13 +5,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.provider.ContactsContract.Contacts.Data;
+import android.util.Log;
 
 public class NetUtils
 {
 	/**
 	 * 设置本地IP地址
 	 */
-	public final static String ip = "115.156.211.20";
+	public final static String ip = "115.156.211.22";
 	/**
 	 * 三种端口定义
 	 */
@@ -59,13 +60,20 @@ public class NetUtils
 		{
 			this.data = data;
 		}
-		public void send(OutputStream os) throws InterruptedException
+		public void send(OutputStream os)
 		{
 			DataPack.sendDataPack(this, os);
-			Thread.sleep(100);			//线程延时100ms,降低发送频率
-			
+			try
+			{
+				Thread.sleep(150);
+			} catch (InterruptedException e)
+			{
+				Log.e("ZY", "sleep exception");
+				e.printStackTrace();
+			}		// 线程延时100ms,降低发送频率
+
 		}
-		public void recvDataPack(InputStream is) throws IOException
+		public void recvDataPack(InputStream is)
 		{
 			NetPacket packet = DataPack.recvDataPack(is);
 
