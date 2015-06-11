@@ -1,10 +1,8 @@
 package com.machineversion.net;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import android.provider.ContactsContract.Contacts.Data;
 import android.util.Log;
 
 public class NetUtils

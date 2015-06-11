@@ -1,7 +1,7 @@
 package com.machineversion.terminal;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -17,11 +17,18 @@ public class NetReceiveThread extends Thread
 	private InputStream is;
 	public static Handler handler;
 	private NetPacket revPacket = new NetPacket();
+	private Bitmap bitmap;
 
 	public NetReceiveThread(InputStream is)
 	{
 		this.is = is;
 	}
+
+	static
+	{
+		System.loadLibrary("picture_process");
+	}
+
 	@Override
 	public void run()
 	{
@@ -36,8 +43,6 @@ public class NetReceiveThread extends Thread
 				{
 				case NetUtils.MSG_NET_GET_VIDEO:
 
-					long timer2 = System.currentTimeMillis();
-
 					byte[] rxBuf = revPacket.data;
 
 					int[] data = new int[12];
@@ -45,6 +50,7 @@ public class NetReceiveThread extends Thread
 					{
 						data[i] = rxBuf[i] & 0xFF;
 					}
+
 					int len = data[0] | data[1] << 8 | data[2] << 16
 							| data[3] << 24;
 					int width = data[4] | data[5] << 8 | data[6] << 16
@@ -52,28 +58,39 @@ public class NetReceiveThread extends Thread
 					int height = data[8] | data[9] << 8 | data[10] << 16
 							| data[11] << 24;
 
+					if (bitmap == null || bitmap.getWidth() != width
+							|| bitmap.getHeight() != height)
+					{
+						bitmap = Bitmap.createBitmap(width, height,
+								Config.ARGB_8888);
+					}
+
+					long timer2 = System.currentTimeMillis();
 					int[] image = new int[len];
+
+					// image = pictureProcess(Arrays.copyOfRange(rxBuf, 100,
+					// rxBuf.length));
+
 					for (int i = 0; i < len; i++)
 					{
 						int temp;
 						temp = rxBuf[100 + i] & 0xff;
 						image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
 					}
-
-					if (len <= 0)
-					{
-						Log.d("MC", "len=" + len);
-					}
-
+					long timer3 = System.currentTimeMillis();
 					Message message = Message.obtain();
 					message.what = NetUtils.MSG_NET_GET_VIDEO;
-					message.obj = Bitmap.createBitmap(image, width, height,
-							Config.RGB_565);
-					handler.sendMessage(message);
+					bitmap.setPixels(image, 0, width, 0, 0, width, height);
 
-					long timer3 = System.currentTimeMillis();
-					Log.d("MC", "timer1 = " + (timer3 - timer1));
-					Log.d("MC", "timer2 = " + (timer3 - timer2));
+					message.obj = bitmap;
+					handler.sendMessage(message);
+					long timer4 = System.currentTimeMillis();
+
+					Log.d("MC", "whole = " + (timer4 - timer1));
+					Log.d("MC", "rev = " + (timer2 - timer1));
+					Log.d("MC", "byteToint = " + (timer3 - timer2));
+					Log.d("MC", "create BitMap = " + (timer4 - timer3));
+
 					break;
 				default:
 					Log.e("MC", "default");
@@ -88,4 +105,6 @@ public class NetReceiveThread extends Thread
 
 		}
 	}
+
+	private native int[] pictureProcess(byte[] data);
 }

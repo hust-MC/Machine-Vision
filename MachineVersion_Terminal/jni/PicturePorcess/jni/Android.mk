@@ -19,8 +19,8 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 TARGET_PLATFORM := android-3
-LOCAL_MODULE    := serial_port
-LOCAL_SRC_FILES := SerialPort.c
+LOCAL_MODULE    := picture_process
+LOCAL_SRC_FILES := PictureProcess.cpp
 LOCAL_LDLIBS    := -llog
 
 include $(BUILD_SHARED_LIBRARY)
