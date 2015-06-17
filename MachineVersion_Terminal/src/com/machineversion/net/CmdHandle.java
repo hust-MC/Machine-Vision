@@ -6,15 +6,13 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Arrays;
 
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.machineversion.net.NetPacketContext.*;
-import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.terminal.NetReceiveThread;
+
+import static com.machineversion.net.NetUtils.*;
 
 public class CmdHandle
 {
@@ -62,13 +60,13 @@ public class CmdHandle
 	public void getVideo(Handler handler) throws IOException,
 			InterruptedException
 	{
-		NetPacket sendPacket = new GetVideoFactory().CreatePacket();
+		NetPacketContext context = new NetPacketContext(MSG_NET_GET_VIDEO);
 
 		int c = 10;
 		while (c-- > 0)
 		{
 			NetReceiveThread.handler = handler;
-			sendPacket.send(os);
+			context.sendPacket(os);
 			Log.d("send", "send over");
 		}
 	}
@@ -83,18 +81,19 @@ public class CmdHandle
 	 */
 	public void normal(int algorithm)
 	{
-		NetPacket sendPacket = new GetNormalFactory().CreatePacket();
-		sendPacket.setData(new byte[]
+		NetPacketContext context = new NetPacketContext(MSG_NET_NORMAL);
+		context.setData(new byte[]
 		{ (byte) algorithm });
-		sendPacket.send(os);
+		context.sendPacket(os);
 	}
-
 	public void getState(Handler handler)
 	{
 		int tempInteger = 0, tempFloat = 0;
 
-		NetPacket sendPacket = new GetStateFactory().CreatePacket(), revPacket = new NetPacket();
-		sendPacket.send(os);
+		NetPacketContext context = new NetPacketContext(MSG_NET_STATE);
+
+		NetPacket revPacket = new NetPacket();
+		context.sendPacket(os);
 		revPacket.recvDataPack(is);
 
 		if (revPacket.type != 0xaa && revPacket.minid == NetUtils.MSG_NET_STATE)
@@ -123,8 +122,11 @@ public class CmdHandle
 	public void sendImage(Handler handler, int width, int height, int length,
 			byte[] image)
 	{
-		NetPacket sendPacket = new GetSendImageFactory().CreatePacket(), revNetPacket = new NetPacket();
-		sendPacket.setData(getArrayFromInt(width, height, length));
+		NetPacketContext context = new NetPacketContext(MSG_NET_SEND_IMAGE);
+
+		NetPacket revNetPacket = new NetPacket();
+
+		context.setData(getArrayFromInt(width, height, length));
 	}
 
 	/**
