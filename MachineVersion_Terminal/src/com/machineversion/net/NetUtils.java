@@ -93,9 +93,9 @@ public class NetUtils
 		}
 	}
 
-	public static class GetVideoPacket extends NetPacket
+	public static class GetVideo extends NetPacket
 	{
-		public GetVideoPacket()
+		public GetVideo()
 		{
 			minid = MSG_NET_GET_VIDEO;
 			type = 1;

@@ -12,7 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.machineversion.net.NetFactoryClass.*;
+import com.machineversion.net.NetPacketContext.*;
 import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.terminal.NetReceiveThread;
 
