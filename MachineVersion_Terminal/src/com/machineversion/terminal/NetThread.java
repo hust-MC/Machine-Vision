@@ -20,7 +20,7 @@ import android.util.Log;
 
 /**
  * 网络通信线程
- * /
+ */
 public class NetThread extends Thread implements CommunicationInterface
 {
 	public static boolean sendSwitch = false;
@@ -84,8 +84,7 @@ public class NetThread extends Thread implements CommunicationInterface
 
 					currentState = CurrentState.onReady;				// 转换为发送状态
 
-					new NetReceiveThread(socket.getInputStream())
-							.start();
+					new NetReceiveThread(socket.getInputStream()).start();
 
 					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
 					currentState = CurrentState.onSending;
