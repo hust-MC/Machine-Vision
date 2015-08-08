@@ -40,6 +40,7 @@ public class CmdHandle
 		}
 		return cmdHandle;
 	}
+
 	public static void clear()
 	{
 		cmdHandle = null;
@@ -66,6 +67,7 @@ public class CmdHandle
 			Log.d("send", "send over");
 		}
 	}
+
 	/**
 	 * 发送选择算法命令
 	 * 
@@ -73,7 +75,6 @@ public class CmdHandle
 	 *            处理网络数据的handler
 	 * @param algorithm
 	 *            要选择的算法编号
-	 * @throws InterruptedException
 	 */
 	public void normal(int algorithm)
 	{
@@ -82,6 +83,13 @@ public class CmdHandle
 		{ (byte) algorithm });
 		context.sendPacket(os);
 	}
+
+	/**
+	 * 发送获取相机温度的命令
+	 * 
+	 * @param handler
+	 *            处理接收到的温度信息
+	 */
 	public void getState(Handler handler)
 	{
 		int tempInteger = 0, tempFloat = 0;
@@ -144,6 +152,7 @@ public class CmdHandle
 					& 0xff0000 | data[3] << 24;
 		}
 	}
+
 	private byte[] getArrayFromInt(int... data)
 	{
 		int i = -1;

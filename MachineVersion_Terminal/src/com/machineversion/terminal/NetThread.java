@@ -18,6 +18,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+/**
+ * 网络通信线程
+ * /
 public class NetThread extends Thread implements CommunicationInterface
 {
 	public static boolean sendSwitch = false;
