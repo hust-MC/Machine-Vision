@@ -155,5 +155,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_debug_mode">DebugMode</string>
+    <string name="title_activity_splash">Splash</string>
 
 </resources>
