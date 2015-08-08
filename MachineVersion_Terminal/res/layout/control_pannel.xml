@@ -68,7 +68,7 @@
             android:background="@drawable/bg_control_bt"
             android:text="确认"
             android:textColor="#3F48CC"
-            android:textSize="30sp" />
+            android:textSize="50sp" />
 
         <Button
             android:id="@+id/bt_control_pannel_cancel"
@@ -79,7 +79,7 @@
             android:background="@drawable/bg_control_bt"
             android:text="取消"
             android:textColor="#3F48CC"
-            android:textSize="30sp" />
+            android:textSize="50sp" />
     </LinearLayout>
 
 </LinearLayout>

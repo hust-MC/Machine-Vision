@@ -59,6 +59,7 @@
     <style name="top_button">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">#000</item>
         <item name="android:layout_marginLeft">6dp</item>
@@ -70,9 +71,9 @@
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/bg_control_bt</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">60sp</item>
         <item name="android:textColor">#3F83EA</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_height">180dp</item>
         <item name="android:layout_centerInParent">true</item>
         <item name="android:checked">false</item>
     </style>

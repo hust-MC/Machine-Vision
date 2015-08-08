@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <!-- 顶部菜单栏 -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -52,8 +54,10 @@
         android:layout_height="0dp"
         android:layout_weight="3.5"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="20dp" >
+        android:paddingBottom="20dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="20dp" >
 
         <LinearLayout
             android:layout_width="0dp"
@@ -63,80 +67,82 @@
 
             <!-- 左侧相机1区域 -->
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
                 android:paddingBottom="5dp" >
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
                     android:text="相机1"
                     android:textColor="#464ADC"
-                    android:textSize="17sp" >
+                    android:textSize="30sp" >
                 </TextView>
 
                 <ImageView
                     android:id="@+id/main_imv_photo1"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="128px"
+                    android:layout_height="128px"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:layout_weight="4"
-                    android:scaleType="centerInside"
+                    android:background="@drawable/bg_state"
                     android:src="@drawable/qualified" >
                 </ImageView>
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/main_imv_photo1"
+                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:layout_marginTop="30dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/correct" >
                 </ImageView>
-            </LinearLayout>
+            </RelativeLayout>
             <!-- 右侧相机2区域 -->
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
                 android:paddingBottom="5dp" >
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
                     android:text="相机2"
                     android:textColor="#464ADC"
-                    android:textSize="17sp" >
+                    android:textSize="30sp" >
                 </TextView>
 
                 <ImageView
                     android:id="@+id/main_imv_photo2"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="128px"
+                    android:layout_height="128px"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:layout_weight="4"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/disqualified" >
+                    android:background="@drawable/bg_state"
+                    android:src="@drawable/qualified" >
                 </ImageView>
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/main_imv_photo2"
+                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:layout_marginTop="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/wrong" >
+                    android:src="@drawable/correct" >
                 </ImageView>
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
         <!-- 中间右侧按钮 -->
 
@@ -167,6 +173,7 @@
                 android:text="停止" />
         </LinearLayout>
     </LinearLayout>
+    <!-- 底部区域 -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -177,6 +184,8 @@
         android:paddingBottom="3dp"
         android:paddingLeft="10dp"
         android:paddingTop="3dp" >
+
+        <!-- 状态窗口 -->
 
         <LinearLayout
             android:layout_width="0dp"
@@ -206,22 +215,27 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
+        <!-- 底部右侧按钮 -->
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3" >
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:padding="20dp" >
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/control_button"
                 android:onClick="onClick_net"
-                android:text="网络连接" />
+                android:text="网络连接"
+                android:textSize="40sp" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/control_button"
+                android:layout_marginLeft="20dp"
                 android:onClick="onClick_close_net"
-                android:text="断开连接" />
+                android:text="断开连接"
+                android:textSize="40sp" />
         </LinearLayout>
     </LinearLayout>
 

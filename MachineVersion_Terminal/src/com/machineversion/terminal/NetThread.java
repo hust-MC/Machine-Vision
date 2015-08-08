@@ -13,7 +13,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import com.machineversion.net.CmdHandle;
 import com.machineversion.net.NetUtils;
 import com.machineversion.net.UdpServerSocket;
-import com.machineversion.net.NetUtils.NetPacket;
 
 import android.os.Handler;
 import android.os.Message;

@@ -17,10 +17,6 @@ import static com.machineversion.net.NetUtils.*;
 public class CmdHandle
 {
 	private static CmdHandle cmdHandle;
-
-	/*
-	 * 
-	 */
 	private OutputStream os;
 	private InputStream is;
 
