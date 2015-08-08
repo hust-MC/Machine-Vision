@@ -77,7 +77,7 @@ public class DialogBuilder
 			tv.setTextSize(27F);
 
 			/*
-			 * 创建和以上文本框对应的输入框，并设置参数。用以接收输入的数据
+			 * 解析R.array.option_camera_params_sub并创建对应的输入框， 设置参数，用以接收输入的数据
 			 */
 			params.weight = 1.5F;
 			if (type[i].startsWith("0"))
@@ -112,7 +112,15 @@ public class DialogBuilder
 		AlertDialog dialog = new AlertDialog.Builder(context).setTitle(title)
 				.setView(scrollView)
 				.setPositiveButton("确定", new ConfirmButton())
-				.setNegativeButton("取消", new CancelButton()).show();
+				.setNegativeButton("取消", new CancelButton()).create();
+
+		dialog.show();
+
+		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE)
+				.setTextSize(27F);
+		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
+				.setTextSize(27F);
+
 		WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
 		params.width = LayoutParams.WRAP_CONTENT;
 		params.height = LayoutParams.WRAP_CONTENT;
