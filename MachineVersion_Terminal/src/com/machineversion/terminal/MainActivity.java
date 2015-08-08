@@ -105,12 +105,16 @@ public class MainActivity extends Activity
 			if (netHandleFlag)
 				switch (msg.what)
 				{
-				case 0x55: // 网络连接成功
-					// dialog.dismiss();
+				case NetThread.CONNECT_SUCCESS: // 网络连接成功
+					dialog.dismiss();
 					Toast.makeText(MainActivity.this, "网络连接成功",
 							Toast.LENGTH_SHORT).show();
 					break;
-
+				case NetThread.CONNECT_FAIL:
+					dialog.dismiss();
+					Toast.makeText(MainActivity.this, "连接失败，请检查网络连接",
+							Toast.LENGTH_SHORT).show();
+					break;
 				case NetUtils.MSG_NET_GET_VIDEO: // 获取图像
 					Bitmap bitmap = (Bitmap) msg.obj;
 					photo_imv1.setImageBitmap(bitmap);
@@ -265,6 +269,9 @@ public class MainActivity extends Activity
 		}
 	}
 
+	/*
+	 * 检查是否出错，并显示出错次数
+	 */
 	public void onClick_check(View view)
 	{
 		bt_check.setText(DataPack.timeoutCount + "");
@@ -278,8 +285,8 @@ public class MainActivity extends Activity
 	 */
 	public void onClick_net(View view)
 	{
-		// dialog = ProgressDialog
-		// .show(this, null, "正在连接智能相机，请稍候...", true, false); // 进程弹窗
+		dialog = ProgressDialog
+				.show(this, null, "正在连接智能相机，请稍候...", true, false); // 进程弹窗
 
 		netThread = new NetThread(netHandler);
 		netThread.start();

@@ -98,7 +98,6 @@ public class UdpServerSocket
 		}
 		orgIp = packet.getAddress().getHostAddress();
 		String info = new String(packet.getData(), 0, packet.getLength());
-		System.out.println("接收信息：" + info);
 		return info;
 	}
 

@@ -24,6 +24,9 @@ import android.util.Log;
 public class NetThread extends Thread implements CommunicationInterface
 {
 	public static boolean sendSwitch = false;
+
+	public static final int CONNECT_SUCCESS = 100;
+	public static final int CONNECT_FAIL = 101;
 	private final int TIMEOUT = 7000;
 	private final int RXBUF_SIZE = 300 * 1024;
 
@@ -62,6 +65,9 @@ public class NetThread extends Thread implements CommunicationInterface
 	@Override
 	public void run()
 	{
+		/*
+		 * 开启TCP服务器，等待UDP连接成功。
+		 */
 		new Thread(new Runnable()
 		{
 			@Override
@@ -78,9 +84,7 @@ public class NetThread extends Thread implements CommunicationInterface
 					udpSocket.close();
 
 					Log.d("MC", "netConnected");
-					Message message = Message.obtain();
-					message.what = 0x55;								// 返回0x55说明连接成功
-					handler.sendMessage(message);
+					handler.sendEmptyMessage(CONNECT_SUCCESS);
 
 					currentState = CurrentState.onReady;				// 转换为发送状态
 
@@ -127,6 +131,7 @@ public class NetThread extends Thread implements CommunicationInterface
 		try
 		{
 			udpSocket = new UdpServerSocket(NetUtils.listenBroadCastPort);
+			udpSocket.setSoTimeout(5000);
 			while (!udpConnecteSuccess)
 			{
 				if (udpSocket.receive().subSequence(0, 13)
@@ -135,10 +140,12 @@ public class NetThread extends Thread implements CommunicationInterface
 					Log.d("MC", "send udp");
 					udpSocket.response(NetUtils.ip + "\0", NetUtils.sendIpPort);
 				}
-
 			}
+
 		} catch (Exception e)
 		{
+			udpSocket.close();
+			handler.sendEmptyMessage(CONNECT_FAIL);
 			Log.d("MC", "udp close");
 			e.printStackTrace();
 		}
