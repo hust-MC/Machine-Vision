@@ -43,7 +43,7 @@
         </activity>
         <activity
             android:name="com.machineversion.option.CameraParams"
-            android:label="@string/titile_activity_camera_params" >
+            android:label="@string/title_activity_camera_params" >
         </activity>
         <activity
             android:name="com.machineversion.option.SysSettings"

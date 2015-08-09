@@ -19,32 +19,32 @@
             android:id="@+id/main_bt_file_manager"
             style="@style/top_button"
             android:layout_marginLeft="0dp"
-            android:text="文件管理" />
+            android:text="@string/title_activity_file_manager" />
 
         <Button
             android:id="@+id/main_bt_camera_params"
             style="@style/top_button"
-            android:text="相机参数" />
+            android:text="@string/title_activity_camera_params" />
 
         <Button
             android:id="@+id/main_bt_sys_settings"
             style="@style/top_button"
-            android:text="系统设置" />
+            android:text="@string/title_activity_sys_settings" />
 
         <Button
             android:id="@+id/main_bt_fastener_settings"
             style="@style/top_button"
-            android:text="钮扣设置" />
+            android:text="@string/title_activity_fastener_settings" />
 
         <Button
             android:id="@+id/main_bt_machine_learning"
             style="@style/top_button"
-            android:text="机器学习" />
+            android:text="@string/title_activity_machine_learning" />
 
         <Button
             android:id="@+id/main_bt_help"
             style="@style/top_button"
-            android:text="帮助" />
+            android:text="@string/title_activity_help" />
     </LinearLayout>
 
     <!-- 中间图片显示区域 -->

@@ -15,7 +15,6 @@ import com.machineversion.net.NetUtils;
 import com.machineversion.net.UdpServerSocket;
 
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 /**
@@ -27,7 +26,6 @@ public class NetThread extends Thread implements CommunicationInterface
 
 	public static final int CONNECT_SUCCESS = 100;
 	public static final int CONNECT_FAIL = 101;
-	private final int TIMEOUT = 7000;
 	private final int RXBUF_SIZE = 300 * 1024;
 
 	public static CurrentState currentState = CurrentState.onStop;

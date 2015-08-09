@@ -6,7 +6,7 @@
 
     <!-- 菜单名称 -->
     <string name="title_activity_file_manager">文件管理</string>
-    <string name="titile_activity_camera_params">相机参数</string>
+    <string name="title_activity_camera_params">相机参数</string>
     <string name="title_activity_sys_settings">系统设置</string>
     <string name="title_activity_fastener_settings">钮扣设置</string>
     <string name="title_activity_machine_learning">机器学习</string>
