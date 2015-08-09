@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -50,7 +51,7 @@ public class MainActivity extends Activity
 
 	Button bt_fileManager, bt_cameraParams, bt_sysSettings,
 			bt_fasternerSettings, bt_machineLearning, bt_help;
-	Button bt_check;
+	Button bt_test, bt_pause, bt_stop;
 
 	String sciRevBuf;							// 串口接收数据
 
@@ -144,7 +145,9 @@ public class MainActivity extends Activity
 		bt_fasternerSettings = (Button) findViewById(R.id.main_bt_fastener_settings);
 		bt_machineLearning = (Button) findViewById(R.id.main_bt_machine_learning);
 		bt_help = (Button) findViewById(R.id.main_bt_help);
-		bt_check = (Button) findViewById(R.id.bt_control_test);
+		bt_test = (Button) findViewById(R.id.bt_control_test);
+		bt_pause = (Button) findViewById(R.id.bt_control_pause);
+		bt_stop = (Button) findViewById(R.id.bt_control_stop);
 
 		ButtonListern buttonListern = new ButtonListern();
 		bt_fileManager.setOnClickListener(buttonListern);
@@ -272,11 +275,31 @@ public class MainActivity extends Activity
 	/*
 	 * 检查是否出错，并显示出错次数
 	 */
-	public void onClick_check(View view)
+	public void onClick_control(View view)
 	{
-		bt_check.setText(DataPack.timeoutCount + "");
-	}
+		// bt_check.setText(DataPack.timeoutCount + "");
 
+		switch (view.getId())
+		{
+		case R.id.bt_control_test:
+			bt_test.setBackgroundColor(Color.GREEN);
+			bt_pause.setBackgroundResource(R.drawable.bg_control_bt);
+			bt_stop.setBackgroundResource(R.drawable.bg_control_bt);
+			break;
+
+		case R.id.bt_control_pause:
+			bt_test.setBackgroundResource(R.drawable.bg_control_bt);
+			bt_pause.setBackgroundColor(Color.GREEN);
+			bt_stop.setBackgroundResource(R.drawable.bg_control_bt);
+			break;
+		case R.id.bt_control_stop:
+			bt_test.setBackgroundResource(R.drawable.bg_control_bt);
+			bt_pause.setBackgroundResource(R.drawable.bg_control_bt);
+			bt_stop.setBackgroundColor(Color.GREEN);
+			break;
+		}
+
+	}
 	/**
 	 * 网络连接函数
 	 * 
