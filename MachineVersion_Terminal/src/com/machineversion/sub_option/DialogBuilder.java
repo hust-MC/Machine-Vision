@@ -64,7 +64,7 @@ public class DialogBuilder
 		String[] type = strType.split(",");
 
 		IniReader iniReader = new IniReader();
-		
+
 		views = new View[contents.length];
 
 		ScrollView scrollView = new ScrollView(context);
@@ -152,6 +152,8 @@ public class DialogBuilder
 		{
 			if (context instanceof FastenerSettings)
 			{
+				keys = context.getResources().getStringArray(
+						R.array.option_fastener_settings_ini);
 				File file = new File(FastenerSettings.getFilePath(keys[0]));
 				if (file.exists())
 				{
