@@ -77,7 +77,7 @@
     <!-- 纽扣设置子菜单 -->
     <string-array name="option_fastener_settings_sub">
         <item>算法号</item>
-        <item>纽扣编号,缺陷种类和阈值,纽扣图像样本</item>
+        <item>纽扣编号,缺陷种类,阈值,纽扣图像样本</item>
         <item></item>
         <item></item>
     </string-array>
