@@ -70,7 +70,7 @@
     <!-- 纽扣设置菜单选项 -->
     <string-array name="option_fastener_settings">
         <item>选择算法</item>
-        <item>编辑配置文件</item>
+        <item>新建配置文件</item>
         <item>加载配置文件</item>
         <item>存储配置文件</item>
     </string-array>
@@ -84,6 +84,12 @@
     <string-array name="option_fastener_settings_type">
         <item>1算法0n算法1n算法2</item>
         <item>0,1堵孔n缺边n裂纹,0,0</item>
+        <item>0,1堵孔n缺边n裂纹,0,0</item>
+        <item></item>
+    </string-array>
+    <string-array name="option_fastener_settings_ini">
+        <item></item>
+        <item>id,defact,threshold</item>
         <item></item>
         <item></item>
     </string-array>

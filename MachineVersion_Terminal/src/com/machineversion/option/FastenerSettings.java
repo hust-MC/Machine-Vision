@@ -18,8 +18,8 @@ import android.widget.Toast;
 public class FastenerSettings extends ControlPannelActivity implements
 		OnDialogClicked
 {
-	private final String FILE_DIR = Environment.getExternalStorageDirectory()
-			+ "/sample/";
+	public static final String FILE_DIR = Environment
+			.getExternalStorageDirectory() + "/sample/";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -34,34 +34,46 @@ public class FastenerSettings extends ControlPannelActivity implements
 		setListViewClicked();
 	}
 
+	/**
+	 * 获取钮扣的配置文件路径
+	 * 
+	 * @param id
+	 *            对应钮扣的ID
+	 * @return 配置文件路径
+	 */
+	public static String getFilePath(String id)
+	{
+		return FILE_DIR + id + "/" + id + ".ini";
+	}
 	@Override
 	public void onPositiveButtonClicked(String[] value)
 	{
 		/*
 		 * 存入配置文件中
 		 */
-		String id = value[0];
-		String defactType = value[1];
-		String threshold = value[2];
+		String[] keys = getResources().getStringArray(
+				R.array.option_fastener_settings_ini);
 
 		JSONObject json = new JSONObject();
 		try
 		{
-			json.put("id", id);
-			json.put("defactType", defactType);
-			json.put("threshold", threshold);
+			for (int i = 0; i < keys.length; i++)
+			{
+				json.put(keys[i], value[i]);
+			}
+
 		} catch (JSONException e)
 		{
 			e.printStackTrace();
 		}
 		try
 		{
-			File fileDir = new File(FILE_DIR + id);
-			if (!fileDir.exists())
+			File file = new File(getFilePath(value[0]));
+			if (!file.getParentFile().exists())
 			{
-				fileDir.mkdirs();
+				file.getParentFile().mkdirs();
 			}
-			FileWriter writer = new FileWriter(new File(fileDir, id + ".ini"));
+			FileWriter writer = new FileWriter(file);
 			writer.write(json.toString());
 			writer.close();
 		} catch (IOException e)

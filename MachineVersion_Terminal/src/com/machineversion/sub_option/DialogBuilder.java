@@ -1,10 +1,21 @@
 package com.machineversion.sub_option;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.machineversion.option.FastenerSettings;
 import com.machineversion.terminal.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.content.DialogInterface.OnClickListener;
@@ -52,6 +63,8 @@ public class DialogBuilder
 		String[] contents = menu.split(",");
 		String[] type = strType.split(",");
 
+		IniReader iniReader = new IniReader();
+		
 		views = new View[contents.length];
 
 		ScrollView scrollView = new ScrollView(context);
@@ -83,6 +96,7 @@ public class DialogBuilder
 			if (type[i].startsWith("0"))
 			{
 				views[i] = new EditText(context);
+
 				((EditText) views[i]).setTextSize(25F);
 				((EditText) views[i])
 						.setBackgroundResource(android.R.drawable.edit_text);
@@ -126,6 +140,57 @@ public class DialogBuilder
 		params.height = LayoutParams.WRAP_CONTENT;
 		dialog.getWindow().setAttributes(params);
 		return true;
+	}
+
+	private class IniReader
+	{
+		private int pos;
+		private String[] keys;
+		private JSONObject json;
+
+		public IniReader()
+		{
+			if (context instanceof FastenerSettings)
+			{
+				File file = new File(FastenerSettings.getFilePath(keys[0]));
+				if (file.exists())
+				{
+					try
+					{
+						String str = null;
+						StringBuffer strBuf = new StringBuffer();
+						BufferedReader reader = new BufferedReader(
+								new FileReader(file));
+						while (TextUtils.isEmpty(str = reader.readLine()))
+						{
+							strBuf.append(str);
+						}
+						json = new JSONObject(strBuf.toString());
+					} catch (FileNotFoundException e)
+					{
+						e.printStackTrace();
+					} catch (IOException e)
+					{
+						e.printStackTrace();
+					} catch (JSONException e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		String nextString()
+		{
+			try
+			{
+				return json.getString(keys[pos++]);
+			} catch (JSONException e)
+			{
+				e.printStackTrace();
+			}
+			return null;
+		}
 	}
 
 	private class ConfirmButton implements OnClickListener
