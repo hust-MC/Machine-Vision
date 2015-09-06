@@ -5,6 +5,12 @@
     android:orientation="horizontal"
     tools:context="com.machineversion.terminal.FileManager" >
 
+    <TextView
+        android:id="@+id/file_manager_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <include
         android:layout_width="0dp"
         android:layout_height="match_parent"

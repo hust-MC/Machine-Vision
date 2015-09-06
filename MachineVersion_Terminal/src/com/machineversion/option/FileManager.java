@@ -1,9 +1,11 @@
 package com.machineversion.option;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import com.machineversion.net.CmdHandle;
@@ -15,8 +17,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class FileManager extends ControlPannelActivity
@@ -65,44 +69,30 @@ public class FileManager extends ControlPannelActivity
 		{
 			if (requestCode == REQUEST_FILE)
 			{
-				final Intent intent = i;
-
-				new Thread(new Runnable()
+				try
 				{
-					@Override
-					public void run()
+					String temp = null;
+					StringBuffer content = new StringBuffer(temp);
+					BufferedReader reader = new BufferedReader(new FileReader(
+							i.getStringExtra("filePath")));
+
+					while (!TextUtils.isEmpty(temp = reader.readLine()))
 					{
-						int count = 0;
-						byte[] buffer = new byte[1024];
-
-						String path = intent.getExtras().getString("filePath");
-						ByteArrayOutputStream baos = new ByteArrayOutputStream();
-						FileInputStream fis;
-						try
-						{
-							fis = new FileInputStream(path);
-							while ((count = fis.read(buffer)) != -1)
-							{
-								baos.write(buffer, 0, count);
-							}
-						} catch (FileNotFoundException e)
-						{
-							e.printStackTrace();
-						} catch (IOException e)
-						{
-							e.printStackTrace();
-						}
-
-						BitmapFactory.Options option = new BitmapFactory.Options();
-						option.inJustDecodeBounds = true;
-						BitmapFactory.decodeFile(path, option);
-
-						CmdHandle cmd = CmdHandle.getInstance();
-						cmd.sendImage(null, option.outWidth, option.outHeight,
-								(int) new File(path).length(),
-								baos.toByteArray());
+						content.append(temp);
 					}
-				}).start();
+					reader.close();
+
+					((TextView) findViewById(R.id.file_manager_tv))
+							.setText(content.toString());
+				} catch (FileNotFoundException e)
+				{
+					e.printStackTrace();
+				} catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		}
 	}

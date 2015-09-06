@@ -109,7 +109,7 @@ public class DialogBuilder
 						.setBackgroundResource(android.R.drawable.edit_text);
 				if (strIni != null)
 				{
-					((EditText) views[i]).setText(iniReader.nextString());
+					((EditText) views[i]).setText(iniReader.next());
 				}
 				try
 				{
@@ -128,6 +128,11 @@ public class DialogBuilder
 
 				adapter.setDropDownViewResource(R.layout.spiner);
 				((Spinner) views[i]).setAdapter((adapter));
+				if (strIni != null)
+				{
+					((Spinner) views[i]).setSelection(Integer
+							.parseInt(iniReader.next()));
+				}
 			}
 
 			// et.setHint("请输入" + contents[i]);
@@ -184,7 +189,7 @@ public class DialogBuilder
 					StringBuffer strBuf = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new FileReader(
 							file));
-					while (TextUtils.isEmpty(str = reader.readLine()))
+					while (!TextUtils.isEmpty(str = reader.readLine()))
 					{
 						strBuf.append(str);
 					}
@@ -202,7 +207,7 @@ public class DialogBuilder
 			}
 		}
 
-		String nextString()
+		String next()
 		{
 			try
 			{
