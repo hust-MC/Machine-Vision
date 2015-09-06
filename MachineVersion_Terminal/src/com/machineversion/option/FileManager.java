@@ -14,6 +14,7 @@ import com.machineversion.terminal.R;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -72,9 +73,10 @@ public class FileManager extends ControlPannelActivity
 				try
 				{
 					String temp = null;
-					StringBuffer content = new StringBuffer(temp);
-					BufferedReader reader = new BufferedReader(new FileReader(
-							i.getStringExtra("filePath")));
+					StringBuffer content = new StringBuffer();
+					BufferedReader reader = new BufferedReader(
+							new FileReader(
+									i.getStringExtra(FileManager_fileExplorer.RESULT_FILE_PATH)));
 
 					while (!TextUtils.isEmpty(temp = reader.readLine()))
 					{
@@ -82,14 +84,14 @@ public class FileManager extends ControlPannelActivity
 					}
 					reader.close();
 
-					((TextView) findViewById(R.id.file_manager_tv))
-							.setText(content.toString());
+					TextView textView = ((TextView) findViewById(R.id.file_manager_tv));
+					textView.setText(content.toString());
+					textView.setVisibility(View.VISIBLE);
 				} catch (FileNotFoundException e)
 				{
 					e.printStackTrace();
 				} catch (IOException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 

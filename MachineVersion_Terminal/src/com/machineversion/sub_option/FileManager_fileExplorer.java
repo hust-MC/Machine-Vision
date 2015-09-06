@@ -44,6 +44,8 @@ public class FileManager_fileExplorer extends ListActivity
 	MyAdapter adapter;
 	private final Context CONTEXT = this;
 
+	public static final String RESULT_FILE_PATH = "filePath";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -290,7 +292,7 @@ public class FileManager_fileExplorer extends ListActivity
 	{
 		Intent intent = new Intent();
 		Bundle bundle = new Bundle();
-		bundle.putString("filePath", path);
+		bundle.putString(RESULT_FILE_PATH, path);
 		intent.putExtras(bundle);
 		setResult(RESULT_OK, intent);
 		finish();

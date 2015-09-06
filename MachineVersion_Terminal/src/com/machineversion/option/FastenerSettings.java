@@ -59,7 +59,8 @@ public class FastenerSettings extends ControlPannelActivity implements
 		{
 			if (requestCode == REQUEST_FILE)
 			{
-				String fileDir = data.getExtras().getString("filePath");
+				String fileDir = data.getExtras().getString(
+						FileManager_fileExplorer.RESULT_FILE_PATH);
 				if (fileDir.startsWith(FILE_DIR))
 				{
 					DialogBuilder dialogBuilder = new DialogBuilder(this);
