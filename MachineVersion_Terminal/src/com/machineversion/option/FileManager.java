@@ -58,7 +58,7 @@ public class FileManager extends ControlPannelActivity
 		wholeMenu = new MenuWithSubMenu(R.array.option_file_manager, 0);
 		init_widget();
 	}
-
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent i)
 	{
 		if (resultCode == RESULT_OK)
@@ -75,7 +75,7 @@ public class FileManager extends ControlPannelActivity
 						int count = 0;
 						byte[] buffer = new byte[1024];
 
-						String path = intent.getExtras().getString("file path");
+						String path = intent.getExtras().getString("filePath");
 						ByteArrayOutputStream baos = new ByteArrayOutputStream();
 						FileInputStream fis;
 						try

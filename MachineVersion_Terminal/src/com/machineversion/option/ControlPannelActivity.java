@@ -1,17 +1,16 @@
 package com.machineversion.option;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.machineversion.sub_option.DialogBuilder;
-import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
-import com.machineversion.terminal.MainActivity;
+import com.machineversion.sub_option.FileManager_fileExplorer;
 import com.machineversion.terminal.R;
 
 /**
@@ -31,6 +30,7 @@ abstract class ControlPannelActivity extends Activity
 	protected ListView listview;
 
 	protected MenuWithSubMenu wholeMenu;
+
 
 	/**
 	 * 如果当前菜单没有子菜单时触发此函数
@@ -52,6 +52,7 @@ abstract class ControlPannelActivity extends Activity
 		listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.menu_list_item, wholeMenu.menu));
+
 	}
 	/**
 	 * 设置统一的菜单点击事件
@@ -70,8 +71,7 @@ abstract class ControlPannelActivity extends Activity
 							ControlPannelActivity.this);
 					builder.build(wholeMenu.menu[position],
 							wholeMenu.subMenu[position],
-							wholeMenu.subMenuType[position],
-							wholeMenu.subMenuIni[position]);
+							wholeMenu.subMenuType[position]);
 				}
 				else
 				{
@@ -80,6 +80,8 @@ abstract class ControlPannelActivity extends Activity
 			}
 		});
 	}
+
+
 	/**
 	 * 关闭时触发切换动画
 	 * 

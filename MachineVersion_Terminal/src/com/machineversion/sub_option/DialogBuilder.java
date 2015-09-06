@@ -43,6 +43,10 @@ public class DialogBuilder
 		this.context = context;
 	}
 
+	public boolean build(String title, String menu, String strType)
+	{
+		return build(title, menu, strType, null, null);
+	}
 	/**
 	 * 用来根据参数生成一个对话框
 	 * 
@@ -59,13 +63,12 @@ public class DialogBuilder
 	 * @author MC
 	 */
 	public boolean build(String title, String menu, String strType,
-			String strIni)
+			String strIni, String file)
 	{
 		String[] contents = menu.split(",");
 		String[] type = strType.split(",");
-		String[] ini = strIni.split(",");
 
-		IniReader iniReader = new IniReader();
+		// IniReader iniReader = new IniReader(strIni);
 
 		views = new View[contents.length];
 
@@ -104,7 +107,7 @@ public class DialogBuilder
 						.setBackgroundResource(android.R.drawable.edit_text);
 				try
 				{
-					((EditText) views[i]).setText(ini[i]);
+					// ((EditText) views[i]).setText(ini[i]);
 				} catch (IndexOutOfBoundsException e)
 				{
 					e.printStackTrace();
@@ -163,36 +166,32 @@ public class DialogBuilder
 		private String[] keys;
 		private JSONObject json;
 
-		public IniReader()
+		public IniReader(String configStr)
 		{
-			if (context instanceof FastenerSettings)
+			keys = configStr.split(",");
+			File file = new File(FastenerSettings.getFilePath(keys[0]));
+			if (file.exists())
 			{
-				keys = context.getResources().getStringArray(
-						R.array.option_fastener_settings_ini);
-				File file = new File(FastenerSettings.getFilePath(keys[0]));
-				if (file.exists())
+				try
 				{
-					try
+					String str = null;
+					StringBuffer strBuf = new StringBuffer();
+					BufferedReader reader = new BufferedReader(new FileReader(
+							file));
+					while (TextUtils.isEmpty(str = reader.readLine()))
 					{
-						String str = null;
-						StringBuffer strBuf = new StringBuffer();
-						BufferedReader reader = new BufferedReader(
-								new FileReader(file));
-						while (TextUtils.isEmpty(str = reader.readLine()))
-						{
-							strBuf.append(str);
-						}
-						json = new JSONObject(strBuf.toString());
-					} catch (FileNotFoundException e)
-					{
-						e.printStackTrace();
-					} catch (IOException e)
-					{
-						e.printStackTrace();
-					} catch (JSONException e)
-					{
-						e.printStackTrace();
+						strBuf.append(str);
 					}
+					json = new JSONObject(strBuf.toString());
+				} catch (FileNotFoundException e)
+				{
+					e.printStackTrace();
+				} catch (IOException e)
+				{
+					e.printStackTrace();
+				} catch (JSONException e)
+				{
+					e.printStackTrace();
 				}
 			}
 		}

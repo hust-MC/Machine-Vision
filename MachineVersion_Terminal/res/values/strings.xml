@@ -78,13 +78,13 @@
     <string-array name="option_fastener_settings_sub">
         <item>算法号</item>
         <item>纽扣编号,缺陷种类,阈值,纽扣图像样本</item>
-        <item>纽扣编号,缺陷种类,阈值,纽扣图像样本</item>
+        <item></item>
         <item></item>
     </string-array>
     <string-array name="option_fastener_settings_type">
         <item>1算法0n算法1n算法2</item>
         <item>0,1堵孔n缺边n裂纹,0,0</item>
-        <item>0,1堵孔n缺边n裂纹,0,0</item>
+        <item></item>
         <item></item>
     </string-array>
     <string-array name="option_fastener_settings_ini">

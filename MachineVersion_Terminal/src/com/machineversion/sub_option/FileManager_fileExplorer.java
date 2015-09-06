@@ -40,7 +40,7 @@ public class FileManager_fileExplorer extends ListActivity
 	private List<Map<String, Object>> mData;
 	private final String ROOT_DIRECTORY = Environment
 			.getExternalStorageDirectory().getPath();
-	private String mDir = ROOT_DIRECTORY;
+	private String mDir;
 	MyAdapter adapter;
 	private final Context CONTEXT = this;
 
@@ -48,8 +48,16 @@ public class FileManager_fileExplorer extends ListActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		mDir = getIntent().getStringExtra("firstDir");
+		if (mDir == null)
+		{
+			mDir = ROOT_DIRECTORY;
+		}
+
 		adapter = new MyAdapter(this);
 		mData = getData();
+
 		setListAdapter(adapter);
 
 		registerForContextMenu(getListView());			// 注册上下文菜单
@@ -111,7 +119,7 @@ public class FileManager_fileExplorer extends ListActivity
 		}
 		else
 		{
-			// finishWithResult((String) mData.get(position).get("info"));
+			finishWithResult((String) mData.get(position).get("info"));
 		}
 	}
 
@@ -187,6 +195,9 @@ public class FileManager_fileExplorer extends ListActivity
 		menu.add(0, 3, menuOrder, "删除");
 	}
 
+	/**
+	 * 长按菜单
+	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item)
 	{
@@ -279,7 +290,7 @@ public class FileManager_fileExplorer extends ListActivity
 	{
 		Intent intent = new Intent();
 		Bundle bundle = new Bundle();
-		bundle.putString("file path", path);
+		bundle.putString("filePath", path);
 		intent.putExtras(bundle);
 		setResult(RESULT_OK, intent);
 		finish();
