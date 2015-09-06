@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.machineversion.net.CmdHandle;
+import com.machineversion.sub_option.DialogBuilder;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.FileManager_fileExplorer;
 import com.machineversion.terminal.FileDirectory;
@@ -23,9 +24,14 @@ public class FastenerSettings extends ControlPannelActivity implements
 		OnDialogClicked
 {
 	public static final String FILE_DIR = FileDirectory.getAppDirectory()
-			+ "/sample/";
+			+ "sample/";
 
 	private final int REQUEST_FILE = 100;
+
+	int settings = R.array.option_fastener_settings;
+	int settings_sub = R.array.option_fastener_settings_sub;
+	int settings_type = R.array.option_fastener_settings_type;
+	int settings_ini = R.array.option_fastener_settings_ini;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -33,14 +39,11 @@ public class FastenerSettings extends ControlPannelActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_option);
 
-		wholeMenu = new MenuWithSubMenu(R.array.option_fastener_settings,
-				R.array.option_fastener_settings_sub,
-				R.array.option_fastener_settings_type,
-				R.array.option_fastener_settings_ini);
+		wholeMenu = new MenuWithSubMenu(settings, settings_sub, settings_type,
+				settings_ini);
 		init_widget();
 		setListViewClicked();
 	}
-
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
@@ -56,12 +59,22 @@ public class FastenerSettings extends ControlPannelActivity implements
 		{
 			if (requestCode == REQUEST_FILE)
 			{
-				String filePath = data.getExtras().getString("filePath");
+				String fileDir = data.getExtras().getString("filePath");
+				if (fileDir.startsWith(FILE_DIR))
+				{
+					DialogBuilder dialogBuilder = new DialogBuilder(this);
+					dialogBuilder.build(
+							(getResources().getStringArray(settings))[1],
+							(getResources().getStringArray(settings_sub))[1],
+							(getResources().getStringArray(settings_type))[1],
+							(getResources().getStringArray(settings_ini))[1],
+							fileDir);
+				}
+
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-
 	/**
 	 * 获取钮扣的配置文件路径
 	 * 
@@ -79,8 +92,9 @@ public class FastenerSettings extends ControlPannelActivity implements
 		/*
 		 * 存入配置文件中
 		 */
-		String[] keys = getResources().getStringArray(
+		String[] strs = getResources().getStringArray(
 				R.array.option_fastener_settings_ini);
+		String[] keys = strs[1].split(",");
 
 		JSONObject json = new JSONObject();
 		try

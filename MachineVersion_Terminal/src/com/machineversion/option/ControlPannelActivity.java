@@ -31,7 +31,6 @@ abstract class ControlPannelActivity extends Activity
 
 	protected MenuWithSubMenu wholeMenu;
 
-
 	/**
 	 * 如果当前菜单没有子菜单时触发此函数
 	 * 
@@ -80,7 +79,6 @@ abstract class ControlPannelActivity extends Activity
 			}
 		});
 	}
-
 
 	/**
 	 * 关闭时触发切换动画

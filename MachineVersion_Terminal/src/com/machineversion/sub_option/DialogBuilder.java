@@ -63,13 +63,15 @@ public class DialogBuilder
 	 * @author MC
 	 */
 	public boolean build(String title, String menu, String strType,
-			String strIni, String file)
+			String strIni, String fileDir)
 	{
 		String[] contents = menu.split(",");
 		String[] type = strType.split(",");
-
-		// IniReader iniReader = new IniReader(strIni);
-
+		IniReader iniReader = null;
+		if (strIni != null)
+		{
+			iniReader = new IniReader(strIni, fileDir);
+		}
 		views = new View[contents.length];
 
 		ScrollView scrollView = new ScrollView(context);
@@ -105,6 +107,10 @@ public class DialogBuilder
 				((EditText) views[i]).setTextSize(25F);
 				((EditText) views[i])
 						.setBackgroundResource(android.R.drawable.edit_text);
+				if (strIni != null)
+				{
+					((EditText) views[i]).setText(iniReader.nextString());
+				}
 				try
 				{
 					// ((EditText) views[i]).setText(ini[i]);
@@ -166,10 +172,10 @@ public class DialogBuilder
 		private String[] keys;
 		private JSONObject json;
 
-		public IniReader(String configStr)
+		public IniReader(String configStr, String fileDir)
 		{
 			keys = configStr.split(",");
-			File file = new File(FastenerSettings.getFilePath(keys[0]));
+			File file = new File(fileDir);
 			if (file.exists())
 			{
 				try
@@ -200,7 +206,10 @@ public class DialogBuilder
 		{
 			try
 			{
-				return json.getString(keys[pos++]);
+				if (pos < keys.length)
+				{
+					return json.getString(keys[pos++]);
+				}
 			} catch (JSONException e)
 			{
 				e.printStackTrace();
