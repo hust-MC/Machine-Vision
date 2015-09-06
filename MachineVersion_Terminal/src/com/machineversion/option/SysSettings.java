@@ -24,7 +24,7 @@ public class SysSettings extends ControlPannelActivity implements
 
 		wholeMenu = new MenuWithSubMenu(R.array.option_sys_settings,
 				R.array.option_sys_settings_sub,
-				R.array.option_sys_settings_type);
+				R.array.option_sys_settings_type, 0);
 		init_widget();
 		setListViewClicked();
 	}

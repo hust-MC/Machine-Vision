@@ -18,7 +18,7 @@ public class CameraParams extends ControlPannelActivity implements
 		setContentView(R.layout.activity_option);
 		wholeMenu = new MenuWithSubMenu(R.array.option_camera_params,
 				R.array.option_camera_params_sub,
-				R.array.option_camera_params_type);
+				R.array.option_camera_params_type,0);
 
 		init_widget();
 		setListViewClicked();

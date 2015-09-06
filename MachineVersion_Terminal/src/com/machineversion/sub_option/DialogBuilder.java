@@ -58,10 +58,12 @@ public class DialogBuilder
 	 * 
 	 * @author MC
 	 */
-	public boolean build(String title, String menu, String strType)
+	public boolean build(String title, String menu, String strType,
+			String strIni)
 	{
 		String[] contents = menu.split(",");
 		String[] type = strType.split(",");
+		String[] ini = strIni.split(",");
 
 		IniReader iniReader = new IniReader();
 
@@ -100,6 +102,13 @@ public class DialogBuilder
 				((EditText) views[i]).setTextSize(25F);
 				((EditText) views[i])
 						.setBackgroundResource(android.R.drawable.edit_text);
+				try
+				{
+					((EditText) views[i]).setText(ini[i]);
+				} catch (IndexOutOfBoundsException e)
+				{
+					e.printStackTrace();
+				}
 			}
 			else
 			{
@@ -142,6 +151,12 @@ public class DialogBuilder
 		return true;
 	}
 
+	/**
+	 * 配置文件解析类
+	 * 
+	 * @author M
+	 * 
+	 */
 	private class IniReader
 	{
 		private int pos;

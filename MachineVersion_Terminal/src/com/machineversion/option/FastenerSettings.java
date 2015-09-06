@@ -29,7 +29,8 @@ public class FastenerSettings extends ControlPannelActivity implements
 
 		wholeMenu = new MenuWithSubMenu(R.array.option_fastener_settings,
 				R.array.option_fastener_settings_sub,
-				R.array.option_fastener_settings_type);
+				R.array.option_fastener_settings_type,
+				R.array.option_fastener_settings_ini);
 		init_widget();
 		setListViewClicked();
 	}

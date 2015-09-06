@@ -70,7 +70,8 @@ abstract class ControlPannelActivity extends Activity
 							ControlPannelActivity.this);
 					builder.build(wholeMenu.menu[position],
 							wholeMenu.subMenu[position],
-							wholeMenu.subMenuType[position]);
+							wholeMenu.subMenuType[position],
+							wholeMenu.subMenuIni[position]);
 				}
 				else
 				{
@@ -164,6 +165,7 @@ abstract class ControlPannelActivity extends Activity
 		protected String[] menu;
 		protected String[] subMenu;
 		protected String[] subMenuType;
+		protected String[] subMenuIni;
 
 		/**
 		 * 生成整个菜单项
@@ -191,14 +193,19 @@ abstract class ControlPannelActivity extends Activity
 		 *            子菜单资源ID，0则为无子菜单
 		 * @param typeId
 		 *            子菜单的类型。0为输入框，1为选项框
+		 * @param subMenuIniId
+		 *            预读取的数据资源
 		 */
-		public MenuWithSubMenu(int menuId, int subMenuId, int typeId)
+		public MenuWithSubMenu(int menuId, int subMenuId, int typeId,
+				int subMenuIniId)
 		{
 			menu = menuId != 0 ? getResources().getStringArray(menuId) : null;
 			subMenu = subMenuId != 0 ? getResources().getStringArray(subMenuId)
 					: null;
 			subMenuType = typeId != 0 ? getResources().getStringArray(typeId)
 					: null;
+			subMenuIni = subMenuIniId != 0 ? getResources().getStringArray(
+					subMenuIniId) : null;
 		}
 	}
 }
