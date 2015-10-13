@@ -39,27 +39,33 @@
         <!-- 菜单类 -->
         <activity
             android:name="com.machineversion.option.FileManager"
-            android:label="@string/title_activity_file_manager" >
+            android:label="@string/title_activity_file_manager"
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name="com.machineversion.option.CameraParams"
-            android:label="@string/title_activity_camera_params" >
+            android:label="@string/title_activity_camera_params"
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name="com.machineversion.option.SysSettings"
-            android:label="@string/title_activity_sys_settings" >
+            android:label="@string/title_activity_sys_settings"
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name="com.machineversion.option.FastenerSettings"
-            android:label="@string/title_activity_fastener_settings" >
+            android:label="@string/title_activity_fastener_settings"
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name="com.machineversion.option.MachineLearning"
-            android:label="@string/title_activity_machine_learning" >
+            android:label="@string/title_activity_machine_learning"
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name="com.machineversion.option.Help"
-            android:label="@string/title_activity_help" >
+            android:label="@string/title_activity_help"
+            android:launchMode="singleTop" >
         </activity>
 
         <!-- 子菜单类 -->
