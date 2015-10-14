@@ -55,11 +55,13 @@
     <string-array name="option_sys_settings">
         <item>工作模式设置</item>
         <item>主要参数设置</item>
+        <item>设备参数设置</item>
     </string-array>
     <!-- 系统设置子菜单 -->
     <string-array name="option_sys_settings_sub">
         <item>模式选择</item>
         <item>皮带速度,上料速度,触发距离,分选距离</item>
+        <item></item>
     </string-array>
     <!-- 系统设置子菜单类型 -->
     <string-array name="option_sys_settings_type">

@@ -6,6 +6,7 @@ import com.machineversion.terminal.R;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 public class SysSettings extends ControlPannelActivity implements
@@ -14,6 +15,7 @@ public class SysSettings extends ControlPannelActivity implements
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
+		Log.d("MC", "special");
 	}
 
 	@Override
