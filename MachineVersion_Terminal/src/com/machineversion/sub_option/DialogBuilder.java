@@ -9,7 +9,6 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.machineversion.option.FastenerSettings;
 import com.machineversion.terminal.R;
 
 import android.app.AlertDialog;
@@ -126,8 +125,7 @@ public class DialogBuilder
 								"n"));
 				views[i] = new Spinner(context);
 
-				adapter.setDropDownViewResource(R.layout.spiner);
-				((Spinner) views[i]).setAdapter((adapter));
+				((Spinner) views[i]).setAdapter(adapter);
 				if (strIni != null)
 				{
 					((Spinner) views[i]).setSelection(Integer

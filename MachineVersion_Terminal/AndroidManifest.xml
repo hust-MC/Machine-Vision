@@ -77,6 +77,10 @@
             android:name="com.machineversion.sub_option.DebugMode"
             android:label="@string/title_activity_debug_mode" >
         </activity>
+        <activity
+            android:name="com.machineversion.sub_option.DeviceSetting"
+            android:label="@string/title_activity_device_setting" >
+        </activity>
     </application>
 
 </manifest>

@@ -161,7 +161,15 @@
         <item>选择算法</item>
     </string-array>
 
+    <!-- 系统设置→设备参数设置内容 -->
+    <string-array name="device_setting">
+        <item>常规</item>
+        <item>触发</item>
+        <item>AD9849</item>
+    </string-array>
+
     <string name="action_settings">Settings</string>
     <string name="title_activity_debug_mode">DebugMode</string>
+    <string name="title_activity_device_setting">DeviceSetting</string>
 
 </resources>
