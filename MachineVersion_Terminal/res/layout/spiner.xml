@@ -5,5 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
+    android:paddingBottom="2dp"
+    android:paddingLeft="40dp"
+    android:paddingTop="6dp"
     android:singleLine="true"
     android:textSize="30sp" />

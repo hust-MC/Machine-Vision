@@ -39,6 +39,11 @@ public class SysSettings extends ControlPannelActivity implements
 
 		dialog.show();
 
+		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE)
+				.setTextSize(27F);
+		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
+				.setTextSize(27F);
+
 	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

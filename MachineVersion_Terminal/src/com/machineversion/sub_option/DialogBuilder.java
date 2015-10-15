@@ -35,6 +35,10 @@ import android.widget.TextView;
 public class DialogBuilder
 {
 	private Context context;
+
+	/**
+	 * 对话框中的输入控件
+	 */
 	private View[] views;
 
 	public DialogBuilder(Context context)
@@ -71,7 +75,7 @@ public class DialogBuilder
 		{
 			iniReader = new IniReader(strIni, fileDir);
 		}
-		views = new View[contents.length];
+		views = new View[contents.length];					// 输入框
 
 		ScrollView scrollView = new ScrollView(context);
 		scrollView.setPadding(0, 0, 0, 10);
