@@ -1,10 +1,14 @@
 package com.machineversion.option;
 
 import com.machineversion.sub_option.DebugMode;
+import com.machineversion.sub_option.FragmentDevice_general;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.terminal.R;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -43,6 +47,11 @@ public class SysSettings extends ControlPannelActivity implements
 				.setTextSize(27F);
 		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
 				.setTextSize(27F);
+
+		Fragment fragment = new FragmentDevice_general();
+		FragmentTransaction transaction = getFragmentManager()
+				.beginTransaction();
+		transaction.add(R.id.device_setting_fragment, fragment).commit();
 
 	}
 	@Override
