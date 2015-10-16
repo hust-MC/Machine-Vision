@@ -47,11 +47,11 @@ public class SysSettings extends ControlPannelActivity implements
 				.setTextSize(27F);
 		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
 				.setTextSize(27F);
-		
-		Fragment fragment = new FragmentDevice_general();
-		FragmentTransaction transaction = getFragmentManager()
-				.beginTransaction();
-		transaction.add(R.id.device_setting_fragment, fragment).commit();
+
+		// Fragment fragment = new FragmentDevice_general();
+		// FragmentTransaction transaction = getFragmentManager()
+		// .beginTransaction();
+		// transaction.add(R.id.device_setting_fragment, fragment).commit();
 	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

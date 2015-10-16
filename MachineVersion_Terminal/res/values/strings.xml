@@ -168,7 +168,11 @@
         <item>AD9849</item>
     </string-array>
 
-    <string name="action_settings">Settings</string>
+    <!-- 设备参数设置之常规→Input type -->
+    <string-array name="device_setting_output_type">
+        <item>ICX414AL</item>
+    </string-array>
+    <string name="action_settings">Settings</string>
     <string name="title_activity_debug_mode">DebugMode</string>
     <string name="title_activity_device_setting">DeviceSetting</string>
 
