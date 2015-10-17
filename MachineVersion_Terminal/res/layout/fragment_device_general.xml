@@ -55,9 +55,12 @@
                     style="@style/device_setting_textview"
                     android:text="Start(x,y):" />
 
-                <Spinner
-                    style="@style/device_setting_lastview"
-                    android:entries="@array/device_setting_output_type" />
+                <com.machineversion.sub_option.NumberSettingLayout
+                    android:id="@+id/start_xy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true" >
+                </com.machineversion.sub_option.NumberSettingLayout>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

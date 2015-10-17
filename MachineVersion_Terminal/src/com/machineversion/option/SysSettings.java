@@ -3,6 +3,7 @@ package com.machineversion.option;
 import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.FragmentDevice_general;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
+import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.terminal.R;
 
 import android.app.AlertDialog;
@@ -23,15 +24,19 @@ public class SysSettings extends ControlPannelActivity implements
 		OnDialogClicked
 {
 	Spinner spinner;
+	NumberSettingLayout numberSettingLayout;
 
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
 		View layout = LayoutInflater.from(this).inflate(
 				R.layout.device_setting, null);
+		numberSettingLayout = (NumberSettingLayout) layout
+				.findViewById(R.id.start_xy);
+
+		numberSettingLayout.setMaxValue(300);
 
 		spinner = (Spinner) layout.findViewById(R.id.device_setting_spinner);
-
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.spiner, getResources().getStringArray(
 						R.array.device_setting));
@@ -48,10 +53,6 @@ public class SysSettings extends ControlPannelActivity implements
 		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
 				.setTextSize(27F);
 
-		// Fragment fragment = new FragmentDevice_general();
-		// FragmentTransaction transaction = getFragmentManager()
-		// .beginTransaction();
-		// transaction.add(R.id.device_setting_fragment, fragment).commit();
 	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

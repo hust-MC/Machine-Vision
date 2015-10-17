@@ -22,7 +22,7 @@ public class ControlPannelLayout extends LinearLayout implements
 
 	public ControlPannelLayout(Context context)
 	{
-		this(context, null);
+		super(context, null);
 	}
 
 	public ControlPannelLayout(Context context, AttributeSet attrs)
