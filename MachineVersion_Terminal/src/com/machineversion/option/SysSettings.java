@@ -1,11 +1,15 @@
 package com.machineversion.option;
 
-import com.machineversion.sub_option.DebugMode;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.Inflater;
 
+import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.terminal.R;
 
+import android.R.layout;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -14,8 +18,15 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -23,24 +34,81 @@ import android.widget.Toast;
 public class SysSettings extends ControlPannelActivity implements
 		OnDialogClicked
 {
+	View layout;
 	Spinner spinner;
 	NumberSettingLayout numberSettingLayout;
+	ViewPager vPager;
 
-	@Override
-	protected void onSpecialItemClicked(int position)
+	private void initViewPager()
 	{
-		View layout = LayoutInflater.from(this).inflate(
-				R.layout.device_setting, null);
-		numberSettingLayout = (NumberSettingLayout) layout
-				.findViewById(R.id.start_xy);
+		LayoutInflater inflater = getLayoutInflater();
+		List<View> list = new ArrayList<View>();
+		list.add(inflater.inflate(R.layout.vpager_device_general, null));
+		list.add(inflater.inflate(R.layout.vpager_device_triger, null));
 
-		numberSettingLayout.setMaxValue(300);
+		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
+		vPager.setAdapter(new MyPagerAdapter(vPager, list));
 
+		vPager.setOnPageChangeListener(new OnPageChangeListener()
+		{
+
+			@Override
+			public void onPageSelected(int arg0)
+			{
+				if (spinner != null)
+				{
+					spinner.setSelection(arg0);
+				}
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2)
+			{
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0)
+			{
+			}
+		});
+	}
+	private void initSpinner()
+	{
 		spinner = (Spinner) layout.findViewById(R.id.device_setting_spinner);
+
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener()
+		{
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id)
+			{
+				if (vPager != null)
+				{
+					Log.d("MC", position + "");
+					vPager.setCurrentItem(position, true);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent)
+			{
+				Log.d("MC", "nothing selected");
+			}
+		});
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.spiner, getResources().getStringArray(
 						R.array.device_setting));
 		spinner.setAdapter(adapter);
+	}
+
+	@Override
+	protected void onSpecialItemClicked(int position)
+	{
+		layout = LayoutInflater.from(this).inflate(R.layout.device_setting,
+				null);
+
+		initViewPager();
+		initSpinner();
 
 		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("常规")
 				.setView(layout).setPositiveButton("确定", new ConfirmButton())
@@ -91,5 +159,44 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		startActivity(new Intent(this, DebugMode.class));
 		Toast.makeText(this, "数据保存成功", Toast.LENGTH_SHORT).show();
+	}
+
+	private class MyPagerAdapter extends PagerAdapter
+	{
+		private List<View> list;
+
+		public MyPagerAdapter(ViewPager vPager, List<View> list)
+		{
+			this.list = list;
+			for (View view : list)
+			{
+				vPager.addView(view);
+			}
+		}
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object)
+		{
+			((ViewPager) container).removeView(list.get(position));
+		}
+
+		@Override
+		public Object instantiateItem(View container, int position)
+		{
+			Log.d("MC", position + "");
+
+			return list.get(position);
+		}
+
+		@Override
+		public int getCount()
+		{
+			return list.size();
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1)
+		{
+			return arg0 == arg1;
+		}
 	}
 }

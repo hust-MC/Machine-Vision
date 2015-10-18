@@ -18,11 +18,10 @@ public class ProgressBarEditLayout extends LinearLayout
 		super(context, attrs);
 		this.context = context;
 
-		init_wiget();
+		init_widget();
 
 	}
-
-	private void init_wiget()
+	private void init_widget()
 	{
 		LayoutParams params = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
 
