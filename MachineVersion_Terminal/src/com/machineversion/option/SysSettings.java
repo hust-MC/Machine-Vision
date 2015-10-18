@@ -1,7 +1,7 @@
 package com.machineversion.option;
 
 import com.machineversion.sub_option.DebugMode;
-import com.machineversion.sub_option.FragmentDevice_general;
+
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.terminal.R;
