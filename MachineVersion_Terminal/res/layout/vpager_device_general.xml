@@ -16,7 +16,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
             <TextView
                 style="@style/device_setting_textview"
@@ -29,8 +30,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp" >
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1" >
 
             <TextView
                 style="@style/device_setting_textview"
@@ -43,8 +45,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp" >
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/device_setting_start_tv"
@@ -73,12 +76,14 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
         android:layout_weight="1"
         android:orientation="vertical" >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/device_setting_exposure_tv"
@@ -94,6 +99,50 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/device_setting_exposure_tv"
                 android:orientation="horizontal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/device_setting_bit_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Bit per pixel：" />
+
+            <RadioGroup
+                android:id="@+id/device_setting_bit_radiog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/device_setting_bit_tv"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/device_setting_bit_radio1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8 bits" />
+
+                <RadioButton
+                    android:id="@+id/device_setting_bit_radio2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:checked="true"
+                    android:text=">8 bits" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1" >
         </RelativeLayout>
     </LinearLayout>
 

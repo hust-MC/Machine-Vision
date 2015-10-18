@@ -131,7 +131,7 @@ public class SysSettings extends ControlPannelActivity implements
 		Point size = new Point();
 		getWindowManager().getDefaultDisplay().getSize(size);
 
-		dialog.getWindow().setLayout((int) (size.x * 0.6),
+		dialog.getWindow().setLayout((int) (size.x * 0.8),
 				LayoutParams.WRAP_CONTENT);
 
 		// dialog.getWindow().setLayout(LayoutParams.WRAP_CONTENT,

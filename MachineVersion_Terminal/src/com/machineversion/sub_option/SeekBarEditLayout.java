@@ -30,7 +30,8 @@ public class SeekBarEditLayout extends LinearLayout
 		seekBar = new SeekBar(context);
 		editText = new EditText(context);
 
-		LayoutParams params = new LayoutParams(0, LayoutParams.MATCH_PARENT, 5);
+		LayoutParams params = new LayoutParams(0, LayoutParams.MATCH_PARENT,
+				3.5F);
 		seekBar.setLayoutParams(params);
 		seekBar.setMax(1000);
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
