@@ -9,8 +9,9 @@
     android:paddingTop="20dp" >
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical" >
 
         <RelativeLayout
@@ -51,12 +52,48 @@
                 android:text="Start(x,y):" />
 
             <com.machineversion.sub_option.NumberSettingLayout
-                android:id="@+id/start_xy"
+                android:id="@+id/start_y"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/device_setting_start_tv"
                 android:layout_alignParentRight="true" >
             </com.machineversion.sub_option.NumberSettingLayout>
+
+            <com.machineversion.sub_option.NumberSettingLayout
+                android:id="@+id/start_x"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/device_setting_start_tv"
+                android:layout_marginRight="30dp"
+                android:layout_toLeftOf="@id/start_y" >
+            </com.machineversion.sub_option.NumberSettingLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/device_setting_exposure_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Exposure：" />
+
+            <com.machineversion.sub_option.SeekBarEditLayout
+                android:id="@+id/device_setting_exposure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/device_setting_exposure_tv"
+                android:orientation="horizontal" />
         </RelativeLayout>
     </LinearLayout>
 

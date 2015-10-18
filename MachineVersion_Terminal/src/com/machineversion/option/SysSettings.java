@@ -7,6 +7,7 @@ import java.util.zip.Inflater;
 import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
+import com.machineversion.sub_option.SeekBarEditLayout;
 import com.machineversion.terminal.R;
 
 import android.R.layout;
@@ -17,17 +18,22 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,11 +45,18 @@ public class SysSettings extends ControlPannelActivity implements
 	NumberSettingLayout numberSettingLayout;
 	ViewPager vPager;
 
+	/**
+	 * 设置ViewPager的内容
+	 */
 	private void initViewPager()
 	{
 		LayoutInflater inflater = getLayoutInflater();
 		List<View> list = new ArrayList<View>();
-		list.add(inflater.inflate(R.layout.vpager_device_general, null));
+
+		View page1 = inflater.inflate(R.layout.vpager_device_general, null);
+		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
+				.setText(50);
+		list.add(page1);
 		list.add(inflater.inflate(R.layout.vpager_device_triger, null));
 
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
@@ -85,7 +98,7 @@ public class SysSettings extends ControlPannelActivity implements
 				if (vPager != null)
 				{
 					Log.d("MC", position + "");
-					vPager.setCurrentItem(position, true);
+					vPager.setCurrentItem(position, false);
 				}
 			}
 
@@ -115,6 +128,14 @@ public class SysSettings extends ControlPannelActivity implements
 				.setNegativeButton("取消", new CancelButton()).create();
 
 		dialog.show();
+		Point size = new Point();
+		getWindowManager().getDefaultDisplay().getSize(size);
+
+		dialog.getWindow().setLayout((int) (size.x * 0.6),
+				LayoutParams.WRAP_CONTENT);
+
+		// dialog.getWindow().setLayout(LayoutParams.WRAP_CONTENT,
+		// LayoutParams.WRAP_CONTENT);
 
 		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE)
 				.setTextSize(27F);
