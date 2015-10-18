@@ -6,6 +6,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,8 +18,9 @@ public class NumberSettingLayout extends LinearLayout
 {
 	TextView textView;
 	Context context;
-	View view;
+	LinearLayout linearLayout;
 	NumberPicker picker;
+	AlertDialog dialog;
 
 	public NumberSettingLayout(Context context)
 	{
@@ -29,13 +32,27 @@ public class NumberSettingLayout extends LinearLayout
 		super(context, attrs);
 
 		this.context = context;
-		view = LayoutInflater.from(context).inflate(R.layout.number_setting,
-				null);
-		addView(view);
+		linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(
+				R.layout.number_setting, null);
 
-		textView = (TextView) findViewById(R.id.number_setting_textview);
+		// linearLayout.setLayoutParams(params);
+
+		addView(linearLayout);
+
+		textView = (TextView) findViewById(R.id.number_setting_textview);		// 数字输入文本框
 		picker = new NumberPicker(NumberSettingLayout.this.context);
-		picker.setMaxValue(500);
+		picker.setMaxValue(500);			// 默认最大值
+
+		dialog = new AlertDialog.Builder(NumberSettingLayout.this.context)
+				.setView(picker)
+				.setPositiveButton("确定", new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						textView.setText(picker.getValue() + "");
+					}
+				}).create();
 
 		textView.setOnClickListener(new OnClickListener()
 		{
@@ -43,24 +60,10 @@ public class NumberSettingLayout extends LinearLayout
 			public void onClick(View v)
 			{
 
-				AlertDialog dialog = new AlertDialog.Builder(
-						NumberSettingLayout.this.context)
-						.setView(picker)
-						.setPositiveButton("确定",
-								new DialogInterface.OnClickListener()
-								{
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which)
-									{
-										// textView.setText(picker.getValue());
-									}
-								}).create();
 				dialog.show();
 			}
 		});
 	}
-
 	public void setText(String text)
 	{
 		if (textView != null)
