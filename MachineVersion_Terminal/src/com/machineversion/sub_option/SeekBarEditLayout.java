@@ -62,21 +62,21 @@ public class SeekBarEditLayout extends LinearLayout
 
 		params = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
 		editText.setLayoutParams(params);
-		editText.setInputType(EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
-		editText.setOnEditorActionListener(new OnEditorActionListener()
-		{
-
-			@Override
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event)
-			{
-				if (seekBar != null)
-				{
-					seekBar.setProgress(Integer.valueOf(v.getText().toString()));
-				}
-				return false;
-			}
-		});
+		// editText.setInputType(EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
+		// editText.setOnEditorActionListener(new OnEditorActionListener()
+		// {
+		//
+		// @Override
+		// public boolean onEditorAction(TextView v, int actionId,
+		// KeyEvent event)
+		// {
+		// if (seekBar != null)
+		// {
+		// seekBar.setProgress(Integer.valueOf(v.getText().toString()));
+		// }
+		// return false;
+		// }
+		// });
 
 		addView(seekBar);
 		addView(editText);

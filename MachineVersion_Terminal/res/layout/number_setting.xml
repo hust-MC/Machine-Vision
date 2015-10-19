@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/number_setting_textview"
+    <EditText
+        android:id="@+id/number_setting_edittext"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"

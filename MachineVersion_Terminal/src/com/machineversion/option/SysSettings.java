@@ -18,12 +18,12 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -206,9 +206,8 @@ public class SysSettings extends ControlPannelActivity implements
 
 		dialog.getWindow().setLayout((int) (size.x * 0.8),
 				LayoutParams.WRAP_CONTENT);
-
-		// dialog.getWindow().setLayout(LayoutParams.WRAP_CONTENT,
-		// LayoutParams.WRAP_CONTENT);
+		dialog.getWindow().clearFlags(
+				WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
 		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE)
 				.setTextSize(27F);
@@ -262,14 +261,11 @@ public class SysSettings extends ControlPannelActivity implements
 		public MyPagerAdapter(ViewPager vPager, List<View> list)
 		{
 			this.list = list;
-			for (View view : list)
-			{
-				vPager.addView(view);
-			}
 		}
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object)
 		{
+			Log.d("MC", "remove");
 			((ViewPager) container).removeView(list.get(position));
 		}
 
@@ -277,7 +273,7 @@ public class SysSettings extends ControlPannelActivity implements
 		public Object instantiateItem(View container, int position)
 		{
 			Log.d("MC", position + "");
-
+			((ViewPager) container).addView(list.get(position));
 			return list.get(position);
 		}
 

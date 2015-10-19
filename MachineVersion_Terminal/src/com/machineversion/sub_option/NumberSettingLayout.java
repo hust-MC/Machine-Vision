@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -36,11 +37,9 @@ public class NumberSettingLayout extends LinearLayout
 		linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(
 				R.layout.number_setting, null);
 
-		// linearLayout.setLayoutParams(params);
-
 		addView(linearLayout);
 
-		editText = (EditText) findViewById(R.id.number_setting_textview);		// 数字输入文本框
+		editText = (EditText) findViewById(R.id.number_setting_edittext);		// 数字输入文本框
 		picker = new NumberPicker(NumberSettingLayout.this.context);
 		picker.setMaxValue(500);			// 默认最大值
 
@@ -55,13 +54,19 @@ public class NumberSettingLayout extends LinearLayout
 					}
 				}).create();
 
-		editText.setOnClickListener(new OnClickListener()
+		editText.setFocusable(false);
+		editText.setOnTouchListener(new OnTouchListener()
 		{
-			@Override
-			public void onClick(View v)
-			{
 
-				dialog.show();
+			@Override
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				if (event.getAction() == MotionEvent.ACTION_UP)
+				{
+					dialog.show();
+					return true;
+				}
+				return false;
 			}
 		});
 	}
