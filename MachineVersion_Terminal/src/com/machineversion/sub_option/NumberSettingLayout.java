@@ -5,6 +5,7 @@ import com.machineversion.terminal.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,9 +56,9 @@ public class NumberSettingLayout extends LinearLayout
 				}).create();
 
 		editText.setFocusable(false);
+		editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
 		editText.setOnTouchListener(new OnTouchListener()
 		{
-
 			@Override
 			public boolean onTouch(View v, MotionEvent event)
 			{

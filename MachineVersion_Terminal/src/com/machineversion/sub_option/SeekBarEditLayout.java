@@ -1,7 +1,9 @@
 package com.machineversion.sub_option;
 
 import android.content.Context;
+import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -62,21 +64,21 @@ public class SeekBarEditLayout extends LinearLayout
 
 		params = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
 		editText.setLayoutParams(params);
-		// editText.setInputType(EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
-		// editText.setOnEditorActionListener(new OnEditorActionListener()
-		// {
-		//
-		// @Override
-		// public boolean onEditorAction(TextView v, int actionId,
-		// KeyEvent event)
-		// {
-		// if (seekBar != null)
-		// {
-		// seekBar.setProgress(Integer.valueOf(v.getText().toString()));
-		// }
-		// return false;
-		// }
-		// });
+		editText.setInputType(InputType.TYPE_CLASS_PHONE);
+		editText.setOnEditorActionListener(new OnEditorActionListener()
+		{
+			@Override
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event)
+			{
+				Log.d("MC", "editorAction");
+				if (seekBar != null)
+				{
+					seekBar.setProgress(Integer.valueOf(v.getText().toString()));
+				}
+				return false;
+			}
+		});
 
 		addView(seekBar);
 		addView(editText);
