@@ -17,6 +17,11 @@ public class SeekBarEditLayout extends LinearLayout
 	SeekBar seekBar;
 	EditText editText;
 
+	public SeekBarEditLayout(Context context)
+	{
+		this(context, null);
+	}
+
 	public SeekBarEditLayout(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);

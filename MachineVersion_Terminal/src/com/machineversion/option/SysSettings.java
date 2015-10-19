@@ -2,7 +2,6 @@ package com.machineversion.option;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
@@ -10,11 +9,7 @@ import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
 import com.machineversion.terminal.R;
 
-import android.R.layout;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -23,17 +18,18 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.Layout;
 import android.util.Log;
-import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -45,6 +41,79 @@ public class SysSettings extends ControlPannelActivity implements
 	NumberSettingLayout numberSettingLayout;
 	ViewPager vPager;
 
+	private LinearLayout getPage3()
+	{
+		String[][] items =
+		{
+		{ "VGA", "SHP", "HPL", "RGPL", "P0GA", "P1GA", "P2GA", "P3GA" },
+		{ "RGDRV", "SHD", "HNL", "RGNL", "H1DRV", "H2DRV", "H3DRV", "H4DRV" } };
+
+		LinearLayout layoutOuter = new LinearLayout(this);
+		layoutOuter.setOrientation(LinearLayout.HORIZONTAL);
+		layoutOuter.setPadding(20, 30, 20, 0);
+		LinearLayout layoutLeft = new LinearLayout(this);
+		layoutLeft.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout layoutRight = new LinearLayout(this);
+		layoutRight.setOrientation(LinearLayout.VERTICAL);
+
+		LayoutParams paramsLeft = new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 1);
+		LayoutParams paramsRight = new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 1);
+		paramsRight.leftMargin = 28;
+
+		/**
+		 * 生成条目
+		 */
+		for (String item : items[0])
+		{
+			LinearLayout layout = new LinearLayout(this);
+			layout.setOrientation(LinearLayout.HORIZONTAL);
+
+			LayoutParams paramsInner = new LayoutParams(0,
+					LayoutParams.WRAP_CONTENT, 1);
+			paramsInner.rightMargin = 8;
+			TextView textView = new TextView(this);
+			textView.setLayoutParams(paramsInner);
+			textView.setText(item);
+			textView.setGravity(Gravity.END);
+
+			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
+			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
+			seekBarEditLayout.setLayoutParams(paramsInner);
+
+			layout.addView(textView);
+			layout.addView(seekBarEditLayout);
+
+			layoutLeft.addView(layout);
+		}
+		for (String item : items[1])
+		{
+			LinearLayout layout = new LinearLayout(this);
+			layout.setOrientation(LinearLayout.HORIZONTAL);
+
+			LayoutParams paramsInner = new LayoutParams(0,
+					LayoutParams.WRAP_CONTENT, 1);
+			paramsInner.rightMargin = 8;
+			TextView textView = new TextView(this);
+			textView.setLayoutParams(paramsInner);
+			textView.setText(item);
+			textView.setGravity(Gravity.END);
+
+			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
+			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
+			seekBarEditLayout.setLayoutParams(paramsInner);
+
+			layout.addView(textView);
+			layout.addView(seekBarEditLayout);
+
+			layoutRight.addView(layout);
+		}
+
+		layoutOuter.addView(layoutLeft, paramsLeft);
+		layoutOuter.addView(layoutRight, paramsRight);
+		return layoutOuter;
+	}
 	/**
 	 * 设置ViewPager的内容
 	 */
@@ -56,8 +125,12 @@ public class SysSettings extends ControlPannelActivity implements
 		View page1 = inflater.inflate(R.layout.vpager_device_general, null);
 		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
 				.setText(50);
+
+		LinearLayout page3 = getPage3();
+
 		list.add(page1);
 		list.add(inflater.inflate(R.layout.vpager_device_triger, null));
+		list.add(page3);
 
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
 		vPager.setAdapter(new MyPagerAdapter(vPager, list));

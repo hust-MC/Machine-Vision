@@ -2,8 +2,112 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingTop="50dp" >
 
-    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/device_setting_trigger_et1"
+            style="@style/device_setting_trigger_et" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_front"
+            android:layout_alignBottom="@id/device_setting_trigger_et1"
+            android:layout_toLeftOf="@id/device_setting_trigger_et1"
+            android:text="传感器触发距离" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_back"
+            android:layout_alignBottom="@id/device_setting_trigger_et1"
+            android:layout_toRightOf="@id/device_setting_trigger_et1"
+            android:text="0.1mm" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/device_setting_trigger_et2"
+            style="@style/device_setting_trigger_et" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_front"
+            android:layout_alignBottom="@id/device_setting_trigger_et2"
+            android:layout_toLeftOf="@id/device_setting_trigger_et2"
+            android:text="分拣触发距离" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_back"
+            android:layout_alignBottom="@id/device_setting_trigger_et2"
+            android:layout_toRightOf="@id/device_setting_trigger_et2"
+            android:text="0.1mm" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/device_setting_trigger_et3"
+            style="@style/device_setting_trigger_et" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_front"
+            android:layout_alignBottom="@id/device_setting_trigger_et3"
+            android:layout_toLeftOf="@id/device_setting_trigger_et3"
+            android:text="传送带速度：" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_back"
+            android:layout_alignBottom="@id/device_setting_trigger_et3"
+            android:layout_toRightOf="@id/device_setting_trigger_et3"
+            android:text="mm/s" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/device_setting_trigger_et4"
+            style="@style/device_setting_trigger_et" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_front"
+            android:layout_alignBottom="@id/device_setting_trigger_et4"
+            android:layout_toLeftOf="@id/device_setting_trigger_et4"
+            android:text="分拣信号脉宽：" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_back"
+            android:layout_alignBottom="@id/device_setting_trigger_et4"
+            android:layout_toRightOf="@id/device_setting_trigger_et4"
+            android:text="ms" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/device_setting_trigger_et5"
+            style="@style/device_setting_trigger_et" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_front"
+            android:layout_alignBottom="@id/device_setting_trigger_et5"
+            android:layout_toLeftOf="@id/device_setting_trigger_et5"
+            android:text="曝光预设时间：" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_back"
+            android:layout_alignBottom="@id/device_setting_trigger_et5"
+            android:layout_toRightOf="@id/device_setting_trigger_et5"
+            android:text="us" />
+    </RelativeLayout>
 
 </LinearLayout>
