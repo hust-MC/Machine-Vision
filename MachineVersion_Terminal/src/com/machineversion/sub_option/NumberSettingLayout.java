@@ -10,13 +10,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 public class NumberSettingLayout extends LinearLayout
 {
-	TextView textView;
+	EditText editText;
 	Context context;
 	LinearLayout linearLayout;
 	NumberPicker picker;
@@ -39,7 +40,7 @@ public class NumberSettingLayout extends LinearLayout
 
 		addView(linearLayout);
 
-		textView = (TextView) findViewById(R.id.number_setting_textview);		// 数字输入文本框
+		editText = (EditText) findViewById(R.id.number_setting_textview);		// 数字输入文本框
 		picker = new NumberPicker(NumberSettingLayout.this.context);
 		picker.setMaxValue(500);			// 默认最大值
 
@@ -50,11 +51,11 @@ public class NumberSettingLayout extends LinearLayout
 					@Override
 					public void onClick(DialogInterface dialog, int which)
 					{
-						textView.setText(picker.getValue() + "");
+						editText.setText(picker.getValue() + "");
 					}
 				}).create();
 
-		textView.setOnClickListener(new OnClickListener()
+		editText.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -66,9 +67,9 @@ public class NumberSettingLayout extends LinearLayout
 	}
 	public void setText(String text)
 	{
-		if (textView != null)
+		if (editText != null)
 		{
-			textView.setText(text);
+			editText.setText(text);
 		}
 	}
 
