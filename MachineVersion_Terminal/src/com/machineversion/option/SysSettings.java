@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
+import com.machineversion.sub_option.DropDownList;
 import com.machineversion.sub_option.NumberSettingLayout;
+import com.machineversion.sub_option.OnDropListClickListener;
 import com.machineversion.sub_option.SeekBarEditLayout;
 import com.machineversion.terminal.R;
 
@@ -15,21 +17,15 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Spinner;
@@ -43,7 +39,7 @@ public class SysSettings extends ControlPannelActivity implements
 	Spinner spinner;
 	NumberSettingLayout numberSettingLayout;
 	ViewPager vPager;
-	int i = 0;
+	DropDownList dropList;
 
 	private LinearLayout getPage3()
 	{
@@ -142,15 +138,10 @@ public class SysSettings extends ControlPannelActivity implements
 
 		vPager.setOnPageChangeListener(new OnPageChangeListener()
 		{
-
 			@Override
 			public void onPageSelected(int arg0)
 			{
-				if (i == 3)
-				{
-					i = 0;
-				}
-				((TextView) layout.findViewById(R.id.test)).setText(i++ + "");
+				dropList.setSelection(arg0);
 			}
 
 			@Override
@@ -166,6 +157,22 @@ public class SysSettings extends ControlPannelActivity implements
 	}
 	private void initSpinner()
 	{
+		dropList = (DropDownList) layout
+				.findViewById(R.id.device_setting_droplist);
+		dropList.setItem(getResources().getStringArray(R.array.device_setting));
+
+		dropList.setOnListClickListener(new OnDropListClickListener()
+		{
+			@Override
+			public void onListItemClick(DropDownList dropDownList, int which)
+			{
+				if (vPager != null)
+				{
+					vPager.setCurrentItem(which);
+				}
+			}
+		});
+
 		// spinner = (Spinner) layout.findViewById(R.id.device_setting_spinner);
 		// spinner.setOnItemSelectedListener(new OnItemSelectedListener()
 		// {
@@ -185,12 +192,11 @@ public class SysSettings extends ControlPannelActivity implements
 		// Log.d("MC", "nothing selected");
 		// }
 		// });
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				R.layout.spiner, getResources().getStringArray(
-						R.array.device_setting));
-		spinner.setAdapter(adapter);
+		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		// R.layout.spiner, getResources().getStringArray(
+		// R.array.device_setting));
+		// spinner.setAdapter(adapter);
 	}
-
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
@@ -198,7 +204,7 @@ public class SysSettings extends ControlPannelActivity implements
 				null);
 
 		initViewPager();
-		// initSpinner();
+		initSpinner();
 
 		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("常规")
 				.setView(layout).setPositiveButton("确定", new ConfirmButton())
