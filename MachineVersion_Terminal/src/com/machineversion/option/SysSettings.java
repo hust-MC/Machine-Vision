@@ -15,22 +15,25 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SysSettings extends ControlPannelActivity implements
@@ -40,6 +43,7 @@ public class SysSettings extends ControlPannelActivity implements
 	Spinner spinner;
 	NumberSettingLayout numberSettingLayout;
 	ViewPager vPager;
+	int i = 0;
 
 	private LinearLayout getPage3()
 	{
@@ -133,6 +137,7 @@ public class SysSettings extends ControlPannelActivity implements
 		list.add(page3);
 
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
+		vPager.setOffscreenPageLimit(2);
 		vPager.setAdapter(new MyPagerAdapter(vPager, list));
 
 		vPager.setOnPageChangeListener(new OnPageChangeListener()
@@ -141,10 +146,11 @@ public class SysSettings extends ControlPannelActivity implements
 			@Override
 			public void onPageSelected(int arg0)
 			{
-				if (spinner != null)
+				if (i == 3)
 				{
-					spinner.setSelection(arg0);
+					i = 0;
 				}
+				((TextView) layout.findViewById(R.id.test)).setText(i++ + "");
 			}
 
 			@Override
@@ -160,27 +166,25 @@ public class SysSettings extends ControlPannelActivity implements
 	}
 	private void initSpinner()
 	{
-		spinner = (Spinner) layout.findViewById(R.id.device_setting_spinner);
-
-		spinner.setOnItemSelectedListener(new OnItemSelectedListener()
-		{
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id)
-			{
-				if (vPager != null)
-				{
-					Log.d("MC", position + "");
-					vPager.setCurrentItem(position, false);
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent)
-			{
-				Log.d("MC", "nothing selected");
-			}
-		});
+		// spinner = (Spinner) layout.findViewById(R.id.device_setting_spinner);
+		// spinner.setOnItemSelectedListener(new OnItemSelectedListener()
+		// {
+		// @Override
+		// public void onItemSelected(AdapterView<?> parent, View view,
+		// int position, long id)
+		// {
+		// if (vPager != null)
+		// {
+		// // vPager.setCurrentItem(position, false);
+		// }
+		// }
+		//
+		// @Override
+		// public void onNothingSelected(AdapterView<?> parent)
+		// {
+		// Log.d("MC", "nothing selected");
+		// }
+		// });
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.spiner, getResources().getStringArray(
 						R.array.device_setting));
@@ -194,7 +198,7 @@ public class SysSettings extends ControlPannelActivity implements
 				null);
 
 		initViewPager();
-		initSpinner();
+		// initSpinner();
 
 		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("常规")
 				.setView(layout).setPositiveButton("确定", new ConfirmButton())
@@ -272,7 +276,7 @@ public class SysSettings extends ControlPannelActivity implements
 		@Override
 		public Object instantiateItem(View container, int position)
 		{
-			Log.d("MC", position + "");
+			Log.d("MC", "instantiate");
 			((ViewPager) container).addView(list.get(position));
 			return list.get(position);
 		}

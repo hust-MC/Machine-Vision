@@ -1,7 +1,10 @@
 package com.machineversion.sub_option;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -65,13 +68,42 @@ public class SeekBarEditLayout extends LinearLayout
 		params = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
 		editText.setLayoutParams(params);
 		editText.setInputType(InputType.TYPE_CLASS_PHONE);
+		editText.addTextChangedListener(new TextWatcher()
+		{
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count)
+			{
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after)
+			{
+			}
+
+			@Override
+			public void afterTextChanged(Editable s)
+			{
+				if (seekBar != null)
+				{
+					if (TextUtils.isEmpty(s.toString()))
+					{
+						seekBar.setProgress(0);
+					}
+					else
+					{
+						seekBar.setProgress(Integer.valueOf(s.toString()));
+					}
+				}
+			}
+		});
 		editText.setOnEditorActionListener(new OnEditorActionListener()
 		{
 			@Override
 			public boolean onEditorAction(TextView v, int actionId,
 					KeyEvent event)
 			{
-				Log.d("MC", "editorAction");
 				if (seekBar != null)
 				{
 					seekBar.setProgress(Integer.valueOf(v.getText().toString()));
