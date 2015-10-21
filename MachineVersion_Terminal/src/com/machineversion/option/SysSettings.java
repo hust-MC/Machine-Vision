@@ -6,8 +6,8 @@ import java.util.List;
 import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.DropDownList;
+import com.machineversion.sub_option.DropDownList.OnDropListClickListener;
 import com.machineversion.sub_option.NumberSettingLayout;
-import com.machineversion.sub_option.OnDropListClickListener;
 import com.machineversion.sub_option.SeekBarEditLayout;
 import com.machineversion.terminal.R;
 

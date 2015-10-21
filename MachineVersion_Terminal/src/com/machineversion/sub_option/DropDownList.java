@@ -111,4 +111,9 @@ public class DropDownList extends LinearLayout
 			dialog.dismiss();
 		}
 	}
+
+	public interface OnDropListClickListener
+	{
+		public void onListItemClick(DropDownList dropDownList, int which);
+	}
 }

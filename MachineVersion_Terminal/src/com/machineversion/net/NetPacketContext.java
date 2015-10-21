@@ -1,6 +1,7 @@
 package com.machineversion.net;
 
 import java.io.OutputStream;
+import java.util.Arrays;
 
 import android.util.Log;
 
@@ -45,6 +46,7 @@ public class NetPacketContext
 	public void sendPacket(OutputStream os)
 	{
 		packet.send(os);
+
 	}
 
 	/**
