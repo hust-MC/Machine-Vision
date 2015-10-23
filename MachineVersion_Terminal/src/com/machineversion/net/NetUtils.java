@@ -134,4 +134,15 @@ public class NetUtils
 			block = 0;				// 可设为任意值
 		}
 	}
+
+	public static class GeneralInfo extends NetPacket
+	{
+		public GeneralInfo()
+		{
+			minid = MSG_NET_GENERAL;
+			type = 0;
+			block = 0;
+		}
+	}
+
 }

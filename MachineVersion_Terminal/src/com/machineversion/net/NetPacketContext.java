@@ -1,7 +1,6 @@
 package com.machineversion.net;
 
 import java.io.OutputStream;
-import java.util.Arrays;
 
 import android.util.Log;
 
@@ -32,6 +31,8 @@ public class NetPacketContext
 		case NetUtils.MSG_NET_STATE:
 			packet = new State();
 			break;
+		case NetUtils.MSG_NET_GENERAL:
+			packet = new GeneralInfo();
 		default:
 			Log.e("MC", "netPacket error");
 		}

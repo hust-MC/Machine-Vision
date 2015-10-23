@@ -123,6 +123,14 @@ public class CmdHandle
 		}
 	}
 
+	public void generalInfo(byte[] data)
+	{
+		NetPacketContext context = new NetPacketContext(MSG_NET_GENERAL);
+
+		context.setData(data);
+		context.sendPacket(os);
+	}
+
 	public void sendImage(Handler handler, int width, int height, int length,
 			byte[] image)
 	{
