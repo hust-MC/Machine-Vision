@@ -23,24 +23,12 @@
             android:text="设备选择："
             android:textSize="27sp" />
 
-        <!--
-        <Spinner
-            android:id="@+id/device_setting_spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:gravity="center"
-            android:paddingBottom="2dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="5dp"
-            android:paddingTop="2dp" />        -->
-
-        <com.machineversion.sub_option.DropDownList
+        <com.emercy.dropdownlist.DropDownList
             android:id="@+id/device_setting_droplist"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" >
-        </com.machineversion.sub_option.DropDownList>
+        </com.emercy.dropdownlist.DropDownList>
     </LinearLayout>
 
     <View

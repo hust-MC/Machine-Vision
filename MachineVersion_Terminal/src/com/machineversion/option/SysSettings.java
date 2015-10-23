@@ -155,7 +155,7 @@ public class SysSettings extends ControlPannelActivity implements
 			}
 		});
 	}
-	private void initSpinner()
+	private void initDropDownList()
 	{
 		dropList = (DropDownList) layout
 				.findViewById(R.id.device_setting_droplist);
@@ -204,7 +204,7 @@ public class SysSettings extends ControlPannelActivity implements
 				null);
 
 		initViewPager();
-		initSpinner();
+		initDropDownList();
 
 		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("常规")
 				.setView(layout).setPositiveButton("确定", new ConfirmButton())
