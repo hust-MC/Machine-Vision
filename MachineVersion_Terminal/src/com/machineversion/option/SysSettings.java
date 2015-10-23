@@ -172,30 +172,6 @@ public class SysSettings extends ControlPannelActivity implements
 				}
 			}
 		});
-
-		// spinner = (Spinner) layout.findViewById(R.id.device_setting_spinner);
-		// spinner.setOnItemSelectedListener(new OnItemSelectedListener()
-		// {
-		// @Override
-		// public void onItemSelected(AdapterView<?> parent, View view,
-		// int position, long id)
-		// {
-		// if (vPager != null)
-		// {
-		// // vPager.setCurrentItem(position, false);
-		// }
-		// }
-		//
-		// @Override
-		// public void onNothingSelected(AdapterView<?> parent)
-		// {
-		// Log.d("MC", "nothing selected");
-		// }
-		// });
-		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-		// R.layout.spiner, getResources().getStringArray(
-		// R.array.device_setting));
-		// spinner.setAdapter(adapter);
 	}
 	@Override
 	protected void onSpecialItemClicked(int position)
