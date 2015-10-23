@@ -122,5 +122,8 @@ public class SeekBarEditLayout extends LinearLayout
 			editText.setText(value + "");
 		}
 	}
-
+	public void setMax(int max)
+	{
+		seekBar.setMax(max);
+	}
 }

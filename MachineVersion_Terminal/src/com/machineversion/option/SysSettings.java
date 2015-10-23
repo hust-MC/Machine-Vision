@@ -124,7 +124,7 @@ public class SysSettings extends ControlPannelActivity implements
 
 		View page1 = inflater.inflate(R.layout.vpager_device_general, null);
 		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
-				.setText(50);
+				.setMax(1720);
 
 		LinearLayout page3 = getPage3();
 
@@ -239,12 +239,18 @@ public class SysSettings extends ControlPannelActivity implements
 		setListViewClicked();
 	}
 
+	/**
+	 * 设备参数设置，确认按钮事件
+	 * 
+	 * @author M C
+	 * 
+	 */
 	class ConfirmButton implements OnClickListener
 	{
 		@Override
 		public void onClick(DialogInterface dialog, int which)
 		{
-
+			
 		}
 	}
 
@@ -253,10 +259,13 @@ public class SysSettings extends ControlPannelActivity implements
 		@Override
 		public void onClick(DialogInterface dialog, int which)
 		{
-
+			
 		}
 	}
 
+	/**
+	 * 自动生成界面时，确认按钮事件
+	 */
 	@Override
 	public void onPositiveButtonClicked(String[] value)
 	{
