@@ -3,10 +3,10 @@ package com.machineversion.option;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.emercy.dropdownlist.DropDownList;
+import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
 import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
-import com.machineversion.sub_option.DropDownList;
-import com.machineversion.sub_option.DropDownList.OnDropListClickListener;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
 import com.machineversion.terminal.R;
@@ -250,7 +250,7 @@ public class SysSettings extends ControlPannelActivity implements
 		@Override
 		public void onClick(DialogInterface dialog, int which)
 		{
-			
+
 		}
 	}
 
@@ -259,7 +259,7 @@ public class SysSettings extends ControlPannelActivity implements
 		@Override
 		public void onClick(DialogInterface dialog, int which)
 		{
-			
+
 		}
 	}
 
