@@ -1,20 +1,64 @@
 package com.machineversion.sub_option;
 
+import java.util.Arrays;
+
 public class SystemSetting_devicePacket
 {
 	private byte[] data;
 	private int cursor;
+	private int maxType = TYPE_BYTE;
 
-	public byte[] getData()
+	private static final int TYPE_BYTE = 0;
+	private static final int TYPE_SHORT = 1;
+	private static final int TYPE_INT = 2;
+
+	public SystemSetting_devicePacket()
 	{
-		return data;
+		data = new byte[1024];
 	}
 
-	public int getCursor()
+	/**
+	 * 获取最后对齐的数组，还需要在最后面补齐
+	 * 
+	 * @return 已经按照结构体方式对齐的数组
+	 */
+	public byte[] getData()
+	{
+		if (maxType == TYPE_SHORT)
+		{
+			if (cursor % 2 != 0)
+			{
+				cursor++;
+			}
+		}
+
+		else if (maxType == TYPE_INT)
+		{
+			if (cursor % 4 != 0)
+			{
+				cursor += (4 - cursor % 4);
+			}
+		}
+
+		return Arrays.copyOf(data, cursor);
+	}
+
+	/**
+	 * 获取当前数据长度
+	 * 
+	 * @return 数组的长度
+	 */
+	public int getSize()
 	{
 		return cursor;
 	}
 
+	/**
+	 * 设置游标
+	 * 
+	 * @param cursor
+	 *            游标位置
+	 */
 	public void setCursor(int cursor)
 	{
 		this.cursor = cursor;
@@ -22,12 +66,28 @@ public class SystemSetting_devicePacket
 
 	public SystemSetting_devicePacket write(byte b)
 	{
+
 		data[cursor++] = b;
+
+		return this;
+	}
+
+	public SystemSetting_devicePacket write(byte[] bArray)
+	{
+		for (byte b : bArray)
+		{
+			write(b);
+		}
 		return this;
 	}
 
 	public SystemSetting_devicePacket write(short s)
 	{
+		if (maxType < TYPE_SHORT)
+		{
+			maxType = TYPE_SHORT;
+		}
+
 		if (cursor % 2 != 0)
 		{
 			cursor++;
@@ -38,8 +98,23 @@ public class SystemSetting_devicePacket
 		return this;
 	}
 
+	public SystemSetting_devicePacket write(short[] sArray)
+	{
+		for (short s : sArray)
+		{
+			write(s);
+		}
+
+		return this;
+	}
+
 	public SystemSetting_devicePacket write(int i)
 	{
+		if (maxType < TYPE_INT)
+		{
+			maxType = TYPE_INT;
+		}
+
 		if (cursor % 4 != 0)
 		{
 			cursor += (4 - cursor % 4);
@@ -52,7 +127,16 @@ public class SystemSetting_devicePacket
 		return this;
 	}
 
-	public static class Gerneral
+	public SystemSetting_devicePacket write(int[] iArray)
+	{
+		for (int i : iArray)
+		{
+			write(i);
+		}
+		return this;
+	}
+
+	public static class Gerneral implements DevicePacketBuilt
 	{
 		public static final int LENGTH = 160;
 
@@ -95,19 +179,47 @@ public class SystemSetting_devicePacket
 		}
 	}
 
-	public static class Trigger
+	public static class Trigger implements DevicePacketBuilt
 	{
 		int trigDelay; // 0.1mm
 		int partDelay; // 0.1mm
 		int velocity;  // mm/s
 		int departWide;	// ms
 		int expLead;	// us
-
 		short checksum;
+
+		public byte[] buildData()
+		{
+			SystemSetting_devicePacket packet = new SystemSetting_devicePacket();
+
+			packet.write(trigDelay).write(partDelay).write(velocity)
+					.write(departWide).write(expLead);
+
+			return packet.getData();
+		}
 	}
 
-	public static class AD9849
+	public static class AD9849 implements DevicePacketBuilt
 	{
+		byte[] vga = new byte[2];
+		byte[] pxga = new byte[4];
+		byte[] hxdrv = new byte[4];
+		byte rgdrv;
+		byte shp, shd;
+		byte hpl, hnl;
+		byte rgpl, rgnl;
 
+		public byte[] buildData()
+		{
+			SystemSetting_devicePacket packet = new SystemSetting_devicePacket();
+			packet.write(vga).write(pxga).write(hxdrv).write(rgdrv).write(shp)
+					.write(shd).write(hpl).write(hnl).write(rgpl).write(rgnl);
+			return packet.getData();
+		}
+	}
+
+	interface DevicePacketBuilt
+	{
+		public byte[] buildData();
 	}
 }
