@@ -4,7 +4,7 @@ import android.os.Environment;
 
 public class FileDirectory
 {
-	public static final String appDirectory = Environment
+	private static final String appDirectory = Environment
 			.getExternalStorageDirectory() + "/MachineVision/";
 
 	/**

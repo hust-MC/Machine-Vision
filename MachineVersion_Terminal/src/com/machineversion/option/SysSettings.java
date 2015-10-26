@@ -1,5 +1,6 @@
 package com.machineversion.option;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
+import com.machineversion.terminal.FileDirectory;
 import com.machineversion.terminal.R;
 
 import android.app.AlertDialog;
@@ -35,6 +37,11 @@ import android.widget.Toast;
 public class SysSettings extends ControlPannelActivity implements
 		OnDialogClicked
 {
+	private static String file_sysSeting = FileDirectory.getAppDirectory()
+			+ "SysSetting/";
+
+	private static String file_sysSettingDevice = file_sysSeting + "general";
+
 	View layout;
 	Spinner spinner;
 	NumberSettingLayout numberSettingLayout;
@@ -183,15 +190,16 @@ public class SysSettings extends ControlPannelActivity implements
 		initDropDownList();
 
 		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("常规")
-				.setView(layout).setPositiveButton("确定", new ConfirmButton())
-				.setNegativeButton("取消", new CancelButton()).create();
+				.setView(layout).setPositiveButton("应用", new ApplyButton())
+				.setNegativeButton("关闭", new CancelButton()).create();
 
 		dialog.show();
 		Point size = new Point();
 		getWindowManager().getDefaultDisplay().getSize(size);
 
-		dialog.getWindow().setLayout((int) (size.x * 0.8),
-				LayoutParams.WRAP_CONTENT);
+		dialog.getWindow()
+				.setLayout((int) (size.x * 0.8), (int) (size.y * 0.7));
+		// 让对话框能够弹出输入法
 		dialog.getWindow().clearFlags(
 				WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
@@ -221,11 +229,26 @@ public class SysSettings extends ControlPannelActivity implements
 	 * @author M C
 	 * 
 	 */
-	class ConfirmButton implements OnClickListener
+	class ApplyButton implements OnClickListener
 	{
 		@Override
 		public void onClick(DialogInterface dialog, int which)
 		{
+			Field field;
+			try
+			{
+				// 点击后阻止关闭
+				field = dialog.getClass().getSuperclass()
+						.getDeclaredField("mShowing");
+				field.setAccessible(true);
+				field.set(dialog, false); // false - 使之不能关闭(此为机关所在，其它语句相同)
+
+				Toast.makeText(SysSettings.this, "123", Toast.LENGTH_SHORT)
+						.show();
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 
 		}
 	}
@@ -235,7 +258,19 @@ public class SysSettings extends ControlPannelActivity implements
 		@Override
 		public void onClick(DialogInterface dialog, int which)
 		{
-
+			Field field;
+			try
+			{
+				// 解除点击后阻止关闭
+				field = dialog.getClass().getSuperclass()
+						.getDeclaredField("mShowing");
+				field.setAccessible(true);
+				field.set(dialog, true); // true - 使之自动关闭(此为机关所在，其它语句相同)
+			} catch (Exception e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
