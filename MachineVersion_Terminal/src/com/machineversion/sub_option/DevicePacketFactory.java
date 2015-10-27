@@ -41,6 +41,7 @@ public class DevicePacketFactory
 			gerneral.vertStartPix = Short.parseShort((((EditText) layout
 					.findViewById(R.id.device_setting_start_y)).getText()
 					.toString()));
+			gerneral.inWidth = 
 
 			break;
 
