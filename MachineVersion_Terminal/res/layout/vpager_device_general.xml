@@ -24,9 +24,12 @@
                 style="@style/device_setting_textview"
                 android:text="Input type: " />
 
-            <Spinner
-                style="@style/device_setting_lastview"
-                android:entries="@array/device_setting_input_type" />
+            <com.emercy.dropdownlist.DropDownList
+                android:id="@+id/device_setting_input_type"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </com.emercy.dropdownlist.DropDownList>
         </LinearLayout>
 
         <LinearLayout
@@ -39,9 +42,12 @@
                 style="@style/device_setting_textview"
                 android:text="Output type:" />
 
-            <Spinner
-                style="@style/device_setting_lastview"
-                android:entries="@array/device_setting_output_type" />
+            <com.emercy.dropdownlist.DropDownList
+                android:id="@+id/device_setting_output_type"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </com.emercy.dropdownlist.DropDownList>
         </LinearLayout>
 
         <LinearLayout
@@ -55,14 +61,14 @@
                 android:text="Start(x,y):" />
 
             <com.machineversion.sub_option.NumberSettingLayout
-                android:id="@+id/device_setting_start_y"
+                android:id="@+id/device_setting_start_x"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
             </com.machineversion.sub_option.NumberSettingLayout>
 
             <com.machineversion.sub_option.NumberSettingLayout
-                android:id="@+id/device_setting_start_x"
+                android:id="@+id/device_setting_start_y"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
@@ -198,27 +204,32 @@
                 android:text="Left shift bit" />
 
             <CheckBox
+                android:id="@+id/device_setting_bit_checkbox0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:text="0" />
 
             <CheckBox
+                android:id="@+id/device_setting_bit_checkbox1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1" />
 
             <CheckBox
+                android:id="@+id/device_setting_bit_checkbox2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2" />
 
             <CheckBox
+                android:id="@+id/device_setting_bit_checkbox3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3" />
 
             <CheckBox
+                android:id="@+id/device_setting_bit_checkbox4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4" />
@@ -236,17 +247,20 @@
                 android:text="Trigger mode" />
 
             <CheckBox
+                android:id="@+id/device_setting_mode_checkbox0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:text="auto" />
 
             <CheckBox
+                android:id="@+id/device_setting_mode_checkbox1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="dsp" />
 
             <CheckBox
+                android:id="@+id/device_setting_mode_checkbox2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="outside" />

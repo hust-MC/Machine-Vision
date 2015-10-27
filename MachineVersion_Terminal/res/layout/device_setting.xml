@@ -22,7 +22,6 @@
             android:gravity="center"
             android:text="设备选择："
             android:textSize="27sp" />
-
         <com.emercy.dropdownlist.DropDownList
             android:id="@+id/device_setting_droplist"
             android:layout_width="0dp"

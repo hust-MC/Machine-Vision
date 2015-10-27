@@ -115,7 +115,20 @@ public class SeekBarEditLayout extends LinearLayout
 		addView(seekBar);
 		addView(editText);
 	}
-	public void setText(int value)
+
+	public int getValue()
+	{
+		try
+		{
+			return (editText == null) ? 0 : Integer.parseInt(editText.getText()
+					.toString());
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	public void setValue(int value)
 	{
 		if (editText != null)
 		{

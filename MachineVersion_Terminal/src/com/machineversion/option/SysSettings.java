@@ -1,5 +1,6 @@
 package com.machineversion.option;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import com.emercy.dropdownlist.DropDownList;
 import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
 import com.machineversion.sub_option.DebugMode;
+import com.machineversion.sub_option.DevicePacketFactory;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
@@ -40,7 +42,7 @@ public class SysSettings extends ControlPannelActivity implements
 	private static String file_sysSeting = FileDirectory.getAppDirectory()
 			+ "SysSetting/";
 
-	private static String file_sysSettingDevice = file_sysSeting + "general";
+	private static String file_sysSettingDevice = file_sysSeting + "device/";
 
 	View layout;
 	Spinner spinner;
@@ -130,6 +132,13 @@ public class SysSettings extends ControlPannelActivity implements
 		List<View> list = new ArrayList<View>();
 
 		View page1 = inflater.inflate(R.layout.vpager_device_general, null);
+
+		// 以下两句设置下拉菜单的内容
+		((DropDownList) page1.findViewById(R.id.device_setting_input_type))
+				.setItem(R.array.device_setting_input_type);
+		((DropDownList) page1.findViewById(R.id.device_setting_output_type))
+				.setItem(R.array.device_setting_output_type);
+
 		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
 				.setMax(1720);
 
@@ -243,13 +252,15 @@ public class SysSettings extends ControlPannelActivity implements
 				field.setAccessible(true);
 				field.set(dialog, false); // false - 使之不能关闭(此为机关所在，其它语句相同)
 
-				Toast.makeText(SysSettings.this, "123", Toast.LENGTH_SHORT)
-						.show();
+				DevicePacketFactory factory = new DevicePacketFactory(vPager);
+
+				factory.savePacket(SysSettings.this, new File(
+						file_sysSettingDevice, "general"));
+
 			} catch (Exception e)
 			{
 				e.printStackTrace();
 			}
-
 		}
 	}
 
@@ -268,7 +279,6 @@ public class SysSettings extends ControlPannelActivity implements
 				field.set(dialog, true); // true - 使之自动关闭(此为机关所在，其它语句相同)
 			} catch (Exception e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

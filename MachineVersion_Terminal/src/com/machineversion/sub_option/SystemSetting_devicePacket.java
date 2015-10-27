@@ -1,5 +1,6 @@
 package com.machineversion.sub_option;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 public class SystemSetting_devicePacket
@@ -138,6 +139,11 @@ public class SystemSetting_devicePacket
 
 	public static class Gerneral implements DevicePacketBuilt
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 6803891809250009377L;
+
 		public static final int LENGTH = 160;
 
 		/* input camera type CAMERA_Type */
@@ -181,6 +187,10 @@ public class SystemSetting_devicePacket
 
 	public static class Trigger implements DevicePacketBuilt
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -6661255058156487062L;
 		int trigDelay; // 0.1mm
 		int partDelay; // 0.1mm
 		int velocity;  // mm/s
@@ -201,6 +211,10 @@ public class SystemSetting_devicePacket
 
 	public static class AD9849 implements DevicePacketBuilt
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1625998561140958827L;
 		byte[] vga = new byte[2];
 		byte[] pxga = new byte[4];
 		byte[] hxdrv = new byte[4];
@@ -218,7 +232,7 @@ public class SystemSetting_devicePacket
 		}
 	}
 
-	interface DevicePacketBuilt
+	interface DevicePacketBuilt extends Serializable
 	{
 		public byte[] buildData();
 	}

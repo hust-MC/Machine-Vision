@@ -66,7 +66,6 @@ public class NetUtils
 				Thread.sleep(150);
 			} catch (InterruptedException e)
 			{
-				Log.e("ZY", "sleep exception");
 				e.printStackTrace();
 			}		// 线程延时100ms,降低发送频率
 
