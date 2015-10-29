@@ -137,7 +137,7 @@ public class SystemSetting_devicePacket
 		return this;
 	}
 
-	public static class Gerneral implements DevicePacketBuilt
+	public static class General implements DevicePacketBuilt
 	{
 		/**
 		 * 

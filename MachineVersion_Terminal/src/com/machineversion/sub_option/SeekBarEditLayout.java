@@ -6,9 +6,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -46,7 +44,6 @@ public class SeekBarEditLayout extends LinearLayout
 		seekBar.setMax(1000);
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
 		{
-
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar)
 			{
@@ -122,7 +119,7 @@ public class SeekBarEditLayout extends LinearLayout
 		{
 			return (editText == null) ? 0 : Integer.parseInt(editText.getText()
 					.toString());
-		} catch (Exception e)
+		} catch (NumberFormatException e)
 		{
 			e.printStackTrace();
 			return 0;

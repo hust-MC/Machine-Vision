@@ -2,6 +2,7 @@ package com.machineversion.sub_option;
 
 import com.machineversion.terminal.R;
 
+import android.R.integer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -71,12 +72,20 @@ public class NumberSettingLayout extends LinearLayout
 			}
 		});
 	}
-	public void setText(String text)
+	public void setValue(String text)
 	{
 		if (editText != null)
 		{
 			editText.setText(text);
 		}
+	}
+	public int getValue()
+	{
+		if (editText != null)
+		{
+			return Integer.parseInt(editText.getText().toString());
+		}
+		return 0;
 	}
 
 	public void setMaxValue(int max)
