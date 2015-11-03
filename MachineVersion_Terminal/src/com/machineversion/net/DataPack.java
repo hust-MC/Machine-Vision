@@ -50,8 +50,6 @@ public class DataPack
 		} catch (IOException e)
 		{
 			e.printStackTrace();
-			Log.d("ZY", "send failed");
-			Log.d("ZY", "e's Message " + e.getMessage());
 		}
 		return false;
 	}
