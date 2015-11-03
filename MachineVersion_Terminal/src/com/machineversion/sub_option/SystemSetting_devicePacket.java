@@ -147,30 +147,30 @@ public class SystemSetting_devicePacket
 		public static final int LENGTH = 160;
 
 		/* input camera type CAMERA_Type */
-		byte input;
+		public byte input;
 		/* output display way 0:lcd; 1:net; 2:crt */
-		byte output;
+		public byte output;
 		/* fpga 获取图像数据位数 0：8bit; 1:16bits */
-		byte bitType;
+		public byte bitType;
 		/* 所使用的算法 */
-		byte algorithm;
+		public byte algorithm;
 		/* fpga 控制曝光时间 0-65535 */
-		short expTime;
+		public short expTime;
 
-		byte inited;
+		public byte inited;
 		/* 触发模式选择 0->auto, 1->dsp, 2->outside */
-		byte trigger;
+		public byte trigger;
 		/* ccdc 获取图像数据横向起始位置 */
-		short horzStartPix;
+		public short horzStartPix;
 		/* ccdc 获取图像数据纵向起始位置 */
-		short vertStartPix;
+		public short vertStartPix;
 		/* ccdc 获取图像数据实际宽度 */
-		short inWidth;
+		public short inWidth;
 		/* ccdc 获取图像数据实际高度 */
-		short inHeight;
+		public short inHeight;
 
-		short outWidth;
-		short outHeight;
+		public short outWidth;
+		public short outHeight;
 
 		public byte[] buildData()
 		{
@@ -191,12 +191,12 @@ public class SystemSetting_devicePacket
 		 * 
 		 */
 		private static final long serialVersionUID = -6661255058156487062L;
-		int trigDelay; // 0.1mm
-		int partDelay; // 0.1mm
-		int velocity;  // mm/s
-		int departWide;	// ms
-		int expLead;	// us
-		short checksum;
+		public int trigDelay; // 0.1mm
+		public int partDelay; // 0.1mm
+		public int velocity;  // mm/s
+		public int departWide;	// ms
+		public int expLead;	// us
+		public short checksum;
 
 		public byte[] buildData()
 		{
@@ -215,13 +215,13 @@ public class SystemSetting_devicePacket
 		 * 
 		 */
 		private static final long serialVersionUID = 1625998561140958827L;
-		byte[] vga = new byte[2];
-		byte[] pxga = new byte[4];
-		byte[] hxdrv = new byte[4];
-		byte rgdrv;
-		byte shp, shd;
-		byte hpl, hnl;
-		byte rgpl, rgnl;
+		public byte[] vga = new byte[2];
+		public byte[] pxga = new byte[4];
+		public byte[] hxdrv = new byte[4];
+		public byte rgdrv;
+		public byte shp, shd;
+		public byte hpl, hnl;
+		public byte rgpl, rgnl;
 
 		public byte[] buildData()
 		{

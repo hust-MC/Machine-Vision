@@ -10,19 +10,19 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/device_setting_trigger_et1"
+            android:id="@+id/device_setting_trigger_delay"
             style="@style/device_setting_trigger_et" />
 
         <TextView
             style="@style/device_setting_trigger_tv_front"
-            android:layout_alignBottom="@id/device_setting_trigger_et1"
-            android:layout_toLeftOf="@id/device_setting_trigger_et1"
+            android:layout_alignBottom="@id/device_setting_trigger_delay"
+            android:layout_toLeftOf="@id/device_setting_trigger_delay"
             android:text="传感器触发距离" />
 
         <TextView
             style="@style/device_setting_trigger_tv_back"
-            android:layout_alignBottom="@id/device_setting_trigger_et1"
-            android:layout_toRightOf="@id/device_setting_trigger_et1"
+            android:layout_alignBottom="@id/device_setting_trigger_delay"
+            android:layout_toRightOf="@id/device_setting_trigger_delay"
             android:text="0.1mm" />
     </RelativeLayout>
 
@@ -31,19 +31,19 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/device_setting_trigger_et2"
+            android:id="@+id/device_setting_trigger_part_delay"
             style="@style/device_setting_trigger_et" />
 
         <TextView
             style="@style/device_setting_trigger_tv_front"
-            android:layout_alignBottom="@id/device_setting_trigger_et2"
-            android:layout_toLeftOf="@id/device_setting_trigger_et2"
+            android:layout_alignBottom="@id/device_setting_trigger_part_delay"
+            android:layout_toLeftOf="@id/device_setting_trigger_part_delay"
             android:text="分拣触发距离" />
 
         <TextView
             style="@style/device_setting_trigger_tv_back"
-            android:layout_alignBottom="@id/device_setting_trigger_et2"
-            android:layout_toRightOf="@id/device_setting_trigger_et2"
+            android:layout_alignBottom="@id/device_setting_trigger_part_delay"
+            android:layout_toRightOf="@id/device_setting_trigger_part_delay"
             android:text="0.1mm" />
     </RelativeLayout>
 
@@ -52,19 +52,19 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/device_setting_trigger_et3"
+            android:id="@+id/device_setting_trigger_velocity"
             style="@style/device_setting_trigger_et" />
 
         <TextView
             style="@style/device_setting_trigger_tv_front"
-            android:layout_alignBottom="@id/device_setting_trigger_et3"
-            android:layout_toLeftOf="@id/device_setting_trigger_et3"
+            android:layout_alignBottom="@id/device_setting_trigger_velocity"
+            android:layout_toLeftOf="@id/device_setting_trigger_velocity"
             android:text="传送带速度：" />
 
         <TextView
             style="@style/device_setting_trigger_tv_back"
-            android:layout_alignBottom="@id/device_setting_trigger_et3"
-            android:layout_toRightOf="@id/device_setting_trigger_et3"
+            android:layout_alignBottom="@id/device_setting_trigger_velocity"
+            android:layout_toRightOf="@id/device_setting_trigger_velocity"
             android:text="mm/s" />
     </RelativeLayout>
 
@@ -73,19 +73,19 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/device_setting_trigger_et4"
+            android:id="@+id/device_setting_trigger_depart_wide"
             style="@style/device_setting_trigger_et" />
 
         <TextView
             style="@style/device_setting_trigger_tv_front"
-            android:layout_alignBottom="@id/device_setting_trigger_et4"
-            android:layout_toLeftOf="@id/device_setting_trigger_et4"
+            android:layout_alignBottom="@id/device_setting_trigger_depart_wide"
+            android:layout_toLeftOf="@id/device_setting_trigger_depart_wide"
             android:text="分拣信号脉宽：" />
 
         <TextView
             style="@style/device_setting_trigger_tv_back"
-            android:layout_alignBottom="@id/device_setting_trigger_et4"
-            android:layout_toRightOf="@id/device_setting_trigger_et4"
+            android:layout_alignBottom="@id/device_setting_trigger_depart_wide"
+            android:layout_toRightOf="@id/device_setting_trigger_depart_wide"
             android:text="ms" />
     </RelativeLayout>
 
@@ -94,19 +94,19 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/device_setting_trigger_et5"
+            android:id="@+id/device_setting_trigger_explead"
             style="@style/device_setting_trigger_et" />
 
         <TextView
             style="@style/device_setting_trigger_tv_front"
-            android:layout_alignBottom="@id/device_setting_trigger_et5"
-            android:layout_toLeftOf="@id/device_setting_trigger_et5"
+            android:layout_alignBottom="@id/device_setting_trigger_explead"
+            android:layout_toLeftOf="@id/device_setting_trigger_explead"
             android:text="曝光预设时间：" />
 
         <TextView
             style="@style/device_setting_trigger_tv_back"
-            android:layout_alignBottom="@id/device_setting_trigger_et5"
-            android:layout_toRightOf="@id/device_setting_trigger_et5"
+            android:layout_alignBottom="@id/device_setting_trigger_explead"
+            android:layout_toRightOf="@id/device_setting_trigger_explead"
             android:text="us" />
     </RelativeLayout>
 

@@ -177,13 +177,13 @@
                 android:orientation="horizontal" >
 
                 <RadioButton
-                    android:id="@+id/device_setting_bit_radio1"
+                    android:id="@+id/device_setting_bit_radio0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="8 bits" />
 
                 <RadioButton
-                    android:id="@+id/device_setting_bit_radio2"
+                    android:id="@+id/device_setting_bit_radio1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"

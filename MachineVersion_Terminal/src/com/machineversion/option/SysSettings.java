@@ -1,6 +1,12 @@
 package com.machineversion.option;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.OptionalDataException;
+import java.io.StreamCorruptedException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +18,7 @@ import com.machineversion.sub_option.DevicePacketFactory;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
+import com.machineversion.sub_option.SystemSetting_devicePacket.General;
 import com.machineversion.terminal.FileDirectory;
 import com.machineversion.terminal.R;
 
@@ -32,6 +39,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,16 +131,11 @@ public class SysSettings extends ControlPannelActivity implements
 		layoutOuter.addView(layoutRight, paramsRight);
 		return layoutOuter;
 	}
-	/**
-	 * 设置ViewPager的内容
-	 */
-	private void initViewPager()
+
+	private View getPage1()
 	{
-		LayoutInflater inflater = getLayoutInflater();
-		List<View> list = new ArrayList<View>();
-
-		View page1 = inflater.inflate(R.layout.vpager_device_general, null);
-
+		View page1 = getLayoutInflater().inflate(
+				R.layout.vpager_device_general, null);
 		// 以下两句设置下拉菜单的内容
 		((DropDownList) page1.findViewById(R.id.device_setting_input_type))
 				.setItem(R.array.device_setting_input_type);
@@ -141,6 +144,69 @@ public class SysSettings extends ControlPannelActivity implements
 
 		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
 				.setMax(1720);
+
+		File file = new File(file_sysSettingDevice, "general");
+
+		if (file.exists())
+		{
+			General general = null;
+			try
+			{
+				ObjectInputStream inputStream = new ObjectInputStream(
+						new FileInputStream(file));
+				general = (General) inputStream.readObject();
+				inputStream.close();
+
+				((DropDownList) page1
+						.findViewById(R.id.device_setting_input_type))
+						.setSelection(general.input);
+				((DropDownList) page1
+						.findViewById(R.id.device_setting_output_type))
+						.setSelection(general.output);
+				((NumberSettingLayout) page1
+						.findViewById(R.id.device_setting_start_x))
+						.setValue(general.horzStartPix);
+				((NumberSettingLayout) page1
+						.findViewById(R.id.device_setting_start_y))
+						.setValue(general.vertStartPix);
+				((NumberSettingLayout) page1
+						.findViewById(R.id.device_setting_input_w))
+						.setValue(general.inWidth);
+				((NumberSettingLayout) page1
+						.findViewById(R.id.device_setting_input_w))
+						.setValue(general.inHeight);
+				((NumberSettingLayout) page1
+						.findViewById(R.id.device_setting_output_w))
+						.setValue(general.outWidth);
+				((NumberSettingLayout) page1
+						.findViewById(R.id.device_setting_output_h))
+						.setValue(general.outHeight);
+				((SeekBarEditLayout) page1
+						.findViewById(R.id.device_setting_exposure))
+						.setValue(general.expTime);
+
+				((RadioButton) page1
+						.findViewById(R.id.device_setting_bit_radio0
+								+ general.bitType)).setSelected(true);
+
+			} catch (ClassNotFoundException | IOException e)
+			{
+				e.printStackTrace();
+			}
+
+		}
+		return page1;
+	}
+
+	/**
+	 * 设置ViewPager的内容
+	 */
+	private void initViewPager()
+	{
+		LayoutInflater inflater = getLayoutInflater();
+		List<View> list = new ArrayList<View>();
+
+		View page1 = getPage1();
 
 		LinearLayout page3 = getPage3();
 
@@ -216,7 +282,6 @@ public class SysSettings extends ControlPannelActivity implements
 				.setTextSize(27F);
 		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
 				.setTextSize(27F);
-
 	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

@@ -72,11 +72,11 @@ public class NumberSettingLayout extends LinearLayout
 			}
 		});
 	}
-	public void setValue(String text)
+	public void setValue(int value)
 	{
 		if (editText != null)
 		{
-			editText.setText(text);
+			editText.setText(value + "");
 		}
 	}
 	public int getValue()
