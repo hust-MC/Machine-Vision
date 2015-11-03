@@ -12,11 +12,19 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.emercy.dropdownlist.DropDownList;
+import com.machineversion.option.SysSettings;
 import com.machineversion.sub_option.SystemSetting_devicePacket.*;
 import com.machineversion.terminal.R;
 
 public class DevicePacketFactory
 {
+	public static final String file_sysSettingDeviceGeneral = SysSettings.file_sysSettingDevice
+			+ "general";
+	public static final String file_sysSettingDeviceTrigger = SysSettings.file_sysSettingDevice
+			+ "trigger";
+	public static final String file_sysSettingDeviceAD9849 = SysSettings.file_sysSettingDevice
+			+ "AD9848";
+
 	ViewPager vPager;
 
 	public DevicePacketFactory(ViewPager vPager)
@@ -24,8 +32,24 @@ public class DevicePacketFactory
 		this.vPager = vPager;
 	}
 
-	public void savePacket(Context context, File file)
+	public void savePacket(Context context)
 	{
+		File file = null;
+		switch (vPager.getCurrentItem())
+		{
+		case 0:
+			file = new File(file_sysSettingDeviceGeneral);
+			break;
+		case 1:
+			file = new File(file_sysSettingDeviceTrigger);
+			break;
+		case 2:
+			file = new File(file_sysSettingDeviceAD9849);
+			break;
+		default:
+			break;
+		}
+
 		if (!file.getParentFile().exists())
 		{
 			file.getParentFile().mkdirs();

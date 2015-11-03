@@ -19,6 +19,7 @@ import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
 import com.machineversion.sub_option.SystemSetting_devicePacket.General;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
 import com.machineversion.terminal.FileDirectory;
 import com.machineversion.terminal.R;
 
@@ -39,6 +40,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,10 +49,10 @@ import android.widget.Toast;
 public class SysSettings extends ControlPannelActivity implements
 		OnDialogClicked
 {
-	private static String file_sysSeting = FileDirectory.getAppDirectory()
+	public static String file_sysSeting = FileDirectory.getAppDirectory()
 			+ "SysSetting/";
 
-	private static String file_sysSettingDevice = file_sysSeting + "device/";
+	public static String file_sysSettingDevice = file_sysSeting + "device/";
 
 	View layout;
 	Spinner spinner;
@@ -193,11 +195,52 @@ public class SysSettings extends ControlPannelActivity implements
 			{
 				e.printStackTrace();
 			}
-
 		}
 		return page1;
 	}
 
+	private View getPage2()
+	{
+
+		View page2 = getLayoutInflater().inflate(R.layout.vpager_device_triger,
+				null);
+
+		File file = new File(file_sysSettingDevice, "trigger");
+
+		if (file.exists())
+		{
+			try
+			{
+				ObjectInputStream inputStream = new ObjectInputStream(
+						new FileInputStream(file));
+				Trigger trigger = (Trigger) inputStream.readObject();
+
+				inputStream.close();
+
+				trigger.trigDelay = Integer.parseInt(((EditText) layout
+						.findViewById(R.id.device_setting_trigger_delay))
+						.getText().toString());
+				trigger.partDelay = Integer.parseInt(((EditText) layout
+						.findViewById(R.id.device_setting_trigger_part_delay))
+						.getText().toString());
+				trigger.velocity = Integer.parseInt(((EditText) layout
+						.findViewById(R.id.device_setting_trigger_velocity))
+						.getText().toString());
+				trigger.departWide = Integer.parseInt(((EditText) layout
+						.findViewById(R.id.device_setting_trigger_depart_wide))
+						.getText().toString());
+				trigger.expLead = Integer.parseInt(((EditText) layout
+						.findViewById(R.id.device_setting_trigger_explead))
+						.getText().toString());
+			} catch (ClassNotFoundException | IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return page2;
+	}
 	/**
 	 * 设置ViewPager的内容
 	 */
@@ -207,11 +250,11 @@ public class SysSettings extends ControlPannelActivity implements
 		List<View> list = new ArrayList<View>();
 
 		View page1 = getPage1();
-
+		View page2 = getPage2();
 		LinearLayout page3 = getPage3();
 
 		list.add(page1);
-		list.add(inflater.inflate(R.layout.vpager_device_triger, null));
+		list.add(page2);
 		list.add(page3);
 
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
@@ -319,8 +362,7 @@ public class SysSettings extends ControlPannelActivity implements
 
 				DevicePacketFactory factory = new DevicePacketFactory(vPager);
 
-				factory.savePacket(SysSettings.this, new File(
-						file_sysSettingDevice, "general"));
+				factory.savePacket(SysSettings.this);
 
 			} catch (Exception e)
 			{
