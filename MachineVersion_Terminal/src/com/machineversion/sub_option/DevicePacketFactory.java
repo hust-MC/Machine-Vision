@@ -23,7 +23,7 @@ public class DevicePacketFactory
 	public static final String file_sysSettingDeviceTrigger = SysSettings.file_sysSettingDevice
 			+ "trigger";
 	public static final String file_sysSettingDeviceAD9849 = SysSettings.file_sysSettingDevice
-			+ "AD9848";
+			+ "AD9849";
 
 	ViewPager vPager;
 
@@ -35,35 +35,6 @@ public class DevicePacketFactory
 	public void savePacket(Context context)
 	{
 		File file = null;
-		switch (vPager.getCurrentItem())
-		{
-		case 0:
-			file = new File(file_sysSettingDeviceGeneral);
-			break;
-		case 1:
-			file = new File(file_sysSettingDeviceTrigger);
-			break;
-		case 2:
-			file = new File(file_sysSettingDeviceAD9849);
-			break;
-		default:
-			break;
-		}
-
-		if (!file.getParentFile().exists())
-		{
-			file.getParentFile().mkdirs();
-		}
-		if ((!file.exists()))
-		{
-			try
-			{
-				file.createNewFile();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
 
 		View layout = vPager.getChildAt(vPager.getCurrentItem());
 
@@ -72,6 +43,7 @@ public class DevicePacketFactory
 		switch (vPager.getCurrentItem())
 		{
 		case 0:
+			file = new File(file_sysSettingDeviceGeneral);
 			General general = new General();
 
 			general.input = (byte) ((DropDownList) layout
@@ -87,7 +59,7 @@ public class DevicePacketFactory
 			general.inWidth = (short) (((NumberSettingLayout) layout
 					.findViewById(R.id.device_setting_input_w)).getValue());
 			general.inHeight = (short) (((NumberSettingLayout) layout
-					.findViewById(R.id.device_setting_input_w)).getValue());
+					.findViewById(R.id.device_setting_input_h)).getValue());
 			general.outWidth = (short) (((NumberSettingLayout) layout
 					.findViewById(R.id.device_setting_output_w)).getValue());
 			general.outHeight = (short) (((NumberSettingLayout) layout
@@ -103,6 +75,7 @@ public class DevicePacketFactory
 
 			break;
 		case 1:
+			file = new File(file_sysSettingDeviceTrigger);
 			Trigger trigger = new Trigger();
 
 			trigger.trigDelay = Integer.parseInt(((EditText) layout
@@ -122,11 +95,29 @@ public class DevicePacketFactory
 					.getText().toString());
 			packetBuilt = trigger;
 			break;
+		case 2:
+			file = new File(file_sysSettingDeviceAD9849);
+			AD9849 ad
+			break;
 
 		default:
 			break;
 		}
 
+		if (!file.getParentFile().exists())
+		{
+			file.getParentFile().mkdirs();
+		}
+		if ((!file.exists()))
+		{
+			try
+			{
+				file.createNewFile();
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		try
 		{
 			ObjectOutputStream oos = new ObjectOutputStream(

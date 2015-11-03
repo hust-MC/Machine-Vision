@@ -147,7 +147,7 @@ public class SysSettings extends ControlPannelActivity implements
 		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
 				.setMax(1720);
 
-		File file = new File(file_sysSettingDevice, "general");
+		File file = new File(DevicePacketFactory.file_sysSettingDeviceGeneral);
 
 		if (file.exists())
 		{
@@ -201,7 +201,6 @@ public class SysSettings extends ControlPannelActivity implements
 
 	private View getPage2()
 	{
-
 		View page2 = getLayoutInflater().inflate(R.layout.vpager_device_triger,
 				null);
 
@@ -217,21 +216,25 @@ public class SysSettings extends ControlPannelActivity implements
 
 				inputStream.close();
 
-				trigger.trigDelay = Integer.parseInt(((EditText) layout
+				((EditText) page2
 						.findViewById(R.id.device_setting_trigger_delay))
-						.getText().toString());
-				trigger.partDelay = Integer.parseInt(((EditText) layout
+						.setText(trigger.trigDelay + "");
+
+				((EditText) page2
 						.findViewById(R.id.device_setting_trigger_part_delay))
-						.getText().toString());
-				trigger.velocity = Integer.parseInt(((EditText) layout
+						.setText(trigger.partDelay + "");
+
+				((EditText) page2
 						.findViewById(R.id.device_setting_trigger_velocity))
-						.getText().toString());
-				trigger.departWide = Integer.parseInt(((EditText) layout
+						.setText(trigger.velocity + "");
+
+				((EditText) page2
 						.findViewById(R.id.device_setting_trigger_depart_wide))
-						.getText().toString());
-				trigger.expLead = Integer.parseInt(((EditText) layout
+						.setText(trigger.departWide + "");
+
+				((EditText) page2
 						.findViewById(R.id.device_setting_trigger_explead))
-						.getText().toString());
+						.setText(trigger.expLead + "");
 			} catch (ClassNotFoundException | IOException e)
 			{
 				// TODO Auto-generated catch block
