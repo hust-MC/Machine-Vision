@@ -24,11 +24,14 @@ import com.machineversion.terminal.FileDirectory;
 import com.machineversion.terminal.R;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -304,14 +307,18 @@ public class SysSettings extends ControlPannelActivity implements
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
+		// ProgressDialog progressDialog = ProgressDialog.show(this, null,
+		// "正在下载数据，请稍候...", true, false);
 		layout = LayoutInflater.from(this).inflate(R.layout.device_setting,
 				null);
 
 		initViewPager();
 		initDropDownList();
+		// progressDialog.dismiss();
 
-		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("常规")
-				.setView(layout).setPositiveButton("应用", new ApplyButton())
+		AlertDialog dialog = new AlertDialog.Builder(SysSettings.this)
+				.setTitle("常规").setView(layout)
+				.setPositiveButton("应用", new ApplyButton())
 				.setNegativeButton("关闭", new CancelButton()).create();
 
 		dialog.show();

@@ -97,7 +97,7 @@ public class DevicePacketFactory
 			break;
 		case 2:
 			file = new File(file_sysSettingDeviceAD9849);
-			AD9849 ad
+//			AD9849 ad
 			break;
 
 		default:
