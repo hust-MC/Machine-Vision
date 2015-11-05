@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.webkit.WebView.FindListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -96,8 +97,57 @@ public class DevicePacketFactory
 			packetBuilt = trigger;
 			break;
 		case 2:
+			int count = 0;
 			file = new File(file_sysSettingDeviceAD9849);
-//			AD9849 ad
+			AD9849 ad = new AD9849();
+
+			/*
+			 * 左边一侧菜单
+			 */
+			int vga = ((SeekBarEditLayout) layout
+					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+					.getValue();
+			ad.vga[0] = (byte) vga;
+			ad.vga[1] = (byte) (vga >> 8);
+
+			ad.shp = (byte) ((SeekBarEditLayout) layout
+					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+					.getValue();
+			ad.hpl = (byte) ((SeekBarEditLayout) layout
+					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+					.getValue();
+			ad.rgpl = (byte) ((SeekBarEditLayout) layout
+					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+					.getValue();
+			for (int i = 0; i < ad.pxga.length; i++)
+			{
+				ad.pxga[i] = (byte) ((SeekBarEditLayout) layout
+						.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+						.getValue();
+			}
+
+			/*
+			 * 右边一侧菜单
+			 */
+			ad.rgdrv = (byte) ((SeekBarEditLayout) layout
+					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+					.getValue();
+			ad.shd = (byte) ((SeekBarEditLayout) layout
+					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+					.getValue();
+			ad.hnl = (byte) ((SeekBarEditLayout) layout
+					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+					.getValue();
+			ad.rgnl = (byte) ((SeekBarEditLayout) layout
+					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+					.getValue();
+			for (int i = 0; i < ad.hxdrv.length; i++)
+			{
+				ad.hxdrv[i] = (byte) ((SeekBarEditLayout) layout
+						.findViewById(SysSettings.SEEKBAR_START_ID + count++))
+						.getValue();
+			}
+
 			break;
 
 		default:

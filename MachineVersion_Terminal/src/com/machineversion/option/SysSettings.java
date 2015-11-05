@@ -2,11 +2,8 @@ package com.machineversion.option;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +21,11 @@ import com.machineversion.terminal.FileDirectory;
 import com.machineversion.terminal.R;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -52,90 +46,19 @@ import android.widget.Toast;
 public class SysSettings extends ControlPannelActivity implements
 		OnDialogClicked
 {
-	public static String file_sysSeting = FileDirectory.getAppDirectory()
+	public static final String file_sysSeting = FileDirectory.getAppDirectory()
 			+ "SysSetting/";
+	public static final String file_sysSettingDevice = file_sysSeting
+			+ "device/";
 
-	public static String file_sysSettingDevice = file_sysSeting + "device/";
+	public static final int SEEKBAR_START_ID = SeekBarEditLayout
+			.generateViewId();
 
 	View layout;
 	Spinner spinner;
 	NumberSettingLayout numberSettingLayout;
 	ViewPager vPager;
 	DropDownList dropList;
-
-	private LinearLayout getPage3()
-	{
-		String[][] items =
-		{
-		{ "VGA", "SHP", "HPL", "RGPL", "P0GA", "P1GA", "P2GA", "P3GA" },
-		{ "RGDRV", "SHD", "HNL", "RGNL", "H1DRV", "H2DRV", "H3DRV", "H4DRV" } };
-
-		LinearLayout layoutOuter = new LinearLayout(this);
-		layoutOuter.setOrientation(LinearLayout.HORIZONTAL);
-		layoutOuter.setPadding(20, 30, 20, 0);
-		LinearLayout layoutLeft = new LinearLayout(this);
-		layoutLeft.setOrientation(LinearLayout.VERTICAL);
-		LinearLayout layoutRight = new LinearLayout(this);
-		layoutRight.setOrientation(LinearLayout.VERTICAL);
-
-		LayoutParams paramsLeft = new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 1);
-		LayoutParams paramsRight = new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 1);
-		paramsRight.leftMargin = 28;
-
-		/**
-		 * 生成条目
-		 */
-		for (String item : items[0])
-		{
-			LinearLayout layout = new LinearLayout(this);
-			layout.setOrientation(LinearLayout.HORIZONTAL);
-
-			LayoutParams paramsInner = new LayoutParams(0,
-					LayoutParams.WRAP_CONTENT, 1);
-			paramsInner.rightMargin = 8;
-			TextView textView = new TextView(this);
-			textView.setLayoutParams(paramsInner);
-			textView.setText(item);
-			textView.setGravity(Gravity.END);
-
-			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
-			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
-			seekBarEditLayout.setLayoutParams(paramsInner);
-
-			layout.addView(textView);
-			layout.addView(seekBarEditLayout);
-
-			layoutLeft.addView(layout);
-		}
-		for (String item : items[1])
-		{
-			LinearLayout layout = new LinearLayout(this);
-			layout.setOrientation(LinearLayout.HORIZONTAL);
-
-			LayoutParams paramsInner = new LayoutParams(0,
-					LayoutParams.WRAP_CONTENT, 1);
-			paramsInner.rightMargin = 8;
-			TextView textView = new TextView(this);
-			textView.setLayoutParams(paramsInner);
-			textView.setText(item);
-			textView.setGravity(Gravity.END);
-
-			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
-			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
-			seekBarEditLayout.setLayoutParams(paramsInner);
-
-			layout.addView(textView);
-			layout.addView(seekBarEditLayout);
-
-			layoutRight.addView(layout);
-		}
-
-		layoutOuter.addView(layoutLeft, paramsLeft);
-		layoutOuter.addView(layoutRight, paramsRight);
-		return layoutOuter;
-	}
 
 	private View getPage1()
 	{
@@ -246,6 +169,84 @@ public class SysSettings extends ControlPannelActivity implements
 
 		}
 		return page2;
+	}
+
+	private LinearLayout getPage3()
+	{
+		int count = 0;					// 计算SeekBar的ID偏移量
+		String[][] items =
+		{
+		{ "VGA", "SHP", "HPL", "RGPL", "P0GA", "P1GA", "P2GA", "P3GA" },
+		{ "RGDRV", "SHD", "HNL", "RGNL", "H1DRV", "H2DRV", "H3DRV", "H4DRV" } };
+
+		LinearLayout layoutOuter = new LinearLayout(this);
+		layoutOuter.setOrientation(LinearLayout.HORIZONTAL);
+		layoutOuter.setPadding(20, 30, 20, 0);
+		LinearLayout layoutLeft = new LinearLayout(this);
+		layoutLeft.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout layoutRight = new LinearLayout(this);
+		layoutRight.setOrientation(LinearLayout.VERTICAL);
+
+		LayoutParams paramsLeft = new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 1);
+		LayoutParams paramsRight = new LayoutParams(0,
+				LayoutParams.WRAP_CONTENT, 1);
+		paramsRight.leftMargin = 28;
+
+		/**
+		 * 生成条目
+		 */
+		for (String item : items[0])
+		{
+			LinearLayout layout = new LinearLayout(this);
+			layout.setOrientation(LinearLayout.HORIZONTAL);
+
+			LayoutParams paramsInner = new LayoutParams(0,
+					LayoutParams.WRAP_CONTENT, 1);
+			paramsInner.rightMargin = 8;
+			TextView textView = new TextView(this);
+			textView.setLayoutParams(paramsInner);
+			textView.setText(item);
+			textView.setGravity(Gravity.END);
+
+			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
+			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
+			seekBarEditLayout.setLayoutParams(paramsInner);
+
+			layout.addView(textView);
+			layout.addView(seekBarEditLayout);
+			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
+
+			layoutLeft.addView(layout);
+		}
+		for (String item : items[1])
+		{
+
+			LinearLayout layout = new LinearLayout(this);
+			layout.setOrientation(LinearLayout.HORIZONTAL);
+
+			LayoutParams paramsInner = new LayoutParams(0,
+					LayoutParams.WRAP_CONTENT, 1);
+			paramsInner.rightMargin = 8;
+			TextView textView = new TextView(this);
+			textView.setLayoutParams(paramsInner);
+			textView.setText(item);
+			textView.setGravity(Gravity.END);
+
+			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
+			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
+			seekBarEditLayout.setLayoutParams(paramsInner);
+			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
+
+			layout.addView(textView);
+			layout.addView(seekBarEditLayout);
+
+			layoutRight.addView(layout);
+		}
+
+		layoutOuter.addView(layoutLeft, paramsLeft);
+		layoutOuter.addView(layoutRight, paramsRight);
+		return layoutOuter;
 	}
 	/**
 	 * 设置ViewPager的内容
@@ -368,7 +369,7 @@ public class SysSettings extends ControlPannelActivity implements
 				field = dialog.getClass().getSuperclass()
 						.getDeclaredField("mShowing");
 				field.setAccessible(true);
-				field.set(dialog, false); // false - 使之不能关闭(此为机关所在，其它语句相同)
+				field.set(dialog, false); 					// false - 使之不能关闭(此为机关所在，其它语句相同)
 
 				DevicePacketFactory factory = new DevicePacketFactory(vPager);
 
