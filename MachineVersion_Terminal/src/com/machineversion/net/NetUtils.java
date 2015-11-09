@@ -2,6 +2,10 @@ package com.machineversion.net;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 import android.util.Log;
 
@@ -10,14 +14,14 @@ public class NetUtils
 	/**
 	 * 设置本地IP地址
 	 */
-	public final static String ip = "115.156.211.22";
+
 	/**
 	 * 三种端口定义
 	 */
 	public final static int listenBroadCastPort = 6019;
 	public final static int sendIpPort = 6018;
 	public final static int port = 6020;
-
+	public static String ip = "115.156.211.190";
 	/**
 	 * 指令集常量定义
 	 */
@@ -44,6 +48,44 @@ public class NetUtils
 	public final static int MSG_NET_HELP_ALG_CMD = 25;
 	public final static int MSG_NET_ALGRESULT = 200;
 
+	static
+	{
+		Enumeration<NetworkInterface> en = null;
+		try
+		{
+			en = NetworkInterface.getNetworkInterfaces();
+		} catch (SocketException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while (en.hasMoreElements())
+		{
+			NetworkInterface intf = en.nextElement();
+			if (intf.getName().toLowerCase().equals("eth0"))
+			{
+				for (Enumeration<InetAddress> enumIpAddr = intf
+						.getInetAddresses(); enumIpAddr.hasMoreElements();)
+				{
+					InetAddress inetAddress = enumIpAddr.nextElement();
+					if (!inetAddress.isLoopbackAddress())
+					{
+						String ipaddress = inetAddress.getHostAddress()
+								.toString();
+						if (!ipaddress.contains("::"))
+						{// ipV6的地址
+							ip = ipaddress;
+						}
+					}
+				}
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+
 	/**
 	 * 网络数据包
 	 */
@@ -63,7 +105,7 @@ public class NetUtils
 			DataPack.sendDataPack(this, os);
 			try
 			{
-				Thread.sleep(150);
+				Thread.sleep(50);
 			} catch (InterruptedException e)
 			{
 				e.printStackTrace();

@@ -51,8 +51,7 @@ public class SysSettings extends ControlPannelActivity implements
 	public static final String file_sysSettingDevice = file_sysSeting
 			+ "device/";
 
-	public static final int SEEKBAR_START_ID = SeekBarEditLayout
-			.generateViewId();
+	public static final int SEEKBAR_START_ID = 0x84569874;
 
 	View layout;
 	Spinner spinner;
@@ -255,10 +254,13 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		LayoutInflater inflater = getLayoutInflater();
 		List<View> list = new ArrayList<View>();
-
+		Log.d("MC", "before:" + System.currentTimeMillis());
 		View page1 = getPage1();
+		Log.d("MC", "page1:" + System.currentTimeMillis());
 		View page2 = getPage2();
+		Log.d("MC", "page2:" + System.currentTimeMillis());
 		LinearLayout page3 = getPage3();
+		Log.d("MC", "page3:" + System.currentTimeMillis());
 
 		list.add(page1);
 		list.add(page2);

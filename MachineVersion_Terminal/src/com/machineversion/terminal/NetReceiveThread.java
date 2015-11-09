@@ -100,7 +100,7 @@ public class NetReceiveThread extends Thread
 			// 接收的数据不正常，表示网络故障
 			// Close
 			{
-				Log.d("MC", "packet == null");
+				Log.e("MC", "packet == null");
 			}
 
 		}

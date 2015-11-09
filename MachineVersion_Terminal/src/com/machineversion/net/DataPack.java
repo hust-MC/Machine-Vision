@@ -55,8 +55,8 @@ public class DataPack
 	}
 	public static NetPacket recvDataPack(InputStream is)
 	{
-		NetPacket revPacket = new NetPacket();
 		Log.d("MC", "start read:");
+		NetPacket revPacket = new NetPacket();
 		boolean hasMagicRead = false;
 		int bufCount = 0;
 		int startPos = 0;
@@ -155,6 +155,7 @@ public class DataPack
 					} while (count > 0 && pos < len);
 					System.arraycopy(temp, 0, revPacket.data, 0, pos);
 				}
+				Log.d("MC", "end read:");
 				return revPacket;
 			}
 			else
