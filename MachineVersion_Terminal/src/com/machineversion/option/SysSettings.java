@@ -162,7 +162,6 @@ public class SysSettings extends ControlPannelActivity implements
 						.setText(trigger.expLead + "");
 			} catch (ClassNotFoundException | IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -252,7 +251,6 @@ public class SysSettings extends ControlPannelActivity implements
 	 */
 	private void initViewPager()
 	{
-		LayoutInflater inflater = getLayoutInflater();
 		List<View> list = new ArrayList<View>();
 		Log.d("MC", "before:" + System.currentTimeMillis());
 		View page1 = getPage1();
@@ -310,14 +308,11 @@ public class SysSettings extends ControlPannelActivity implements
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
-		// ProgressDialog progressDialog = ProgressDialog.show(this, null,
-		// "正在下载数据，请稍候...", true, false);
 		layout = LayoutInflater.from(this).inflate(R.layout.device_setting,
 				null);
 
 		initViewPager();
 		initDropDownList();
-		// progressDialog.dismiss();
 
 		AlertDialog dialog = new AlertDialog.Builder(SysSettings.this)
 				.setTitle("常规").setView(layout)

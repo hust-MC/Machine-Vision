@@ -7,8 +7,6 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-import android.util.Log;
-
 public class NetUtils
 {
 	/**
@@ -48,6 +46,9 @@ public class NetUtils
 	public final static int MSG_NET_HELP_ALG_CMD = 25;
 	public final static int MSG_NET_ALGRESULT = 200;
 
+	/*
+	 * 获取本地IP
+	 */
 	static
 	{
 		Enumeration<NetworkInterface> en = null;
@@ -105,7 +106,7 @@ public class NetUtils
 			DataPack.sendDataPack(this, os);
 			try
 			{
-				Thread.sleep(50);
+				Thread.sleep(60);
 			} catch (InterruptedException e)
 			{
 				e.printStackTrace();
@@ -186,4 +187,13 @@ public class NetUtils
 		}
 	}
 
+	public static class GetParam extends NetPacket
+	{
+		public GetParam()
+		{
+			minid = MSG_NET_GET_PARAM;
+			type = 1;
+			block = 1000;
+		}
+	}
 }

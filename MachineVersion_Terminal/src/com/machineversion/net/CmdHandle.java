@@ -60,8 +60,11 @@ public class CmdHandle
 		NetPacketContext context = new NetPacketContext(MSG_NET_GET_VIDEO);
 
 		NetReceiveThread.handler = handler;
-		context.sendPacket(os);
-		Log.d("send", "send over");
+		while (true)
+		{
+			context.sendPacket(os);
+			Log.d("send", "send over");
+		}
 	}
 
 	/**

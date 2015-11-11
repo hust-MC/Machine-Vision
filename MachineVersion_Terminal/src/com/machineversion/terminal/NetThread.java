@@ -77,7 +77,7 @@ public class NetThread extends Thread implements CommunicationInterface
 					serverSocket = new ServerSocket(NetUtils.port);
 					socket = serverSocket.accept();
 					// socket.setSoTimeout(TIMEOUT);
-					socket.setReceiveBufferSize(RXBUF_SIZE);
+					// socket.setReceiveBufferSize(RXBUF_SIZE);
 					udpConnecteSuccess = true;
 					udpSocket.close();
 
