@@ -92,6 +92,8 @@ public class NetReceiveThread extends Thread
 					Log.d("MC", "create BitMap = " + (timer4 - timer3));
 
 					break;
+				case NetUtils.MSG_NET_GET_PARAM:
+					Log.d("MC", "getParam");
 				default:
 					Log.e("MC", "default");
 				}

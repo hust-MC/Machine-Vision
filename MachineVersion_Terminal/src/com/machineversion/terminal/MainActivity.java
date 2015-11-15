@@ -124,6 +124,8 @@ public class MainActivity extends Activity
 				case NetUtils.MSG_NET_STATE:
 					temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
 					break;
+				case NetUtils.MSG_NET_GET_PARAM:
+					// temperature_tv.setText(text);
 				default:
 					break;
 				}
