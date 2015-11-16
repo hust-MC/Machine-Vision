@@ -126,11 +126,8 @@ public class CmdHandle
 	{
 		NetPacketContext context = new NetPacketContext(MSG_NET_GET_PARAM);
 		NetReceiveThread.handler = handler;
-		while (true)
-		{
-			context.sendPacket(os);
-			Log.d("send", "send over");
-		}
+		context.sendPacket(os);
+		Log.d("send", "send over");
 	}
 
 	public void generalInfo(byte[] data)

@@ -93,7 +93,14 @@ public class NetReceiveThread extends Thread
 
 					break;
 				case NetUtils.MSG_NET_GET_PARAM:
-					Log.d("MC", "getParam");
+					Log.d("param", "start");
+					for (byte b : revPacket.data)
+					{
+
+						Log.d("param", b + "");
+					}
+					Log.d("param", "end");
+					break;
 				default:
 					Log.e("MC", "default");
 				}
@@ -107,6 +114,5 @@ public class NetReceiveThread extends Thread
 
 		}
 	}
-
 	private native int[] pictureProcess(byte[] data);
 }
