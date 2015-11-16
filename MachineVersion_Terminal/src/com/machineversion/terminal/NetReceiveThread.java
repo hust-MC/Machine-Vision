@@ -94,10 +94,12 @@ public class NetReceiveThread extends Thread
 					break;
 				case NetUtils.MSG_NET_GET_PARAM:
 					Log.d("param", "start");
-					for (byte b : revPacket.data)
+					int i = 0;
+					for (byte b : Arrays.copyOfRange(revPacket.data, 100,
+							revPacket.data.length))
 					{
 
-						Log.d("param", b + "");
+						Log.d("param", i++ + " : " + b);
 					}
 					Log.d("param", "end");
 					break;
