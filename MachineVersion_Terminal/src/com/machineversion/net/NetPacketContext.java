@@ -33,11 +33,14 @@ public class NetPacketContext
 			break;
 		case NetUtils.MSG_NET_GENERAL:
 			packet = new GeneralInfo();
+			break;
+		case NetUtils.MSG_NET_GET_PARAM:
+			packet = new GetParam();
+			break;
 		default:
 			Log.e("MC", "netPacket error");
 		}
 	}
-
 	/**
 	 * 发送数据包
 	 * 

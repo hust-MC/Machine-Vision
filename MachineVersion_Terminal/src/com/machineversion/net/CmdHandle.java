@@ -122,7 +122,7 @@ public class CmdHandle
 		}
 	}
 
-	public void getParams(Handler handler)
+	public void getParam(Handler handler)
 	{
 		NetPacketContext context = new NetPacketContext(MSG_NET_GET_PARAM);
 		NetReceiveThread.handler = handler;
