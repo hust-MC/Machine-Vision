@@ -39,7 +39,7 @@ public class NetThread extends Thread implements CommunicationInterface
 
 	private boolean udpConnecteSuccess = false;					// UDP连接是否成功
 
-	public CurrentState getCurrentState()
+	public static CurrentState getCurrentState()
 	{
 		return currentState;
 	}
@@ -100,18 +100,18 @@ public class NetThread extends Thread implements CommunicationInterface
 						lock.lock();
 						if (currentState == CurrentState.onPause)
 						{
-							Log.d("ZY", "lock");
+							Log.d("CJ", "lock");
 							cond.await();
-							Log.d("ZY", "unlock");
+							Log.d("CJ", "unlock");
 						}
 						else
 						{
 
 							currentState = CurrentState.onSending;
 
-							cmdHandle.getParam(handler);
+							// cmdHandle.getParam(handler);
 
-							// cmdHandle.getVideo(handler);
+							cmdHandle.getVideo(handler);
 
 							// cmdHandle.getState(handler);
 						}

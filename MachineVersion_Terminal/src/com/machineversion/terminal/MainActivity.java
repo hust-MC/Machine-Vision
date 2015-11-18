@@ -113,8 +113,8 @@ public class MainActivity extends Activity
 					break;
 				case NetThread.CONNECT_FAIL:
 					dialog.dismiss();
-					Toast.makeText(MainActivity.this, "连接失败，请检查网络连接",
-							Toast.LENGTH_SHORT).show();
+					// Toast.makeText(MainActivity.this, "连接失败，请检查网络连接",
+					// Toast.LENGTH_SHORT).show();
 					break;
 				case NetUtils.MSG_NET_GET_VIDEO: // 获取图像
 					Bitmap bitmap = (Bitmap) msg.obj;
@@ -220,6 +220,7 @@ public class MainActivity extends Activity
 		@Override
 		public void onClick(View v)
 		{
+			netThread.setCurrentState(CurrentState.onPause);
 			netHandler.removeMessages(NetUtils.MSG_NET_GET_VIDEO);
 			switch (v.getId())
 			{
@@ -265,6 +266,7 @@ public class MainActivity extends Activity
 		 */
 		if (resultCode == RESULT_OK)
 		{
+			// netThread.signalThread();
 			Toast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show();
 			switch (requestCode)
 			{

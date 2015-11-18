@@ -406,7 +406,6 @@ public class SysSettings extends ControlPannelActivity implements
 	public void onPositiveButtonClicked(String[] value)
 	{
 		startActivity(new Intent(this, DebugMode.class));
-		Toast.makeText(this, "数据保存成功", Toast.LENGTH_SHORT).show();
 	}
 
 	private class MyPagerAdapter extends PagerAdapter
