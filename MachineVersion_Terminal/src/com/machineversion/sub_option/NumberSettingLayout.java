@@ -34,43 +34,46 @@ public class NumberSettingLayout extends LinearLayout
 	public NumberSettingLayout(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
+		Log.d("CJ", "nuber begin");
 
-		this.context = context;
-		linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(
-				R.layout.number_setting, null);
+		// this.context = context;
+		// linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(
+		// R.layout.number_setting, null);
+		//
+		// addView(linearLayout);
 
-		addView(linearLayout);
-
-		editText = (EditText) findViewById(R.id.number_setting_edittext);		// 数字输入文本框
-		picker = new NumberPicker(NumberSettingLayout.this.context);
-		picker.setMaxValue(500);			// 默认最大值
-
-		dialog = new AlertDialog.Builder(NumberSettingLayout.this.context)
-				.setView(picker)
-				.setPositiveButton("确定", new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int which)
-					{
-						editText.setText(picker.getValue() + "");
-					}
-				}).create();
-
-		editText.setFocusable(false);
-		editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-		editText.setOnTouchListener(new OnTouchListener()
-		{
-			@Override
-			public boolean onTouch(View v, MotionEvent event)
-			{
-				if (event.getAction() == MotionEvent.ACTION_UP)
-				{
-					dialog.show();
-					return true;
-				}
-				return false;
-			}
-		});
+		// editText = (EditText) findViewById(R.id.number_setting_edittext); //
+		// 数字输入文本框
+		// picker = new NumberPicker(NumberSettingLayout.this.context);
+		// picker.setMaxValue(500); // 默认最大值
+		//
+		// dialog = new AlertDialog.Builder(NumberSettingLayout.this.context)
+		// .setView(picker)
+		// .setPositiveButton("确定", new DialogInterface.OnClickListener()
+		// {
+		// @Override
+		// public void onClick(DialogInterface dialog, int which)
+		// {
+		// editText.setText(picker.getValue() + "");
+		// }
+		// }).create();
+		//
+		// editText.setFocusable(false);
+		// editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+		// editText.setOnTouchListener(new OnTouchListener()
+		// {
+		// @Override
+		// public boolean onTouch(View v, MotionEvent event)
+		// {
+		// if (event.getAction() == MotionEvent.ACTION_UP)
+		// {
+		// dialog.show();
+		// return true;
+		// }
+		// return false;
+		// }
+		// });
+		Log.d("CJ", "nuber s");
 	}
 	public void setValue(int value)
 	{

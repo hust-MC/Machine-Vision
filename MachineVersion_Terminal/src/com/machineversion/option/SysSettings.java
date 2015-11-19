@@ -68,8 +68,9 @@ public class SysSettings extends ControlPannelActivity implements
 		((DropDownList) page1.findViewById(R.id.device_setting_output_type))
 				.setItem(R.array.device_setting_output_type);
 
-//		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
-//				.setMax(1720);
+		// ((SeekBarEditLayout)
+		// page1.findViewById(R.id.device_setting_exposure))
+		// .setMax(1720);
 
 		File file = new File(DevicePacketFactory.file_sysSettingDeviceGeneral);
 
@@ -260,7 +261,7 @@ public class SysSettings extends ControlPannelActivity implements
 		Log.d("MC", "page3:" + System.currentTimeMillis());
 
 		list.add(page1);
-		list.add(new View(this));
+		list.add(page2);
 		list.add(new View(this));
 
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
@@ -413,19 +414,20 @@ public class SysSettings extends ControlPannelActivity implements
 
 		public MyPagerAdapter(ViewPager vPager, List<View> list)
 		{
+			Log.d("CJ", "MyPager");
 			this.list = list;
 		}
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object)
 		{
-			Log.d("MC", "remove");
+			Log.d("CJ", "remove");
 			((ViewPager) container).removeView(list.get(position));
 		}
 
 		@Override
 		public Object instantiateItem(View container, int position)
 		{
-			Log.d("MC", "instantiate");
+			Log.d("CJ", "instantiate");
 			((ViewPager) container).addView(list.get(position));
 			return list.get(position);
 		}
@@ -433,12 +435,14 @@ public class SysSettings extends ControlPannelActivity implements
 		@Override
 		public int getCount()
 		{
+			Log.d("CJ", "getCount");
 			return list.size();
 		}
 
 		@Override
 		public boolean isViewFromObject(View arg0, Object arg1)
 		{
+			Log.d("CJ", "from");
 			return arg0 == arg1;
 		}
 	}
