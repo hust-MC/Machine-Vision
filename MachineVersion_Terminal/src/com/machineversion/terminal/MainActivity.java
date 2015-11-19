@@ -220,7 +220,10 @@ public class MainActivity extends Activity
 		@Override
 		public void onClick(View v)
 		{
-			netThread.setCurrentState(CurrentState.onPause);
+			if (netThread != null)
+			{
+				netThread.setCurrentState(CurrentState.onPause);
+			}
 			netHandler.removeMessages(NetUtils.MSG_NET_GET_VIDEO);
 			switch (v.getId())
 			{

@@ -41,7 +41,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SysSettings extends ControlPannelActivity implements
 		OnDialogClicked
@@ -69,58 +68,58 @@ public class SysSettings extends ControlPannelActivity implements
 		((DropDownList) page1.findViewById(R.id.device_setting_output_type))
 				.setItem(R.array.device_setting_output_type);
 
-		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
-				.setMax(1720);
+//		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
+//				.setMax(1720);
 
 		File file = new File(DevicePacketFactory.file_sysSettingDeviceGeneral);
 
-		if (file.exists())
-		{
-			General general = null;
-			try
-			{
-				ObjectInputStream inputStream = new ObjectInputStream(
-						new FileInputStream(file));
-				general = (General) inputStream.readObject();
-				inputStream.close();
-
-				((DropDownList) page1
-						.findViewById(R.id.device_setting_input_type))
-						.setSelection(general.input);
-				((DropDownList) page1
-						.findViewById(R.id.device_setting_output_type))
-						.setSelection(general.output);
-				((NumberSettingLayout) page1
-						.findViewById(R.id.device_setting_start_x))
-						.setValue(general.horzStartPix);
-				((NumberSettingLayout) page1
-						.findViewById(R.id.device_setting_start_y))
-						.setValue(general.vertStartPix);
-				((NumberSettingLayout) page1
-						.findViewById(R.id.device_setting_input_w))
-						.setValue(general.inWidth);
-				((NumberSettingLayout) page1
-						.findViewById(R.id.device_setting_input_w))
-						.setValue(general.inHeight);
-				((NumberSettingLayout) page1
-						.findViewById(R.id.device_setting_output_w))
-						.setValue(general.outWidth);
-				((NumberSettingLayout) page1
-						.findViewById(R.id.device_setting_output_h))
-						.setValue(general.outHeight);
-				((SeekBarEditLayout) page1
-						.findViewById(R.id.device_setting_exposure))
-						.setValue(general.expTime);
-
-				((RadioButton) page1
-						.findViewById(R.id.device_setting_bit_radio0
-								+ general.bitType)).setSelected(true);
-
-			} catch (ClassNotFoundException | IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		// if (file.exists())
+		// {
+		// General general = null;
+		// try
+		// {
+		// ObjectInputStream inputStream = new ObjectInputStream(
+		// new FileInputStream(file));
+		// general = (General) inputStream.readObject();
+		// inputStream.close();
+		//
+		// ((DropDownList) page1
+		// .findViewById(R.id.device_setting_input_type))
+		// .setSelection(general.input);
+		// ((DropDownList) page1
+		// .findViewById(R.id.device_setting_output_type))
+		// .setSelection(general.output);
+		// ((NumberSettingLayout) page1
+		// .findViewById(R.id.device_setting_start_x))
+		// .setValue(general.horzStartPix);
+		// ((NumberSettingLayout) page1
+		// .findViewById(R.id.device_setting_start_y))
+		// .setValue(general.vertStartPix);
+		// ((NumberSettingLayout) page1
+		// .findViewById(R.id.device_setting_input_w))
+		// .setValue(general.inWidth);
+		// ((NumberSettingLayout) page1
+		// .findViewById(R.id.device_setting_input_w))
+		// .setValue(general.inHeight);
+		// ((NumberSettingLayout) page1
+		// .findViewById(R.id.device_setting_output_w))
+		// .setValue(general.outWidth);
+		// ((NumberSettingLayout) page1
+		// .findViewById(R.id.device_setting_output_h))
+		// .setValue(general.outHeight);
+		// ((SeekBarEditLayout) page1
+		// .findViewById(R.id.device_setting_exposure))
+		// .setValue(general.expTime);
+		//
+		// ((RadioButton) page1
+		// .findViewById(R.id.device_setting_bit_radio0
+		// + general.bitType)).setSelected(true);
+		//
+		// } catch (ClassNotFoundException | IOException e)
+		// {
+		// e.printStackTrace();
+		// }
+		// }
 		return page1;
 	}
 
@@ -131,41 +130,41 @@ public class SysSettings extends ControlPannelActivity implements
 
 		File file = new File(file_sysSettingDevice, "trigger");
 
-		if (file.exists())
-		{
-			try
-			{
-				ObjectInputStream inputStream = new ObjectInputStream(
-						new FileInputStream(file));
-				Trigger trigger = (Trigger) inputStream.readObject();
-
-				inputStream.close();
-
-				((EditText) page2
-						.findViewById(R.id.device_setting_trigger_delay))
-						.setText(trigger.trigDelay + "");
-
-				((EditText) page2
-						.findViewById(R.id.device_setting_trigger_part_delay))
-						.setText(trigger.partDelay + "");
-
-				((EditText) page2
-						.findViewById(R.id.device_setting_trigger_velocity))
-						.setText(trigger.velocity + "");
-
-				((EditText) page2
-						.findViewById(R.id.device_setting_trigger_depart_wide))
-						.setText(trigger.departWide + "");
-
-				((EditText) page2
-						.findViewById(R.id.device_setting_trigger_explead))
-						.setText(trigger.expLead + "");
-			} catch (ClassNotFoundException | IOException e)
-			{
-				e.printStackTrace();
-			}
-
-		}
+		// if (file.exists())
+		// {
+		// try
+		// {
+		// ObjectInputStream inputStream = new ObjectInputStream(
+		// new FileInputStream(file));
+		// Trigger trigger = (Trigger) inputStream.readObject();
+		//
+		// inputStream.close();
+		//
+		// ((EditText) page2
+		// .findViewById(R.id.device_setting_trigger_delay))
+		// .setText(trigger.trigDelay + "");
+		//
+		// ((EditText) page2
+		// .findViewById(R.id.device_setting_trigger_part_delay))
+		// .setText(trigger.partDelay + "");
+		//
+		// ((EditText) page2
+		// .findViewById(R.id.device_setting_trigger_velocity))
+		// .setText(trigger.velocity + "");
+		//
+		// ((EditText) page2
+		// .findViewById(R.id.device_setting_trigger_depart_wide))
+		// .setText(trigger.departWide + "");
+		//
+		// ((EditText) page2
+		// .findViewById(R.id.device_setting_trigger_explead))
+		// .setText(trigger.expLead + "");
+		// } catch (ClassNotFoundException | IOException e)
+		// {
+		// e.printStackTrace();
+		// }
+		//
+		// }
 		return page2;
 	}
 
@@ -261,8 +260,8 @@ public class SysSettings extends ControlPannelActivity implements
 		Log.d("MC", "page3:" + System.currentTimeMillis());
 
 		list.add(page1);
-		list.add(page2);
-		list.add(page3);
+		list.add(new View(this));
+		list.add(new View(this));
 
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
 		vPager.setOffscreenPageLimit(2);
