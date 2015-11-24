@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.machineversion.net.DataPack;
 import com.machineversion.net.NetUtils;
 import com.machineversion.option.CameraParams;
 import com.machineversion.option.FastenerSettings;

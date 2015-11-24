@@ -2,21 +2,14 @@ package com.machineversion.sub_option;
 
 import com.machineversion.terminal.R;
 
-import android.R.integer;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import android.widget.TextView;
 
 public class NumberSettingLayout extends LinearLayout
 {
@@ -36,11 +29,11 @@ public class NumberSettingLayout extends LinearLayout
 		super(context, attrs);
 		Log.d("CJ", "nuber begin");
 
-		// this.context = context;
-		// linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(
-		// R.layout.number_setting, null);
-		//
-		// addView(linearLayout);
+		this.context = context;
+		linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(
+				R.layout.number_setting, null);
+
+		addView(linearLayout);
 
 		// editText = (EditText) findViewById(R.id.number_setting_edittext); //
 		// 数字输入文本框

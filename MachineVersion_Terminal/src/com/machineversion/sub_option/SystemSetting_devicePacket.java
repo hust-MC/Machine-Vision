@@ -1,144 +1,26 @@
 package com.machineversion.sub_option;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class SystemSetting_devicePacket
 {
-	private byte[] data;
-	private int cursor;
-	private int maxType = TYPE_BYTE;
-
-	private static final int TYPE_BYTE = 0;
-	private static final int TYPE_SHORT = 1;
-	private static final int TYPE_INT = 2;
-
-	public SystemSetting_devicePacket()
+	public static class General extends DevicePacketBuilt
 	{
-		data = new byte[1024];
-	}
+		General general;
 
-	/**
-	 * 获取最后对齐的数组，还需要在最后面补齐
-	 * 
-	 * @return 已经按照结构体方式对齐的数组
-	 */
-	public byte[] getData()
-	{
-		if (maxType == TYPE_SHORT)
+		private General()
 		{
-			if (cursor % 2 != 0)
+		}
+
+		public General getInstance()
+		{
+			if (general == null)
 			{
-				cursor++;
+				general = new General();
 			}
+			return general;
 		}
 
-		else if (maxType == TYPE_INT)
-		{
-			if (cursor % 4 != 0)
-			{
-				cursor += (4 - cursor % 4);
-			}
-		}
-
-		return Arrays.copyOf(data, cursor);
-	}
-
-	/**
-	 * 获取当前数据长度
-	 * 
-	 * @return 数组的长度
-	 */
-	public int getSize()
-	{
-		return cursor;
-	}
-
-	/**
-	 * 设置游标
-	 * 
-	 * @param cursor
-	 *            游标位置
-	 */
-	public void setCursor(int cursor)
-	{
-		this.cursor = cursor;
-	}
-
-	public SystemSetting_devicePacket write(byte b)
-	{
-
-		data[cursor++] = b;
-
-		return this;
-	}
-
-	public SystemSetting_devicePacket write(byte[] bArray)
-	{
-		for (byte b : bArray)
-		{
-			write(b);
-		}
-		return this;
-	}
-
-	public SystemSetting_devicePacket write(short s)
-	{
-		if (maxType < TYPE_SHORT)
-		{
-			maxType = TYPE_SHORT;
-		}
-
-		if (cursor % 2 != 0)
-		{
-			cursor++;
-		}
-		data[cursor++] = (byte) s;
-		data[cursor++] = (byte) (s >> 8);
-
-		return this;
-	}
-
-	public SystemSetting_devicePacket write(short[] sArray)
-	{
-		for (short s : sArray)
-		{
-			write(s);
-		}
-
-		return this;
-	}
-
-	public SystemSetting_devicePacket write(int i)
-	{
-		if (maxType < TYPE_INT)
-		{
-			maxType = TYPE_INT;
-		}
-
-		if (cursor % 4 != 0)
-		{
-			cursor += (4 - cursor % 4);
-		}
-		data[cursor++] = (byte) i;
-		data[cursor++] = (byte) (i >> 8);
-		data[cursor++] = (byte) (i >> 16);
-		data[cursor++] = (byte) (i >> 24);
-
-		return this;
-	}
-
-	public SystemSetting_devicePacket write(int[] iArray)
-	{
-		for (int i : iArray)
-		{
-			write(i);
-		}
-		return this;
-	}
-
-	public static class General implements DevicePacketBuilt
-	{
 		/**
 		 * 
 		 */
@@ -147,93 +29,96 @@ public class SystemSetting_devicePacket
 		public static final int LENGTH = 160;
 
 		/* input camera type CAMERA_Type */
-		public byte input;
+		public String input;
 		/* output display way 0:lcd; 1:net; 2:crt */
-		public byte output;
+		public String output;
 		/* fpga 获取图像数据位数 0：8bit; 1:16bits */
-		public byte bitType;
+		public String bitType;
 		/* 所使用的算法 */
-		public byte algorithm;
+		public String algorithm;
 		/* fpga 控制曝光时间 0-65535 */
-		public short expTime;
+		public String expTime;
 
-		public byte inited;
+		public String inited;
 		/* 触发模式选择 0->auto, 1->dsp, 2->outside */
-		public byte trigger;
+		public String trigger;
 		/* ccdc 获取图像数据横向起始位置 */
-		public short horzStartPix;
+		public String horzStartPix;
 		/* ccdc 获取图像数据纵向起始位置 */
-		public short vertStartPix;
+		public String vertStartPix;
 		/* ccdc 获取图像数据实际宽度 */
-		public short inWidth;
+		public String inWidth;
 		/* ccdc 获取图像数据实际高度 */
-		public short inHeight;
+		public String inHeight;
 
-		public short outWidth;
-		public short outHeight;
-
-		public byte[] buildData()
-		{
-			SystemSetting_devicePacket packet = new SystemSetting_devicePacket();
-
-			packet.write(input).write(output).write(bitType).write(algorithm)
-					.write(expTime).write(inited).write(trigger)
-					.write(horzStartPix).write(vertStartPix).write(inWidth)
-					.write(inHeight).write(outWidth).write(outHeight);
-
-			return packet.getData();
-		}
+		public String outWidth;
+		public String outHeight;
 	}
 
-	public static class Trigger implements DevicePacketBuilt
+	public static class Trigger extends DevicePacketBuilt
 	{
+		Trigger trigger;
+
+		private Trigger()
+		{
+		}
+
+		public Trigger getInstance()
+		{
+			if (trigger == null)
+			{
+				trigger = new Trigger();
+			}
+			return trigger;
+		}
+
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -6661255058156487062L;
-		public int trigDelay; // 0.1mm
-		public int partDelay; // 0.1mm
-		public int velocity;  // mm/s
-		public int departWide;	// ms
-		public int expLead;	// us
-		public short checksum;
-
-		public byte[] buildData()
-		{
-			SystemSetting_devicePacket packet = new SystemSetting_devicePacket();
-
-			packet.write(trigDelay).write(partDelay).write(velocity)
-					.write(departWide).write(expLead);
-
-			return packet.getData();
-		}
+		public String trigDelay; // 0.1mm
+		public String partDelay; // 0.1mm
+		public String velocity;  // mm/s
+		public String departWide;	// ms
+		public String expLead;	// us
+		public String checksum;
 	}
 
-	public static class AD9849 implements DevicePacketBuilt
+	public static class AD9849 extends DevicePacketBuilt
 	{
+		AD9849 ad9849;
+
+		private AD9849()
+		{
+		}
+
+		public AD9849 getInstance()
+		{
+			if (ad9849 == null)
+			{
+				ad9849 = new AD9849();
+			}
+			return ad9849;
+		}
+
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1625998561140958827L;
-		public byte[] vga = new byte[2];
-		public byte[] pxga = new byte[4];
-		public byte[] hxdrv = new byte[4];
-		public byte rgdrv;
-		public byte shp, shd;
-		public byte hpl, hnl;
-		public byte rgpl, rgnl;
-
-		public byte[] buildData()
-		{
-			SystemSetting_devicePacket packet = new SystemSetting_devicePacket();
-			packet.write(vga).write(pxga).write(hxdrv).write(rgdrv).write(shp)
-					.write(shd).write(hpl).write(hnl).write(rgpl).write(rgnl);
-			return packet.getData();
-		}
+		public String[] vga = new String[2];
+		public String[] pxga = new String[4];
+		public String[] hxdrv = new String[4];
+		public String rgdrv;
+		public String shp, shd;
+		public String hpl, hnl;
+		public String rgpl, rgnl;
 	}
+}
 
-	interface DevicePacketBuilt extends Serializable
+class DevicePacketBuilt implements Serializable
+{
+	public byte[] buildData()
 	{
-		public byte[] buildData();
+		return null;
 	}
 }

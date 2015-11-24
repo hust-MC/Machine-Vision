@@ -19,13 +19,6 @@ import com.machineversion.terminal.R;
 
 public class DevicePacketFactory
 {
-	public static final String file_sysSettingDeviceGeneral = SysSettings.file_sysSettingDevice
-			+ "general";
-	public static final String file_sysSettingDeviceTrigger = SysSettings.file_sysSettingDevice
-			+ "trigger";
-	public static final String file_sysSettingDeviceAD9849 = SysSettings.file_sysSettingDevice
-			+ "AD9849";
-
 	ViewPager vPager;
 
 	public DevicePacketFactory(ViewPager vPager)
@@ -33,150 +26,134 @@ public class DevicePacketFactory
 		this.vPager = vPager;
 	}
 
-	public void savePacket(Context context)
-	{
-		File file = null;
+	// public void savePacket(Context context)
+	// {
+	// File file = null;
+	//
+	// View layout = vPager.getChildAt(vPager.getCurrentItem());
+	//
+	// DevicePacketBuilt packetBuilt = null;
+	//
+	// switch (vPager.getCurrentItem())
+	// {
+	// case 0:
+	// file = new File(file_sysSettingDeviceGeneral);
+	// General general = new General();
+	//
+	// general.input = ((DropDownList) layout
+	// .findViewById(R.id.device_setting_input_type))
+	// .getCurrentIndex()
+	// + "";
+	// general.output = ((DropDownList) layout
+	// .findViewById(R.id.device_setting_output_type))
+	// .getCurrentIndex()
+	// + "";
+	// general.horzStartPix = (((NumberSettingLayout) layout
+	// .findViewById(R.id.device_setting_start_x)).getValue())
+	// + "";
+	// general.vertStartPix = (((NumberSettingLayout) layout
+	// .findViewById(R.id.device_setting_start_y)).getValue())
+	// + "";
+	// general.inWidth = (((NumberSettingLayout) layout
+	// .findViewById(R.id.device_setting_input_w)).getValue())
+	// + "";
+	// general.inHeight = (((NumberSettingLayout) layout
+	// .findViewById(R.id.device_setting_input_h)).getValue())
+	// + "";
+	// general.outWidth = (((NumberSettingLayout) layout
+	// .findViewById(R.id.device_setting_output_w)).getValue())
+	// + "";
+	// general.outHeight = (((NumberSettingLayout) layout
+	// .findViewById(R.id.device_setting_output_h)).getValue())
+	// + "";
+	// general.expTime = ((SeekBarEditLayout) layout
+	// .findViewById(R.id.device_setting_exposure)).getValue()
+	// + "";
+	// general.bitType = (((RadioButton) layout
+	// .findViewById(R.id.device_setting_bit_radio1)).isSelected() ? 0
+	// : 1)
+	// + "";
+	// packetBuilt = general;
+	//
+	// break;
+	// case 1:
+	// file = new File(file_sysSettingDeviceTrigger);
+	// Trigger trigger = new Trigger();
+	//
+	// trigger.trigDelay = ((EditText) layout
+	// .findViewById(R.id.device_setting_trigger_delay)).getText()
+	// .toString();
+	// trigger.partDelay = ((EditText) layout
+	// .findViewById(R.id.device_setting_trigger_part_delay))
+	// .getText().toString();
+	// trigger.velocity = ((EditText) layout
+	// .findViewById(R.id.device_setting_trigger_velocity))
+	// .getText().toString();
+	// trigger.departWide = ((EditText) layout
+	// .findViewById(R.id.device_setting_trigger_depart_wide))
+	// .getText().toString();
+	// trigger.expLead = ((EditText) layout
+	// .findViewById(R.id.device_setting_trigger_explead))
+	// .getText().toString();
+	// packetBuilt = trigger;
+	// break;
+	// case 2:
+	// int count = 0;
+	// file = new File(file_sysSettingDeviceAD9849);
+	// AD9849 ad = new AD9849();
+	//
+	// /*
+	// * 左边一侧菜单
+	// */
+	// int vga = ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// ad.vga[0] = vga + "";
+	// ad.vga[1] = (vga >> 8) + "";
+	//
+	// ad.shp = (byte) ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// ad.hpl = (byte) ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// ad.rgpl = (byte) ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// for (int i = 0; i < ad.pxga.length; i++)
+	// {
+	// ad.pxga[i] = (byte) ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// }
+	//
+	// /*
+	// * 右边一侧菜单
+	// */
+	// ad.rgdrv = (byte) ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// ad.shd = (byte) ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// ad.hnl = (byte) ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// ad.rgnl = (byte) ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// for (int i = 0; i < ad.hxdrv.length; i++)
+	// {
+	// ad.hxdrv[i] = (byte) ((SeekBarEditLayout) layout
+	// .findViewById(SysSettings.SEEKBAR_START_ID + count++))
+	// .getValue();
+	// }
+	//
+	// break;
+	//
+	// default:
+	// break;
+	// }
 
-		View layout = vPager.getChildAt(vPager.getCurrentItem());
-
-		DevicePacketBuilt packetBuilt = null;
-
-		switch (vPager.getCurrentItem())
-		{
-		case 0:
-			// file = new File(file_sysSettingDeviceGeneral);
-			// General general = new General();
-			//
-			// general.input = (byte) ((DropDownList) layout
-			// .findViewById(R.id.device_setting_input_type))
-			// .getCurrentIndex();
-			// general.output = (byte) ((DropDownList) layout
-			// .findViewById(R.id.device_setting_output_type))
-			// .getCurrentIndex();
-			// general.horzStartPix = (short) (((NumberSettingLayout) layout
-			// .findViewById(R.id.device_setting_start_x)).getValue());
-			// general.vertStartPix = (short) (((NumberSettingLayout) layout
-			// .findViewById(R.id.device_setting_start_y)).getValue());
-			// general.inWidth = (short) (((NumberSettingLayout) layout
-			// .findViewById(R.id.device_setting_input_w)).getValue());
-			// general.inHeight = (short) (((NumberSettingLayout) layout
-			// .findViewById(R.id.device_setting_input_h)).getValue());
-			// general.outWidth = (short) (((NumberSettingLayout) layout
-			// .findViewById(R.id.device_setting_output_w)).getValue());
-			// general.outHeight = (short) (((NumberSettingLayout) layout
-			// .findViewById(R.id.device_setting_output_h)).getValue());
-			// general.expTime = (short) ((SeekBarEditLayout) layout
-			// .findViewById(R.id.device_setting_exposure)).getValue();
-			// general.bitType = (byte) (((RadioButton) layout
-			// .findViewById(R.id.device_setting_bit_radio1)).isSelected() ? 0
-			// : 1);
-			// general.inited =
-			// general.trigger =
-			// packetBuilt = general;
-
-			break;
-		case 1:
-			file = new File(file_sysSettingDeviceTrigger);
-			Trigger trigger = new Trigger();
-
-			trigger.trigDelay = Integer.parseInt(((EditText) layout
-					.findViewById(R.id.device_setting_trigger_delay)).getText()
-					.toString());
-			trigger.partDelay = Integer.parseInt(((EditText) layout
-					.findViewById(R.id.device_setting_trigger_part_delay))
-					.getText().toString());
-			trigger.velocity = Integer.parseInt(((EditText) layout
-					.findViewById(R.id.device_setting_trigger_velocity))
-					.getText().toString());
-			trigger.departWide = Integer.parseInt(((EditText) layout
-					.findViewById(R.id.device_setting_trigger_depart_wide))
-					.getText().toString());
-			trigger.expLead = Integer.parseInt(((EditText) layout
-					.findViewById(R.id.device_setting_trigger_explead))
-					.getText().toString());
-			packetBuilt = trigger;
-			break;
-		case 2:
-			int count = 0;
-			file = new File(file_sysSettingDeviceAD9849);
-			AD9849 ad = new AD9849();
-
-			/*
-			 * 左边一侧菜单
-			 */
-			int vga = ((SeekBarEditLayout) layout
-					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-					.getValue();
-			ad.vga[0] = (byte) vga;
-			ad.vga[1] = (byte) (vga >> 8);
-
-			ad.shp = (byte) ((SeekBarEditLayout) layout
-					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-					.getValue();
-			ad.hpl = (byte) ((SeekBarEditLayout) layout
-					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-					.getValue();
-			ad.rgpl = (byte) ((SeekBarEditLayout) layout
-					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-					.getValue();
-			for (int i = 0; i < ad.pxga.length; i++)
-			{
-				ad.pxga[i] = (byte) ((SeekBarEditLayout) layout
-						.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-						.getValue();
-			}
-
-			/*
-			 * 右边一侧菜单
-			 */
-			ad.rgdrv = (byte) ((SeekBarEditLayout) layout
-					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-					.getValue();
-			ad.shd = (byte) ((SeekBarEditLayout) layout
-					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-					.getValue();
-			ad.hnl = (byte) ((SeekBarEditLayout) layout
-					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-					.getValue();
-			ad.rgnl = (byte) ((SeekBarEditLayout) layout
-					.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-					.getValue();
-			for (int i = 0; i < ad.hxdrv.length; i++)
-			{
-				ad.hxdrv[i] = (byte) ((SeekBarEditLayout) layout
-						.findViewById(SysSettings.SEEKBAR_START_ID + count++))
-						.getValue();
-			}
-
-			break;
-
-		default:
-			break;
-		}
-
-		if (!file.getParentFile().exists())
-		{
-			file.getParentFile().mkdirs();
-		}
-		if ((!file.exists()))
-		{
-			try
-			{
-				file.createNewFile();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		try
-		{
-			ObjectOutputStream oos = new ObjectOutputStream(
-					new FileOutputStream(file));
-			oos.writeObject(packetBuilt);
-			oos.close();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
+	// }
 }
