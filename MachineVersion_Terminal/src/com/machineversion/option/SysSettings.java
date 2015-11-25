@@ -72,7 +72,8 @@ public class SysSettings extends ControlPannelActivity implements
 		// page1.findViewById(R.id.device_setting_exposure))
 		// .setMax(1720);
 
-		File file = new File(DevicePacketFactory.file_sysSettingDeviceGeneral);
+		// File file = new
+		// File(DevicePacketFactory.file_sysSettingDeviceGeneral);
 
 		// if (file.exists())
 		// {
