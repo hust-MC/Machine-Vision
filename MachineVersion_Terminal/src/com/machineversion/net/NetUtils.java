@@ -44,6 +44,7 @@ public class NetUtils
 	public final static int MSG_NET_TRIGGER = 23;
 	public final static int MSG_NET_DSPTRIG = 24;
 	public final static int MSG_NET_HELP_ALG_CMD = 25;
+	public final static int MSG_NET_GET_JSON = 26;
 	public final static int MSG_NET_ALGRESULT = 200;
 
 	/*
@@ -192,6 +193,15 @@ public class NetUtils
 		public GetParam()
 		{
 			minid = MSG_NET_GET_PARAM;
+			type = 1;
+			block = 1000;
+		}
+	}
+	public static class GetJson extends NetPacket
+	{
+		public GetJson()
+		{
+			minid = MSG_NET_GET_JSON;
 			type = 1;
 			block = 1000;
 		}

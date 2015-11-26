@@ -127,6 +127,13 @@ public class CmdHandle
 		Log.d("send", "send over");
 	}
 
+	public void getJson(Handler handler)
+	{
+		NetPacketContext context = new NetPacketContext(MSG_NET_GET_JSON);
+		NetReceiveThread.handler = handler;
+		context.sendPacket(os);
+	}
+	
 	public void generalInfo(byte[] data)
 	{
 		NetPacketContext context = new NetPacketContext(MSG_NET_GENERAL);

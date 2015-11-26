@@ -37,6 +37,9 @@ public class NetPacketContext
 		case NetUtils.MSG_NET_GET_PARAM:
 			packet = new GetParam();
 			break;
+		case NetUtils.MSG_NET_GET_JSON:
+			packet = new GetJson();
+			break;
 		default:
 			Log.e("MC", "netPacket error");
 		}

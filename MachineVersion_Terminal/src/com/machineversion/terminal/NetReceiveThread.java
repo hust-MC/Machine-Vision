@@ -1,6 +1,8 @@
 package com.machineversion.terminal;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import android.graphics.Bitmap;
@@ -34,11 +36,12 @@ public class NetReceiveThread extends Thread
 	{
 		while (NetThread.currentState != NetThread.CurrentState.onStop)
 		{
-			Log.d("ZY", "rev");
+
 			long timer1 = System.currentTimeMillis();
 			revPacket.recvDataPack(is);
 			if (revPacket.type != 0xaa)// 如果数据正常，表示网络通畅
 			{
+				Log.d("ZY", revPacket.minid + "");
 				switch (revPacket.minid)
 				{
 				case NetUtils.MSG_NET_GET_VIDEO:
@@ -86,11 +89,6 @@ public class NetReceiveThread extends Thread
 					handler.sendMessage(message);
 					long timer4 = System.currentTimeMillis();
 
-					Log.d("MC", "whole = " + (timer4 - timer1));
-					Log.d("MC", "rev = " + (timer2 - timer1));
-					Log.d("MC", "byteToint = " + (timer3 - timer2));
-					Log.d("MC", "create BitMap = " + (timer4 - timer3));
-
 					break;
 				case NetUtils.MSG_NET_GET_PARAM:
 					Log.d("param", "start：" + revPacket.data.length);
@@ -101,6 +99,14 @@ public class NetReceiveThread extends Thread
 						Log.d("param", i++ + " : " + b);
 					}
 					Log.d("param", "end");
+					break;
+				case NetUtils.MSG_NET_GET_JSON:
+					Log.d("CJ", "start");
+					String str = null;
+					str = new String(Arrays.copyOfRange(revPacket.data, 100,
+							revPacket.data.length));
+					Log.d("CJ", str);
+					Log.d("CJ", "end");
 					break;
 				default:
 					Log.e("MC", "default");

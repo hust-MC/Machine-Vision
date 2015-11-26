@@ -3,6 +3,7 @@ package com.machineversion.terminal;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import org.json.JSONObject;
 
@@ -115,8 +116,8 @@ public class MainActivity extends Activity
 					break;
 				case NetThread.CONNECT_FAIL:
 					dialog.dismiss();
-					// Toast.makeText(MainActivity.this, "连接失败，请检查网络连接",
-					// Toast.LENGTH_SHORT).show();
+					Toast.makeText(MainActivity.this, "连接失败，请检查网络连接",
+							Toast.LENGTH_SHORT).show();
 					break;
 				case NetUtils.MSG_NET_GET_VIDEO: // 获取图像
 					Bitmap bitmap = (Bitmap) msg.obj;
@@ -125,9 +126,12 @@ public class MainActivity extends Activity
 				case NetUtils.MSG_NET_STATE:
 					temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
 					break;
-				case NetUtils.MSG_NET_GET_PARAM:
+				case NetUtils.MSG_NET_GET_JSON:
+					byte[] data = (byte[]) msg.obj;
+					
 					// JsonObject json = new JsonObject();
 					// json.getAsJsonObject(msg.obj);
+					break;
 				default:
 					break;
 				}
