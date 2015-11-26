@@ -113,6 +113,50 @@ public class SystemSetting_devicePacket
 		public String hpl, hnl;
 		public String rgpl, rgnl;
 	}
+
+	public static class MT9V032 extends DevicePacketBuilt
+	{
+		MT9V032 mt9v032;
+
+		private MT9V032()
+		{
+		}
+		public MT9V032 getInstance()
+		{
+			if (mt9v032 == null)
+			{
+				mt9v032 = new MT9V032();
+			}
+			return mt9v032;
+		}
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7173873001878958176L;
+		byte isAgc;
+		byte isAec;
+		short agVal;
+		short aeVal;
+	}
+
+	public static class ISL12026 extends DevicePacketBuilt
+	{
+		ISL12026 isl12026;
+
+		private ISL12026()
+		{
+
+		}
+		public ISL12026 getInstatce()
+		{
+			if (isl12026 == null)
+			{
+				isl12026 = new ISL12026();
+			}
+			return isl12026;
+		}
+	}
 }
 
 class DevicePacketBuilt implements Serializable

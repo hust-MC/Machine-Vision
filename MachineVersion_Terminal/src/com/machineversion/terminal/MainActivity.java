@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.json.JSONObject;
+
+import com.google.gson.JsonObject;
 import com.machineversion.net.NetUtils;
 import com.machineversion.option.CameraParams;
 import com.machineversion.option.FastenerSettings;
@@ -123,7 +126,8 @@ public class MainActivity extends Activity
 					temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
 					break;
 				case NetUtils.MSG_NET_GET_PARAM:
-
+					// JsonObject json = new JsonObject();
+					// json.getAsJsonObject(msg.obj);
 				default:
 					break;
 				}
