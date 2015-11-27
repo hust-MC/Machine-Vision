@@ -11,8 +11,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.machineversion.net.NetUtils;
 import com.machineversion.net.NetUtils.NetPacket;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Net;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
 
 public class NetReceiveThread extends Thread
 {
@@ -104,9 +110,16 @@ public class NetReceiveThread extends Thread
 					Log.d("CJ", "start");
 					String str = null;
 					str = new String(Arrays.copyOfRange(revPacket.data, 100,
-							revPacket.data.length));
+							revPacket.data.length - 1));
 					Log.d("CJ", str);
 					Log.d("CJ", "end");
+
+					JsonParser jParser = new JsonParser();
+					Gson gson = new Gson();
+
+					Net t = gson.fromJson(jParser.parse(str).getAsJsonObject()
+							.get("net").toString(), Net.class);
+					Log.d("CJ", t.port + "");
 					break;
 				default:
 					Log.e("MC", "default");

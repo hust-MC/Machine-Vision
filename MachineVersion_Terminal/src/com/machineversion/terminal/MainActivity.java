@@ -7,6 +7,8 @@ import java.util.Arrays;
 
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.machineversion.net.NetUtils;
 import com.machineversion.option.CameraParams;
@@ -15,6 +17,7 @@ import com.machineversion.option.FileManager;
 import com.machineversion.option.Help;
 import com.machineversion.option.MachineLearning;
 import com.machineversion.option.SysSettings;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
 import com.machineversion.terminal.NetThread.CurrentState;
 
 import android.os.Bundle;
@@ -107,8 +110,11 @@ public class MainActivity extends Activity
 		public void handleMessage(Message msg)
 		{
 			if (netHandleFlag)
+			{
+				Log.d("CJ", msg.what + "");
 				switch (msg.what)
 				{
+
 				case NetThread.CONNECT_SUCCESS: // 网络连接成功
 					dialog.dismiss();
 					Toast.makeText(MainActivity.this, "网络连接成功",
@@ -127,14 +133,13 @@ public class MainActivity extends Activity
 					temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
 					break;
 				case NetUtils.MSG_NET_GET_JSON:
-					byte[] data = (byte[]) msg.obj;
+
 					
-					// JsonObject json = new JsonObject();
-					// json.getAsJsonObject(msg.obj);
 					break;
 				default:
 					break;
 				}
+			}
 		}
 	};
 

@@ -2,6 +2,8 @@ package com.machineversion.sub_option;
 
 import java.io.Serializable;
 
+import android.bluetooth.BluetoothClass.Device;
+
 public class SystemSetting_devicePacket
 {
 	public static class General extends DevicePacketBuilt
@@ -134,10 +136,10 @@ public class SystemSetting_devicePacket
 		 * 
 		 */
 		private static final long serialVersionUID = 7173873001878958176L;
-		byte isAgc;
-		byte isAec;
-		short agVal;
-		short aeVal;
+		public int isAgc;
+		public int isAec;
+		public int agVal;
+		public int aeVal;
 	}
 
 	public static class ISL12026 extends DevicePacketBuilt
@@ -161,9 +163,9 @@ public class SystemSetting_devicePacket
 			return isl12026;
 		}
 
-		byte[] time = new byte[8];
-		byte[] alarm0 = new byte[8];
-		byte[] alarm1 = new byte[8];
+		public int[] time = new int[8];
+		public int[] alarm0 = new int[8];
+		public int[] alarm1 = new int[8];
 	}
 
 	public static class Net extends DevicePacketBuilt
@@ -186,37 +188,101 @@ public class SystemSetting_devicePacket
 			return net;
 		}
 
-		short port;
-		byte work_mode;	// 1,2 tcpip server and client; 3,4 udp
-		byte[] ip_address = new byte[4];
-		byte[] remote_ip = new byte[4];
-		byte[] mac_address = new byte[6];
-		byte[] gateway = new byte[4];
-		byte[] ip_mask = new byte[4];
-		byte[] dns = new byte[4];
+		public short port;
+		public int work_mode;	// 1,2 tcpip server and client; 3,4 udp
+		public int[] ip_address = new int[4];
+		public int[] remote_ip = new int[4];
+		public int[] mac_address = new int[6];
+		public int[] gateway = new int[4];
+		public int[] ip_mask = new int[4];
+		public int[] dns = new int[4];
 
-		byte checksum;
+		public int checksum;
 	}
 
-	public static class UART_HECC extends DevicePacketBuilt
+	public static class UART extends DevicePacketBuilt
 	{
 
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -8443600832368353788L;
-		UART_HECC uart;
+		UART uart;
 
-		private UART_HECC()
+		private UART()
 		{
 		}
+		public UART getInstace()
+		{
+			if (uart == null)
+			{
+				uart = new UART();
+			}
+			return uart;
+		}
+
+		public int baudRate;
+		public int work_mode;
+		public int checksum;
 	}
 
+	public static class HECC extends DevicePacketBuilt
+	{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7606274507483466117L;
+		HECC hecc;
+
+		private HECC()
+		{
+		}
+		public HECC getInstance()
+		{
+			if (hecc == null)
+			{
+				hecc = new HECC();
+			}
+			return hecc;
+		}
+
+		public int baudRate;
+		public int id;
+		public int checksum;
+	}
+
+	public static class AT25040 extends DevicePacketBuilt
+	{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 4758195849900415767L;
+		AT25040 at25040;
+
+		private AT25040()
+		{
+		}
+		public AT25040 getInstance()
+		{
+			if (at25040 == null)
+			{
+				at25040 = new AT25040();
+			}
+			return at25040;
+		}
+
+		public int version;
+		public int[] macAddr = new int[6];
+		public int[] ipAddr = new int[4];
+		public int port;
+	}
 }
 
 class DevicePacketBuilt implements Serializable
 {
-	public byte[] buildData()
+	public int[] buildData()
 	{
 		return null;
 	}
