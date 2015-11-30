@@ -4,9 +4,13 @@ import com.machineversion.terminal.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -66,7 +70,7 @@ public class NumberSettingLayout extends LinearLayout
 		// return false;
 		// }
 		// });
-		Log.d("CJ", "nuber s");
+		// Log.d("CJ", "nuber s");
 	}
 	public void setValue(int value)
 	{

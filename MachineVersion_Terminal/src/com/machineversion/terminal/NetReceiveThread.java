@@ -47,7 +47,6 @@ public class NetReceiveThread extends Thread
 			revPacket.recvDataPack(is);
 			if (revPacket.type != 0xaa)// 如果数据正常，表示网络通畅
 			{
-				Log.d("ZY", revPacket.minid + "");
 				switch (revPacket.minid)
 				{
 				case NetUtils.MSG_NET_GET_VIDEO:
@@ -96,21 +95,10 @@ public class NetReceiveThread extends Thread
 					long timer4 = System.currentTimeMillis();
 
 					break;
-				case NetUtils.MSG_NET_GET_PARAM:
-					Log.d("param", "start：" + revPacket.data.length);
-					int i = 0;
-					for (byte b : Arrays.copyOfRange(revPacket.data, 100,
-							revPacket.data.length))
-					{
-						Log.d("param", i++ + " : " + b);
-					}
-					Log.d("param", "end");
-					break;
 				case NetUtils.MSG_NET_GET_JSON:
 					Log.d("CJ", "start");
-					String str = null;
-					str = new String(Arrays.copyOfRange(revPacket.data, 100,
-							revPacket.data.length - 1));
+					String str = new String(Arrays.copyOfRange(revPacket.data,
+							100, revPacket.data.length - 1));
 					Log.d("CJ", str);
 					Log.d("CJ", "end");
 
@@ -119,7 +107,10 @@ public class NetReceiveThread extends Thread
 
 					Net t = gson.fromJson(jParser.parse(str).getAsJsonObject()
 							.get("net").toString(), Net.class);
-					Log.d("CJ", t.port + "");
+					Log.d("CJ", t.remote_ip[0] + "");
+					Log.d("CJ", t.remote_ip[1] + "");
+					Log.d("CJ", t.remote_ip[2] + "");
+					Log.d("CJ", t.remote_ip[3] + "");
 					break;
 				default:
 					Log.e("MC", "default");

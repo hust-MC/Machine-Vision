@@ -1,9 +1,5 @@
 package com.machineversion.sub_option;
 
-import java.io.Serializable;
-
-import android.bluetooth.BluetoothClass.Device;
-
 public class SystemSetting_devicePacket
 {
 	public static class General extends DevicePacketBuilt
@@ -22,11 +18,6 @@ public class SystemSetting_devicePacket
 			}
 			return general;
 		}
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 6803891809250009377L;
 
 		public static final int LENGTH = 160;
 
@@ -74,10 +65,6 @@ public class SystemSetting_devicePacket
 			return trigger;
 		}
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -6661255058156487062L;
 		public int trigDelay; // 0.1mm
 		public int partDelay; // 0.1mm
 		public int velocity;  // mm/s
@@ -88,13 +75,13 @@ public class SystemSetting_devicePacket
 
 	public static class AD9849 extends DevicePacketBuilt
 	{
-		AD9849 ad9849;
+		static AD9849 ad9849;
 
 		private AD9849()
 		{
 		}
 
-		public AD9849 getInstance()
+		public static AD9849 getInstance()
 		{
 			if (ad9849 == null)
 			{
@@ -103,10 +90,6 @@ public class SystemSetting_devicePacket
 			return ad9849;
 		}
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1625998561140958827L;
 		public int[] vga = new int[2];
 		public int[] pxga = new int[4];
 		public int[] hxdrv = new int[4];
@@ -118,12 +101,12 @@ public class SystemSetting_devicePacket
 
 	public static class MT9V032 extends DevicePacketBuilt
 	{
-		MT9V032 mt9v032;
+		static MT9V032 mt9v032;
 
 		private MT9V032()
 		{
 		}
-		public MT9V032 getInstance()
+		public static MT9V032 getInstance()
 		{
 			if (mt9v032 == null)
 			{
@@ -132,10 +115,6 @@ public class SystemSetting_devicePacket
 			return mt9v032;
 		}
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 7173873001878958176L;
 		public int isAgc;
 		public int isAec;
 		public int agVal;
@@ -144,17 +123,13 @@ public class SystemSetting_devicePacket
 
 	public static class ISL12026 extends DevicePacketBuilt
 	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 4929503182824463L;
-		ISL12026 isl12026;
+		static ISL12026 isl12026;
 
 		private ISL12026()
 		{
 
 		}
-		public ISL12026 getInstatce()
+		public static ISL12026 getInstatce()
 		{
 			if (isl12026 == null)
 			{
@@ -170,16 +145,12 @@ public class SystemSetting_devicePacket
 
 	public static class Net extends DevicePacketBuilt
 	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 6830004797705175554L;
-		Net net;
+		static Net net;
 
 		private Net()
 		{
 		}
-		public Net getInstance()
+		public static Net getInstance()
 		{
 			if (net == null)
 			{
@@ -202,17 +173,12 @@ public class SystemSetting_devicePacket
 
 	public static class UART extends DevicePacketBuilt
 	{
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -8443600832368353788L;
-		UART uart;
+		static UART uart;
 
 		private UART()
 		{
 		}
-		public UART getInstace()
+		public static UART getInstace()
 		{
 			if (uart == null)
 			{
@@ -228,17 +194,12 @@ public class SystemSetting_devicePacket
 
 	public static class HECC extends DevicePacketBuilt
 	{
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 7606274507483466117L;
-		HECC hecc;
+		static HECC hecc;
 
 		private HECC()
 		{
 		}
-		public HECC getInstance()
+		public static HECC getInstance()
 		{
 			if (hecc == null)
 			{
@@ -255,16 +216,12 @@ public class SystemSetting_devicePacket
 	public static class AT25040 extends DevicePacketBuilt
 	{
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 4758195849900415767L;
-		AT25040 at25040;
+		static AT25040 at25040;
 
 		private AT25040()
 		{
 		}
-		public AT25040 getInstance()
+		public static AT25040 getInstance()
 		{
 			if (at25040 == null)
 			{
@@ -278,9 +235,30 @@ public class SystemSetting_devicePacket
 		public int[] ipAddr = new int[4];
 		public int port;
 	}
+
+	public static class Parameters
+	{
+		static Parameters parameters;
+
+		private Parameters()
+		{
+
+		}
+		public static Parameters getInstace()
+		{
+			if (parameters == null)
+			{
+				parameters = new Parameters();
+			}
+			return parameters;
+		}
+		
+		
+		
+	}
 }
 
-class DevicePacketBuilt implements Serializable
+class DevicePacketBuilt
 {
 	public int[] buildData()
 	{

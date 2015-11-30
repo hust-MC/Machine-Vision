@@ -23,11 +23,9 @@ public class NetPacketContext
 		case NetUtils.MSG_NET_GET_VIDEO:
 			packet = new GetVideo();
 			break;
-
 		case NetUtils.MSG_NET_NORMAL:
 			packet = new Normal();
 			break;
-
 		case NetUtils.MSG_NET_STATE:
 			packet = new State();
 			break;
