@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 import com.machineversion.net.NetUtils;
 import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Net;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Parameters;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
 
 public class NetReceiveThread extends Thread
@@ -105,12 +106,11 @@ public class NetReceiveThread extends Thread
 					JsonParser jParser = new JsonParser();
 					Gson gson = new Gson();
 
-					Net t = gson.fromJson(jParser.parse(str).getAsJsonObject()
-							.get("net").toString(), Net.class);
-					Log.d("CJ", t.remote_ip[0] + "");
-					Log.d("CJ", t.remote_ip[1] + "");
-					Log.d("CJ", t.remote_ip[2] + "");
-					Log.d("CJ", t.remote_ip[3] + "");
+					Parameters p = gson.fromJson(jParser.parse(str)
+							.getAsJsonObject().toString(), Parameters.class);
+					Log.d("CJ", p.hecc.baudRate + "");
+					Log.d("CJ", p.net.ip_address[1] + "");
+					Log.d("CJ", p.mode.expoTime + "");
 					break;
 				default:
 					Log.e("MC", "default");

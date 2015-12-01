@@ -48,6 +48,61 @@ public class SystemSetting_devicePacket
 		public int outHeight;
 	}
 
+	public static class Sensor
+	{
+		private static Sensor sensor;
+
+		private Sensor()
+		{
+		}
+
+		public static Sensor getInstatce()
+		{
+			if (sensor == null)
+			{
+				sensor = new Sensor();
+			}
+			return sensor;
+		}
+
+		public int width_max;
+		public int height_max;
+		public int width_input;
+		public int height_input;
+		public int startPixel_height;
+		public int startPixel_width;
+		public int sensor_number;
+		public int isColour;
+		public int bitPixel;
+	}
+
+	public static class Mode
+	{
+
+		private static Mode mode;
+
+		private Mode()
+		{
+
+		}
+		public static Mode getInstance()
+		{
+			if (mode == null)
+			{
+				mode = new Mode();
+			}
+			return mode;
+		}
+
+		public int expoTime;
+		public int trigger;
+		public int algorithm;
+		public int width_crt;
+		public int height_crt;
+		public int work_mode;
+		public int bitType;
+	}
+
 	public static class Trigger extends DevicePacketBuilt
 	{
 		static Trigger trigger;
@@ -238,21 +293,33 @@ public class SystemSetting_devicePacket
 
 	public static class Parameters
 	{
-		static Parameters parameters;
+		private static Parameters parameters;
 
 		private Parameters()
 		{
-
 		}
 		public static Parameters getInstace()
 		{
 			if (parameters == null)
 			{
 				parameters = new Parameters();
+				parameters.hecc = HECC.getInstance();
+				parameters.mode = Mode.getInstance();
+				parameters.net = Net.getInstance();
+				parameters.sensor = Sensor.getInstatce();
+				parameters.trigger = Trigger.getInstance();
+				parameters.uart = UART.getInstace();
 			}
+
 			return parameters;
 		}
 
+		public Net net;
+		public HECC hecc;
+		public UART uart;
+		public Sensor sensor;
+		public Mode mode;
+		public Trigger trigger;
 	}
 }
 

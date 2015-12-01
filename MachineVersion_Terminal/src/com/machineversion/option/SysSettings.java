@@ -243,26 +243,79 @@ public class SysSettings extends ControlPannelActivity implements
 		layoutOuter.addView(layoutRight, paramsRight);
 		return layoutOuter;
 	}
+
+	private View getPage4()
+	{
+		View page4 = getLayoutInflater().inflate(
+				R.layout.vpager_device_mt9v032, null);
+		File file = new File(file_sysSettingDevice, "mt9V9032");
+		return page4;
+	}
+
+	private View getPage5()
+	{
+		View page5 = getLayoutInflater().inflate(
+				R.layout.vpager_device_isl12026, null);
+		File file = new File(file_sysSettingDevice, "isl12026");
+		return page5;
+	}
+
+	private View getPage6()
+	{
+		View page6 = getLayoutInflater().inflate(R.layout.vpager_device_net,
+				null);
+		File file = new File(file_sysSettingDevice, "net");
+		return page6;
+	}
+
+	private View getPage7()
+	{
+		View page7 = getLayoutInflater().inflate(
+				R.layout.vpager_device_uart_hecc, null);
+		File file = new File(file_sysSettingDevice, "uart_hecc");
+		return page7;
+	}
+
+	private View getPage8()
+	{
+		View page8 = getLayoutInflater().inflate(
+				R.layout.vpager_device_at25040, null);
+		File file = new File(file_sysSettingDevice, "at25040");
+		return page8;
+	}
+
 	/**
 	 * 设置ViewPager的内容
 	 */
 	private void initViewPager()
 	{
 		List<View> list = new ArrayList<View>();
-
-		View page1 = getPage1();
-
-		View page2 = getPage2();
-
-		LinearLayout page3 = getPage3();
-
 		Log.d("MC", "before:" + System.currentTimeMillis());
-		list.add(page1);
+		View page1 = getPage1();
 		Log.d("MC", "page1:" + System.currentTimeMillis());
-		list.add(page2);
+		View page2 = getPage2();
 		Log.d("MC", "page2:" + System.currentTimeMillis());
-		list.add(page3);
+		LinearLayout page3 = getPage3();
 		Log.d("MC", "page3:" + System.currentTimeMillis());
+		View page4 = getPage4();
+		Log.d("MC", "page4:" + System.currentTimeMillis());
+		View page5 = getPage5();
+		Log.d("MC", "page5:" + System.currentTimeMillis());
+		View page6 = getPage6();
+		Log.d("MC", "page6:" + System.currentTimeMillis());
+		View page7 = getPage7();
+		Log.d("MC", "page7:" + System.currentTimeMillis());
+		View page8 = getPage8();
+		Log.d("MC", "page8:" + System.currentTimeMillis());
+
+		list.add(page1);
+		list.add(page2);
+		list.add(new View(this));
+		list.add(page4);
+		list.add(page5);
+		list.add(page6);
+		list.add(page7);
+		list.add(page8);
 
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
 		vPager.setOffscreenPageLimit(2);

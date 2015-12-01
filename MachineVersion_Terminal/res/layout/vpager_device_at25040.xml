@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="50dp"        
+        android:orientation="vertical" >
+        
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        <TextView
+	            android:textSize="30sp"
+	            android:text="SC280 INFO"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	        />
+        </LinearLayout>
+        
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        <TextView
+	            android:textSize="20sp"
+	            android:text="Camera ID"
+	            android:layout_height="wrap_content"
+	            android:layout_width="150dp"
+	            android:gravity="right"
+	        />
+	   		<EditText
+	            android:textSize="20sp"
+	            android:layout_marginLeft="50dp"
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	        />
+        </LinearLayout>  
+        
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        <TextView
+	            android:textSize="20sp"
+	            android:text="Version"
+	            android:layout_width="150dp"
+	            android:gravity="right"
+	            android:layout_height="wrap_content"
+	        />
+	   		<EditText
+	            android:textSize="20sp"
+	            android:layout_marginLeft="50dp"
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	        />
+        </LinearLayout>  
+        
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        <TextView
+	            android:textSize="20sp"
+	            android:text="Write Time"
+	            android:layout_width="150dp"
+	            android:gravity="right"
+	            android:layout_height="wrap_content"
+	        />
+	   		<EditText
+	            android:textSize="20sp"
+	            android:layout_marginLeft="50dp"
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	        />
+        </LinearLayout>  
+        
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        <Button
+	            android:id="@+id/bt_read"
+	            android:textSize="16sp"
+	            android:text="read"
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	        />
+	        <Button
+	            android:id="@+id/bt_save_all"
+	            android:textSize="16sp"
+	            android:text="save all"
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	        />
+	        <Button
+	            android:id="@+id/bt_reset"
+	            android:textSize="16sp"
+	            android:text="reset to default"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	        />	        
+        </LinearLayout>          
+        
+	</LinearLayout>  
+        
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="50dp"        
+        android:orientation="vertical" >
+    
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        <TextView
+	            android:textSize="30sp"
+	            android:text="name"
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	            android:gravity="left"
+	            
+	        />
+	        <TextView
+	            android:textSize="30sp"
+	            android:text="content"
+	            android:layout_width="200dp"
+	            android:layout_height="wrap_content"
+	            android:gravity="right"	            
+	        />	        
+        </LinearLayout>
+        <ListView 
+            android:id="@+id/content_list" 
+            android:layout_width="fill_parent"
+        	android:layout_height="0dip" 
+        	android:layout_weight="1"
+        	android:drawSelectorOnTop="false" 
+        />
+	</LinearLayout>        
+
+</LinearLayout>
