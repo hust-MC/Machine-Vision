@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,7 +32,6 @@ public class SeekBarEditLayout extends LinearLayout
 		this.context = context;
 		setOrientation(LinearLayout.HORIZONTAL);
 		init_widget();
-
 	}
 	private void init_widget()
 	{

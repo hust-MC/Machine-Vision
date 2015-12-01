@@ -50,13 +50,13 @@ public class SystemSetting_devicePacket
 
 	public static class Trigger extends DevicePacketBuilt
 	{
-		Trigger trigger;
+		static Trigger trigger;
 
 		private Trigger()
 		{
 		}
 
-		public Trigger getInstance()
+		public static Trigger getInstance()
 		{
 			if (trigger == null)
 			{
@@ -252,9 +252,7 @@ public class SystemSetting_devicePacket
 			}
 			return parameters;
 		}
-		
-		
-		
+
 	}
 }
 

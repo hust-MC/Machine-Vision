@@ -1,21 +1,19 @@
 package com.machineversion.option;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.emercy.dropdownlist.DropDownList;
 import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
+import com.google.gson.Gson;
+import com.machineversion.net.CmdHandle;
 import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DevicePacketFactory;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
-import com.machineversion.sub_option.SystemSetting_devicePacket.General;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
 import com.machineversion.terminal.FileDirectory;
 import com.machineversion.terminal.R;
@@ -37,8 +35,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -253,17 +249,20 @@ public class SysSettings extends ControlPannelActivity implements
 	private void initViewPager()
 	{
 		List<View> list = new ArrayList<View>();
-		Log.d("MC", "before:" + System.currentTimeMillis());
-		View page1 = getPage1();
-		Log.d("MC", "page1:" + System.currentTimeMillis());
-		View page2 = getPage2();
-		Log.d("MC", "page2:" + System.currentTimeMillis());
-		LinearLayout page3 = getPage3();
-		Log.d("MC", "page3:" + System.currentTimeMillis());
 
+		View page1 = getPage1();
+
+		View page2 = getPage2();
+
+		LinearLayout page3 = getPage3();
+
+		Log.d("MC", "before:" + System.currentTimeMillis());
 		list.add(page1);
+		Log.d("MC", "page1:" + System.currentTimeMillis());
 		list.add(page2);
-		list.add(new View(this));
+		Log.d("MC", "page2:" + System.currentTimeMillis());
+		list.add(page3);
+		Log.d("MC", "page3:" + System.currentTimeMillis());
 
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
 		vPager.setOffscreenPageLimit(2);
@@ -357,21 +356,33 @@ public class SysSettings extends ControlPannelActivity implements
 	 */
 	class ApplyButton implements OnClickListener
 	{
+
+		private void sendPackage()
+		{
+			switch (vPager.getCurrentItem())
+			{
+			case 0:
+				break;
+			case 1:
+				Trigger trigger = Trigger.getInstance();
+				CmdHandle cmdHandle = CmdHandle.getInstance();
+				// cmdHandle.
+				new Gson().toJson(trigger);
+			}
+		}
 		@Override
 		public void onClick(DialogInterface dialog, int which)
 		{
-			Field field;
+
 			try
 			{
 				// 点击后阻止关闭
-				field = dialog.getClass().getSuperclass()
+				Field field = dialog.getClass().getSuperclass()
 						.getDeclaredField("mShowing");
 				field.setAccessible(true);
 				field.set(dialog, false); 					// false - 使之不能关闭(此为机关所在，其它语句相同)
 
-				DevicePacketFactory factory = new DevicePacketFactory(vPager);
-
-				factory.savePacket(SysSettings.this);
+				sendPackage();
 
 			} catch (Exception e)
 			{
@@ -415,20 +426,17 @@ public class SysSettings extends ControlPannelActivity implements
 
 		public MyPagerAdapter(ViewPager vPager, List<View> list)
 		{
-			Log.d("CJ", "MyPager");
 			this.list = list;
 		}
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object)
 		{
-			Log.d("CJ", "remove");
 			((ViewPager) container).removeView(list.get(position));
 		}
 
 		@Override
 		public Object instantiateItem(View container, int position)
 		{
-			Log.d("CJ", "instantiate");
 			((ViewPager) container).addView(list.get(position));
 			return list.get(position);
 		}
@@ -436,14 +444,12 @@ public class SysSettings extends ControlPannelActivity implements
 		@Override
 		public int getCount()
 		{
-			Log.d("CJ", "getCount");
 			return list.size();
 		}
 
 		@Override
 		public boolean isViewFromObject(View arg0, Object arg1)
 		{
-			Log.d("CJ", "from");
 			return arg0 == arg1;
 		}
 	}

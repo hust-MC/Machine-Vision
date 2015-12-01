@@ -98,7 +98,7 @@ public class NetReceiveThread extends Thread
 				case NetUtils.MSG_NET_GET_JSON:
 					Log.d("CJ", "start");
 					String str = new String(Arrays.copyOfRange(revPacket.data,
-							100, revPacket.data.length - 1));
+							100, revPacket.data.length));
 					Log.d("CJ", str);
 					Log.d("CJ", "end");
 
