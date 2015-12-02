@@ -1,8 +1,6 @@
 package com.machineversion.terminal;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import android.graphics.Bitmap;
@@ -106,11 +104,12 @@ public class NetReceiveThread extends Thread
 					JsonParser jParser = new JsonParser();
 					Gson gson = new Gson();
 
-					Parameters p = gson.fromJson(jParser.parse(str)
-							.getAsJsonObject().toString(), Parameters.class);
-					Log.d("CJ", p.hecc.baudRate + "");
-					Log.d("CJ", p.net.ip_address[1] + "");
-					Log.d("CJ", p.mode.expoTime + "");
+					Parameters.setInstance(gson.fromJson(jParser.parse(str)
+							.getAsJsonObject().toString(), Parameters.class));
+					Parameters p = Parameters.getInstance();
+					Log.d("CJ", p.trigger.expLead + "");
+					Log.d("CJ", p.trigger.departWide + "");
+					Log.d("CJ", p.trigger.trigDelay + "");
 					break;
 				default:
 					Log.e("MC", "default");

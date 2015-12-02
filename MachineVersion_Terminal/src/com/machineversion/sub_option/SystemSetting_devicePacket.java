@@ -2,7 +2,7 @@ package com.machineversion.sub_option;
 
 public class SystemSetting_devicePacket
 {
-	public static class General extends DevicePacketBuilt
+	public static class General
 	{
 		General general;
 
@@ -103,9 +103,9 @@ public class SystemSetting_devicePacket
 		public int bitType;
 	}
 
-	public static class Trigger extends DevicePacketBuilt
+	public static class Trigger
 	{
-		static Trigger trigger;
+		private static Trigger trigger;
 
 		private Trigger()
 		{
@@ -128,7 +128,7 @@ public class SystemSetting_devicePacket
 		public int checksum;
 	}
 
-	public static class AD9849 extends DevicePacketBuilt
+	public static class AD9849
 	{
 		static AD9849 ad9849;
 
@@ -154,7 +154,7 @@ public class SystemSetting_devicePacket
 		public int rgpl, rgnl;
 	}
 
-	public static class MT9V032 extends DevicePacketBuilt
+	public static class MT9V032
 	{
 		static MT9V032 mt9v032;
 
@@ -176,7 +176,7 @@ public class SystemSetting_devicePacket
 		public int aeVal;
 	}
 
-	public static class ISL12026 extends DevicePacketBuilt
+	public static class ISL12026
 	{
 		static ISL12026 isl12026;
 
@@ -198,7 +198,7 @@ public class SystemSetting_devicePacket
 		public int[] alarm1 = new int[8];
 	}
 
-	public static class Net extends DevicePacketBuilt
+	public static class Net
 	{
 		static Net net;
 
@@ -226,7 +226,7 @@ public class SystemSetting_devicePacket
 		public int checksum;
 	}
 
-	public static class UART extends DevicePacketBuilt
+	public static class UART
 	{
 		static UART uart;
 
@@ -247,7 +247,7 @@ public class SystemSetting_devicePacket
 		public int checksum;
 	}
 
-	public static class HECC extends DevicePacketBuilt
+	public static class HECC
 	{
 		static HECC hecc;
 
@@ -268,7 +268,7 @@ public class SystemSetting_devicePacket
 		public int checksum;
 	}
 
-	public static class AT25040 extends DevicePacketBuilt
+	public static class AT25040
 	{
 
 		static AT25040 at25040;
@@ -298,7 +298,7 @@ public class SystemSetting_devicePacket
 		private Parameters()
 		{
 		}
-		public static Parameters getInstace()
+		public static Parameters getInstance()
 		{
 			if (parameters == null)
 			{
@@ -313,6 +313,10 @@ public class SystemSetting_devicePacket
 
 			return parameters;
 		}
+		public static void setInstance(Parameters p)
+		{
+			parameters = p;
+		}
 
 		public Net net;
 		public HECC hecc;
@@ -320,13 +324,5 @@ public class SystemSetting_devicePacket
 		public Sensor sensor;
 		public Mode mode;
 		public Trigger trigger;
-	}
-}
-
-class DevicePacketBuilt
-{
-	public int[] buildData()
-	{
-		return null;
 	}
 }

@@ -10,10 +10,10 @@ import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
 import com.google.gson.Gson;
 import com.machineversion.net.CmdHandle;
 import com.machineversion.sub_option.DebugMode;
-import com.machineversion.sub_option.DevicePacketFactory;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Parameters;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
 import com.machineversion.terminal.FileDirectory;
 import com.machineversion.terminal.R;
@@ -33,6 +33,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Spinner;
@@ -68,19 +69,6 @@ public class SysSettings extends ControlPannelActivity implements
 		// page1.findViewById(R.id.device_setting_exposure))
 		// .setMax(1720);
 
-		// File file = new
-		// File(DevicePacketFactory.file_sysSettingDeviceGeneral);
-
-		// if (file.exists())
-		// {
-		// General general = null;
-		// try
-		// {
-		// ObjectInputStream inputStream = new ObjectInputStream(
-		// new FileInputStream(file));
-		// general = (General) inputStream.readObject();
-		// inputStream.close();
-		//
 		// ((DropDownList) page1
 		// .findViewById(R.id.device_setting_input_type))
 		// .setSelection(general.input);
@@ -126,43 +114,22 @@ public class SysSettings extends ControlPannelActivity implements
 		View page2 = getLayoutInflater().inflate(R.layout.vpager_device_triger,
 				null);
 
-		File file = new File(file_sysSettingDevice, "trigger");
+		Trigger trigger = Parameters.getInstance().trigger;
+		((EditText) page2.findViewById(R.id.device_setting_trigger_delay))
+				.setText(trigger.trigDelay + "");
 
-		// if (file.exists())
-		// {
-		// try
-		// {
-		// ObjectInputStream inputStream = new ObjectInputStream(
-		// new FileInputStream(file));
-		// Trigger trigger = (Trigger) inputStream.readObject();
-		//
-		// inputStream.close();
-		//
-		// ((EditText) page2
-		// .findViewById(R.id.device_setting_trigger_delay))
-		// .setText(trigger.trigDelay + "");
-		//
-		// ((EditText) page2
-		// .findViewById(R.id.device_setting_trigger_part_delay))
-		// .setText(trigger.partDelay + "");
-		//
-		// ((EditText) page2
-		// .findViewById(R.id.device_setting_trigger_velocity))
-		// .setText(trigger.velocity + "");
-		//
-		// ((EditText) page2
-		// .findViewById(R.id.device_setting_trigger_depart_wide))
-		// .setText(trigger.departWide + "");
-		//
-		// ((EditText) page2
-		// .findViewById(R.id.device_setting_trigger_explead))
-		// .setText(trigger.expLead + "");
-		// } catch (ClassNotFoundException | IOException e)
-		// {
-		// e.printStackTrace();
-		// }
-		//
-		// }
+		((EditText) page2.findViewById(R.id.device_setting_trigger_part_delay))
+				.setText(trigger.partDelay + "");
+
+		((EditText) page2.findViewById(R.id.device_setting_trigger_velocity))
+				.setText(trigger.velocity + "");
+
+		((EditText) page2.findViewById(R.id.device_setting_trigger_depart_wide))
+				.setText(trigger.departWide + "");
+
+		((EditText) page2.findViewById(R.id.device_setting_trigger_explead))
+				.setText(trigger.expLead + "");
+
 		return page2;
 	}
 
@@ -310,7 +277,7 @@ public class SysSettings extends ControlPannelActivity implements
 
 		list.add(page1);
 		list.add(page2);
-		list.add(new View(this));
+		list.add(page3);
 		list.add(page4);
 		list.add(page5);
 		list.add(page6);

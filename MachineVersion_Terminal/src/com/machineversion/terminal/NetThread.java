@@ -110,7 +110,7 @@ public class NetThread extends Thread implements CommunicationInterface
 
 							// cmdHandle.getParam(handler);
 							// cmdHandle.getVideo(handler);
-							cmdHandle.getJson(handler);
+							cmdHandle.getJson();
 							// cmdHandle.getState(handler);
 						}
 						lock.unlock();

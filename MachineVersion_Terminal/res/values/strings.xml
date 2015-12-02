@@ -166,6 +166,14 @@
         <item>常规</item>
         <item>触发</item>
         <item>AD9849</item>
+        <item>常规</item>
+        <item>触发</item>
+        <item>AD9849</item>
+        <item>MT9V032</item>
+        <item>ISL12026</item>
+        <item>NET</item>
+        <item>UARTHECC</item>
+        <item>AT25040</item>
     </string-array>
 
     <!-- 设备参数设置之常规→Input type -->

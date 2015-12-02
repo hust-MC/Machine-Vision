@@ -7,6 +7,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+import com.machineversion.sub_option.SystemSetting_devicePacket.Net;
+
 public class NetUtils
 {
 	/**
@@ -197,6 +199,7 @@ public class NetUtils
 			block = 1000;
 		}
 	}
+
 	public static class GetJson extends NetPacket
 	{
 		public GetJson()
@@ -204,6 +207,16 @@ public class NetUtils
 			minid = MSG_NET_GET_JSON;
 			type = 1;
 			block = 1000;
+		}
+	}
+
+	public static class SetJson extends NetPacket
+	{
+		public SetJson()
+		{
+			minid = MSG_NET_GET_JSON;
+			type = 0;
+			block = 0;
 		}
 	}
 }
