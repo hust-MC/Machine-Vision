@@ -13,6 +13,7 @@ import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
+import com.machineversion.sub_option.SystemSetting_devicePacket.AD9849;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Parameters;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
 import com.machineversion.terminal.FileDirectory;
@@ -136,6 +137,8 @@ public class SysSettings extends ControlPannelActivity implements
 	private LinearLayout getPage3()
 	{
 		int count = 0;					// 计算SeekBar的ID偏移量
+		AD9849 ad = Parameters.getInstance().ad9849;
+
 		String[][] items =
 		{
 		{ "VGA", "SHP", "HPL", "RGPL", "P0GA", "P1GA", "P2GA", "P3GA" },
@@ -174,6 +177,7 @@ public class SysSettings extends ControlPannelActivity implements
 			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
 			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
 			seekBarEditLayout.setLayoutParams(paramsInner);
+			seekBarEditLayout.setValue(ad.pageContents[count]);
 
 			layout.addView(textView);
 			layout.addView(seekBarEditLayout);
@@ -198,6 +202,7 @@ public class SysSettings extends ControlPannelActivity implements
 			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
 			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
 			seekBarEditLayout.setLayoutParams(paramsInner);
+			seekBarEditLayout.setValue(ad.pageContents[count]);
 			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
 
 			layout.addView(textView);
@@ -208,6 +213,7 @@ public class SysSettings extends ControlPannelActivity implements
 
 		layoutOuter.addView(layoutLeft, paramsLeft);
 		layoutOuter.addView(layoutRight, paramsRight);
+
 		return layoutOuter;
 	}
 
@@ -215,7 +221,7 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		View page4 = getLayoutInflater().inflate(
 				R.layout.vpager_device_mt9v032, null);
-		File file = new File(file_sysSettingDevice, "mt9V9032");
+
 		return page4;
 	}
 
@@ -223,7 +229,6 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		View page5 = getLayoutInflater().inflate(
 				R.layout.vpager_device_isl12026, null);
-		File file = new File(file_sysSettingDevice, "isl12026");
 		return page5;
 	}
 
@@ -231,7 +236,6 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		View page6 = getLayoutInflater().inflate(R.layout.vpager_device_net,
 				null);
-		File file = new File(file_sysSettingDevice, "net");
 		return page6;
 	}
 
@@ -239,7 +243,6 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		View page7 = getLayoutInflater().inflate(
 				R.layout.vpager_device_uart_hecc, null);
-		File file = new File(file_sysSettingDevice, "uart_hecc");
 		return page7;
 	}
 
@@ -293,6 +296,7 @@ public class SysSettings extends ControlPannelActivity implements
 			@Override
 			public void onPageSelected(int arg0)
 			{
+				Log.d("MC", arg0 + "");
 				dropList.setSelection(arg0);
 			}
 

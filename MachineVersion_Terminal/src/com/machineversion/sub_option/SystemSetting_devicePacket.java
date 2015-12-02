@@ -152,6 +152,7 @@ public class SystemSetting_devicePacket
 		public int shp, shd;
 		public int hpl, hnl;
 		public int rgpl, rgnl;
+		public int[] pageContents = new int[16];				// 方便界面显示
 	}
 
 	public static class MT9V032
@@ -307,6 +308,7 @@ public class SystemSetting_devicePacket
 				parameters.mode = Mode.getInstance();
 				parameters.net = Net.getInstance();
 				parameters.sensor = Sensor.getInstatce();
+				parameters.ad9849 = AD9849.getInstance();
 				parameters.trigger = Trigger.getInstance();
 				parameters.uart = UART.getInstace();
 			}
@@ -323,6 +325,7 @@ public class SystemSetting_devicePacket
 		public UART uart;
 		public Sensor sensor;
 		public Mode mode;
+		public AD9849 ad9849;
 		public Trigger trigger;
 	}
 }

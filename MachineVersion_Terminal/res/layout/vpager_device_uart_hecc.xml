@@ -11,18 +11,12 @@
         android:orientation="vertical"
         android:paddingLeft="50dp" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="150dp"
-                android:text="uart"
-                android:textSize="30sp" />
-        </LinearLayout>
+            android:layout_marginLeft="150dp"
+            android:text="uart"
+            android:textSize="30sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,18 +102,12 @@
         android:orientation="vertical"
         android:paddingLeft="50dp" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="150dp"
-                android:text="hecc"
-                android:textSize="30sp" />
-        </LinearLayout>
+            android:layout_marginLeft="150dp"
+            android:text="hecc"
+            android:textSize="30sp" />
 
         <LinearLayout
             android:layout_width="match_parent"

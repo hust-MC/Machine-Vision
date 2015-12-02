@@ -166,9 +166,6 @@
         <item>常规</item>
         <item>触发</item>
         <item>AD9849</item>
-        <item>常规</item>
-        <item>触发</item>
-        <item>AD9849</item>
         <item>MT9V032</item>
         <item>ISL12026</item>
         <item>NET</item>
@@ -182,6 +179,13 @@
     </string-array>
     <string-array name="device_setting_output_type">
         <item>net</item>
+    </string-array>
+
+    <!-- 系统设置→UART-HECC -->
+    <string-array name="device_setting_uart_baudrate">
+        <item>115200</item>
+        <item>19200</item>
+        <item>9600</item>
     </string-array>
 
     <string name="action_settings">Settings</string>

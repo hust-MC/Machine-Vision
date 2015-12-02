@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.machineversion.net.NetUtils;
 import com.machineversion.net.NetUtils.NetPacket;
+import com.machineversion.sub_option.SystemSetting_devicePacket.AD9849;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Net;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Parameters;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
@@ -107,6 +108,24 @@ public class NetReceiveThread extends Thread
 					Parameters.setInstance(gson.fromJson(jParser.parse(str)
 							.getAsJsonObject().toString(), Parameters.class));
 					Parameters p = Parameters.getInstance();
+					AD9849 ad = p.ad9849;
+					ad.pageContents[0] = ad.vga[0] + ad.vga[1] << 8;
+					ad.pageContents[1] = ad.shp;
+					ad.pageContents[2] = ad.hpl;
+					ad.pageContents[3] = ad.rgpl;
+					ad.pageContents[4] = ad.pxga[0];
+					ad.pageContents[5] = ad.pxga[1];
+					ad.pageContents[6] = ad.pxga[2];
+					ad.pageContents[7] = ad.pxga[3];
+					ad.pageContents[8] = ad.rgdrv;
+					ad.pageContents[9] = ad.shd;
+					ad.pageContents[10] = ad.hnl;
+					ad.pageContents[11] = ad.rgnl;
+					ad.pageContents[12] = ad.hxdrv[0];
+					ad.pageContents[13] = ad.hxdrv[1];
+					ad.pageContents[14] = ad.hxdrv[2];
+					ad.pageContents[15] = ad.hxdrv[3];
+
 					Log.d("CJ", p.trigger.expLead + "");
 					Log.d("CJ", p.trigger.departWide + "");
 					Log.d("CJ", p.trigger.trigDelay + "");
