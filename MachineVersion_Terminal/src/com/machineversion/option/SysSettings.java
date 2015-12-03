@@ -260,23 +260,14 @@ public class SysSettings extends ControlPannelActivity implements
 	private void initViewPager()
 	{
 		List<View> list = new ArrayList<View>();
-		Log.d("MC", "before:" + System.currentTimeMillis());
 		View page1 = getPage1();
-		Log.d("MC", "page1:" + System.currentTimeMillis());
 		View page2 = getPage2();
-		Log.d("MC", "page2:" + System.currentTimeMillis());
-		LinearLayout page3 = getPage3();
-		Log.d("MC", "page3:" + System.currentTimeMillis());
+		View page3 = getPage3();
 		View page4 = getPage4();
-		Log.d("MC", "page4:" + System.currentTimeMillis());
 		View page5 = getPage5();
-		Log.d("MC", "page5:" + System.currentTimeMillis());
 		View page6 = getPage6();
-		Log.d("MC", "page6:" + System.currentTimeMillis());
 		View page7 = getPage7();
-		Log.d("MC", "page7:" + System.currentTimeMillis());
 		View page8 = getPage8();
-		Log.d("MC", "page8:" + System.currentTimeMillis());
 
 		list.add(page1);
 		list.add(page2);
@@ -296,7 +287,6 @@ public class SysSettings extends ControlPannelActivity implements
 			@Override
 			public void onPageSelected(int arg0)
 			{
-				Log.d("MC", arg0 + "");
 				dropList.setSelection(arg0);
 			}
 
@@ -388,10 +378,31 @@ public class SysSettings extends ControlPannelActivity implements
 			case 0:
 				break;
 			case 1:
-				Trigger trigger = Trigger.getInstance();
+				View page2 = getLayoutInflater().inflate(
+						R.layout.vpager_device_triger, null);
+				Trigger trigger = Parameters.getInstance().trigger;
 				CmdHandle cmdHandle = CmdHandle.getInstance();
-				// cmdHandle.
-				new Gson().toJson(trigger);
+
+				trigger.trigDelay = Integer.valueOf(((EditText) page2
+						.findViewById(R.id.device_setting_trigger_delay))
+						.getText().toString());
+
+				((EditText) page2
+						.findViewById(R.id.device_setting_trigger_part_delay))
+						.setText(trigger.partDelay + "");
+
+				((EditText) page2
+						.findViewById(R.id.device_setting_trigger_velocity))
+						.setText(trigger.velocity + "");
+
+				((EditText) page2
+						.findViewById(R.id.device_setting_trigger_depart_wide))
+						.setText(trigger.departWide + "");
+
+				((EditText) page2
+						.findViewById(R.id.device_setting_trigger_explead))
+						.setText(trigger.expLead + "");
+				cmdHandle.setJson(new Gson().toJson(trigger).getBytes());
 			}
 		}
 		@Override
