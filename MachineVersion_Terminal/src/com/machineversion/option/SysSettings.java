@@ -7,15 +7,19 @@ import java.util.List;
 
 import com.emercy.dropdownlist.DropDownList;
 import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
-import com.google.gson.Gson;
-import com.machineversion.net.CmdHandle;
 import com.machineversion.sub_option.DebugMode;
+import com.machineversion.sub_option.DevicePacketFactory;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
 import com.machineversion.sub_option.SystemSetting_devicePacket.AD9849;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Mode;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Net;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Parameters;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Sensor;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
+import com.machineversion.sub_option.SystemSetting_devicePacket.UART;
+import com.machineversion.sub_option.SystemSetting_devicePacket.Version;
 import com.machineversion.terminal.FileDirectory;
 import com.machineversion.terminal.R;
 
@@ -34,9 +38,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -56,64 +63,69 @@ public class SysSettings extends ControlPannelActivity implements
 	ViewPager vPager;
 	DropDownList dropList;
 
+	/**
+	 * 通用界面设置
+	 * 
+	 * @return
+	 */
 	private View getPage1()
 	{
 		View page1 = getLayoutInflater().inflate(
 				R.layout.vpager_device_general, null);
+		Sensor sensor = Parameters.getInstance().sensor;
+		Mode mode = Parameters.getInstance().mode;
+
 		// 以下两句设置下拉菜单的内容
 		((DropDownList) page1.findViewById(R.id.device_setting_input_type))
 				.setItem(R.array.device_setting_input_type);
 		((DropDownList) page1.findViewById(R.id.device_setting_output_type))
 				.setItem(R.array.device_setting_output_type);
+		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
+				.setMax(1720);
 
-		// ((SeekBarEditLayout)
-		// page1.findViewById(R.id.device_setting_exposure))
-		// .setMax(1720);
+		((NumberSettingLayout) page1.findViewById(R.id.device_setting_start_x))
+				.setValue(sensor.startPixel_width);
+		((NumberSettingLayout) page1.findViewById(R.id.device_setting_start_y))
+				.setValue(sensor.startPixel_height);
+		((NumberSettingLayout) page1.findViewById(R.id.device_setting_input_w))
+				.setValue(sensor.width_input);
+		((NumberSettingLayout) page1.findViewById(R.id.device_setting_input_h))
+				.setValue(sensor.height_input);
 
-		// ((DropDownList) page1
-		// .findViewById(R.id.device_setting_input_type))
-		// .setSelection(general.input);
-		// ((DropDownList) page1
-		// .findViewById(R.id.device_setting_output_type))
-		// .setSelection(general.output);
-		// ((NumberSettingLayout) page1
-		// .findViewById(R.id.device_setting_start_x))
-		// .setValue(general.horzStartPix);
-		// ((NumberSettingLayout) page1
-		// .findViewById(R.id.device_setting_start_y))
-		// .setValue(general.vertStartPix);
-		// ((NumberSettingLayout) page1
-		// .findViewById(R.id.device_setting_input_w))
-		// .setValue(general.inWidth);
-		// ((NumberSettingLayout) page1
-		// .findViewById(R.id.device_setting_input_w))
-		// .setValue(general.inHeight);
-		// ((NumberSettingLayout) page1
-		// .findViewById(R.id.device_setting_output_w))
-		// .setValue(general.outWidth);
-		// ((NumberSettingLayout) page1
-		// .findViewById(R.id.device_setting_output_h))
-		// .setValue(general.outHeight);
-		// ((SeekBarEditLayout) page1
-		// .findViewById(R.id.device_setting_exposure))
-		// .setValue(general.expTime);
-		//
-		// ((RadioButton) page1
-		// .findViewById(R.id.device_setting_bit_radio0
-		// + general.bitType)).setSelected(true);
-		//
-		// } catch (ClassNotFoundException | IOException e)
-		// {
-		// e.printStackTrace();
-		// }
-		// }
+		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
+				.setValue(mode.expoTime);
+
+		if (mode.bitType == 8)
+			((RadioButton) page1.findViewById(R.id.device_setting_bit_radio0))
+					.setSelected(true);
+		else
+			((RadioButton) page1.findViewById(R.id.device_setting_bit_radio1))
+					.setSelected(true);
+
+		if (mode.trigger == 0)
+			((CheckBox) page1.findViewById(R.id.device_setting_mode_checkbox0))
+					.setChecked(true);
+		else if (mode.trigger == 1)
+			((CheckBox) page1.findViewById(R.id.device_setting_mode_checkbox1))
+					.setChecked(true);
+		else
+			((CheckBox) page1.findViewById(R.id.device_setting_mode_checkbox2))
+					.setChecked(true);
+
 		return page1;
 	}
 
+	/**
+	 * trigger设置界面
+	 * 
+	 * @return
+	 */
 	private View getPage2()
 	{
 		View page2 = getLayoutInflater().inflate(R.layout.vpager_device_triger,
 				null);
+
+		File file = new File(file_sysSettingDevice, "trigger");
 
 		Trigger trigger = Parameters.getInstance().trigger;
 		((EditText) page2.findViewById(R.id.device_setting_trigger_delay))
@@ -130,19 +142,22 @@ public class SysSettings extends ControlPannelActivity implements
 
 		((EditText) page2.findViewById(R.id.device_setting_trigger_explead))
 				.setText(trigger.expLead + "");
-
 		return page2;
 	}
 
+	/**
+	 * ad9849界面设置
+	 * 
+	 * @return
+	 */
 	private LinearLayout getPage3()
 	{
-		int count = 0;					// 计算SeekBar的ID偏移量
-		AD9849 ad = Parameters.getInstance().ad9849;
-
+		int count = 0; // 计算SeekBar的ID偏移量
 		String[][] items =
 		{
 		{ "VGA", "SHP", "HPL", "RGPL", "P0GA", "P1GA", "P2GA", "P3GA" },
 		{ "RGDRV", "SHD", "HNL", "RGNL", "H1DRV", "H2DRV", "H3DRV", "H4DRV" } };
+		AD9849 ad9849 = Parameters.getInstance().ad9849;
 
 		LinearLayout layoutOuter = new LinearLayout(this);
 		layoutOuter.setOrientation(LinearLayout.HORIZONTAL);
@@ -177,17 +192,17 @@ public class SysSettings extends ControlPannelActivity implements
 			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
 			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
 			seekBarEditLayout.setLayoutParams(paramsInner);
-			seekBarEditLayout.setValue(ad.pageContents[count]);
+			seekBarEditLayout.setValue(ad9849.pageContens[count]);
+			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
 
 			layout.addView(textView);
 			layout.addView(seekBarEditLayout);
-			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
 
 			layoutLeft.addView(layout);
 		}
+
 		for (String item : items[1])
 		{
-
 			LinearLayout layout = new LinearLayout(this);
 			layout.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -202,7 +217,7 @@ public class SysSettings extends ControlPannelActivity implements
 			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
 			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
 			seekBarEditLayout.setLayoutParams(paramsInner);
-			seekBarEditLayout.setValue(ad.pageContents[count]);
+			seekBarEditLayout.setValue(ad9849.pageContens[count]);
 			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
 
 			layout.addView(textView);
@@ -213,43 +228,145 @@ public class SysSettings extends ControlPannelActivity implements
 
 		layoutOuter.addView(layoutLeft, paramsLeft);
 		layoutOuter.addView(layoutRight, paramsRight);
-
 		return layoutOuter;
 	}
 
+	/**
+	 * agc和aec设置界面
+	 * 
+	 * @return
+	 */
 	private View getPage4()
 	{
 		View page4 = getLayoutInflater().inflate(
 				R.layout.vpager_device_mt9v032, null);
 
+		Net net = Parameters.getInstance().net;
+
+		File file = new File(file_sysSettingDevice, "mt9V9032");
 		return page4;
 	}
 
+	/**
+	 * 时间设置界面
+	 * 
+	 * @return
+	 */
 	private View getPage5()
 	{
 		View page5 = getLayoutInflater().inflate(
 				R.layout.vpager_device_isl12026, null);
+		File file = new File(file_sysSettingDevice, "isl12026");
 		return page5;
 	}
+
+	/**
+	 * 网络设置界面
+	 * 
+	 * @return
+	 */
 
 	private View getPage6()
 	{
 		View page6 = getLayoutInflater().inflate(R.layout.vpager_device_net,
 				null);
+		Net net = Parameters.getInstance().net;
+		((EditText) page6.findViewById(R.id.device_setting_mac_address))
+				.setText(net.mac_address[0] + ":" + net.mac_address[1] + ":"
+						+ net.mac_address[2] + ":" + net.mac_address[3] + ":"
+						+ net.mac_address[4] + ":" + net.mac_address[5]);
+
+		((EditText) page6.findViewById(R.id.device_setting_ip_address))
+				.setText(net.ip_address[0] + "." + net.ip_address[1] + "."
+						+ net.ip_address[2] + "." + net.ip_address[3]);
+
+		((EditText) page6.findViewById(R.id.device_setting_server_ip_address))
+				.setText(net.remote_ip[0] + "." + net.remote_ip[1] + "."
+						+ net.remote_ip[2] + "." + net.remote_ip[3]);
+
+		((EditText) page6.findViewById(R.id.device_setting_tcp_port))
+				.setText(net.port + "");
+
+		File file = new File(file_sysSettingDevice, "net");
 		return page6;
 	}
 
+	/**
+	 * 串口和can设置界面
+	 * 
+	 * @return
+	 */
 	private View getPage7()
 	{
 		View page7 = getLayoutInflater().inflate(
 				R.layout.vpager_device_uart_hecc, null);
+		UART uart = Parameters.getInstance().uart;
+		byte baurate = (byte) uart.baudRate;
+		byte work_mode = (byte) uart.work_mode;
+
+		Spinner uart_baudrate = (Spinner) page7
+				.findViewById(R.id.uart_baudrate);
+		Spinner parity = (Spinner) page7.findViewById(R.id.parity);
+		Spinner stop_bit = (Spinner) page7.findViewById(R.id.stop_bit);
+		Spinner data_len = (Spinner) page7.findViewById(R.id.data_len);
+		Spinner hecc_baudrate = (Spinner) page7
+				.findViewById(R.id.hecc_baudrate);
+
+		ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,
+				R.layout.spinner2, getResources().getStringArray(
+						R.array.uart_baudrate));
+		uart_baudrate.setAdapter(adapter1);
+		uart_baudrate.setSelection(baurate - 1);
+
+		ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,
+				R.layout.spinner2, getResources()
+						.getStringArray(R.array.parity));
+		parity.setAdapter(adapter2);
+		parity.setSelection(work_mode & 0x03);
+
+		ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this,
+				R.layout.spinner2, getResources().getStringArray(
+						R.array.stop_bit));
+		stop_bit.setAdapter(adapter3);
+		stop_bit.setSelection((work_mode & 0x08) >> 3);
+
+		ArrayAdapter<String> adapter4 = new ArrayAdapter<String>(this,
+				R.layout.spinner2, getResources().getStringArray(
+						R.array.data_len));
+		data_len.setAdapter(adapter4);
+		data_len.setSelection(((work_mode & 0xf0) >> 4) - 5);
+
+		ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(this,
+				R.layout.spinner2, getResources().getStringArray(
+						R.array.hecc_baurate));
+		hecc_baudrate.setAdapter(adapter5);
+
+		File file = new File(file_sysSettingDevice, "uart_hecc");
 		return page7;
 	}
 
+	/**
+	 * version设置界面
+	 * 
+	 * @return
+	 */
 	private View getPage8()
 	{
 		View page8 = getLayoutInflater().inflate(
 				R.layout.vpager_device_at25040, null);
+		Version version = Parameters.getInstance().version;
+
+		((EditText) page8.findViewById(R.id.camera_id)).setText(version.id[0]
+				+ "." + version.id[1] + "." + version.id[2] + "."
+				+ version.id[3] + "");
+		((EditText) page8.findViewById(R.id.version)).setText(version.version
+				+ "");
+
+		((EditText) page8.findViewById(R.id.write_time))
+				.setText(version.write_time[0] + "" + version.write_time[1]
+						+ "." + version.write_time[2] + "."
+						+ version.write_time[3] + "");
+
 		File file = new File(file_sysSettingDevice, "at25040");
 		return page8;
 	}
@@ -260,14 +377,23 @@ public class SysSettings extends ControlPannelActivity implements
 	private void initViewPager()
 	{
 		List<View> list = new ArrayList<View>();
+		Log.d("MC", "before:" + System.currentTimeMillis());
 		View page1 = getPage1();
+		Log.d("MC", "page1:" + System.currentTimeMillis());
 		View page2 = getPage2();
-		View page3 = getPage3();
+		Log.d("MC", "page2:" + System.currentTimeMillis());
+		LinearLayout page3 = getPage3();
+		Log.d("MC", "page3:" + System.currentTimeMillis());
 		View page4 = getPage4();
+		Log.d("MC", "page4:" + System.currentTimeMillis());
 		View page5 = getPage5();
+		Log.d("MC", "page5:" + System.currentTimeMillis());
 		View page6 = getPage6();
+		Log.d("MC", "page6:" + System.currentTimeMillis());
 		View page7 = getPage7();
+		Log.d("MC", "page7:" + System.currentTimeMillis());
 		View page8 = getPage8();
+		Log.d("MC", "page8:" + System.currentTimeMillis());
 
 		list.add(page1);
 		list.add(page2);
@@ -301,6 +427,7 @@ public class SysSettings extends ControlPannelActivity implements
 			}
 		});
 	}
+
 	private void initDropDownList()
 	{
 		dropList = (DropDownList) layout
@@ -319,6 +446,7 @@ public class SysSettings extends ControlPannelActivity implements
 			}
 		});
 	}
+
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
@@ -348,6 +476,7 @@ public class SysSettings extends ControlPannelActivity implements
 		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
 				.setTextSize(27F);
 	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -363,61 +492,25 @@ public class SysSettings extends ControlPannelActivity implements
 	}
 
 	/**
-	 * 设备参数设置，确认按钮事件
-	 * 
-	 * @author M C
-	 * 
+	 * 确认按钮事件
 	 */
 	class ApplyButton implements OnClickListener
 	{
-
-		private void sendPackage()
-		{
-			switch (vPager.getCurrentItem())
-			{
-			case 0:
-				break;
-			case 1:
-				View page2 = getLayoutInflater().inflate(
-						R.layout.vpager_device_triger, null);
-				Trigger trigger = Parameters.getInstance().trigger;
-				CmdHandle cmdHandle = CmdHandle.getInstance();
-
-				trigger.trigDelay = Integer.valueOf(((EditText) page2
-						.findViewById(R.id.device_setting_trigger_delay))
-						.getText().toString());
-
-				((EditText) page2
-						.findViewById(R.id.device_setting_trigger_part_delay))
-						.setText(trigger.partDelay + "");
-
-				((EditText) page2
-						.findViewById(R.id.device_setting_trigger_velocity))
-						.setText(trigger.velocity + "");
-
-				((EditText) page2
-						.findViewById(R.id.device_setting_trigger_depart_wide))
-						.setText(trigger.departWide + "");
-
-				((EditText) page2
-						.findViewById(R.id.device_setting_trigger_explead))
-						.setText(trigger.expLead + "");
-				cmdHandle.setJson(new Gson().toJson(trigger).getBytes());
-			}
-		}
 		@Override
 		public void onClick(DialogInterface dialog, int which)
 		{
-
+			Field field;
 			try
 			{
 				// 点击后阻止关闭
-				Field field = dialog.getClass().getSuperclass()
+				field = dialog.getClass().getSuperclass()
 						.getDeclaredField("mShowing");
 				field.setAccessible(true);
-				field.set(dialog, false); 					// false - 使之不能关闭(此为机关所在，其它语句相同)
+				field.set(dialog, false); // false - 使之不能关闭(此为机关所在，其它语句相同)
 
-				sendPackage();
+				DevicePacketFactory factory = new DevicePacketFactory(vPager);
+
+				factory.savePacket(SysSettings.this);
 
 			} catch (Exception e)
 			{
@@ -461,17 +554,21 @@ public class SysSettings extends ControlPannelActivity implements
 
 		public MyPagerAdapter(ViewPager vPager, List<View> list)
 		{
+			Log.d("CJ", "MyPager");
 			this.list = list;
 		}
+
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object)
 		{
+			Log.d("CJ", "remove");
 			((ViewPager) container).removeView(list.get(position));
 		}
 
 		@Override
 		public Object instantiateItem(View container, int position)
 		{
+			Log.d("CJ", "instantiate");
 			((ViewPager) container).addView(list.get(position));
 			return list.get(position);
 		}
@@ -479,13 +576,16 @@ public class SysSettings extends ControlPannelActivity implements
 		@Override
 		public int getCount()
 		{
+			Log.d("CJ", "getCount");
 			return list.size();
 		}
 
 		@Override
 		public boolean isViewFromObject(View arg0, Object arg1)
 		{
+			Log.d("CJ", "from");
 			return arg0 == arg1;
 		}
 	}
+
 }

@@ -181,11 +181,37 @@
         <item>net</item>
     </string-array>
 
-    <!-- 系统设置→UART-HECC -->
-    <string-array name="device_setting_uart_baudrate">
+    <!-- 系统设置→波特率参数设置内容 -->
+    <string-array name="uart_baudrate">
         <item>115200</item>
         <item>19200</item>
         <item>9600</item>
+    </string-array>
+
+    <!-- 系统设置→校验模式参数设置内容 -->
+    <string-array name="parity">
+        <item>无校验</item>
+        <item>奇校验</item>
+        <item>偶校验</item>
+    </string-array>
+
+    <!-- 系统设置→数据位数参数设置内容 -->
+    <string-array name="data_len">
+        <item>5位</item>
+        <item>6位</item>
+        <item>7位</item>
+        <item>8位</item>
+    </string-array>
+
+    <!-- 系统设置→停止位参数设置内容 -->
+    <string-array name="stop_bit">
+        <item>1位</item>
+        <item>2位</item>
+    </string-array>
+
+    <!-- 系统设置→停止位参数设置内容 -->
+    <string-array name="hecc_baurate">
+        <item>1M</item>
     </string-array>
 
     <string name="action_settings">Settings</string>
