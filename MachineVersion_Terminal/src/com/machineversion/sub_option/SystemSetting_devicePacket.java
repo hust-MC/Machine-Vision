@@ -292,6 +292,28 @@ public class SystemSetting_devicePacket
 		public int port;
 	}
 
+	public static class Version
+	{
+		static Version version1;
+
+		private Version()
+		{
+		}
+
+		public static Version getInstance()
+		{
+			if (version1 == null)
+			{
+				version1 = new Version();
+			}
+			return version1;
+		}
+
+		public int[] id = new int[4];
+		public int version;
+		public int[] write_time = new int[4];
+	}
+
 	public static class Parameters
 	{
 		private static Parameters parameters;
@@ -307,6 +329,7 @@ public class SystemSetting_devicePacket
 				parameters.hecc = HECC.getInstance();
 				parameters.mode = Mode.getInstance();
 				parameters.net = Net.getInstance();
+				parameters.version = Version.getInstance();
 				parameters.sensor = Sensor.getInstatce();
 				parameters.ad9849 = AD9849.getInstance();
 				parameters.trigger = Trigger.getInstance();
@@ -325,6 +348,7 @@ public class SystemSetting_devicePacket
 		public UART uart;
 		public Sensor sensor;
 		public Mode mode;
+		public Version version;
 		public AD9849 ad9849;
 		public Trigger trigger;
 	}

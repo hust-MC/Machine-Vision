@@ -1,14 +1,14 @@
 package com.machineversion.option;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.emercy.dropdownlist.DropDownList;
 import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
+import com.google.gson.Gson;
+import com.machineversion.net.CmdHandle;
 import com.machineversion.sub_option.DebugMode;
-import com.machineversion.sub_option.DevicePacketFactory;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
 import com.machineversion.sub_option.NumberSettingLayout;
 import com.machineversion.sub_option.SeekBarEditLayout;
@@ -52,8 +52,6 @@ public class SysSettings extends ControlPannelActivity implements
 {
 	public static final String file_sysSeting = FileDirectory.getAppDirectory()
 			+ "SysSetting/";
-	public static final String file_sysSettingDevice = file_sysSeting
-			+ "device/";
 
 	public static final int SEEKBAR_START_ID = 0x84569874;
 
@@ -125,8 +123,6 @@ public class SysSettings extends ControlPannelActivity implements
 		View page2 = getLayoutInflater().inflate(R.layout.vpager_device_triger,
 				null);
 
-		File file = new File(file_sysSettingDevice, "trigger");
-
 		Trigger trigger = Parameters.getInstance().trigger;
 		((EditText) page2.findViewById(R.id.device_setting_trigger_delay))
 				.setText(trigger.trigDelay + "");
@@ -192,7 +188,7 @@ public class SysSettings extends ControlPannelActivity implements
 			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
 			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
 			seekBarEditLayout.setLayoutParams(paramsInner);
-			seekBarEditLayout.setValue(ad9849.pageContens[count]);
+			seekBarEditLayout.setValue(ad9849.pageContents[count]);
 			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
 
 			layout.addView(textView);
@@ -217,7 +213,7 @@ public class SysSettings extends ControlPannelActivity implements
 			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
 			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
 			seekBarEditLayout.setLayoutParams(paramsInner);
-			seekBarEditLayout.setValue(ad9849.pageContens[count]);
+			seekBarEditLayout.setValue(ad9849.pageContents[count]);
 			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
 
 			layout.addView(textView);
@@ -243,7 +239,6 @@ public class SysSettings extends ControlPannelActivity implements
 
 		Net net = Parameters.getInstance().net;
 
-		File file = new File(file_sysSettingDevice, "mt9V9032");
 		return page4;
 	}
 
@@ -256,7 +251,6 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		View page5 = getLayoutInflater().inflate(
 				R.layout.vpager_device_isl12026, null);
-		File file = new File(file_sysSettingDevice, "isl12026");
 		return page5;
 	}
 
@@ -287,7 +281,6 @@ public class SysSettings extends ControlPannelActivity implements
 		((EditText) page6.findViewById(R.id.device_setting_tcp_port))
 				.setText(net.port + "");
 
-		File file = new File(file_sysSettingDevice, "net");
 		return page6;
 	}
 
@@ -341,7 +334,6 @@ public class SysSettings extends ControlPannelActivity implements
 						R.array.hecc_baurate));
 		hecc_baudrate.setAdapter(adapter5);
 
-		File file = new File(file_sysSettingDevice, "uart_hecc");
 		return page7;
 	}
 
@@ -367,7 +359,6 @@ public class SysSettings extends ControlPannelActivity implements
 						+ "." + version.write_time[2] + "."
 						+ version.write_time[3] + "");
 
-		File file = new File(file_sysSettingDevice, "at25040");
 		return page8;
 	}
 
@@ -377,32 +368,15 @@ public class SysSettings extends ControlPannelActivity implements
 	private void initViewPager()
 	{
 		List<View> list = new ArrayList<View>();
-		Log.d("MC", "before:" + System.currentTimeMillis());
-		View page1 = getPage1();
-		Log.d("MC", "page1:" + System.currentTimeMillis());
-		View page2 = getPage2();
-		Log.d("MC", "page2:" + System.currentTimeMillis());
-		LinearLayout page3 = getPage3();
-		Log.d("MC", "page3:" + System.currentTimeMillis());
-		View page4 = getPage4();
-		Log.d("MC", "page4:" + System.currentTimeMillis());
-		View page5 = getPage5();
-		Log.d("MC", "page5:" + System.currentTimeMillis());
-		View page6 = getPage6();
-		Log.d("MC", "page6:" + System.currentTimeMillis());
-		View page7 = getPage7();
-		Log.d("MC", "page7:" + System.currentTimeMillis());
-		View page8 = getPage8();
-		Log.d("MC", "page8:" + System.currentTimeMillis());
 
-		list.add(page1);
-		list.add(page2);
-		list.add(page3);
-		list.add(page4);
-		list.add(page5);
-		list.add(page6);
-		list.add(page7);
-		list.add(page8);
+		list.add(getPage1());
+		list.add(getPage2());
+		list.add(getPage3());
+		list.add(getPage4());
+		list.add(getPage5());
+		list.add(getPage6());
+		list.add(getPage7());
+		list.add(getPage8());
 
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
 		vPager.setOffscreenPageLimit(2);
@@ -492,25 +466,60 @@ public class SysSettings extends ControlPannelActivity implements
 	}
 
 	/**
-	 * 确认按钮事件
+	 * 设备参数设置，确认按钮事件
+	 * 
+	 * @author M C
+	 * 
 	 */
 	class ApplyButton implements OnClickListener
 	{
+
+		private void sendPackage()
+		{
+			switch (vPager.getCurrentItem())
+			{
+			case 0:
+				break;
+			case 1:
+				View page2 = getLayoutInflater().inflate(
+						R.layout.vpager_device_triger, null);
+				Trigger trigger = Parameters.getInstance().trigger;
+				CmdHandle cmdHandle = CmdHandle.getInstance();
+
+				trigger.trigDelay = Integer.valueOf(((EditText) page2
+						.findViewById(R.id.device_setting_trigger_delay))
+						.getText().toString());
+
+				((EditText) page2
+						.findViewById(R.id.device_setting_trigger_part_delay))
+						.setText(trigger.partDelay + "");
+
+				((EditText) page2
+						.findViewById(R.id.device_setting_trigger_velocity))
+						.setText(trigger.velocity + "");
+
+				((EditText) page2
+						.findViewById(R.id.device_setting_trigger_depart_wide))
+						.setText(trigger.departWide + "");
+
+				((EditText) page2
+						.findViewById(R.id.device_setting_trigger_explead))
+						.setText(trigger.expLead + "");
+				cmdHandle.setJson(new Gson().toJson(trigger).getBytes());
+			}
+		}
 		@Override
 		public void onClick(DialogInterface dialog, int which)
 		{
-			Field field;
 			try
 			{
 				// 点击后阻止关闭
-				field = dialog.getClass().getSuperclass()
+				Field field = dialog.getClass().getSuperclass()
 						.getDeclaredField("mShowing");
 				field.setAccessible(true);
-				field.set(dialog, false); // false - 使之不能关闭(此为机关所在，其它语句相同)
+				field.set(dialog, false); 					// false - 使之不能关闭(此为机关所在，其它语句相同)
 
-				DevicePacketFactory factory = new DevicePacketFactory(vPager);
-
-				factory.savePacket(SysSettings.this);
+				sendPackage();
 
 			} catch (Exception e)
 			{
@@ -554,21 +563,18 @@ public class SysSettings extends ControlPannelActivity implements
 
 		public MyPagerAdapter(ViewPager vPager, List<View> list)
 		{
-			Log.d("CJ", "MyPager");
 			this.list = list;
 		}
 
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object)
 		{
-			Log.d("CJ", "remove");
 			((ViewPager) container).removeView(list.get(position));
 		}
 
 		@Override
 		public Object instantiateItem(View container, int position)
 		{
-			Log.d("CJ", "instantiate");
 			((ViewPager) container).addView(list.get(position));
 			return list.get(position);
 		}
@@ -576,14 +582,12 @@ public class SysSettings extends ControlPannelActivity implements
 		@Override
 		public int getCount()
 		{
-			Log.d("CJ", "getCount");
 			return list.size();
 		}
 
 		@Override
 		public boolean isViewFromObject(View arg0, Object arg1)
 		{
-			Log.d("CJ", "from");
 			return arg0 == arg1;
 		}
 	}
