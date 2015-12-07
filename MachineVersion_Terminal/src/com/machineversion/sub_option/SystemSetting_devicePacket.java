@@ -215,7 +215,7 @@ public class SystemSetting_devicePacket
 			return net;
 		}
 
-		public short port;
+		public int port;
 		public int work_mode;	// 1,2 tcpip server and client; 3,4 udp
 		public int[] ip_address = new int[4];
 		public int[] remote_ip = new int[4];

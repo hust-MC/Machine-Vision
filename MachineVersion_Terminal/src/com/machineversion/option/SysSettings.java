@@ -32,7 +32,6 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,10 +55,8 @@ public class SysSettings extends ControlPannelActivity implements
 	public static final int SEEKBAR_START_ID = 0x84569874;
 
 	View layout;
-	Spinner spinner;
-	NumberSettingLayout numberSettingLayout;
 	ViewPager vPager;
-	DropDownList dropList;
+	DropDownList dropList;				// viewPager页卡切换下拉菜单
 
 	/**
 	 * 通用界面设置
@@ -112,7 +109,6 @@ public class SysSettings extends ControlPannelActivity implements
 
 		return page1;
 	}
-
 	/**
 	 * trigger设置界面
 	 * 
@@ -156,6 +152,7 @@ public class SysSettings extends ControlPannelActivity implements
 		AD9849 ad9849 = Parameters.getInstance().ad9849;
 
 		LinearLayout layoutOuter = new LinearLayout(this);
+		layoutOuter.setId(SEEKBAR_START_ID - 1);
 		layoutOuter.setOrientation(LinearLayout.HORIZONTAL);
 		layoutOuter.setPadding(20, 30, 20, 0);
 		LinearLayout layoutLeft = new LinearLayout(this);
@@ -473,40 +470,205 @@ public class SysSettings extends ControlPannelActivity implements
 	 */
 	class ApplyButton implements OnClickListener
 	{
+		CmdHandle cmdHandle = CmdHandle.getInstance();
 
 		private void sendPackage()
 		{
 			switch (vPager.getCurrentItem())
 			{
 			case 0:
+				View page = getLayoutInflater().inflate(
+						R.layout.vpager_device_general, null);
+				Sensor sensor = Parameters.getInstance().sensor;
+				Mode mode = Parameters.getInstance().mode;
+
+				sensor.startPixel_width = ((NumberSettingLayout) page
+						.findViewById(R.id.device_setting_start_x)).getValue();
+				sensor.startPixel_height = ((NumberSettingLayout) page
+						.findViewById(R.id.device_setting_start_y)).getValue();
+				sensor.width_input = ((NumberSettingLayout) page
+						.findViewById(R.id.device_setting_input_w)).getValue();
+				sensor.height_input = ((NumberSettingLayout) page
+						.findViewById(R.id.device_setting_input_h)).getValue();
+				mode.expoTime = ((SeekBarEditLayout) page
+						.findViewById(R.id.device_setting_exposure)).getValue();
+				mode.bitType = ((RadioButton) page
+						.findViewById(R.id.device_setting_bit_radio0))
+						.isSelected() ? 8 : 16;
+
+				if (((CheckBox) page
+						.findViewById(R.id.device_setting_mode_checkbox0))
+						.isChecked())
+				{
+					mode.trigger = 0;
+				}
+				else if (((CheckBox) page
+						.findViewById(R.id.device_setting_mode_checkbox1))
+						.isChecked())
+				{
+					mode.trigger = 1;
+				}
+				else
+				{
+					mode.trigger = 2;
+				}
+
+				cmdHandle.setJson(new Gson().toJson(mode).getBytes());
+				cmdHandle.setJson(new Gson().toJson(sensor).getBytes());
 				break;
 			case 1:
-				View page2 = getLayoutInflater().inflate(
+				page = getLayoutInflater().inflate(
 						R.layout.vpager_device_triger, null);
 				Trigger trigger = Parameters.getInstance().trigger;
-				CmdHandle cmdHandle = CmdHandle.getInstance();
 
-				trigger.trigDelay = Integer.valueOf(((EditText) page2
+				trigger.trigDelay = Integer.valueOf(((EditText) page
 						.findViewById(R.id.device_setting_trigger_delay))
 						.getText().toString());
-
-				((EditText) page2
+				trigger.partDelay = Integer.parseInt(((EditText) page
 						.findViewById(R.id.device_setting_trigger_part_delay))
-						.setText(trigger.partDelay + "");
-
-				((EditText) page2
+						.getText().toString());
+				trigger.velocity = Integer.parseInt(((EditText) page
 						.findViewById(R.id.device_setting_trigger_velocity))
-						.setText(trigger.velocity + "");
-
-				((EditText) page2
+						.getText().toString());
+				trigger.departWide = Integer.parseInt(((EditText) page
 						.findViewById(R.id.device_setting_trigger_depart_wide))
-						.setText(trigger.departWide + "");
-
-				((EditText) page2
+						.getText().toString());
+				trigger.expLead = Integer.parseInt(((EditText) page
 						.findViewById(R.id.device_setting_trigger_explead))
-						.setText(trigger.expLead + "");
+						.getText().toString());
+
 				cmdHandle.setJson(new Gson().toJson(trigger).getBytes());
+				break;
+
+			case 2:
+				page = getLayoutInflater().inflate(SEEKBAR_START_ID - 1, null);
+				int count = 0;
+
+				AD9849 ad9849 = Parameters.getInstance().ad9849;
+				// 第一列
+				int vga = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.vga[0] = vga & 0xFF;
+				ad9849.vga[1] = (vga >> 8) & 0xFF;
+				ad9849.shp = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.hpl = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.rgpl = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.pxga[0] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.pxga[1] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.pxga[2] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.pxga[3] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				// 第二列
+				ad9849.rgdrv = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.shd = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.hnl = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.rgnl = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.hxdrv[0] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.hxdrv[1] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.hxdrv[2] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+				ad9849.hxdrv[3] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
+						+ count++)).getValue();
+
+				cmdHandle.setJson(new Gson().toJson(ad9849).getBytes());
+				break;
+
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				page = getLayoutInflater().inflate(R.layout.vpager_device_net,
+						null);
+				Net net = Parameters.getInstance().net;
+				int i = 0;
+				for (String str : ((EditText) page
+						.findViewById(R.id.device_setting_mac_address))
+						.getText().toString().split("."))
+				{
+					net.mac_address[i++] = Integer.parseInt(str);
+				}
+				i = 0;
+				for (String str : ((EditText) page
+						.findViewById(R.id.device_setting_ip_address))
+						.getText().toString().split("."))
+				{
+					net.ip_address[i++] = Integer.parseInt(str);
+				}
+				i = 0;
+				for (String str : ((EditText) page
+						.findViewById(R.id.device_setting_server_ip_address))
+						.getText().toString().split("."))
+				{
+					net.remote_ip[i++] = Integer.parseInt(str);
+				}
+				for (String str : ((EditText) page
+						.findViewById(R.id.device_setting_tcp_port)).getText()
+						.toString().split("."))
+				{
+					net.port = Integer.parseInt(str);
+				}
+				cmdHandle.setJson(new Gson().toJson(net).getBytes());
+				break;
+
+			case 6:
+				page = getLayoutInflater().inflate(
+						R.layout.vpager_device_uart_hecc, null);
+				UART uart = Parameters.getInstance().uart;
+
+				Spinner uart_baudrate = (Spinner) page
+						.findViewById(R.id.uart_baudrate);
+				Spinner parity = (Spinner) page.findViewById(R.id.parity);
+				Spinner stop_bit = (Spinner) page.findViewById(R.id.stop_bit);
+				Spinner data_len = (Spinner) page.findViewById(R.id.data_len);
+
+				uart.baudRate = uart_baudrate.getSelectedItemPosition() + 1;
+				uart.work_mode = parity.getSelectedItemPosition()
+						| stop_bit.getSelectedItemPosition()
+						| data_len.getSelectedItemPosition();
+				cmdHandle.setJson(new Gson().toJson(uart).getBytes());
+				break;
+			case 7:
+				page = getLayoutInflater().inflate(
+						R.layout.vpager_device_at25040, null);
+				Version version = Parameters.getInstance().version;
+
+				i = 0;
+				for (String str : ((EditText) page.findViewById(R.id.camera_id))
+						.getText().toString().split("."))
+				{
+					version.id[i++] = Integer.parseInt(str);
+				}
+
+				version.version = Integer.parseInt(((EditText) page
+						.findViewById(R.id.version)).getText().toString());
+
+				String[] strs = ((EditText) page.findViewById(R.id.camera_id))
+						.getText().toString().split(".");
+				version.write_time[0] = Integer.parseInt(strs[0]
+						.substring(0, 2));
+				version.write_time[1] = Integer.parseInt(strs[0]
+						.substring(2, 4));
+				version.write_time[2] = Integer.parseInt(strs[1]);
+				version.write_time[3] = Integer.parseInt(strs[2]);
+				cmdHandle.setJson(new Gson().toJson(version).getBytes());
+				break;
+			default:
+
 			}
+
 		}
 		@Override
 		public void onClick(DialogInterface dialog, int which)
