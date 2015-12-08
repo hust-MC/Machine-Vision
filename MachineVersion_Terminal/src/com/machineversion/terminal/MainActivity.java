@@ -3,13 +3,6 @@ package com.machineversion.terminal;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.machineversion.net.NetUtils;
 import com.machineversion.option.CameraParams;
 import com.machineversion.option.FastenerSettings;
@@ -17,7 +10,6 @@ import com.machineversion.option.FileManager;
 import com.machineversion.option.Help;
 import com.machineversion.option.MachineLearning;
 import com.machineversion.option.SysSettings;
-import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
 import com.machineversion.terminal.NetThread.CurrentState;
 
 import android.os.Bundle;
