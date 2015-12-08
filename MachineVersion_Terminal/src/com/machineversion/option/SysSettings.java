@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ public class SysSettings extends ControlPannelActivity implements
 	View layout;
 	ViewPager vPager;
 	DropDownList dropList;				// viewPager页卡切换下拉菜单
+	MyPagerAdapter pagerAdapter;
 
 	/**
 	 * 通用界面设置
@@ -347,14 +349,14 @@ public class SysSettings extends ControlPannelActivity implements
 
 		((EditText) page8.findViewById(R.id.camera_id)).setText(version.id[0]
 				+ "." + version.id[1] + "." + version.id[2] + "."
-				+ version.id[3] + "");
+				+ version.id[3]);
 		((EditText) page8.findViewById(R.id.version)).setText(version.version
 				+ "");
 
 		((EditText) page8.findViewById(R.id.write_time))
 				.setText(version.write_time[0] + "" + version.write_time[1]
 						+ "." + version.write_time[2] + "."
-						+ version.write_time[3] + "");
+						+ version.write_time[3]);
 
 		return page8;
 	}
@@ -375,9 +377,10 @@ public class SysSettings extends ControlPannelActivity implements
 		list.add(getPage7());
 		list.add(getPage8());
 
+		pagerAdapter = new MyPagerAdapter(vPager, list);
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
 		vPager.setOffscreenPageLimit(2);
-		vPager.setAdapter(new MyPagerAdapter(vPager, list));
+		vPager.setAdapter(pagerAdapter);
 
 		vPager.setOnPageChangeListener(new OnPageChangeListener()
 		{
@@ -474,11 +477,10 @@ public class SysSettings extends ControlPannelActivity implements
 
 		private void sendPackage()
 		{
+			View page = pagerAdapter.currentView;
 			switch (vPager.getCurrentItem())
 			{
 			case 0:
-				View page = getLayoutInflater().inflate(
-						R.layout.vpager_device_general, null);
 				Sensor sensor = Parameters.getInstance().sensor;
 				Mode mode = Parameters.getInstance().mode;
 
@@ -517,8 +519,6 @@ public class SysSettings extends ControlPannelActivity implements
 				cmdHandle.setJson(new Gson().toJson(sensor).getBytes());
 				break;
 			case 1:
-				page = getLayoutInflater().inflate(
-						R.layout.vpager_device_triger, null);
 				Trigger trigger = Parameters.getInstance().trigger;
 
 				trigger.trigDelay = Integer.valueOf(((EditText) page
@@ -541,9 +541,7 @@ public class SysSettings extends ControlPannelActivity implements
 				break;
 
 			case 2:
-				page = getLayoutInflater().inflate(SEEKBAR_START_ID - 1, null);
 				int count = 0;
-
 				AD9849 ad9849 = Parameters.getInstance().ad9849;
 				// 第一列
 				int vga = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
@@ -590,8 +588,6 @@ public class SysSettings extends ControlPannelActivity implements
 			case 4:
 				break;
 			case 5:
-				page = getLayoutInflater().inflate(R.layout.vpager_device_net,
-						null);
 				Net net = Parameters.getInstance().net;
 				int i = 0;
 				for (String str : ((EditText) page
@@ -624,8 +620,6 @@ public class SysSettings extends ControlPannelActivity implements
 				break;
 
 			case 6:
-				page = getLayoutInflater().inflate(
-						R.layout.vpager_device_uart_hecc, null);
 				UART uart = Parameters.getInstance().uart;
 
 				Spinner uart_baudrate = (Spinner) page
@@ -641,13 +635,11 @@ public class SysSettings extends ControlPannelActivity implements
 				cmdHandle.setJson(new Gson().toJson(uart).getBytes());
 				break;
 			case 7:
-				page = getLayoutInflater().inflate(
-						R.layout.vpager_device_at25040, null);
 				Version version = Parameters.getInstance().version;
 
 				i = 0;
 				for (String str : ((EditText) page.findViewById(R.id.camera_id))
-						.getText().toString().split("."))
+						.getText().toString().split("\\."))
 				{
 					version.id[i++] = Integer.parseInt(str);
 				}
@@ -655,20 +647,25 @@ public class SysSettings extends ControlPannelActivity implements
 				version.version = Integer.parseInt(((EditText) page
 						.findViewById(R.id.version)).getText().toString());
 
-				String[] strs = ((EditText) page.findViewById(R.id.camera_id))
-						.getText().toString().split(".");
+				String[] strs = ((EditText) page.findViewById(R.id.write_time))
+						.getText().toString().split("\\.");
 				version.write_time[0] = Integer.parseInt(strs[0]
 						.substring(0, 2));
 				version.write_time[1] = Integer.parseInt(strs[0]
 						.substring(2, 4));
 				version.write_time[2] = Integer.parseInt(strs[1]);
 				version.write_time[3] = Integer.parseInt(strs[2]);
+
+				Log.d("MC", new Gson().toJson(version));
+				byte[] bytes = new Gson().toJson(version).getBytes();
+				for (byte b : bytes)
+				{
+					Log.d("MC", b + "");
+				}
 				cmdHandle.setJson(new Gson().toJson(version).getBytes());
 				break;
 			default:
-
 			}
-
 		}
 		@Override
 		public void onClick(DialogInterface dialog, int which)
@@ -722,6 +719,7 @@ public class SysSettings extends ControlPannelActivity implements
 	private class MyPagerAdapter extends PagerAdapter
 	{
 		private List<View> list;
+		View currentView;
 
 		public MyPagerAdapter(ViewPager vPager, List<View> list)
 		{
@@ -752,6 +750,14 @@ public class SysSettings extends ControlPannelActivity implements
 		{
 			return arg0 == arg1;
 		}
+
+		@Override
+		public void setPrimaryItem(ViewGroup container, int position,
+				Object object)
+		{
+			currentView = (View) object;
+		}
+
 	}
 
 }
