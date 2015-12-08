@@ -90,7 +90,8 @@ public class NetThread extends Thread implements CommunicationInterface
 
 					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
 					currentState = CurrentState.onSending;
-
+					cmdHandle.getJson();
+					cmdHandle.getJson();
 					/*
 					 * 以下代码正式开始发送
 					 */
@@ -108,10 +109,12 @@ public class NetThread extends Thread implements CommunicationInterface
 						{
 							currentState = CurrentState.onSending;
 
-							// cmdHandle.getParam(handler);
-							// cmdHandle.getVideo(handler);
-							cmdHandle.getJson();
-							// cmdHandle.getState(handler);
+							int i = 10;
+							while (i-- > 0)
+							{
+								cmdHandle.getVideo(handler);
+							}
+							cmdHandle.getState(handler);
 						}
 						lock.unlock();
 					}
@@ -123,7 +126,6 @@ public class NetThread extends Thread implements CommunicationInterface
 				{
 					e.printStackTrace();
 				}
-				Log.d("MC", "tcp thread stop");
 			}
 		}).start();
 
@@ -136,7 +138,6 @@ public class NetThread extends Thread implements CommunicationInterface
 				if (udpSocket.receive().subSequence(0, 13)
 						.equals("Get Server IP"))
 				{
-					Log.d("MC", "send udp");
 					udpSocket.response(NetUtils.ip + "\0", NetUtils.sendIpPort);
 				}
 			}
@@ -145,10 +146,8 @@ public class NetThread extends Thread implements CommunicationInterface
 		{
 			udpSocket.close();
 			handler.sendEmptyMessage(CONNECT_FAIL);
-			Log.d("MC", "udp close");
 			e.printStackTrace();
 		}
-		Log.d("MC", "stop UDP thread");
 	}
 	@Override
 	public void open()

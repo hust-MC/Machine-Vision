@@ -111,7 +111,6 @@ public class MainActivity extends Activity
 		{
 			if (netHandleFlag)
 			{
-				Log.d("CJ", msg.what + "");
 				switch (msg.what)
 				{
 

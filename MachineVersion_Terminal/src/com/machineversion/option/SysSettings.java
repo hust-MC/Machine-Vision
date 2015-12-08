@@ -7,6 +7,7 @@ import java.util.List;
 import com.emercy.dropdownlist.DropDownList;
 import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.machineversion.net.CmdHandle;
 import com.machineversion.sub_option.DebugMode;
 import com.machineversion.sub_option.DialogBuilder.OnDialogClicked;
@@ -69,6 +70,7 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		View page1 = getLayoutInflater().inflate(
 				R.layout.vpager_device_general, null);
+		Log.d("MC", "page1:" + page1);
 		Sensor sensor = Parameters.getInstance().sensor;
 		Mode mode = Parameters.getInstance().mode;
 
@@ -78,7 +80,7 @@ public class SysSettings extends ControlPannelActivity implements
 		((DropDownList) page1.findViewById(R.id.device_setting_output_type))
 				.setItem(R.array.device_setting_output_type);
 		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
-				.setMax(1720);
+				.setMax(65536);
 
 		((NumberSettingLayout) page1.findViewById(R.id.device_setting_start_x))
 				.setValue(sensor.startPixel_width);
@@ -108,6 +110,11 @@ public class SysSettings extends ControlPannelActivity implements
 		else
 			((CheckBox) page1.findViewById(R.id.device_setting_mode_checkbox2))
 					.setChecked(true);
+
+		Log.d("MC",
+				"checkbox2:"
+						+ ((CheckBox) page1
+								.findViewById(R.id.device_setting_mode_checkbox2)));
 
 		return page1;
 	}
@@ -477,7 +484,10 @@ public class SysSettings extends ControlPannelActivity implements
 
 		private void sendPackage()
 		{
-			View page = pagerAdapter.currentView;
+			View page = pagerAdapter.getCurrentView();
+			// View page = getLayoutInflater().inflate(
+			// R.layout.vpager_device_general, null);
+			Log.d("MC", "send page:" + page);
 			switch (vPager.getCurrentItem())
 			{
 			case 0:
@@ -496,7 +506,7 @@ public class SysSettings extends ControlPannelActivity implements
 						.findViewById(R.id.device_setting_exposure)).getValue();
 				mode.bitType = ((RadioButton) page
 						.findViewById(R.id.device_setting_bit_radio0))
-						.isSelected() ? 8 : 16;
+						.isChecked() ? 8 : 16;
 
 				if (((CheckBox) page
 						.findViewById(R.id.device_setting_mode_checkbox0))
@@ -515,8 +525,12 @@ public class SysSettings extends ControlPannelActivity implements
 					mode.trigger = 2;
 				}
 
-				cmdHandle.setJson(new Gson().toJson(mode).getBytes());
-				cmdHandle.setJson(new Gson().toJson(sensor).getBytes());
+				Gson gson = new Gson();
+				JsonObject modeJson = new JsonObject();
+				modeJson.add("mode", gson.toJsonTree(mode));
+				Log.d("MC", modeJson.toString());
+
+				cmdHandle.setJson(modeJson.toString().getBytes());
 				break;
 			case 1:
 				Trigger trigger = Parameters.getInstance().trigger;
@@ -719,7 +733,12 @@ public class SysSettings extends ControlPannelActivity implements
 	private class MyPagerAdapter extends PagerAdapter
 	{
 		private List<View> list;
-		View currentView;
+		private View currentView;
+
+		public View getCurrentView()
+		{
+			return currentView;
+		}
 
 		public MyPagerAdapter(ViewPager vPager, List<View> list)
 		{

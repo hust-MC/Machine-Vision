@@ -189,7 +189,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    android:checked="true"
                     android:text=">8 bits" />
             </RadioGroup>
         </LinearLayout>

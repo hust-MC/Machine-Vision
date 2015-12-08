@@ -10,15 +10,12 @@ import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.machineversion.net.CmdHandle;
 import com.machineversion.net.NetUtils;
 import com.machineversion.net.NetUtils.NetPacket;
 import com.machineversion.sub_option.SystemSetting_devicePacket.AD9849;
-import com.machineversion.sub_option.SystemSetting_devicePacket.Net;
 import com.machineversion.sub_option.SystemSetting_devicePacket.Parameters;
-import com.machineversion.sub_option.SystemSetting_devicePacket.Trigger;
 
 public class NetReceiveThread extends Thread
 {
@@ -95,12 +92,29 @@ public class NetReceiveThread extends Thread
 					long timer4 = System.currentTimeMillis();
 
 					break;
+				case NetUtils.MSG_NET_STATE:
+
+					byte[] temp = Arrays.copyOfRange(revPacket.data,
+							revPacket.data.length - 12, revPacket.data.length);
+					switch (CmdHandle.getIntFromArray(Arrays.copyOf(temp, 4)))
+					{
+					case 0x01:
+						int tempInteger = CmdHandle.getIntFromArray(Arrays
+								.copyOfRange(temp, 4, 8));
+						int tempFloat = CmdHandle.getIntFromArray(Arrays
+								.copyOfRange(temp, 8, 12));
+
+						message = Message.obtain();
+						message.what = NetUtils.MSG_NET_STATE;
+						message.arg1 = tempInteger;
+						message.arg2 = tempFloat;
+						handler.sendMessage(message);
+					}
+					break;
 				case NetUtils.MSG_NET_GET_JSON:
-					Log.d("CJ", "start");
 					String str = new String(Arrays.copyOfRange(revPacket.data,
 							100, revPacket.data.length));
 					Log.d("CJ", str);
-					Log.d("CJ", "end");
 
 					JsonParser jParser = new JsonParser();
 					Gson gson = new Gson();
@@ -126,9 +140,6 @@ public class NetReceiveThread extends Thread
 					ad.pageContents[14] = ad.hxdrv[2];
 					ad.pageContents[15] = ad.hxdrv[3];
 
-					Log.d("CJ", p.trigger.expLead + "");
-					Log.d("CJ", p.trigger.departWide + "");
-					Log.d("CJ", p.trigger.trigDelay + "");
 					break;
 				default:
 					Log.e("MC", "default");

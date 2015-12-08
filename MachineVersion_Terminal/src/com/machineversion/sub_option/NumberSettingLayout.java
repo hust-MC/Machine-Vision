@@ -31,7 +31,6 @@ public class NumberSettingLayout extends LinearLayout
 	public NumberSettingLayout(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
-		Log.d("CJ", "nuber begin");
 
 		this.context = context;
 		linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(
@@ -69,7 +68,6 @@ public class NumberSettingLayout extends LinearLayout
 				return false;
 			}
 		});
-		Log.d("CJ", "nuber s");
 	}
 	public void setValue(int value)
 	{

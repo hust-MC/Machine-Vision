@@ -92,31 +92,32 @@ public class CmdHandle
 
 		NetPacketContext context = new NetPacketContext(MSG_NET_STATE);
 
-		NetPacket revPacket = new NetPacket();
+		// NetPacket revPacket = new NetPacket();
 		context.sendPacket(os);
-		revPacket.recvDataPack(is);
+		// revPacket.recvDataPack(is);
 
-		if (revPacket.type != 0xaa && revPacket.minid == NetUtils.MSG_NET_STATE)
-		{
-			byte[] data = Arrays.copyOfRange(revPacket.data,
-					revPacket.data.length - 12, revPacket.data.length);
-			switch (getIntFromArray(Arrays.copyOf(data, 4)))
-			{
-			case 0x01:
-				tempInteger = getIntFromArray(Arrays.copyOfRange(data, 4, 8));
-				tempFloat = getIntFromArray(Arrays.copyOfRange(data, 8, 12));
-
-				Message message = Message.obtain();
-				message.what = NetUtils.MSG_NET_STATE;
-				message.arg1 = tempInteger;
-				message.arg2 = tempFloat;
-				handler.sendMessage(message);
-			}
-		}
-		else
-		{
-			Log.d("MC", "packet == null");
-		}
+		// if (revPacket.type != 0xaa && revPacket.minid ==
+		// NetUtils.MSG_NET_STATE)
+		// {
+		// byte[] data = Arrays.copyOfRange(revPacket.data,
+		// revPacket.data.length - 12, revPacket.data.length);
+		// switch (getIntFromArray(Arrays.copyOf(data, 4)))
+		// {
+		// case 0x01:
+		// tempInteger = getIntFromArray(Arrays.copyOfRange(data, 4, 8));
+		// tempFloat = getIntFromArray(Arrays.copyOfRange(data, 8, 12));
+		//
+		// Message message = Message.obtain();
+		// message.what = NetUtils.MSG_NET_STATE;
+		// message.arg1 = tempInteger;
+		// message.arg2 = tempFloat;
+		// handler.sendMessage(message);
+		// }
+		// }
+		// else
+		// {
+		// Log.d("MC", "packet == null");
+		// }
 	}
 
 	public void getParam(Handler handler)
@@ -164,7 +165,7 @@ public class CmdHandle
 	 *            大小为4的字节数组
 	 * @return 又四个字节组成的整形数
 	 */
-	private int getIntFromArray(byte[] data)
+	public static int getIntFromArray(byte[] data)
 	{
 		if (data.length != 4)
 		{

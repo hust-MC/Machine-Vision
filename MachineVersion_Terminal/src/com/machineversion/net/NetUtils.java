@@ -47,6 +47,7 @@ public class NetUtils
 	public final static int MSG_NET_DSPTRIG = 24;
 	public final static int MSG_NET_HELP_ALG_CMD = 25;
 	public final static int MSG_NET_GET_JSON = 26;
+	public final static int MSG_NET_SET_JSON = 27;
 	public final static int MSG_NET_ALGRESULT = 200;
 
 	/*
@@ -214,7 +215,7 @@ public class NetUtils
 	{
 		public SetJson()
 		{
-			minid = MSG_NET_GET_JSON;
+			minid = MSG_NET_SET_JSON;
 			type = 0;
 			block = 0;
 		}
