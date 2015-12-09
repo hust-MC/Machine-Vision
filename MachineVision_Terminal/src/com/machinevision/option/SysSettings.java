@@ -8,7 +8,7 @@ import com.emercy.dropdownlist.DropDownList;
 import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.DebugMode;
 import com.machinevision.sub_option.NumberSettingLayout;

@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 import com.machinevision.sub_option.DialogBuilder;
 import com.machinevision.sub_option.FileManager_fileExplorer;
 

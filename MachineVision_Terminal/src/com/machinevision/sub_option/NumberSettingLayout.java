@@ -1,6 +1,6 @@
 package com.machinevision.sub_option;
 
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 
 import android.app.AlertDialog;
 import android.content.Context;

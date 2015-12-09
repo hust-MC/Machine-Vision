@@ -23,7 +23,7 @@
             android:id="@+id/cur_set_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+        </com.machinevision.sub_option.NumberSettingLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,74 +36,89 @@
             android:id="@+id/cur_set_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="month"
-            android:textSize="16sp" />
+            <com.machineversion.sub_option.NumberSettingLayout>
+            </com.machineversion.sub_option.NumberSettingLayout>
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/cur_set_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="month"
+                android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="100dp"
-            android:gravity="left"
-            android:text="day"
-            android:textSize="16sp" />
+            <com.machinevision.sub_option.NumberSettingLayout
+                android:id="@+id/cur_set_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/cur_set_hour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                <com.machineversion.sub_option.NumberSettingLayout>
+                </com.machineversion.sub_option.NumberSettingLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="hour"
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="100dp"
+                    android:gravity="left"
+                    android:text="day"
+                    android:textSize="16sp" />
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/cur_set_minute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                <com.machinevision.sub_option.NumberSettingLayout
+                    android:id="@+id/cur_set_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="minute"
-            android:textSize="16sp" />
+                    <com.machineversion.sub_option.NumberSettingLayout>
+                    </com.machineversion.sub_option.NumberSettingLayout>
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/cur_set_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="hour"
+                        android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="50dp"
-            android:gravity="left"
-            android:text="second"
-            android:textSize="16sp" />
+                    <com.machinevision.sub_option.NumberSettingLayout
+                        android:id="@+id/cur_set_minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/cur_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="set" />
+                        <com.machineversion.sub_option.NumberSettingLayout>
+                        </com.machineversion.sub_option.NumberSettingLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:text="minute"
+                            android:textSize="16sp" />
+
+                        <com.machinevision.sub_option.NumberSettingLayout
+                            android:id="@+id/cur_set_second"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <com.machineversion.sub_option.NumberSettingLayout>
+                            </com.machineversion.sub_option.NumberSettingLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="50dp"
+                                android:gravity="left"
+                                android:text="second"
+                                android:textSize="16sp" />
+
+                            <Button
+                                android:id="@+id/cur_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="set" />
+                        </com.machinevision.sub_option.NumberSettingLayout>
+                    </com.machinevision.sub_option.NumberSettingLayout>
+                </com.machinevision.sub_option.NumberSettingLayout>
+            </com.machinevision.sub_option.NumberSettingLayout>
+        </com.machinevision.sub_option.NumberSettingLayout>
     </LinearLayout>
 
     <!-- 第二行 -->
@@ -124,87 +139,105 @@
             android:id="@+id/alarm0_set_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="year"
-            android:textSize="16sp" />
+            <com.machineversion.sub_option.NumberSettingLayout>
+            </com.machineversion.sub_option.NumberSettingLayout>
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm_set_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="year"
+                android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="month"
-            android:textSize="16sp" />
+            <com.machinevision.sub_option.NumberSettingLayout
+                android:id="@+id/alarm_set_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm0_set_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                <com.machineversion.sub_option.NumberSettingLayout>
+                </com.machineversion.sub_option.NumberSettingLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="100dp"
-            android:gravity="left"
-            android:text="day"
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="month"
+                    android:textSize="16sp" />
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm0_set_hour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                <com.machinevision.sub_option.NumberSettingLayout
+                    android:id="@+id/alarm0_set_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="hour"
-            android:textSize="16sp" />
+                    <com.machineversion.sub_option.NumberSettingLayout>
+                    </com.machineversion.sub_option.NumberSettingLayout>
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm0_set_minute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="100dp"
+                        android:gravity="left"
+                        android:text="day"
+                        android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="minute"
-            android:textSize="16sp" />
+                    <com.machinevision.sub_option.NumberSettingLayout
+                        android:id="@+id/alarm0_set_hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm0_set_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                        <com.machineversion.sub_option.NumberSettingLayout>
+                        </com.machineversion.sub_option.NumberSettingLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="50dp"
-            android:gravity="left"
-            android:text="second"
-            android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:text="hour"
+                            android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/alarm0_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="set" />
+                        <com.machinevision.sub_option.NumberSettingLayout
+                            android:id="@+id/alarm0_set_minute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <com.machineversion.sub_option.NumberSettingLayout>
+                            </com.machineversion.sub_option.NumberSettingLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="left"
+                                android:text="minute"
+                                android:textSize="16sp" />
+
+                            <com.machinevision.sub_option.NumberSettingLayout
+                                android:id="@+id/alarm0_set_second"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" >
+
+                                <com.machineversion.sub_option.NumberSettingLayout>
+                                </com.machineversion.sub_option.NumberSettingLayout>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="50dp"
+                                    android:gravity="left"
+                                    android:text="second"
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/alarm0_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="set" />
+                            </com.machinevision.sub_option.NumberSettingLayout>
+                        </com.machinevision.sub_option.NumberSettingLayout>
+                    </com.machinevision.sub_option.NumberSettingLayout>
+                </com.machinevision.sub_option.NumberSettingLayout>
+            </com.machinevision.sub_option.NumberSettingLayout>
+        </com.machinevision.sub_option.NumberSettingLayout>
     </LinearLayout>
 
     <!-- 第三行 -->
@@ -225,87 +258,105 @@
             android:id="@+id/alarm1_set_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="year"
-            android:textSize="16sp" />
+            <com.machineversion.sub_option.NumberSettingLayout>
+            </com.machineversion.sub_option.NumberSettingLayout>
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm1_set_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="year"
+                android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="month"
-            android:textSize="16sp" />
+            <com.machinevision.sub_option.NumberSettingLayout
+                android:id="@+id/alarm1_set_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm1_set_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                <com.machineversion.sub_option.NumberSettingLayout>
+                </com.machineversion.sub_option.NumberSettingLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="100dp"
-            android:gravity="left"
-            android:text="day"
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="month"
+                    android:textSize="16sp" />
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm1_set_hour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                <com.machinevision.sub_option.NumberSettingLayout
+                    android:id="@+id/alarm1_set_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="hour"
-            android:textSize="16sp" />
+                    <com.machineversion.sub_option.NumberSettingLayout>
+                    </com.machineversion.sub_option.NumberSettingLayout>
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm1_set_minute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="100dp"
+                        android:gravity="left"
+                        android:text="day"
+                        android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="minute"
-            android:textSize="16sp" />
+                    <com.machinevision.sub_option.NumberSettingLayout
+                        android:id="@+id/alarm1_set_hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
 
-        <com.machinevision.sub_option.NumberSettingLayout
-            android:id="@+id/alarm1_set_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </com.machineversion.sub_option.NumberSettingLayout>
+                        <com.machineversion.sub_option.NumberSettingLayout>
+                        </com.machineversion.sub_option.NumberSettingLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="50dp"
-            android:gravity="left"
-            android:text="second"
-            android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:text="hour"
+                            android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/alarm1_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="set" />
+                        <com.machinevision.sub_option.NumberSettingLayout
+                            android:id="@+id/alarm1_set_minute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <com.machineversion.sub_option.NumberSettingLayout>
+                            </com.machineversion.sub_option.NumberSettingLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="left"
+                                android:text="minute"
+                                android:textSize="16sp" />
+
+                            <com.machinevision.sub_option.NumberSettingLayout
+                                android:id="@+id/alarm1_set_second"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" >
+
+                                <com.machineversion.sub_option.NumberSettingLayout>
+                                </com.machineversion.sub_option.NumberSettingLayout>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="50dp"
+                                    android:gravity="left"
+                                    android:text="second"
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/alarm1_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="set" />
+                            </com.machinevision.sub_option.NumberSettingLayout>
+                        </com.machinevision.sub_option.NumberSettingLayout>
+                    </com.machinevision.sub_option.NumberSettingLayout>
+                </com.machinevision.sub_option.NumberSettingLayout>
+            </com.machinevision.sub_option.NumberSettingLayout>
+        </com.machinevision.sub_option.NumberSettingLayout>
     </LinearLayout>
 
     <!-- 第四行 -->

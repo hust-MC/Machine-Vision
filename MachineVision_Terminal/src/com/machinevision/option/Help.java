@@ -1,6 +1,6 @@
 package com.machinevision.option;
 
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 import com.machinevision.option.ControlPannelActivity.MenuWithSubMenu;
 
 import android.os.Bundle;

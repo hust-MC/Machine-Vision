@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 import com.machinevision.net.NetUtils;
 import com.machinevision.option.CameraParams;
 import com.machinevision.option.FastenerSettings;

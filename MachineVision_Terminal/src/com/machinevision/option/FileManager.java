@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.FileManager_fileExplorer;
 

@@ -1,6 +1,6 @@
 package com.machinevision.option;
 
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
 
 import android.os.Bundle;

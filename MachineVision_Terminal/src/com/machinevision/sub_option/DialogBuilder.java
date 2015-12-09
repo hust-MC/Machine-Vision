@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 
 import android.app.AlertDialog;
 import android.content.Context;

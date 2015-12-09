@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.File;
 
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 
 public class FileManager_fileExplorer extends ListActivity
 {

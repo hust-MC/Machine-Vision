@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.machineversion.terminal.R;
+import com.machinevision.terminal.R;
 import com.machinevision.sub_option.ButtonCfgLlist;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
 import com.machinevision.terminal.FileDirectory;

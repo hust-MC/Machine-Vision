@@ -65,14 +65,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
-            </com.machineversion.sub_option.NumberSettingLayout>
+            </com.machinevision.sub_option.NumberSettingLayout>
 
             <com.machinevision.sub_option.NumberSettingLayout
                 android:id="@+id/device_setting_start_y"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
-            </com.machineversion.sub_option.NumberSettingLayout>
+            </com.machinevision.sub_option.NumberSettingLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -90,14 +90,20 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
-            </com.machineversion.sub_option.NumberSettingLayout>
 
-            <com.machinevision.sub_option.NumberSettingLayout
-                android:id="@+id/device_setting_input_h"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-            </com.machineversion.sub_option.NumberSettingLayout>
+                <com.machineversion.sub_option.NumberSettingLayout>
+                </com.machineversion.sub_option.NumberSettingLayout>
+
+                <com.machinevision.sub_option.NumberSettingLayout
+                    android:id="@+id/device_setting_input_h"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+
+                    <com.machineversion.sub_option.NumberSettingLayout>
+                    </com.machineversion.sub_option.NumberSettingLayout>
+                </com.machinevision.sub_option.NumberSettingLayout>
+            </com.machinevision.sub_option.NumberSettingLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -115,14 +121,20 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
-            </com.machineversion.sub_option.NumberSettingLayout>
 
-            <com.machinevision.sub_option.NumberSettingLayout
-                android:id="@+id/device_setting_output_h"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-            </com.machineversion.sub_option.NumberSettingLayout>
+                <com.machineversion.sub_option.NumberSettingLayout>
+                </com.machineversion.sub_option.NumberSettingLayout>
+
+                <com.machinevision.sub_option.NumberSettingLayout
+                    android:id="@+id/device_setting_output_h"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+
+                    <com.machineversion.sub_option.NumberSettingLayout>
+                    </com.machineversion.sub_option.NumberSettingLayout>
+                </com.machinevision.sub_option.NumberSettingLayout>
+            </com.machinevision.sub_option.NumberSettingLayout>
         </LinearLayout>
     </LinearLayout>
 
