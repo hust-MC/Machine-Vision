@@ -114,6 +114,7 @@ public class MainActivity extends Activity
 					break;
 				case NetThread.CONNECT_FAIL:
 					dialog.dismiss();
+
 					Toast.makeText(MainActivity.this, "连接失败，请检查网络连接",
 							Toast.LENGTH_SHORT).show();
 					break;
@@ -122,8 +123,11 @@ public class MainActivity extends Activity
 					photo_imv1.setImageBitmap(bitmap);
 					break;
 				case NetUtils.MSG_NET_STATE:
-					temperature_tv.setText("温度：" + msg.arg1
-							+ ("." + msg.arg2).substring(0, 3));
+					String tempFloat = "." + msg.arg2 + "0";
+					temperature_tv.setText("温度："
+							+ msg.arg1
+							+ (tempFloat.length() > 3 ? tempFloat.substring(0,
+									3) : tempFloat));
 					break;
 				default:
 					break;

@@ -24,6 +24,7 @@ public class NetThread extends Thread implements CommunicationInterface
 {
 	public static boolean sendSwitch = false;
 
+	public static final int TIMEOUT = 5000;
 	public static final int CONNECT_SUCCESS = 100;
 	public static final int CONNECT_FAIL = 101;
 	private final int RXBUF_SIZE = 300 * 1024;
@@ -132,7 +133,7 @@ public class NetThread extends Thread implements CommunicationInterface
 		try
 		{
 			udpSocket = new UdpServerSocket(NetUtils.listenBroadCastPort);
-			udpSocket.setSoTimeout(5000);
+			udpSocket.setSoTimeout(TIMEOUT);
 			while (!udpConnecteSuccess)
 			{
 				if (udpSocket.receive().subSequence(0, 13)
@@ -145,7 +146,10 @@ public class NetThread extends Thread implements CommunicationInterface
 		} catch (Exception e)
 		{
 			udpSocket.close();
-			handler.sendEmptyMessage(CONNECT_FAIL);
+			if (!udpConnecteSuccess)
+			{
+				handler.sendEmptyMessage(CONNECT_FAIL);
+			}
 			e.printStackTrace();
 		}
 	}

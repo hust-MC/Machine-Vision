@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Arrays;
 
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.machinevision.terminal.NetReceiveThread;

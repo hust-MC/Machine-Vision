@@ -45,10 +45,10 @@ public class DataPack
 
 			dos.write(baos.toByteArray());
 			dos.flush();
-			for (byte b : baos.toByteArray())
-			{
-				Log.d("MC", "" + b);
-			}
+			// for (byte b : baos.toByteArray())
+			// {
+			// Log.d("MC", "" + b);
+			// }
 			return true;
 		} catch (IOException e)
 		{

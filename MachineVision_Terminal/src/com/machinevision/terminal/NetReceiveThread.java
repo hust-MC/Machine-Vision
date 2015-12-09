@@ -49,7 +49,6 @@ public class NetReceiveThread extends Thread
 		while (NetThread.currentState != NetThread.CurrentState.onStop)
 		{
 
-			long timer1 = System.currentTimeMillis();
 			revPacket.recvDataPack(is);
 			if (revPacket.type != 0xaa)// 如果数据正常，表示网络通畅
 			{
@@ -91,14 +90,12 @@ public class NetReceiveThread extends Thread
 						temp = rxBuf[100 + i] & 0xff;
 						image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
 					}
-					long timer3 = System.currentTimeMillis();
 					Message message = Message.obtain();
 					message.what = NetUtils.MSG_NET_GET_VIDEO;
 					bitmap.setPixels(image, 0, width, 0, 0, width, height);
 
 					message.obj = bitmap;
 					handler.sendMessage(message);
-					long timer4 = System.currentTimeMillis();
 
 					break;
 				case NetUtils.MSG_NET_STATE:
