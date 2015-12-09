@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="100dp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.machineversion.sub_option.SeekBarEditLayout
+            android:id="@+id/device_setting_auto_agc"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal" />
+
+        <CheckBox
+            android:id="@+id/auto_agc_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/device_setting_auto_agc"
+            android:layout_toLeftOf="@id/device_setting_auto_agc" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/device_setting_auto_agc"
+            android:layout_toLeftOf="@id/auto_agc_set"
+            android:text="auto agc"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.machineversion.sub_option.SeekBarEditLayout
+            android:id="@+id/device_setting_auto_aec"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal" />
+
+        <CheckBox
+            android:id="@+id/device_setting_aec_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/device_setting_auto_aec"
+            android:layout_toLeftOf="@id/device_setting_auto_aec" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/device_setting_aec_set"
+            android:layout_toLeftOf="@id/device_setting_aec_set"
+            android:text="auto aec"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
+</LinearLayout>

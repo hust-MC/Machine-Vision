@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/device_setting_mac_address"
+            style="@style/device_setting_net" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_front"
+            android:layout_alignBottom="@id/device_setting_mac_address"
+            android:layout_toLeftOf="@id/device_setting_mac_address"
+            android:text="MAC地址" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/device_setting_ip_address"
+            style="@style/device_setting_net" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_front"
+            android:layout_alignBottom="@id/device_setting_ip_address"
+            android:layout_toLeftOf="@id/device_setting_ip_address"
+            android:text="IP地址" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/device_setting_server_ip_address"
+            style="@style/device_setting_net" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_front"
+            android:layout_alignBottom="@id/device_setting_server_ip_address"
+            android:layout_toLeftOf="@id/device_setting_server_ip_address"
+            android:text="服务器IP" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/device_setting_tcp_port"
+            style="@style/device_setting_net" />
+
+        <TextView
+            style="@style/device_setting_trigger_tv_front"
+            android:layout_alignBottom="@id/device_setting_tcp_port"
+            android:layout_toLeftOf="@id/device_setting_tcp_port"
+            android:text="tcp端口" />
+    </RelativeLayout>
+
+</LinearLayout>

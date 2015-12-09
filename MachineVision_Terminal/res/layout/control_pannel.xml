@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" >
+
+        <ImageButton
+            android:id="@+id/bt_control_pannel_top"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true"
+            android:background="#0000"
+            android:scaleType="fitXY"
+            android:src="@drawable/control_pannel_top" />
+
+        <ImageButton
+            android:id="@+id/bt_control_pannel_bottom"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+             android:layout_marginBottom="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#0000"
+            android:scaleType="fitXY"
+            android:src="@drawable/control_pannel_bottom" />
+
+        <ImageButton
+            android:id="@+id/bt_control_pannel_left"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+             android:layout_marginLeft="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="#0000"
+            android:scaleType="fitXY"
+            android:src="@drawable/control_pannel_left" />
+
+        <ImageButton
+            android:id="@+id/bt_control_pannel_right"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+             android:layout_marginRight="100dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="#0000"
+            android:scaleType="fitXY"
+            android:src="@drawable/control_pannel_right" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="20dp" >
+
+        <Button
+            android:id="@+id/bt_control_pannel_confirm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_control_bt"
+            android:text="确认"
+            android:textColor="#3F48CC"
+            android:textSize="50sp" />
+
+        <Button
+            android:id="@+id/bt_control_pannel_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="70dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_control_bt"
+            android:text="取消"
+            android:textColor="#3F48CC"
+            android:textSize="50sp" />
+    </LinearLayout>
+
+</LinearLayout>
