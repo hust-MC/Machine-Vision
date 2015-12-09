@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context="com.machineversion.terminal.FileManager" >
+    tools:context="com.machinevision.terminal.FileManager" >
 
     <TextView
         android:id="@+id/file_manager_tv"
@@ -18,7 +18,7 @@
         android:layout_weight="1.2"
         layout="@layout/option_listview" />
 
-    <com.machineversion.option.ControlPannelLayout
+    <com.machinevision.option.ControlPannelLayout
         android:id="@+id/control_pannel"
         android:layout_width="0dp"
         android:layout_height="match_parent"

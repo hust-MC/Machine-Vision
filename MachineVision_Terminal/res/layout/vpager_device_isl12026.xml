@@ -19,7 +19,7 @@
             android:text="Current time"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/cur_set_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -32,7 +32,7 @@
             android:text="year"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/cur_set_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -45,7 +45,7 @@
             android:text="month"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/cur_set_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -59,7 +59,7 @@
             android:text="day"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/cur_set_hour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -72,7 +72,7 @@
             android:text="hour"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/cur_set_minute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -85,7 +85,7 @@
             android:text="minute"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/cur_set_second"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -120,7 +120,7 @@
             android:text="alarm0"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm0_set_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -133,7 +133,7 @@
             android:text="year"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm_set_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -146,7 +146,7 @@
             android:text="month"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm0_set_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -160,7 +160,7 @@
             android:text="day"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm0_set_hour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -173,7 +173,7 @@
             android:text="hour"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm0_set_minute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -186,7 +186,7 @@
             android:text="minute"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm0_set_second"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -221,7 +221,7 @@
             android:text="alarm1"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm1_set_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -234,7 +234,7 @@
             android:text="year"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm1_set_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -247,7 +247,7 @@
             android:text="month"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm1_set_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -261,7 +261,7 @@
             android:text="day"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm1_set_hour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -274,7 +274,7 @@
             android:text="hour"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm1_set_minute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -287,7 +287,7 @@
             android:text="minute"
             android:textSize="16sp" />
 
-        <com.machineversion.sub_option.NumberSettingLayout
+        <com.machinevision.sub_option.NumberSettingLayout
             android:id="@+id/alarm1_set_second"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
