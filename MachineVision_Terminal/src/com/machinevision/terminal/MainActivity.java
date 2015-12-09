@@ -122,7 +122,8 @@ public class MainActivity extends Activity
 					photo_imv1.setImageBitmap(bitmap);
 					break;
 				case NetUtils.MSG_NET_STATE:
-					temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
+					temperature_tv.setText("温度：" + msg.arg1
+							+ ("." + msg.arg2).substring(0, 3));
 					break;
 				default:
 					break;

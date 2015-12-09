@@ -81,6 +81,14 @@
             android:name="com.machinevision.sub_option.DeviceSetting"
             android:label="@string/title_activity_device_setting" >
         </activity>
+        <activity
+            android:name="com.machinevision.sub_option.ButtonCfgLlist"
+            android:label="@string/title_activity_button_sample" >
+        </activity>
+        <activity
+            android:name="com.machinevision.sub_option.ButtonInfo"
+            android:label="@string/title_activity_button_sample" >
+        </activity>
     </application>
 
 </manifest>
