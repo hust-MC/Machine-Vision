@@ -45,7 +45,10 @@ public class DataPack
 
 			dos.write(baos.toByteArray());
 			dos.flush();
-			Log.d("MC", "send over:" + baos.toByteArray().length);
+			for (byte b : baos.toByteArray())
+			{
+				Log.d("MC", "" + b);
+			}
 			return true;
 		} catch (IOException e)
 		{

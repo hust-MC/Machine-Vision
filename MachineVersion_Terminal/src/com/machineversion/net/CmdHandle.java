@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.Arrays;
 
 import android.os.Handler;
-import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.machineversion.terminal.NetReceiveThread;
@@ -61,7 +61,6 @@ public class CmdHandle
 
 		NetReceiveThread.handler = handler;
 		context.sendPacket(os);
-		Log.d("send", "send over");
 	}
 
 	/**
@@ -92,32 +91,7 @@ public class CmdHandle
 
 		NetPacketContext context = new NetPacketContext(MSG_NET_STATE);
 
-		// NetPacket revPacket = new NetPacket();
 		context.sendPacket(os);
-		// revPacket.recvDataPack(is);
-
-		// if (revPacket.type != 0xaa && revPacket.minid ==
-		// NetUtils.MSG_NET_STATE)
-		// {
-		// byte[] data = Arrays.copyOfRange(revPacket.data,
-		// revPacket.data.length - 12, revPacket.data.length);
-		// switch (getIntFromArray(Arrays.copyOf(data, 4)))
-		// {
-		// case 0x01:
-		// tempInteger = getIntFromArray(Arrays.copyOfRange(data, 4, 8));
-		// tempFloat = getIntFromArray(Arrays.copyOfRange(data, 8, 12));
-		//
-		// Message message = Message.obtain();
-		// message.what = NetUtils.MSG_NET_STATE;
-		// message.arg1 = tempInteger;
-		// message.arg2 = tempFloat;
-		// handler.sendMessage(message);
-		// }
-		// }
-		// else
-		// {
-		// Log.d("MC", "packet == null");
-		// }
 	}
 
 	public void getParam(Handler handler)
@@ -125,7 +99,6 @@ public class CmdHandle
 		NetPacketContext context = new NetPacketContext(MSG_NET_GET_PARAM);
 		NetReceiveThread.handler = handler;
 		context.sendPacket(os);
-		Log.d("send", "send over");
 	}
 
 	public void getJson()
@@ -136,15 +109,15 @@ public class CmdHandle
 
 	public void setJson(byte[] data)
 	{
-		NetPacketContext context = new NetPacketContext(MSG_NET_GET_JSON);
+		NetPacketContext context = new NetPacketContext(MSG_NET_SET_JSON);
 		context.setData(data);
+		Log.d("MC", new String(data));
 		context.sendPacket(os);
 	}
 
 	public void generalInfo(byte[] data)
 	{
 		NetPacketContext context = new NetPacketContext(MSG_NET_GENERAL);
-
 		context.setData(data);
 	}
 

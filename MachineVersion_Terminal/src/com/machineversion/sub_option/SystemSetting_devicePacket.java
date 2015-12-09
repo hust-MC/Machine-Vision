@@ -56,15 +56,6 @@ public class SystemSetting_devicePacket
 		{
 		}
 
-		public static Sensor getInstatce()
-		{
-			if (sensor == null)
-			{
-				sensor = new Sensor();
-			}
-			return sensor;
-		}
-
 		public int width_max;
 		public int height_max;
 		public int width_input;
@@ -85,14 +76,6 @@ public class SystemSetting_devicePacket
 		{
 
 		}
-		public static Mode getInstance()
-		{
-			if (mode == null)
-			{
-				mode = new Mode();
-			}
-			return mode;
-		}
 
 		public int expoTime;
 		public int trigger;
@@ -111,15 +94,6 @@ public class SystemSetting_devicePacket
 		{
 		}
 
-		public static Trigger getInstance()
-		{
-			if (trigger == null)
-			{
-				trigger = new Trigger();
-			}
-			return trigger;
-		}
-
 		public int trigDelay; // 0.1mm
 		public int partDelay; // 0.1mm
 		public int velocity;  // mm/s
@@ -134,15 +108,6 @@ public class SystemSetting_devicePacket
 
 		private AD9849()
 		{
-		}
-
-		public static AD9849 getInstance()
-		{
-			if (ad9849 == null)
-			{
-				ad9849 = new AD9849();
-			}
-			return ad9849;
 		}
 
 		public int[] vga = new int[2];
@@ -162,14 +127,6 @@ public class SystemSetting_devicePacket
 		private MT9V032()
 		{
 		}
-		public static MT9V032 getInstance()
-		{
-			if (mt9v032 == null)
-			{
-				mt9v032 = new MT9V032();
-			}
-			return mt9v032;
-		}
 
 		public int isAgc;
 		public int isAec;
@@ -185,14 +142,6 @@ public class SystemSetting_devicePacket
 		{
 
 		}
-		public static ISL12026 getInstatce()
-		{
-			if (isl12026 == null)
-			{
-				isl12026 = new ISL12026();
-			}
-			return isl12026;
-		}
 
 		public int[] time = new int[8];
 		public int[] alarm0 = new int[8];
@@ -205,14 +154,6 @@ public class SystemSetting_devicePacket
 
 		private Net()
 		{
-		}
-		public static Net getInstance()
-		{
-			if (net == null)
-			{
-				net = new Net();
-			}
-			return net;
 		}
 
 		public int port;
@@ -234,14 +175,6 @@ public class SystemSetting_devicePacket
 		private UART()
 		{
 		}
-		public static UART getInstace()
-		{
-			if (uart == null)
-			{
-				uart = new UART();
-			}
-			return uart;
-		}
 
 		public int baudRate;
 		public int work_mode;
@@ -254,14 +187,6 @@ public class SystemSetting_devicePacket
 
 		private HECC()
 		{
-		}
-		public static HECC getInstance()
-		{
-			if (hecc == null)
-			{
-				hecc = new HECC();
-			}
-			return hecc;
 		}
 
 		public int baudRate;
@@ -277,14 +202,6 @@ public class SystemSetting_devicePacket
 		private AT25040()
 		{
 		}
-		public static AT25040 getInstance()
-		{
-			if (at25040 == null)
-			{
-				at25040 = new AT25040();
-			}
-			return at25040;
-		}
 
 		public int version;
 		public int[] macAddr = new int[6];
@@ -298,15 +215,6 @@ public class SystemSetting_devicePacket
 
 		private Version()
 		{
-		}
-
-		public static Version getInstance()
-		{
-			if (version1 == null)
-			{
-				version1 = new Version();
-			}
-			return version1;
 		}
 
 		public int[] id = new int[4];
@@ -326,14 +234,14 @@ public class SystemSetting_devicePacket
 			if (parameters == null)
 			{
 				parameters = new Parameters();
-				parameters.hecc = HECC.getInstance();
-				parameters.mode = Mode.getInstance();
-				parameters.net = Net.getInstance();
-				parameters.version = Version.getInstance();
-				parameters.sensor = Sensor.getInstatce();
-				parameters.ad9849 = AD9849.getInstance();
-				parameters.trigger = Trigger.getInstance();
-				parameters.uart = UART.getInstace();
+				parameters.hecc = new HECC();
+				parameters.mode = new Mode();
+				parameters.net = new Net();
+				parameters.version = new Version();
+				parameters.sensor = new Sensor();
+				parameters.ad9849 = new AD9849();
+				parameters.trigger = new Trigger();
+				parameters.uart = new UART();
 			}
 
 			return parameters;

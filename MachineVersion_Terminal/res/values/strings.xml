@@ -69,17 +69,17 @@
         <item>0,0,0,0</item>
     </string-array>
 
-    <!-- 纽扣设置菜单选项 -->
+    <!-- 钮扣设置菜单选项 -->
     <string-array name="option_fastener_settings">
         <item>选择算法</item>
         <item>新建配置文件</item>
         <item>加载配置文件</item>
         <item>存储配置文件</item>
     </string-array>
-    <!-- 纽扣设置子菜单 -->
+    <!-- 钮扣设置子菜单 -->
     <string-array name="option_fastener_settings_sub">
         <item>算法号</item>
-        <item>纽扣编号,缺陷种类,阈值,纽扣图像样本</item>
+        <item>钮扣编号,缺陷种类,阈值,钮扣图像样本</item>
         <item></item>
         <item></item>
     </string-array>
@@ -98,8 +98,41 @@
 
     <!-- 机器学习选项 -->
     <string-array name="option_machine_learning">
-        <item>人工辅助学习</item>
+        <item>新建钮扣样本</item>
+        <item>查询钮扣样本</item>
         <item>SVM学习</item>
+    </string-array>
+    <string-array name="option_machine_learning_sub">
+        <item>外形,线孔个数,颜色,字符,花纹,透光特性,材质</item>
+        <item></item>
+        <item></item>
+    </string-array>
+    <string-array name="option_machine_learning_type">
+        <item>1圆形n方形n心形n三角形,14n2,1深色n浅色,1本色n异色n无,1本色n异色n无,1透明n半透明n不透明,1树脂n塑料n金属n木材n贝壳n牛角</item>
+        <item></item>
+        <item></item>
+    </string-array>
+    <string-array name="option_machine_learning_ini">
+        <item>外形,线孔个数,颜色,字符,花纹,透光特性,材质</item>
+        <item></item>
+        <item></item>
+    </string-array>
+
+    <!-- 钮扣信息配置菜单 -->
+    <string-array name="buttoninfo_config">
+        <item>基本信息</item>
+        <item>算法配置</item>
+        <item>判别标准配置</item>
+    </string-array>
+    <string-array name="buttoninfo_menu">
+        <item>外形,线孔个数,颜色,字符,花纹,透光特性,材质</item>
+        <item>外形缺陷,线孔缺陷,色差缺陷,表面缺陷</item>
+        <item>外形缺陷标准,线孔缺陷标准,色差缺陷标准,表面缺陷标准</item>
+    </string-array>
+    <string-array name="buttoninfo_type">
+        <item>1圆形n方形n心形n三角形,14n2,1深色n浅色,1本色n异色n无,1本色n异色n无,1透明n半透明n不透明,1树脂n塑料n金属n木材n贝壳n牛角</item>
+        <item>1是n否,1是n否,1是n否,1是n否</item>
+        <item>0,0,0,0</item>
     </string-array>
 
     <!-- 帮助菜单选项 -->
@@ -173,14 +206,6 @@
         <item>AT25040</item>
     </string-array>
 
-    <!-- 设备参数设置之常规→Input type -->
-    <string-array name="device_setting_input_type">
-        <item>ICX414AL</item>
-    </string-array>
-    <string-array name="device_setting_output_type">
-        <item>net</item>
-    </string-array>
-
     <!-- 系统设置→波特率参数设置内容 -->
     <string-array name="uart_baudrate">
         <item>115200</item>
@@ -214,8 +239,20 @@
         <item>1M</item>
     </string-array>
 
+    <!-- 设备参数设置之常规→Input type -->
+    <string-array name="device_setting_input_type">
+        <item>ICX414AL</item>
+    </string-array>
+    <string-array name="device_setting_output_type">
+        <item>net</item>
+    </string-array>
+
     <string name="action_settings">Settings</string>
     <string name="title_activity_debug_mode">DebugMode</string>
+    <string name="title_activity_button_sample">钮扣样本</string>
     <string name="title_activity_device_setting">DeviceSetting</string>
+    <string name="option_machine_learning_info">外形,线孔个数,颜色,字符,花纹,透光特性,材质</string>
+    <string name="option_machine_alg_config">外形缺陷,线孔缺陷,色差缺陷,表面缺陷</string>
+    <string name="option_machine_criteria_config">外形缺陷标准,线孔缺陷标准,色差缺陷标准,表面缺陷标准</string>
 
 </resources>

@@ -47,7 +47,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
+//dfdfddf
 public class SysSettings extends ControlPannelActivity implements
 		OnDialogClicked
 {
@@ -70,7 +70,6 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		View page1 = getLayoutInflater().inflate(
 				R.layout.vpager_device_general, null);
-		Log.d("MC", "page1:" + page1);
 		Sensor sensor = Parameters.getInstance().sensor;
 		Mode mode = Parameters.getInstance().mode;
 
@@ -110,11 +109,6 @@ public class SysSettings extends ControlPannelActivity implements
 		else
 			((CheckBox) page1.findViewById(R.id.device_setting_mode_checkbox2))
 					.setChecked(true);
-
-		Log.d("MC",
-				"checkbox2:"
-						+ ((CheckBox) page1
-								.findViewById(R.id.device_setting_mode_checkbox2)));
 
 		return page1;
 	}
@@ -485,9 +479,8 @@ public class SysSettings extends ControlPannelActivity implements
 		private void sendPackage()
 		{
 			View page = pagerAdapter.getCurrentView();
-			// View page = getLayoutInflater().inflate(
-			// R.layout.vpager_device_general, null);
-			Log.d("MC", "send page:" + page);
+			Gson gson = new Gson();
+			JsonObject json = new JsonObject();
 			switch (vPager.getCurrentItem())
 			{
 			case 0:
@@ -502,8 +495,11 @@ public class SysSettings extends ControlPannelActivity implements
 						.findViewById(R.id.device_setting_input_w)).getValue();
 				sensor.height_input = ((NumberSettingLayout) page
 						.findViewById(R.id.device_setting_input_h)).getValue();
+
+				Log.d("MC", "before:" + Parameters.getInstance().mode.expoTime);
 				mode.expoTime = ((SeekBarEditLayout) page
 						.findViewById(R.id.device_setting_exposure)).getValue();
+				Log.d("MC", "after:" + Parameters.getInstance().mode.expoTime);
 				mode.bitType = ((RadioButton) page
 						.findViewById(R.id.device_setting_bit_radio0))
 						.isChecked() ? 8 : 16;
@@ -525,12 +521,11 @@ public class SysSettings extends ControlPannelActivity implements
 					mode.trigger = 2;
 				}
 
-				Gson gson = new Gson();
-				JsonObject modeJson = new JsonObject();
-				modeJson.add("mode", gson.toJsonTree(mode));
-				Log.d("MC", modeJson.toString());
+				json.add("mode", gson.toJsonTree(mode));
+				JsonObject jsonSonsor = new JsonObject();
+				jsonSonsor.add("sensor", gson.toJsonTree(sensor));
 
-				cmdHandle.setJson(modeJson.toString().getBytes());
+				cmdHandle.setJson((jsonSonsor.toString() + "\0").getBytes());
 				break;
 			case 1:
 				Trigger trigger = Parameters.getInstance().trigger;
@@ -551,7 +546,7 @@ public class SysSettings extends ControlPannelActivity implements
 						.findViewById(R.id.device_setting_trigger_explead))
 						.getText().toString());
 
-				cmdHandle.setJson(new Gson().toJson(trigger).getBytes());
+				json.add("trigger", gson.toJsonTree(trigger));
 				break;
 
 			case 2:
@@ -594,7 +589,7 @@ public class SysSettings extends ControlPannelActivity implements
 				ad9849.hxdrv[3] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
 						+ count++)).getValue();
 
-				cmdHandle.setJson(new Gson().toJson(ad9849).getBytes());
+				json.add("ad9849", gson.toJsonTree(ad9849));
 				break;
 
 			case 3:
@@ -624,13 +619,12 @@ public class SysSettings extends ControlPannelActivity implements
 				{
 					net.remote_ip[i++] = Integer.parseInt(str);
 				}
-				for (String str : ((EditText) page
+
+				net.port = Integer.parseInt(((EditText) page
 						.findViewById(R.id.device_setting_tcp_port)).getText()
-						.toString().split("."))
-				{
-					net.port = Integer.parseInt(str);
-				}
-				cmdHandle.setJson(new Gson().toJson(net).getBytes());
+						.toString());
+
+				json.add("net", gson.toJsonTree(net));
 				break;
 
 			case 6:
@@ -646,7 +640,8 @@ public class SysSettings extends ControlPannelActivity implements
 				uart.work_mode = parity.getSelectedItemPosition()
 						| stop_bit.getSelectedItemPosition()
 						| data_len.getSelectedItemPosition();
-				cmdHandle.setJson(new Gson().toJson(uart).getBytes());
+
+				json.add("uart", gson.toJsonTree(uart));
 				break;
 			case 7:
 				Version version = Parameters.getInstance().version;
@@ -670,16 +665,11 @@ public class SysSettings extends ControlPannelActivity implements
 				version.write_time[2] = Integer.parseInt(strs[1]);
 				version.write_time[3] = Integer.parseInt(strs[2]);
 
-				Log.d("MC", new Gson().toJson(version));
-				byte[] bytes = new Gson().toJson(version).getBytes();
-				for (byte b : bytes)
-				{
-					Log.d("MC", b + "");
-				}
-				cmdHandle.setJson(new Gson().toJson(version).getBytes());
+				json.add("version", gson.toJsonTree(version));
 				break;
 			default:
 			}
+			cmdHandle.setJson((json.toString() + "\0").getBytes());
 		}
 		@Override
 		public void onClick(DialogInterface dialog, int which)

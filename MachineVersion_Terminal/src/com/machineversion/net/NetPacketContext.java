@@ -38,8 +38,11 @@ public class NetPacketContext
 		case NetUtils.MSG_NET_GET_JSON:
 			packet = new GetJson();
 			break;
+		case NetUtils.MSG_NET_SET_JSON:
+			packet = new SetJson();
+			break;
 		default:
-			Log.e("MC", "netPacket error");
+			Log.e("MC", "netPacketContext: netPacket error");
 		}
 	}
 	/**

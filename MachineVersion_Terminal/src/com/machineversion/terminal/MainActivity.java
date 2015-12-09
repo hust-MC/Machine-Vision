@@ -3,6 +3,7 @@ package com.machineversion.terminal;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
 import com.machineversion.net.NetUtils;
 import com.machineversion.option.CameraParams;
 import com.machineversion.option.FastenerSettings;
@@ -105,7 +106,6 @@ public class MainActivity extends Activity
 			{
 				switch (msg.what)
 				{
-
 				case NetThread.CONNECT_SUCCESS: // 网络连接成功
 					dialog.dismiss();
 					Toast.makeText(MainActivity.this, "网络连接成功",
@@ -122,10 +122,6 @@ public class MainActivity extends Activity
 					break;
 				case NetUtils.MSG_NET_STATE:
 					temperature_tv.setText("温度：" + msg.arg1 + "." + msg.arg2);
-					break;
-				case NetUtils.MSG_NET_GET_JSON:
-
-					
 					break;
 				default:
 					break;
