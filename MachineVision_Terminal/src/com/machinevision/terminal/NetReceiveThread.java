@@ -20,7 +20,7 @@ import com.machinevision.sub_option.SystemSetting_devicePacket.Parameters;
 public class NetReceiveThread extends Thread
 {
 	private InputStream is;
-	public static Handler handler;
+	private static Handler handler;
 	private NetPacket revPacket = new NetPacket();
 	private Bitmap bitmap;
 
@@ -32,6 +32,15 @@ public class NetReceiveThread extends Thread
 	static
 	{
 		System.loadLibrary("picture_process");
+	}
+
+	public static Handler getHandler()
+	{
+		return handler;
+	}
+	public static void setHandler(Handler handler)
+	{
+		NetReceiveThread.handler = handler;
 	}
 
 	@Override

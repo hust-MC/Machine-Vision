@@ -59,7 +59,7 @@ public class CmdHandle
 	{
 		NetPacketContext context = new NetPacketContext(MSG_NET_GET_VIDEO);
 
-		NetReceiveThread.handler = handler;
+		NetReceiveThread.setHandler(handler);
 		context.sendPacket(os);
 	}
 
@@ -87,17 +87,15 @@ public class CmdHandle
 	 */
 	public void getState(Handler handler)
 	{
-		int tempInteger = 0, tempFloat = 0;
-
 		NetPacketContext context = new NetPacketContext(MSG_NET_STATE);
-
+		NetReceiveThread.setHandler(handler);
 		context.sendPacket(os);
 	}
 
 	public void getParam(Handler handler)
 	{
 		NetPacketContext context = new NetPacketContext(MSG_NET_GET_PARAM);
-		NetReceiveThread.handler = handler;
+		NetReceiveThread.setHandler(handler);
 		context.sendPacket(os);
 	}
 

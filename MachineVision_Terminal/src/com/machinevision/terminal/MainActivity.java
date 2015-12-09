@@ -137,7 +137,7 @@ public class MainActivity extends Activity
 	 * 
 	 * @author MC
 	 */
-	private void init_widgit()
+	private void init_widget()
 	{
 		temperature_tv = (TextView) findViewById(R.id.tv_temperature);
 
@@ -182,7 +182,7 @@ public class MainActivity extends Activity
 		// setIp(NetUtils.ip);
 
 		setContentView(R.layout.activity_main);
-		init_widgit(); // 初始化控件
+		init_widget(); // 初始化控件
 	}
 	@Override
 	protected void onRestart()

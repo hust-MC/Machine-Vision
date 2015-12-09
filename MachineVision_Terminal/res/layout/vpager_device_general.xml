@@ -46,8 +46,7 @@
                 android:id="@+id/device_setting_output_type"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" >
-            </com.emercy.dropdownlist.DropDownList>
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,15 +63,13 @@
                 android:id="@+id/device_setting_start_x"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" >
-            </com.machinevision.sub_option.NumberSettingLayout>
+                android:layout_weight="1" />
 
             <com.machinevision.sub_option.NumberSettingLayout
                 android:id="@+id/device_setting_start_y"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" >
-            </com.machinevision.sub_option.NumberSettingLayout>
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,21 +86,13 @@
                 android:id="@+id/device_setting_input_w"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" >
+                android:layout_weight="1" />
 
-                <com.machineversion.sub_option.NumberSettingLayout>
-                </com.machineversion.sub_option.NumberSettingLayout>
-
-                <com.machinevision.sub_option.NumberSettingLayout
-                    android:id="@+id/device_setting_input_h"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" >
-
-                    <com.machineversion.sub_option.NumberSettingLayout>
-                    </com.machineversion.sub_option.NumberSettingLayout>
-                </com.machinevision.sub_option.NumberSettingLayout>
-            </com.machinevision.sub_option.NumberSettingLayout>
+            <com.machinevision.sub_option.NumberSettingLayout
+                android:id="@+id/device_setting_input_h"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,21 +109,13 @@
                 android:id="@+id/device_setting_output_w"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" >
+                android:layout_weight="1" />
 
-                <com.machineversion.sub_option.NumberSettingLayout>
-                </com.machineversion.sub_option.NumberSettingLayout>
-
-                <com.machinevision.sub_option.NumberSettingLayout
-                    android:id="@+id/device_setting_output_h"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" >
-
-                    <com.machineversion.sub_option.NumberSettingLayout>
-                    </com.machineversion.sub_option.NumberSettingLayout>
-                </com.machinevision.sub_option.NumberSettingLayout>
-            </com.machinevision.sub_option.NumberSettingLayout>
+            <com.machinevision.sub_option.NumberSettingLayout
+                android:id="@+id/device_setting_output_h"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 
