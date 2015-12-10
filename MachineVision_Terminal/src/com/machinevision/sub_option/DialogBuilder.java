@@ -14,10 +14,17 @@ import com.machinevision.terminal.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ScaleXSpan;
+import android.text.style.StyleSpan;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Typeface;
+import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -147,12 +154,14 @@ public class DialogBuilder
 			layout.addView(subLayout);
 		}
 		scrollView.addView(layout);
-
-		AlertDialog dialog = new AlertDialog.Builder(context).setTitle(title)
-				.setView(scrollView)
+		View titleLayout = LayoutInflater.from(context).inflate(
+				R.layout.alert_dialog_tv, null);
+		((TextView) titleLayout.findViewById(R.id.alert_dialog_tv))
+				.setText(title);
+		AlertDialog dialog = new AlertDialog.Builder(context)
+				.setCustomTitle(titleLayout).setView(scrollView)
 				.setPositiveButton("确定", new ConfirmButton())
 				.setNegativeButton("取消", new CancelButton()).create();
-
 		dialog.show();
 
 		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE)
