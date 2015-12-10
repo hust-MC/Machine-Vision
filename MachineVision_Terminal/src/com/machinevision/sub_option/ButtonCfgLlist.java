@@ -13,6 +13,7 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
 import com.machinevision.option.MachineLearning;
 import com.machinevision.terminal.FileDirectory;
@@ -208,7 +209,7 @@ public class ButtonCfgLlist extends ListActivity
 	{
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
-		Toast.makeText(this, "你点击了第" + position + "行", Toast.LENGTH_SHORT)
+		EToast.makeText(this, "你点击了第" + position + "行", Toast.LENGTH_SHORT)
 				.show();
 
 		Intent intent = new Intent(this, ButtonInfo.class);

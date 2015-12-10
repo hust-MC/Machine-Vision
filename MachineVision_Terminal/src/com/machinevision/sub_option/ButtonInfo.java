@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.emercy.dropdownlist.DropDownList;
 import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
+import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
 import com.machinevision.option.MachineLearning;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
@@ -160,7 +161,7 @@ public class ButtonInfo extends Activity
 				break;
 			case R.id.bt_delete:
 				deleteDirectory(file);
-				Toast.makeText(ButtonInfo.this, "删除成功", Toast.LENGTH_SHORT)
+				EToast.makeText(ButtonInfo.this, "删除成功", Toast.LENGTH_SHORT)
 						.show();
 				onButtonClicked(R.id.bt_delete);
 				break;

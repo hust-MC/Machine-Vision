@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
 import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.DialogBuilder;
@@ -130,7 +131,7 @@ public class FastenerSettings extends ControlPannelActivity implements
 		CmdHandle cmdHandle = CmdHandle.getInstance();
 		if (cmdHandle == null)
 		{
-			Toast.makeText(this, "请检查网络连接", Toast.LENGTH_SHORT).show();
+			EToast.makeText(this, "请检查网络连接", Toast.LENGTH_SHORT).show();
 		}
 		else
 		{

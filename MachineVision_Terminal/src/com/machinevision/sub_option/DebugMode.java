@@ -20,6 +20,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
 import com.machinevision.net.CmdHandle;
 
@@ -106,7 +107,7 @@ public class DebugMode extends Activity
 			}
 			else
 			{
-				Toast.makeText(mActivity.get(), "网络未连接", Toast.LENGTH_SHORT)
+				EToast.makeText(mActivity.get(), "网络未连接", Toast.LENGTH_SHORT)
 						.show();
 			}
 		}

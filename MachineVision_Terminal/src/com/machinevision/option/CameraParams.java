@@ -1,5 +1,6 @@
 package com.machinevision.option;
 
+import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
 
@@ -28,7 +29,7 @@ public class CameraParams extends ControlPannelActivity implements
 	@Override
 	public void onPositiveButtonClicked(String[] value)
 	{
-		Toast.makeText(this, "数据保存成功", Toast.LENGTH_SHORT).show();
+		EToast.makeText(this, "数据保存成功", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public class CameraParams extends ControlPannelActivity implements
 		switch (position)
 		{
 		case 5:
-			Toast.makeText(this, "设置文件已保存", Toast.LENGTH_SHORT).show();
+			EToast.makeText(this, "设置文件已保存", Toast.LENGTH_SHORT).show();
 			break;
 
 		default:

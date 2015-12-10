@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.machinevision.terminal.R;
+import com.machinevision.net.CmdHandle;
 import com.machinevision.net.NetUtils;
 import com.machinevision.option.CameraParams;
 import com.machinevision.option.FastenerSettings;
@@ -71,13 +72,13 @@ public class MainActivity extends Activity
 		{
 			if (msg.what == 0x55)				// 等于0x55说明串口权限不对
 			{
-				Toast.makeText(MainActivity.this, "尚未获取串口权限",
+				EToast.makeText(MainActivity.this, "尚未获取串口权限",
 						Toast.LENGTH_SHORT).show();
 				sci_btn.setChecked(false);
 			}
 			else if (msg.obj != null)			// 正常接收数据
 			{
-				Toast.makeText(MainActivity.this,
+				EToast.makeText(MainActivity.this,
 						getResources().getString(R.string.openSCI_sucssess),
 						Toast.LENGTH_SHORT).show();
 				sciRevBuf = (String) msg.obj + "back";
@@ -85,8 +86,8 @@ public class MainActivity extends Activity
 			}
 			else
 			{
-				Toast.makeText(MainActivity.this, "本地串口不存在", Toast.LENGTH_SHORT)
-						.show();
+				EToast.makeText(MainActivity.this, "本地串口不存在",
+						Toast.LENGTH_SHORT).show();
 				sci_btn.setChecked(false);
 			}
 		}
@@ -109,13 +110,13 @@ public class MainActivity extends Activity
 				{
 				case NetThread.CONNECT_SUCCESS: // 网络连接成功
 					dialog.dismiss();
-					Toast.makeText(MainActivity.this, "网络连接成功",
+					EToast.makeText(MainActivity.this, "网络连接成功",
 							Toast.LENGTH_SHORT).show();
 					break;
 				case NetThread.CONNECT_FAIL:
 					dialog.dismiss();
 
-					Toast.makeText(MainActivity.this, "连接失败，请检查网络连接",
+					EToast.makeText(MainActivity.this, "连接失败，请检查网络连接",
 							Toast.LENGTH_SHORT).show();
 					break;
 				case NetUtils.MSG_NET_GET_VIDEO: // 获取图像
@@ -238,7 +239,6 @@ public class MainActivity extends Activity
 			case R.id.main_bt_camera_params:
 				startActivityForResult(new Intent(MainActivity.this,
 						CameraParams.class), REQUEST_CODE_CAMERA_PARAMS);
-				Log.d("ZY", "button2");
 				break;
 			case R.id.main_bt_sys_settings:
 				startActivityForResult(new Intent(MainActivity.this,
@@ -258,7 +258,7 @@ public class MainActivity extends Activity
 						REQUEST_CODE_HELP);
 				break;
 			default:
-				Toast.makeText(MainActivity.this, "选择错误", Toast.LENGTH_SHORT)
+				EToast.makeText(MainActivity.this, "选择错误", Toast.LENGTH_SHORT)
 						.show();
 			}
 			// overridePendingTransition(R.anim.top_in, R.anim.stay_here);
@@ -274,7 +274,7 @@ public class MainActivity extends Activity
 		if (resultCode == RESULT_OK)
 		{
 			// netThread.signalThread();
-			Toast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show();
+			EToast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show();
 			switch (requestCode)
 			{
 			default:
@@ -335,7 +335,8 @@ public class MainActivity extends Activity
 			netThread.close();
 			netThread = null;
 		}
-		Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
+		CmdHandle.clear();
+		EToast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
 	}
 
 	/*
@@ -353,13 +354,13 @@ public class MainActivity extends Activity
 			else
 			{
 				serialThread.close();
-				Toast.makeText(this, getString(R.string.closeSCI_sucssess),
+				EToast.makeText(this, getString(R.string.closeSCI_sucssess),
 						Toast.LENGTH_SHORT).show();
 			}
 		}
 		else
 		{
-			Toast.makeText(this, "本地串口不存在", Toast.LENGTH_SHORT).show();
+			EToast.makeText(this, "本地串口不存在", Toast.LENGTH_SHORT).show();
 			sci_btn.setChecked(false);
 		}
 	}

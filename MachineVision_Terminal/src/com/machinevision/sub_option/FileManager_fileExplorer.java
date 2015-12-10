@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.File;
 
+import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
 
 public class FileManager_fileExplorer extends ListActivity
@@ -255,7 +256,7 @@ public class FileManager_fileExplorer extends ListActivity
 						{
 							deleteDirectory(file);
 							refreshListView();
-							Toast.makeText(CONTEXT, "文件已删除", Toast.LENGTH_SHORT)
+							EToast.makeText(CONTEXT, "文件已删除", Toast.LENGTH_SHORT)
 									.show();
 						}
 					}).setNegativeButton("取消", null).show();
