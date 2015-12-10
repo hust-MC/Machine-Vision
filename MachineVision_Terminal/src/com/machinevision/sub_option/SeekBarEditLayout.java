@@ -62,7 +62,7 @@ public class SeekBarEditLayout extends LinearLayout
 			}
 		});
 
-		params = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
+		params = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1.4F);
 		editText.setLayoutParams(params);
 		editText.setInputType(InputType.TYPE_CLASS_PHONE);
 		editText.addTextChangedListener(new TextWatcher()
