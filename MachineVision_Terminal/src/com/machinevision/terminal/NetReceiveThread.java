@@ -22,7 +22,6 @@ public class NetReceiveThread extends Thread
 	private InputStream is;
 	private static Handler handler;
 	private NetPacket revPacket = new NetPacket();
-	private Bitmap bitmap;
 
 	public NetReceiveThread(InputStream is)
 	{
@@ -48,14 +47,14 @@ public class NetReceiveThread extends Thread
 	{
 		while (NetThread.currentState != NetThread.CurrentState.onStop)
 		{
-
+			Bitmap bitmap = null;
 			revPacket.recvDataPack(is);
 			if (revPacket.type != 0xaa)// 如果数据正常，表示网络通畅
 			{
 				switch (revPacket.minid)
 				{
 				case NetUtils.MSG_NET_GET_VIDEO:
-
+				{
 					byte[] rxBuf = revPacket.data;
 
 					int[] data = new int[12];
@@ -98,8 +97,9 @@ public class NetReceiveThread extends Thread
 					handler.sendMessage(message);
 
 					break;
+				}
 				case NetUtils.MSG_NET_STATE:
-
+				{
 					byte[] temp = Arrays.copyOfRange(revPacket.data,
 							revPacket.data.length - 12, revPacket.data.length);
 					switch (CmdHandle.getIntFromArray(Arrays.copyOf(temp, 4)))
@@ -110,14 +110,16 @@ public class NetReceiveThread extends Thread
 						int tempFloat = CmdHandle.getIntFromArray(Arrays
 								.copyOfRange(temp, 8, 12));
 
-						message = Message.obtain();
+						Message message = Message.obtain();
 						message.what = NetUtils.MSG_NET_STATE;
 						message.arg1 = tempInteger;
 						message.arg2 = tempFloat;
 						handler.sendMessage(message);
 					}
 					break;
+				}
 				case NetUtils.MSG_NET_GET_JSON:
+				{
 					String str = new String(Arrays.copyOfRange(revPacket.data,
 							100, revPacket.data.length));
 					Log.d("CJ", str);
@@ -147,6 +149,48 @@ public class NetReceiveThread extends Thread
 					ad.pageContents[15] = ad.hxdrv[3];
 
 					break;
+				}
+				case NetUtils.MSG_NET_RESULT:
+				{
+					byte[] rxBuf = revPacket.data;
+
+					int[] data = new int[12];
+					for (int i = 0; i < 12; i++)
+					{
+						data[i] = rxBuf[i] & 0xFF;
+					}
+
+					int len = data[0] | data[1] << 8 | data[2] << 16
+							| data[3] << 24;
+					int width = data[4] | data[5] << 8 | data[6] << 16
+							| data[7] << 24;
+					int height = data[8] | data[9] << 8 | data[10] << 16
+							| data[11] << 24;
+
+					if (bitmap == null || bitmap.getWidth() != width
+							|| bitmap.getHeight() != height)
+					{
+						bitmap = Bitmap.createBitmap(width, height,
+								Config.ARGB_8888);
+					}
+
+					int[] image = new int[len];
+
+					for (int i = 0; i < len; i++)
+					{
+						int temp;
+						temp = rxBuf[12 + i] & 0xff;
+						image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
+					}
+					Message message = Message.obtain();
+					message.what = NetUtils.MSG_NET_RESULT;
+					bitmap.setPixels(image, 0, width, 0, 0, width, height);
+
+					message.obj = bitmap;
+					handler.sendMessage(message);
+
+					break;
+				}
 				default:
 					Log.e("MC", "default");
 				}

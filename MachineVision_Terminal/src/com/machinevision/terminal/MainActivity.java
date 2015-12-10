@@ -42,7 +42,7 @@ public class MainActivity extends Activity
 	final int REQUEST_CODE_MACHINE_LEARNING = 5;
 	final int REQUEST_CODE_HELP = 6;
 
-	static boolean netFlag = false; 						// 网络连接状态标志
+	private boolean netFlag = false; 						// 网络连接状态标志
 	static ProgressDialog dialog;
 
 	TextView temperature_tv;
@@ -110,12 +110,13 @@ public class MainActivity extends Activity
 				{
 				case NetThread.CONNECT_SUCCESS: // 网络连接成功
 					dialog.dismiss();
+					netFlag = true;
 					EToast.makeText(MainActivity.this, "网络连接成功",
 							Toast.LENGTH_SHORT).show();
 					break;
 				case NetThread.CONNECT_FAIL:
 					dialog.dismiss();
-
+					netFlag = false;
 					EToast.makeText(MainActivity.this, "连接失败，请检查网络连接",
 							Toast.LENGTH_SHORT).show();
 					break;
@@ -319,23 +320,34 @@ public class MainActivity extends Activity
 	 */
 	public void onClick_net(View view)
 	{
-		dialog = ProgressDialog
-				.show(this, null, "正在连接智能相机，请稍候...", true, false); // 进程弹窗
+		if (netFlag)
+		{
+			EToast.makeText(this, "设备已经连接上", Toast.LENGTH_SHORT).show();
+		}
+		else
+		{
+			dialog = ProgressDialog.show(this, null, "正在连接智能相机，请稍候...", true,
+					false); // 进程弹窗
 
-		netThread = new NetThread(netHandler);
-		netThread.start();
+			netThread = new NetThread(netHandler);
+			netThread.start();
+		}
 	}
 
 	public void onClick_close_net(View view)
 	{
 		String toastText = "连接尚未建立";
-		if (netThread != null)
+		if (netFlag)
 		{
-			toastText = "连接已断开";
-			netThread.close();
-			netThread = null;
+
+			if (netThread != null)
+			{
+				toastText = "连接已断开";
+				netThread.close();
+				netThread = null;
+			}
+			CmdHandle.clear();
 		}
-		CmdHandle.clear();
 		EToast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
 	}
 
