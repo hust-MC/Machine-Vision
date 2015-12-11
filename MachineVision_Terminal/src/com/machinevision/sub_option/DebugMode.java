@@ -20,8 +20,8 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
 
 public class DebugMode extends Activity

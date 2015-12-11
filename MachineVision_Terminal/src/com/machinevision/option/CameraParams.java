@@ -1,7 +1,7 @@
 package com.machinevision.option;
 
-import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.EToast;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
 
 import android.os.Bundle;

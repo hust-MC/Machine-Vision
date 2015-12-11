@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.EToast;
+import com.machinevision.common_widget.ProgressBox;
 import com.machinevision.net.CmdHandle;
 import com.machinevision.net.NetUtils;
 import com.machinevision.option.CameraParams;
@@ -43,7 +45,7 @@ public class MainActivity extends Activity
 	final int REQUEST_CODE_HELP = 6;
 
 	private boolean netFlag = false; 						// 网络连接状态标志
-	static ProgressDialog dialog;
+	ProgressDialog dialog;
 
 	TextView temperature_tv;
 	ToggleButton net_btn;									// 网络开关按钮
@@ -326,8 +328,7 @@ public class MainActivity extends Activity
 		}
 		else
 		{
-			dialog = ProgressDialog.show(this, null, "正在连接智能相机，请稍候...", true,
-					false); // 进程弹窗
+			dialog = ProgressBox.show(this, "正在连接智能相机，请稍候..."); // 进程弹窗
 
 			netThread = new NetThread(netHandler);
 			netThread.start();
@@ -375,22 +376,5 @@ public class MainActivity extends Activity
 			EToast.makeText(this, "本地串口不存在", Toast.LENGTH_SHORT).show();
 			sci_btn.setChecked(false);
 		}
-	}
-
-	/*
-	 * 电机控制函数
-	 */
-	public void onClick_motor(View view)
-	{
-		// switch (view.getId())
-		// {
-		// case R.id.motor_off:
-		// serialThread.send("21232".getBytes(), 1);
-		// break;
-		//
-		// case R.id.motor_on:
-		// // serialThread.send(data, cmd);
-		// break;
-		// }
 	}
 }

@@ -13,8 +13,8 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.EToast;
 import com.machinevision.option.MachineLearning;
 import com.machinevision.terminal.FileDirectory;
 

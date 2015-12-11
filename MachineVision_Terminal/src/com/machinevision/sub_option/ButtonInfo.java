@@ -14,8 +14,8 @@ import org.json.JSONObject;
 
 import com.emercy.dropdownlist.DropDownList;
 import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
-import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.EToast;
 import com.machinevision.option.MachineLearning;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
 import com.machinevision.terminal.FileDirectory;

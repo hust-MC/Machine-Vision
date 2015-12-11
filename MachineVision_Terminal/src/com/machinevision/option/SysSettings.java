@@ -496,10 +496,8 @@ public class SysSettings extends ControlPannelActivity implements
 				sensor.height_input = ((NumberSettingLayout) page
 						.findViewById(R.id.device_setting_input_h)).getValue();
 
-				Log.d("MC", "before:" + Parameters.getInstance().mode.expoTime);
 				mode.expoTime = ((SeekBarEditLayout) page
 						.findViewById(R.id.device_setting_exposure)).getValue();
-				Log.d("MC", "after:" + Parameters.getInstance().mode.expoTime);
 				mode.bitType = ((RadioButton) page
 						.findViewById(R.id.device_setting_bit_radio0))
 						.isChecked() ? 8 : 16;

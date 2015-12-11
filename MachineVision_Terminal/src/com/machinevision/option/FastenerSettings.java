@@ -7,8 +7,8 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.machinevision.terminal.EToast;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.DialogBuilder;
 import com.machinevision.sub_option.FileManager_fileExplorer;
