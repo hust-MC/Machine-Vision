@@ -133,6 +133,10 @@ public class MainActivity extends Activity
 							+ (tempFloat.length() > 3 ? tempFloat.substring(0,
 									3) : tempFloat));
 					break;
+				case NetUtils.MSG_NET_RESULT:
+					bitmap = (Bitmap) msg.obj;
+					photo_imv1.setImageBitmap(bitmap);
+					break;
 				default:
 					break;
 				}
@@ -340,13 +344,13 @@ public class MainActivity extends Activity
 		String toastText = "连接尚未建立";
 		if (netFlag)
 		{
-
 			if (netThread != null)
 			{
 				toastText = "连接已断开";
 				netThread.close();
 				netThread = null;
 			}
+			netFlag = false;
 			CmdHandle.clear();
 		}
 		EToast.makeText(this, toastText, Toast.LENGTH_SHORT).show();

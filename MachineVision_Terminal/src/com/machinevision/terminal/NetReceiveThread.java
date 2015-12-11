@@ -51,6 +51,7 @@ public class NetReceiveThread extends Thread
 			revPacket.recvDataPack(is);
 			if (revPacket.type != 0xaa)// 如果数据正常，表示网络通畅
 			{
+				Log.d("CJ", "minid =" + revPacket.minid);
 				switch (revPacket.minid)
 				{
 				case NetUtils.MSG_NET_GET_VIDEO:
@@ -167,6 +168,8 @@ public class NetReceiveThread extends Thread
 					int height = data[8] | data[9] << 8 | data[10] << 16
 							| data[11] << 24;
 
+					Log.d("MC", "len=" + len + " width=" + width + " height="
+							+ height);
 					if (bitmap == null || bitmap.getWidth() != width
 							|| bitmap.getHeight() != height)
 					{

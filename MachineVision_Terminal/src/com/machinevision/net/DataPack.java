@@ -119,9 +119,10 @@ public class DataPack
 				int block = readLittleInt(dis);
 				int length = readLittleInt(dis);
 				int len = length - offset;
-				if (readLittleInt(dis) != offset)
+				int testOff = 0;
+				if ((testOff = readLittleInt(dis)) != offset)
 				{
-					Log.e("MC", "offset=" + offset);
+					Log.e("MC", "offset=" + testOff);
 					return null;
 				}
 
