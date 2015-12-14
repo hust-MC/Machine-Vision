@@ -3,6 +3,7 @@ package com.machinevision.terminal;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 
 import com.machinevision.terminal.R;
 import com.machinevision.common_widget.EToast;
@@ -47,7 +48,7 @@ public class MainActivity extends Activity
 	private boolean netFlag = false; 						// 网络连接状态标志
 	ProgressDialog dialog;
 
-	TextView temperature_tv;
+	TextView temperature_tv, qualified_tv, disqualified_tv, qualifiedRate_tv;
 	ToggleButton net_btn;									// 网络开关按钮
 	ToggleButton sci_btn; 									// 串口开关按钮
 	ImageView photo_imv1, photo_imv2, result_imv1, result_imv2;						// 图片显示区域
@@ -61,6 +62,7 @@ public class MainActivity extends Activity
 	SciThread serialThread;						// 创建串口线程
 	NetThread netThread;						// 创建网络线程
 
+	int countQualified, countDisqualified;
 	private boolean netHandleFlag = true;
 
 	/*
@@ -134,12 +136,32 @@ public class MainActivity extends Activity
 									3) : tempFloat));
 					break;
 				case NetUtils.MSG_NET_RESULT:
-					Log.d("CJ", "rev");
 					bitmap = (Bitmap) msg.obj;
 					photo_imv1.setImageBitmap(bitmap);
-					result_imv1
-							.setImageResource(msg.arg1 == 0 ? R.drawable.wrong
-									: R.drawable.correct);
+					// 不合格
+					if (msg.arg1 == 0)
+					{
+						countDisqualified++;
+						result_imv1.setImageResource(R.drawable.wrong);
+
+					}
+					else
+					{
+						countQualified++;
+						result_imv1.setImageResource(R.drawable.correct);
+					}
+
+					DecimalFormat df = new DecimalFormat("#0.00");
+
+					Log.d("MC", "合格：" + countQualified);
+					Log.d("MC", "不合格" + countDisqualified);
+					qualified_tv.setText("合格：" + countQualified);
+					disqualified_tv.setText("不合格：" + countDisqualified);
+					qualifiedRate_tv
+							.setText("合格率："
+									+ df.format(countQualified
+											/ (float) (countDisqualified + countQualified)
+											* 100) + "%");
 
 					break;
 				default:
@@ -157,6 +179,9 @@ public class MainActivity extends Activity
 	private void init_widget()
 	{
 		temperature_tv = (TextView) findViewById(R.id.tv_temperature);
+		qualified_tv = (TextView) findViewById(R.id.tv_qualified);
+		disqualified_tv = (TextView) findViewById(R.id.tv_disqualified);
+		qualifiedRate_tv = (TextView) findViewById(R.id.tv_qualified_rate);
 
 		bt_fileManager = (Button) findViewById(R.id.main_bt_file_manager);
 		bt_cameraParams = (Button) findViewById(R.id.main_bt_camera_params);

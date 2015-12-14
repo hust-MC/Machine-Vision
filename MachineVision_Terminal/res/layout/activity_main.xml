@@ -212,47 +212,62 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="状态窗口"
                 android:textColor="#3F48CC"
                 android:textSize="30sp" />
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3.5"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" >
+                android:layout_height="match_parent"
+                android:stretchColumns="*" >
 
-                <TextView
-                    android:id="@+id/tv_temperature"
-                    android:layout_width="0dp"
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="温度"
-                    android:textSize="30sp" />
+                    android:layout_weight="1" >
 
-                <TextView
-                    android:id="@+id/tv_clock"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="时间"
-                    android:textSize="30sp" />
+                    <TextView
+                        android:id="@+id/tv_temperature"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:text="温度："
+                        android:textSize="30sp" />
 
-                <TextView
-                    android:id="@+id/tv_error_rate"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/tv_qualified"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:text="合格："
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/tv_disqualified"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:text="不合格："
+                        android:textSize="30sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="合格率"
-                    android:textSize="30sp" />
-            </LinearLayout>
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:id="@+id/tv_qualified_rate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_column="0"
+                        android:gravity="center_horizontal"
+                        android:text="合格率："
+                        android:textSize="30sp" />
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- 底部右侧按钮 -->

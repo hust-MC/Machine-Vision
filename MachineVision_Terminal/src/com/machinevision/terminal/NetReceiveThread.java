@@ -168,8 +168,6 @@ public class NetReceiveThread extends Thread
 					int height = data[8] | data[9] << 8 | data[10] << 16
 							| data[11] << 24;
 
-					Log.d("MC", "len=" + len + " width=" + width + " height="
-							+ height);
 					if (bitmap == null || bitmap.getWidth() != width
 							|| bitmap.getHeight() != height)
 					{
@@ -185,7 +183,6 @@ public class NetReceiveThread extends Thread
 						temp = rxBuf[12 + i] & 0xff;
 						image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
 					}
-					Log.d("MC", "result: " + rxBuf[rxBuf.length - 1]);
 					Message message = Message.obtain();
 					message.what = NetUtils.MSG_NET_RESULT;
 					bitmap.setPixels(image, 0, width, 0, 0, width, height);
@@ -196,7 +193,7 @@ public class NetReceiveThread extends Thread
 					break;
 				}
 				default:
-					Log.e("MC", "default");
+					Log.e("MC", "default: minid="+revPacket.minid);
 				}
 			}
 			else
