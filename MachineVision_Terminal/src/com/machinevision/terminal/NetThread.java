@@ -90,7 +90,7 @@ public class NetThread extends Thread implements CommunicationInterface
 
 					new NetReceiveThread(socket.getInputStream()).start();
 					NetReceiveThread.setHandler(handler);
-					
+
 					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
 					currentState = CurrentState.onSending;
 					cmdHandle.getJson();
@@ -111,13 +111,8 @@ public class NetThread extends Thread implements CommunicationInterface
 						else
 						{
 							currentState = CurrentState.onSending;
-
-							// int i = 10;
-							// while (i-- > 0)
-							// {
-							// cmdHandle.getVideo(handler);
-							// }
-							// cmdHandle.getState(handler);
+							Thread.sleep(2000);
+							cmdHandle.getState(handler);
 						}
 						lock.unlock();
 					}

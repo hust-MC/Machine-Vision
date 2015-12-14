@@ -102,11 +102,11 @@ public class DebugMode extends Activity
 				((DebugMode) mActivity.get()).iv_fullImage
 						.setImageBitmap((Bitmap) msg.obj);
 			}
-			else
-			{
-				EToast.makeText(mActivity.get(), "网络未连接", Toast.LENGTH_SHORT)
-						.show();
-			}
+			// else if
+			// {
+			// EToast.makeText(mActivity.get(), "网络未连接", Toast.LENGTH_SHORT)
+			// .show();
+			// }
 		}
 	}
 

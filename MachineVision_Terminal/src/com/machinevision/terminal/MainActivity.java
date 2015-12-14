@@ -1,5 +1,8 @@
 package com.machinevision.terminal;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,7 +65,6 @@ public class MainActivity extends Activity
 	SciThread serialThread;						// 创建串口线程
 	NetThread netThread;						// 创建网络线程
 
-	int countQualified, countDisqualified;
 	private boolean netHandleFlag = true;
 
 	/*
@@ -138,31 +140,17 @@ public class MainActivity extends Activity
 				case NetUtils.MSG_NET_RESULT:
 					bitmap = (Bitmap) msg.obj;
 					photo_imv1.setImageBitmap(bitmap);
-					// 不合格
-					if (msg.arg1 == 0)
-					{
-						countDisqualified++;
-						result_imv1.setImageResource(R.drawable.wrong);
 
-					}
-					else
-					{
-						countQualified++;
-						result_imv1.setImageResource(R.drawable.correct);
-					}
-
+					Bundle bundle = msg.getData();
+					int qualified = bundle.getInt("qualified");
+					int disQualified = bundle.getInt("disqualified");
 					DecimalFormat df = new DecimalFormat("#0.00");
-
-					Log.d("MC", "合格：" + countQualified);
-					Log.d("MC", "不合格" + countDisqualified);
-					qualified_tv.setText("合格：" + countQualified);
-					disqualified_tv.setText("不合格：" + countDisqualified);
-					qualifiedRate_tv
-							.setText("合格率："
-									+ df.format(countQualified
-											/ (float) (countDisqualified + countQualified)
-											* 100) + "%");
-
+					qualified_tv.setText("合格：" + qualified);
+					disqualified_tv.setText("不合格：" + disQualified);
+					qualifiedRate_tv.setText("合格率："
+							+ df.format(qualified
+									/ (float) (disQualified + qualified) * 100)
+							+ "%");
 					break;
 				default:
 					break;
@@ -206,24 +194,14 @@ public class MainActivity extends Activity
 		result_imv1 = (ImageView) findViewById(R.id.main_imv_result1);
 		result_imv2 = (ImageView) findViewById(R.id.main_imv_result2);
 	}
-	public static final String read(InputStream in) throws IOException
-	{
-		StringBuilder sb = new StringBuilder();
-
-		int ch;
-
-		while (-1 != (ch = in.read()))
-			sb.append((char) ch);
-
-		return sb.toString();
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// setIp(NetUtils.ip);
+
+		NetUtils.setIp();
 
 		setContentView(R.layout.activity_main);
 		init_widget(); // 初始化控件

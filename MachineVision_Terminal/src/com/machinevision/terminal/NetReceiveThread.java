@@ -1,10 +1,12 @@
 package com.machinevision.terminal;
 
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -22,6 +24,8 @@ public class NetReceiveThread extends Thread
 	private InputStream is;
 	private static Handler handler;
 	private NetPacket revPacket = new NetPacket();
+
+	int countQualified, countDisqualified;
 
 	public NetReceiveThread(InputStream is)
 	{
@@ -177,23 +181,42 @@ public class NetReceiveThread extends Thread
 
 					int[] image = new int[len];
 
-					for (int i = 0; i < len; i++)
+					for (int i = 0; i < len / 3; i++)
 					{
-						int temp;
-						temp = rxBuf[12 + i] & 0xff;
-						image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
+						int r = 0, g = 0, b = 0;
+						r = rxBuf[12 + i * 3] & 0xff;
+						g = rxBuf[12 + i * 3 + 1] & 0xff;
+						b = rxBuf[12 + i * 3 + 2] & 0xff;
+
+						image[i] = (0xFF000000 | r << 16 | g << 8 | b);
 					}
 					Message message = Message.obtain();
 					message.what = NetUtils.MSG_NET_RESULT;
 					bitmap.setPixels(image, 0, width, 0, 0, width, height);
-					message.arg1 = rxBuf[rxBuf.length - 1];
 					message.obj = bitmap;
+
+					Bundle bundle = new Bundle();
+					// 不合格
+					if (rxBuf[rxBuf.length - 1] == 0)
+					{
+						++countDisqualified;
+						bundle.putBoolean("result", false);
+					}
+					else
+					{
+						++countQualified;
+						bundle.putBoolean("result", true);
+					}
+					bundle.putInt("qualified", countDisqualified);
+					bundle.putInt("disqualified", countQualified);
+					message.setData(bundle);
+
 					handler.sendMessage(message);
 
 					break;
 				}
 				default:
-					Log.e("MC", "default: minid="+revPacket.minid);
+					Log.e("MC", "default: minid=" + revPacket.minid);
 				}
 			}
 			else

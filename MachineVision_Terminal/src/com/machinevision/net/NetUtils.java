@@ -1,11 +1,15 @@
 package com.machinevision.net;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+
+import android.util.Log;
 
 import com.machinevision.sub_option.SystemSetting_devicePacket.Net;
 
@@ -90,6 +94,26 @@ public class NetUtils
 			{
 				continue;
 			}
+		}
+	}
+
+	public static void setIp()
+	{
+		setIp(ip);
+	}
+	public static void setIp(String ip)
+	{
+		Runtime r = Runtime.getRuntime();
+		try
+		{
+			Process proc = r.exec("su");
+			DataOutputStream dos = new DataOutputStream(proc.getOutputStream());
+			dos.writeBytes("ifconfig eth0 " + ip + "\n");
+			dos.writeBytes("exit\n");
+			dos.flush();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 
