@@ -47,7 +47,7 @@ public class NetReceiveThread extends Thread
 	{
 		while (NetThread.currentState != NetThread.CurrentState.onStop)
 		{
-			Bitmap bitmap = null;
+
 			revPacket.recvDataPack(is);
 			if (revPacket.type != 0xaa)// 如果数据正常，表示网络通畅
 			{
@@ -56,6 +56,8 @@ public class NetReceiveThread extends Thread
 				{
 				case NetUtils.MSG_NET_GET_VIDEO:
 				{
+					Bitmap bitmap = null;
+
 					byte[] rxBuf = revPacket.data;
 
 					int[] data = new int[12];
@@ -78,9 +80,7 @@ public class NetReceiveThread extends Thread
 								Config.ARGB_8888);
 					}
 
-					long timer2 = System.currentTimeMillis();
 					int[] image = new int[len];
-
 					// image = pictureProcess(Arrays.copyOfRange(rxBuf, 100,
 					// rxBuf.length));
 
@@ -123,7 +123,6 @@ public class NetReceiveThread extends Thread
 				{
 					String str = new String(Arrays.copyOfRange(revPacket.data,
 							100, revPacket.data.length));
-					Log.d("CJ", str);
 
 					JsonParser jParser = new JsonParser();
 					Gson gson = new Gson();
@@ -153,6 +152,7 @@ public class NetReceiveThread extends Thread
 				}
 				case NetUtils.MSG_NET_RESULT:
 				{
+					Bitmap bitmap = null;
 					byte[] rxBuf = revPacket.data;
 
 					int[] data = new int[12];
@@ -185,10 +185,11 @@ public class NetReceiveThread extends Thread
 						temp = rxBuf[12 + i] & 0xff;
 						image[i] = (0xFF000000 | temp << 16 | temp << 8 | temp);
 					}
+					Log.d("MC", "result: " + rxBuf[rxBuf.length - 1]);
 					Message message = Message.obtain();
 					message.what = NetUtils.MSG_NET_RESULT;
 					bitmap.setPixels(image, 0, width, 0, 0, width, height);
-
+					message.arg1 = rxBuf[rxBuf.length - 1];
 					message.obj = bitmap;
 					handler.sendMessage(message);
 

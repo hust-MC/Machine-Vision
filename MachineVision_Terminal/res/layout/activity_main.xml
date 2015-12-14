@@ -99,9 +99,10 @@
                     android:src="@drawable/qualified" />
 
                 <ImageView
+                    android:id="@+id/main_imv_result1"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
-                    android:layout_below="@+id/main_imv_photo1"
+                    android:layout_below="@id/main_imv_photo1"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp"
@@ -144,9 +145,10 @@
                 </ImageView>
 
                 <ImageView
+                    android:id="@+id/main_imv_result2"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
-                    android:layout_below="@+id/main_imv_photo2"
+                    android:layout_below="@id/main_imv_photo2"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp"

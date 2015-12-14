@@ -14,7 +14,7 @@ public class ProgressBox
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.setMessage(content);
-		dialog.setCancelable(false);
+		dialog.setCancelable(true);
 		dialog.show();
 		return dialog;
 	}

@@ -50,7 +50,7 @@ public class MainActivity extends Activity
 	TextView temperature_tv;
 	ToggleButton net_btn;									// 网络开关按钮
 	ToggleButton sci_btn; 									// 串口开关按钮
-	ImageView photo_imv1, photo_imv2;						// 图片显示区域
+	ImageView photo_imv1, photo_imv2, result_imv1, result_imv2;						// 图片显示区域
 
 	Button bt_fileManager, bt_cameraParams, bt_sysSettings,
 			bt_fasternerSettings, bt_machineLearning, bt_help;
@@ -134,8 +134,13 @@ public class MainActivity extends Activity
 									3) : tempFloat));
 					break;
 				case NetUtils.MSG_NET_RESULT:
+					Log.d("CJ", "rev");
 					bitmap = (Bitmap) msg.obj;
 					photo_imv1.setImageBitmap(bitmap);
+					result_imv1
+							.setImageResource(msg.arg1 == 0 ? R.drawable.wrong
+									: R.drawable.correct);
+
 					break;
 				default:
 					break;
@@ -173,6 +178,8 @@ public class MainActivity extends Activity
 
 		photo_imv1 = (ImageView) findViewById(R.id.main_imv_photo1);
 		photo_imv2 = (ImageView) findViewById(R.id.main_imv_photo2);
+		result_imv1 = (ImageView) findViewById(R.id.main_imv_result1);
+		result_imv2 = (ImageView) findViewById(R.id.main_imv_result2);
 	}
 	public static final String read(InputStream in) throws IOException
 	{
@@ -199,6 +206,7 @@ public class MainActivity extends Activity
 	@Override
 	protected void onRestart()
 	{
+
 		netHandleFlag = true;
 		if (netThread != null)
 		{

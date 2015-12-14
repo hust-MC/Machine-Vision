@@ -3,15 +3,11 @@ package com.machinevision.sub_option;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import javax.crypto.spec.IvParameterSpec;
-
-import android.R.menu;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +19,7 @@ import android.widget.Toast;
 import com.machinevision.terminal.R;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
+import com.machinevision.net.NetUtils;
 
 public class DebugMode extends Activity
 {
@@ -100,7 +97,7 @@ public class DebugMode extends Activity
 			{
 				return;
 			}
-			if (msg.what != 0x55)
+			if (msg.what == NetUtils.MSG_NET_GET_VIDEO)
 			{
 				((DebugMode) mActivity.get()).iv_fullImage
 						.setImageBitmap((Bitmap) msg.obj);

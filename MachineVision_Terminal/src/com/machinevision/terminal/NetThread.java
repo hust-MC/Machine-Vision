@@ -76,19 +76,21 @@ public class NetThread extends Thread implements CommunicationInterface
 				{
 					Log.d("MC", "netConnectint");
 					serverSocket = new ServerSocket(NetUtils.port);
+					serverSocket.setSoTimeout(TIMEOUT);
 					socket = serverSocket.accept();
-					// socket.setSoTimeout(TIMEOUT);
+					socket.setSoTimeout(TIMEOUT);
 					// socket.setReceiveBufferSize(RXBUF_SIZE);
 					udpConnecteSuccess = true;
 					udpSocket.close();
-
+					udpSocket = null;
 					Log.d("MC", "netConnected");
 					handler.sendEmptyMessage(CONNECT_SUCCESS);
 
 					currentState = CurrentState.onReady;				// 转换为发送状态
 
 					new NetReceiveThread(socket.getInputStream()).start();
-
+					NetReceiveThread.setHandler(handler);
+					
 					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
 					currentState = CurrentState.onSending;
 					cmdHandle.getJson();
@@ -110,22 +112,20 @@ public class NetThread extends Thread implements CommunicationInterface
 						{
 							currentState = CurrentState.onSending;
 
-//							int i = 10;
-//							while (i-- > 0)
-//							{
-//								cmdHandle.getVideo(handler);
-//							}
-//							cmdHandle.getState(handler);
+							// int i = 10;
+							// while (i-- > 0)
+							// {
+							// cmdHandle.getVideo(handler);
+							// }
+							// cmdHandle.getState(handler);
 						}
 						lock.unlock();
 					}
 
 					CmdHandle.clear();									// 清空单例cmdhandle，便于之后重新生成
-				} catch (IOException e)
+				} catch (Exception e)
 				{
-				} catch (InterruptedException e)
-				{
-					e.printStackTrace();
+					close();
 				}
 			}
 		}).start();
@@ -145,7 +145,11 @@ public class NetThread extends Thread implements CommunicationInterface
 
 		} catch (Exception e)
 		{
-			udpSocket.close();
+			if (udpSocket != null)
+			{
+				udpSocket.close();
+				udpSocket = null;
+			}
 			if (!udpConnecteSuccess)
 			{
 				handler.sendEmptyMessage(CONNECT_FAIL);
@@ -198,6 +202,7 @@ public class NetThread extends Thread implements CommunicationInterface
 			}
 		} catch (IOException e)
 		{
+			Log.e("MC", "closeNet" + e.getMessage());
 			e.printStackTrace();
 		}
 	}
