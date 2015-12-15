@@ -115,98 +115,11 @@ public class SysSettings extends ControlPannelActivity implements
 	}
 
 	/**
-	 * ad9849界面设置
-	 * 
-	 * @return
-	 */
-	private LinearLayout getPage3()
-	{
-		int count = 0; // 计算SeekBar的ID偏移量
-		String[][] items =
-		{
-		{ "VGA", "SHP", "HPL", "RGPL", "P0GA", "P1GA", "P2GA", "P3GA" },
-		{ "RGDRV", "SHD", "HNL", "RGNL", "H1DRV", "H2DRV", "H3DRV", "H4DRV" } };
-		AD9849 ad9849 = Parameters.getInstance().ad9849;
-
-		LinearLayout layoutOuter = new LinearLayout(this);
-		layoutOuter.setId(SEEKBAR_START_ID - 1);
-		layoutOuter.setOrientation(LinearLayout.HORIZONTAL);
-		layoutOuter.setPadding(20, 30, 20, 0);
-		LinearLayout layoutLeft = new LinearLayout(this);
-		layoutLeft.setOrientation(LinearLayout.VERTICAL);
-		LinearLayout layoutRight = new LinearLayout(this);
-		layoutRight.setOrientation(LinearLayout.VERTICAL);
-
-		LayoutParams paramsLeft = new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 1);
-		LayoutParams paramsRight = new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 1);
-		paramsRight.leftMargin = 28;
-
-		/**
-		 * 生成条目
-		 */
-		for (String item : items[0])
-		{
-			LinearLayout layout = new LinearLayout(this);
-			layout.setOrientation(LinearLayout.HORIZONTAL);
-
-			LayoutParams paramsInner = new LayoutParams(0,
-					LayoutParams.WRAP_CONTENT, 1);
-			paramsInner.rightMargin = 8;
-			TextView textView = new TextView(this);
-			textView.setLayoutParams(paramsInner);
-			textView.setText(item);
-			textView.setGravity(Gravity.END);
-
-			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
-			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
-			seekBarEditLayout.setLayoutParams(paramsInner);
-			seekBarEditLayout.setValue(ad9849.pageContents[count]);
-			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
-
-			layout.addView(textView);
-			layout.addView(seekBarEditLayout);
-
-			layoutLeft.addView(layout);
-		}
-
-		for (String item : items[1])
-		{
-			LinearLayout layout = new LinearLayout(this);
-			layout.setOrientation(LinearLayout.HORIZONTAL);
-
-			LayoutParams paramsInner = new LayoutParams(0,
-					LayoutParams.WRAP_CONTENT, 1);
-			paramsInner.rightMargin = 8;
-			TextView textView = new TextView(this);
-			textView.setLayoutParams(paramsInner);
-			textView.setText(item);
-			textView.setGravity(Gravity.END);
-
-			SeekBarEditLayout seekBarEditLayout = new SeekBarEditLayout(this);
-			paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
-			seekBarEditLayout.setLayoutParams(paramsInner);
-			seekBarEditLayout.setValue(ad9849.pageContents[count]);
-			seekBarEditLayout.setId(SEEKBAR_START_ID + count++);
-
-			layout.addView(textView);
-			layout.addView(seekBarEditLayout);
-
-			layoutRight.addView(layout);
-		}
-
-		layoutOuter.addView(layoutLeft, paramsLeft);
-		layoutOuter.addView(layoutRight, paramsRight);
-		return layoutOuter;
-	}
-
-	/**
 	 * agc和aec设置界面
 	 * 
 	 * @return
 	 */
-	private View getPage4()
+	private View getPage2()
 	{
 		View page4 = getLayoutInflater().inflate(
 				R.layout.vpager_device_mt9v032, null);
@@ -226,36 +139,6 @@ public class SysSettings extends ControlPannelActivity implements
 		View page5 = getLayoutInflater().inflate(
 				R.layout.vpager_device_isl12026, null);
 		return page5;
-	}
-
-	/**
-	 * 网络设置界面
-	 * 
-	 * @return
-	 */
-
-	private View getPage6()
-	{
-		View page6 = getLayoutInflater().inflate(R.layout.vpager_device_net,
-				null);
-		Net net = Parameters.getInstance().net;
-		((EditText) page6.findViewById(R.id.device_setting_mac_address))
-				.setText(net.mac_address[0] + ":" + net.mac_address[1] + ":"
-						+ net.mac_address[2] + ":" + net.mac_address[3] + ":"
-						+ net.mac_address[4] + ":" + net.mac_address[5]);
-
-		((EditText) page6.findViewById(R.id.device_setting_ip_address))
-				.setText(net.ip_address[0] + "." + net.ip_address[1] + "."
-						+ net.ip_address[2] + "." + net.ip_address[3]);
-
-		((EditText) page6.findViewById(R.id.device_setting_server_ip_address))
-				.setText(net.remote_ip[0] + "." + net.remote_ip[1] + "."
-						+ net.remote_ip[2] + "." + net.remote_ip[3]);
-
-		((EditText) page6.findViewById(R.id.device_setting_tcp_port))
-				.setText(net.port + "");
-
-		return page6;
 	}
 
 	/**
@@ -343,13 +226,8 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		List<View> list = new ArrayList<View>();
 
-		// list.add(getPage1());
-		// list.add(getPage2());
-		// list.add(getPage3());
-		list.add(getPage4());
+		list.add(getPage2());
 		list.add(getPage5());
-		// list.add(getPage6());
-		// list.add(getPage7());
 		list.add(getPage8());
 
 		pagerAdapter = new MyPagerAdapter(vPager, list);
@@ -399,6 +277,9 @@ public class SysSettings extends ControlPannelActivity implements
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
+		final CmdHandle cmdHandle = CmdHandle.getInstance();
+		final Gson gson = new Gson();
+		final JsonObject json = new JsonObject();
 		switch (position)
 		{
 		case 1:
@@ -426,18 +307,17 @@ public class SysSettings extends ControlPannelActivity implements
 			((EditText) viewTrigger
 					.findViewById(R.id.device_setting_trigger_explead))
 					.setText(trigger.expLead + "");
-			DialogWindow dialog = (DialogWindow) new DialogWindow.Builder(this)
+			DialogWindow dialog = new DialogWindow.Builder(this)
 					.setTitle(
 							getResources().getStringArray(
-									R.array.device_setting)[position])
+									R.array.option_sys_settings)[position])
 					.setView(viewTrigger)
 					.setPositiveButton("应用", new OnClickListener()
 					{
 						@Override
 						public void onClick(DialogInterface dialog, int which)
 						{
-							Gson gson = new Gson();
-							JsonObject json = new JsonObject();
+
 							Trigger trigger = Parameters.getInstance().trigger;
 
 							trigger.trigDelay = Integer.valueOf(((EditText) viewTrigger
@@ -457,10 +337,213 @@ public class SysSettings extends ControlPannelActivity implements
 									.getText().toString());
 
 							json.add("trigger", gson.toJsonTree(trigger));
+							cmdHandle.setJson((json.toString()).getBytes());
 						}
-					}).create();
+					}).setNegativeButton("取消", null).create();
 			dialog.show();
+			break;
+		}
+		case 2:
+		{
+			final View viewNet = getLayoutInflater().inflate(
+					R.layout.vpager_device_net, null);
+			Net net = Parameters.getInstance().net;
+			((EditText) viewNet.findViewById(R.id.device_setting_mac_address))
+					.setText(net.mac_address[0] + ":" + net.mac_address[1]
+							+ ":" + net.mac_address[2] + ":"
+							+ net.mac_address[3] + ":" + net.mac_address[4]
+							+ ":" + net.mac_address[5]);
 
+			((EditText) viewNet.findViewById(R.id.device_setting_ip_address))
+					.setText(net.ip_address[0] + "." + net.ip_address[1] + "."
+							+ net.ip_address[2] + "." + net.ip_address[3]);
+
+			((EditText) viewNet
+					.findViewById(R.id.device_setting_server_ip_address))
+					.setText(net.remote_ip[0] + "." + net.remote_ip[1] + "."
+							+ net.remote_ip[2] + "." + net.remote_ip[3]);
+
+			((EditText) viewNet.findViewById(R.id.device_setting_tcp_port))
+					.setText(net.port + "");
+
+			DialogWindow dialog = new DialogWindow.Builder(this)
+					.setTitle(
+							getResources().getStringArray(
+									R.array.option_sys_settings)[position])
+					.setView(viewNet)
+					.setPositiveButton("应用", new OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Gson gson = new Gson();
+							JsonObject json = new JsonObject();
+							Net net = Parameters.getInstance().net;
+							int i = 0;
+							for (String str : ((EditText) viewNet
+									.findViewById(R.id.device_setting_mac_address))
+									.getText().toString().split("."))
+							{
+								net.mac_address[i++] = Integer.parseInt(str);
+							}
+							i = 0;
+							for (String str : ((EditText) viewNet
+									.findViewById(R.id.device_setting_ip_address))
+									.getText().toString().split("."))
+							{
+								net.ip_address[i++] = Integer.parseInt(str);
+							}
+							i = 0;
+							for (String str : ((EditText) viewNet
+									.findViewById(R.id.device_setting_server_ip_address))
+									.getText().toString().split("."))
+							{
+								net.remote_ip[i++] = Integer.parseInt(str);
+							}
+
+							net.port = Integer.parseInt(((EditText) viewNet
+									.findViewById(R.id.device_setting_tcp_port))
+									.getText().toString());
+
+							json.add("net", gson.toJsonTree(net));
+							cmdHandle.setJson((json.toString()).getBytes());
+						}
+					}).setNegativeButton("取消", null).create();
+			dialog.show();
+			break;
+		}
+		// AD9849菜单
+		case 3:
+		{
+			int count = 0; // 计算SeekBar的偏移量
+			String[][] items =
+			{
+					{ "VGA", "SHP", "HPL", "RGPL", "P0GA", "P1GA", "P2GA",
+							"P3GA" },
+					{ "RGDRV", "SHD", "HNL", "RGNL", "H1DRV", "H2DRV", "H3DRV",
+							"H4DRV" } };
+			final SeekBarEditLayout[][] seekBarEditLayouts = new SeekBarEditLayout[2][8];
+			AD9849 ad9849 = Parameters.getInstance().ad9849;
+
+			final LinearLayout viewAd9849 = new LinearLayout(this);
+			viewAd9849.setOrientation(LinearLayout.HORIZONTAL);
+			viewAd9849.setPadding(20, 30, 20, 0);
+			LinearLayout layoutLeft = new LinearLayout(this);
+			layoutLeft.setOrientation(LinearLayout.VERTICAL);
+			LinearLayout layoutRight = new LinearLayout(this);
+			layoutRight.setOrientation(LinearLayout.VERTICAL);
+
+			LayoutParams paramsLeft = new LayoutParams(0,
+					LayoutParams.WRAP_CONTENT, 1);
+			LayoutParams paramsRight = new LayoutParams(0,
+					LayoutParams.WRAP_CONTENT, 1);
+			paramsRight.leftMargin = 28;
+
+			/**
+			 * 生成条目
+			 */
+			for (String item : items[0])
+			{
+				LinearLayout layout = new LinearLayout(this);
+				layout.setOrientation(LinearLayout.HORIZONTAL);
+
+				LayoutParams paramsInner = new LayoutParams(0,
+						LayoutParams.WRAP_CONTENT, 1);
+				paramsInner.rightMargin = 8;
+				TextView textView = new TextView(this);
+				textView.setLayoutParams(paramsInner);
+				textView.setText(item);
+				textView.setGravity(Gravity.END);
+
+				seekBarEditLayouts[0][count] = new SeekBarEditLayout(this);
+				paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
+				seekBarEditLayouts[0][count].setLayoutParams(paramsInner);
+				seekBarEditLayouts[0][count]
+						.setValue(ad9849.pageContents[count]);
+
+				layout.addView(textView);
+				layout.addView(seekBarEditLayouts[0][count++]);
+
+				layoutLeft.addView(layout);
+			}
+			count = 0;
+			for (String item : items[1])
+			{
+				LinearLayout layout = new LinearLayout(this);
+				layout.setOrientation(LinearLayout.HORIZONTAL);
+
+				LayoutParams paramsInner = new LayoutParams(0,
+						LayoutParams.WRAP_CONTENT, 1);
+				paramsInner.rightMargin = 8;
+				TextView textView = new TextView(this);
+				textView.setLayoutParams(paramsInner);
+				textView.setText(item);
+				textView.setGravity(Gravity.END);
+
+				seekBarEditLayouts[1][count] = new SeekBarEditLayout(this);
+				paramsInner = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 4);
+				seekBarEditLayouts[1][count].setLayoutParams(paramsInner);
+				seekBarEditLayouts[1][count]
+						.setValue(ad9849.pageContents[count]);
+
+				layout.addView(textView);
+				layout.addView(seekBarEditLayouts[1][count++]);
+
+				layoutRight.addView(layout);
+			}
+
+			viewAd9849.addView(layoutLeft, paramsLeft);
+			viewAd9849.addView(layoutRight, paramsRight);
+
+			DialogWindow dialog = new DialogWindow.Builder(this)
+					.setTitle(
+							getResources().getStringArray(
+									R.array.option_sys_settings)[position])
+					.setView(viewAd9849)
+					.setPositiveButton("应用", new OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Gson gson = new Gson();
+							JsonObject json = new JsonObject();
+							int count = 0;
+							AD9849 ad9849 = Parameters.getInstance().ad9849;
+							// 第一列
+							int vga = seekBarEditLayouts[0][0].getValue();
+							ad9849.vga[0] = vga & 0xFF;
+							ad9849.vga[1] = (vga >> 8) & 0xFF;
+							ad9849.shp = seekBarEditLayouts[0][1].getValue();
+							ad9849.hpl = seekBarEditLayouts[0][2].getValue();
+							ad9849.rgpl = seekBarEditLayouts[0][3].getValue();
+							ad9849.pxga[0] = seekBarEditLayouts[0][4]
+									.getValue();
+							ad9849.pxga[1] = seekBarEditLayouts[0][5]
+									.getValue();
+							ad9849.pxga[2] = seekBarEditLayouts[0][6]
+									.getValue();
+							ad9849.pxga[3] = seekBarEditLayouts[0][7]
+									.getValue();
+							// 第二列
+							ad9849.rgdrv = seekBarEditLayouts[1][0].getValue();
+							ad9849.shd = seekBarEditLayouts[1][1].getValue();
+							ad9849.hnl = seekBarEditLayouts[1][2].getValue();
+							ad9849.rgnl = seekBarEditLayouts[1][3].getValue();
+							ad9849.hxdrv[0] = seekBarEditLayouts[1][4]
+									.getValue();
+							ad9849.hxdrv[1] = seekBarEditLayouts[1][5]
+									.getValue();
+							ad9849.hxdrv[2] = seekBarEditLayouts[1][6]
+									.getValue();
+							ad9849.hxdrv[3] = seekBarEditLayouts[1][7]
+									.getValue();
+
+							json.add("ad9849", gson.toJsonTree(ad9849));
+							Log.d("CJ", json.toString());
+							cmdHandle.setJson((json.toString()).getBytes());
+						}
+					}).setNegativeButton("取消", null).create();
+			dialog.show();
 			break;
 		}
 		case 4:
@@ -493,9 +576,8 @@ public class SysSettings extends ControlPannelActivity implements
 			break;
 		}
 		default:
-			break;
+			Log.e("MC", "sysSettings default");
 		}
-
 	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -572,87 +654,6 @@ public class SysSettings extends ControlPannelActivity implements
 				break;
 			case 1:
 
-				break;
-
-			case 2:
-				int count = 0;
-				AD9849 ad9849 = Parameters.getInstance().ad9849;
-				// 第一列
-				int vga = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.vga[0] = vga & 0xFF;
-				ad9849.vga[1] = (vga >> 8) & 0xFF;
-				ad9849.shp = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.hpl = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.rgpl = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.pxga[0] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.pxga[1] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.pxga[2] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.pxga[3] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				// 第二列
-				ad9849.rgdrv = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.shd = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.hnl = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.rgnl = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.hxdrv[0] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.hxdrv[1] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.hxdrv[2] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-				ad9849.hxdrv[3] = ((SeekBarEditLayout) findViewById(SEEKBAR_START_ID
-						+ count++)).getValue();
-
-				json.add("ad9849", gson.toJsonTree(ad9849));
-				break;
-
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				Net net = Parameters.getInstance().net;
-				int i = 0;
-				for (String str : ((EditText) page
-						.findViewById(R.id.device_setting_mac_address))
-						.getText().toString().split("."))
-				{
-					net.mac_address[i++] = Integer.parseInt(str);
-				}
-				i = 0;
-				for (String str : ((EditText) page
-						.findViewById(R.id.device_setting_ip_address))
-						.getText().toString().split("."))
-				{
-					net.ip_address[i++] = Integer.parseInt(str);
-				}
-				i = 0;
-				for (String str : ((EditText) page
-						.findViewById(R.id.device_setting_server_ip_address))
-						.getText().toString().split("."))
-				{
-					net.remote_ip[i++] = Integer.parseInt(str);
-				}
-
-				net.port = Integer.parseInt(((EditText) page
-						.findViewById(R.id.device_setting_tcp_port)).getText()
-						.toString());
-
-				json.add("net", gson.toJsonTree(net));
-				break;
-
-			case 6:
 				UART uart = Parameters.getInstance().uart;
 
 				Spinner uart_baudrate = (Spinner) page
@@ -668,10 +669,13 @@ public class SysSettings extends ControlPannelActivity implements
 
 				json.add("uart", gson.toJsonTree(uart));
 				break;
-			case 7:
+
+			case 2:
+
+			{
 				Version version = Parameters.getInstance().version;
 
-				i = 0;
+				int i = 0;
 				for (String str : ((EditText) page.findViewById(R.id.camera_id))
 						.getText().toString().split("\\."))
 				{
@@ -692,9 +696,10 @@ public class SysSettings extends ControlPannelActivity implements
 
 				json.add("version", gson.toJsonTree(version));
 				break;
+			}
 			default:
 			}
-			cmdHandle.setJson((json.toString() + "\0").getBytes());
+			cmdHandle.setJson((json.toString()).getBytes());
 		}
 		@Override
 		public void onClick(DialogInterface dialog, int which)
@@ -740,9 +745,12 @@ public class SysSettings extends ControlPannelActivity implements
 	 * 自动生成界面时，确认按钮事件
 	 */
 	@Override
-	public void onPositiveButtonClicked(String[] value)
+	public void onPositiveButtonClicked(String[] value, int position)
 	{
-		startActivity(new Intent(this, DebugMode.class));
+		if (position == 0)
+		{
+			startActivity(new Intent(this, DebugMode.class));
+		}
 	}
 
 	private class MyPagerAdapter extends PagerAdapter
@@ -791,7 +799,5 @@ public class SysSettings extends ControlPannelActivity implements
 		{
 			currentView = (View) object;
 		}
-
 	}
-
 }

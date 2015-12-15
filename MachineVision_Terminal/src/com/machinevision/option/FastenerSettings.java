@@ -64,7 +64,7 @@ public class FastenerSettings extends ControlPannelActivity implements
 						FileManager_fileExplorer.RESULT_FILE_PATH);
 				if (fileDir.startsWith(FILE_DIR))
 				{
-					DialogBuilder dialogBuilder = new DialogBuilder(this);
+					DialogBuilder dialogBuilder = new DialogBuilder(this, 0);
 					dialogBuilder.build(
 							(getResources().getStringArray(settings))[1],
 							(getResources().getStringArray(settings_sub))[1],
@@ -89,7 +89,7 @@ public class FastenerSettings extends ControlPannelActivity implements
 		return FILE_DIR + id + "/" + id + ".ini";
 	}
 	@Override
-	public void onPositiveButtonClicked(String[] value)
+	public void onPositiveButtonClicked(String[] value, int position)
 	{
 		/*
 		 * 存入配置文件中

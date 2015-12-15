@@ -26,29 +26,26 @@
     <!-- 相机参数菜单 -->
     <string-array name="option_camera_params">
         <item>图像采集参数</item>
+        <item>常规设置</item>
         <item>网卡设置</item>
         <item>CAN设置</item>
         <item>Uart设置</item>
-        <item>时钟设置</item>
-        <item>保存设置文件</item>
     </string-array>
     <!-- 相机参数子菜单（一一对应） -->
     <string-array name="option_camera_params_sub">
         <item>曝光时间,照明时间</item>
-        <item>IP地址,端口地址,MAC地址</item>
         <item></item>
+        <item>IP地址,端口地址,MAC地址,TCP端口</item>
+        <item>波特率</item>
         <item>波特率,校验方式</item>
-        <item>日期,时间</item>
-        <item></item>
     </string-array>
     <!-- 相机子菜单类型 -->
     <string-array name="option_camera_params_type">
         <item>0,0</item>
-        <item>0,0,0</item>
         <item></item>
+        <item>00,00,00,00</item>
+        <item>19600n19200n38400n115200</item>
         <item>19600n19200n38400n115200,1无校验n奇校验n偶校验</item>
-        <item>0,0</item>
-        <item></item>
     </string-array>
 
     <!-- 系统设置菜单数组 -->

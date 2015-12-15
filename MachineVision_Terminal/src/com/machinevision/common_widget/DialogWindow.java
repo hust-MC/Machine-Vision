@@ -4,6 +4,7 @@ import com.machinevision.terminal.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -12,8 +13,9 @@ import android.widget.LinearLayout.LayoutParams;
 public class DialogWindow extends AlertDialog
 {
 	Context context;
+	AlertDialog alertDialog;
 
-	protected DialogWindow(Context context)
+	private DialogWindow(Context context)
 	{
 		super(context);
 		this.context = context;
@@ -28,32 +30,55 @@ public class DialogWindow extends AlertDialog
 		getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(27F);
 	}
 
-	public static class DialogWindowBuilder extends AlertDialog.Builder
+	public static class Builder
 	{
 		Context context;
+		DialogWindow dialogWindow;
 
-		public DialogWindowBuilder(Context context)
+		public Builder(Context context)
 		{
-			super(context);
 			this.context = context;
+			dialogWindow = new DialogWindow(context);
 		}
 
-		@Override
 		public Builder setTitle(CharSequence title)
 		{
 			View titleLayout = LayoutInflater.from(context).inflate(
 					R.layout.alert_dialog_tv, null);
 			((TextView) titleLayout.findViewById(R.id.alert_dialog_tv))
 					.setText(title);
-			return super.setCustomTitle(titleLayout);
+			dialogWindow.setCustomTitle(titleLayout);
+			return this;
 		}
 
-		@Override
-		public Builder setTitle(int titleId)
+		public Builder setView(View view)
 		{
-			return setTitle(context.getResources().getString(titleId));
+			dialogWindow.setView(view);
+			return this;
 		}
-
+		public Builder setPositiveButton(String text, OnClickListener listener)
+		{
+			dialogWindow.setButton(text, listener);
+			return this;
+		}
+		public Builder setNegativeButton(String text, OnClickListener listener)
+		{
+			if (listener == null)
+			{
+				listener = new OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+					}
+				};
+			}
+			dialogWindow.setButton2(text, listener);
+			return this;
+		}
+		public DialogWindow create()
+		{
+			return dialogWindow;
+		}
 	}
-
 }

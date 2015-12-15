@@ -21,6 +21,8 @@ public class SeekBarEditLayout extends LinearLayout
 	SeekBar seekBar;
 	EditText editText;
 
+	private boolean textChanged = false;					// 标志editText是否已经是最新的
+
 	public SeekBarEditLayout(Context context)
 	{
 		this(context, null);
@@ -58,13 +60,17 @@ public class SeekBarEditLayout extends LinearLayout
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser)
 			{
-				editText.setText(progress + "");
+				if (!textChanged)
+				{
+					editText.setText(progress + "");
+				}
+				textChanged = false;
 			}
 		});
 
 		params = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1.4F);
 		editText.setLayoutParams(params);
-		editText.setInputType(InputType.TYPE_CLASS_PHONE);
+		editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 		editText.addTextChangedListener(new TextWatcher()
 		{
 			@Override
@@ -82,6 +88,7 @@ public class SeekBarEditLayout extends LinearLayout
 			@Override
 			public void afterTextChanged(Editable s)
 			{
+				textChanged = true;
 				if (seekBar != null)
 				{
 					if (TextUtils.isEmpty(s.toString()))
@@ -90,7 +97,13 @@ public class SeekBarEditLayout extends LinearLayout
 					}
 					else
 					{
-						seekBar.setProgress(Integer.valueOf(s.toString()));
+						try
+						{
+							seekBar.setProgress(Integer.valueOf(s.toString()));
+						} catch (NumberFormatException e)
+						{
+							Log.e("MC", e.getMessage());
+ }
 					}
 				}
 			}
@@ -112,7 +125,6 @@ public class SeekBarEditLayout extends LinearLayout
 		addView(seekBar);
 		addView(editText);
 	}
-
 	public int getValue()
 	{
 		try

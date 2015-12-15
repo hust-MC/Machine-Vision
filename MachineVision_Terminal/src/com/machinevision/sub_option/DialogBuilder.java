@@ -14,7 +14,9 @@ import com.machinevision.terminal.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.method.NumberKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -35,6 +37,7 @@ import android.widget.TextView;
  */
 public class DialogBuilder
 {
+	private int position;
 	private Context context;
 
 	/**
@@ -42,9 +45,10 @@ public class DialogBuilder
 	 */
 	private View[] views;
 
-	public DialogBuilder(Context context)
+	public DialogBuilder(Context context, int position)
 	{
 		this.context = context;
+		this.position = position;
 	}
 
 	public boolean build(String title, String menu, String strType)
@@ -111,6 +115,11 @@ public class DialogBuilder
 				((EditText) views[i]).setTextSize(25F);
 				((EditText) views[i])
 						.setBackgroundResource(android.R.drawable.edit_text);
+				if (type.length > 1 && type[i].charAt(1) == '0')
+				{
+					((EditText) views[i])
+							.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
+				}
 				if (strIni != null)
 				{
 					((EditText) views[i]).setText(iniReader.next());
@@ -153,7 +162,7 @@ public class DialogBuilder
 				.setText(title);
 		AlertDialog dialog = new AlertDialog.Builder(context)
 				.setCustomTitle(titleLayout).setView(scrollView)
-				.setPositiveButton("确定", new ConfirmButton())
+				.setPositiveButton("确定", new ConfirmButton(position))
 				.setNegativeButton("取消", new CancelButton()).create();
 		dialog.show();
 
@@ -230,6 +239,12 @@ public class DialogBuilder
 	private class ConfirmButton implements OnClickListener
 	{
 		String[] value = new String[views.length];
+		int position;
+
+		public ConfirmButton(int position)
+		{
+			this.position = position;
+		}
 
 		@Override
 		public void onClick(DialogInterface dialog, int which)
@@ -248,7 +263,8 @@ public class DialogBuilder
 			}
 			if (context instanceof OnDialogClicked)
 			{
-				((OnDialogClicked) context).onPositiveButtonClicked(value);
+				((OnDialogClicked) context).onPositiveButtonClicked(value,
+						position);
 			}
 		}
 	}
@@ -271,7 +287,7 @@ public class DialogBuilder
 		 *            对话框接收的数据
 		 * 
 		 */
-		void onPositiveButtonClicked(String[] value);
+		void onPositiveButtonClicked(String[] value, int position);
 	}
 
 }

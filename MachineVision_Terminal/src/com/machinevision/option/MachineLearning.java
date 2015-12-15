@@ -69,7 +69,7 @@ public class MachineLearning extends ControlPannelActivity implements
 	 * 保存钮扣的配置文件
 	 */
 	@Override
-	public void onPositiveButtonClicked(String[] value)
+	public void onPositiveButtonClicked(String[] value, int position)
 	{
 		value1 = value;
 		LayoutInflater inflater = (LayoutInflater) MachineLearning.this

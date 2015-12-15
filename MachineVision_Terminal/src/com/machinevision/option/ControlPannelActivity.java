@@ -69,7 +69,7 @@ abstract class ControlPannelActivity extends Activity
 						&& !wholeMenu.subMenu[position].equals(""))
 				{
 					DialogBuilder builder = new DialogBuilder(
-							ControlPannelActivity.this);
+							ControlPannelActivity.this, position);
 					builder.build(wholeMenu.menu[position],
 							wholeMenu.subMenu[position],
 							wholeMenu.subMenuType[position]);
