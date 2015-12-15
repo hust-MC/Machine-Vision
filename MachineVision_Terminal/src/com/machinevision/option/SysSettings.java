@@ -9,6 +9,7 @@ import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.DebugMode;
 import com.machinevision.sub_option.NumberSettingLayout;
@@ -111,33 +112,6 @@ public class SysSettings extends ControlPannelActivity implements
 					.setChecked(true);
 
 		return page1;
-	}
-	/**
-	 * trigger设置界面
-	 * 
-	 * @return
-	 */
-	private View getPage2()
-	{
-		View page2 = getLayoutInflater().inflate(R.layout.vpager_device_triger,
-				null);
-
-		Trigger trigger = Parameters.getInstance().trigger;
-		((EditText) page2.findViewById(R.id.device_setting_trigger_delay))
-				.setText(trigger.trigDelay + "");
-
-		((EditText) page2.findViewById(R.id.device_setting_trigger_part_delay))
-				.setText(trigger.partDelay + "");
-
-		((EditText) page2.findViewById(R.id.device_setting_trigger_velocity))
-				.setText(trigger.velocity + "");
-
-		((EditText) page2.findViewById(R.id.device_setting_trigger_depart_wide))
-				.setText(trigger.departWide + "");
-
-		((EditText) page2.findViewById(R.id.device_setting_trigger_explead))
-				.setText(trigger.expLead + "");
-		return page2;
 	}
 
 	/**
@@ -425,33 +399,104 @@ public class SysSettings extends ControlPannelActivity implements
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
-		layout = LayoutInflater.from(this).inflate(R.layout.device_setting,
-				null);
+		switch (position)
+		{
+		case 1:
+		{
+			final View viewTrigger = getLayoutInflater().inflate(
+					R.layout.vpager_device_triger, null);
 
-		initViewPager();
-		initDropDownList();
+			Trigger trigger = Parameters.getInstance().trigger;
+			((EditText) viewTrigger
+					.findViewById(R.id.device_setting_trigger_delay))
+					.setText(trigger.trigDelay + "");
 
-		AlertDialog dialog = new AlertDialog.Builder(SysSettings.this)
-				.setTitle("常规").setView(layout)
-				.setPositiveButton("应用", new ApplyButton())
-				.setNegativeButton("关闭", new CancelButton()).create();
+			((EditText) viewTrigger
+					.findViewById(R.id.device_setting_trigger_part_delay))
+					.setText(trigger.partDelay + "");
 
-		dialog.show();
-		Point size = new Point();
-		getWindowManager().getDefaultDisplay().getSize(size);
+			((EditText) viewTrigger
+					.findViewById(R.id.device_setting_trigger_velocity))
+					.setText(trigger.velocity + "");
 
-		dialog.getWindow()
-				.setLayout((int) (size.x * 0.8), (int) (size.y * 0.7));
-		// 让对话框能够弹出输入法
-		dialog.getWindow().clearFlags(
-				WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+			((EditText) viewTrigger
+					.findViewById(R.id.device_setting_trigger_depart_wide))
+					.setText(trigger.departWide + "");
 
-		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE)
-				.setTextSize(27F);
-		((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
-				.setTextSize(27F);
+			((EditText) viewTrigger
+					.findViewById(R.id.device_setting_trigger_explead))
+					.setText(trigger.expLead + "");
+			DialogWindow dialog = (DialogWindow) new DialogWindow.Builder(this)
+					.setTitle(
+							getResources().getStringArray(
+									R.array.device_setting)[position])
+					.setView(viewTrigger)
+					.setPositiveButton("应用", new OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Gson gson = new Gson();
+							JsonObject json = new JsonObject();
+							Trigger trigger = Parameters.getInstance().trigger;
+
+							trigger.trigDelay = Integer.valueOf(((EditText) viewTrigger
+									.findViewById(R.id.device_setting_trigger_delay))
+									.getText().toString());
+							trigger.partDelay = Integer.parseInt(((EditText) viewTrigger
+									.findViewById(R.id.device_setting_trigger_part_delay))
+									.getText().toString());
+							trigger.velocity = Integer.parseInt(((EditText) viewTrigger
+									.findViewById(R.id.device_setting_trigger_velocity))
+									.getText().toString());
+							trigger.departWide = Integer.parseInt(((EditText) viewTrigger
+									.findViewById(R.id.device_setting_trigger_depart_wide))
+									.getText().toString());
+							trigger.expLead = Integer.parseInt(((EditText) viewTrigger
+									.findViewById(R.id.device_setting_trigger_explead))
+									.getText().toString());
+
+							json.add("trigger", gson.toJsonTree(trigger));
+						}
+					}).create();
+			dialog.show();
+
+			break;
+		}
+		case 4:
+		{
+			layout = LayoutInflater.from(this).inflate(R.layout.device_setting,
+					null);
+
+			initViewPager();
+			initDropDownList();
+
+			AlertDialog dialog = new AlertDialog.Builder(SysSettings.this)
+					.setTitle("常规").setView(layout)
+					.setPositiveButton("应用", new ApplyButton())
+					.setNegativeButton("关闭", new CancelButton()).create();
+
+			dialog.show();
+			Point size = new Point();
+			getWindowManager().getDefaultDisplay().getSize(size);
+
+			dialog.getWindow().setLayout((int) (size.x * 0.8),
+					(int) (size.y * 0.7));
+			// 让对话框能够弹出输入法
+			dialog.getWindow().clearFlags(
+					WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+
+			((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE)
+					.setTextSize(27F);
+			((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
+					.setTextSize(27F);
+			break;
+		}
+		default:
+			break;
+		}
+
 	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -526,25 +571,7 @@ public class SysSettings extends ControlPannelActivity implements
 				cmdHandle.setJson((jsonSonsor.toString() + "\0").getBytes());
 				break;
 			case 1:
-				Trigger trigger = Parameters.getInstance().trigger;
 
-				trigger.trigDelay = Integer.valueOf(((EditText) page
-						.findViewById(R.id.device_setting_trigger_delay))
-						.getText().toString());
-				trigger.partDelay = Integer.parseInt(((EditText) page
-						.findViewById(R.id.device_setting_trigger_part_delay))
-						.getText().toString());
-				trigger.velocity = Integer.parseInt(((EditText) page
-						.findViewById(R.id.device_setting_trigger_velocity))
-						.getText().toString());
-				trigger.departWide = Integer.parseInt(((EditText) page
-						.findViewById(R.id.device_setting_trigger_depart_wide))
-						.getText().toString());
-				trigger.expLead = Integer.parseInt(((EditText) page
-						.findViewById(R.id.device_setting_trigger_explead))
-						.getText().toString());
-
-				json.add("trigger", gson.toJsonTree(trigger));
 				break;
 
 			case 2:

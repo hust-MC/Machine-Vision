@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="50dp" >
+    android:padding="25dp" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,6 +29,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
+
         <EditText
             android:id="@+id/device_setting_trigger_part_delay"
             style="@style/device_setting_trigger_et" />

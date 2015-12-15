@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -54,7 +54,7 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textSize=">20sp</item>
-    </style>
+    </style>
     -->
     <style name="top_button">
         <item name="android:layout_height">match_parent</item>
@@ -110,6 +110,7 @@
 
     <style name="device_setting_trigger_tv_front">
         <item name="android:textSize">22sp</item>
+        <item name="android:singleLine">true</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">80dp</item>
