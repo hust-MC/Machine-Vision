@@ -14,14 +14,7 @@ import com.machinevision.terminal.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.text.method.KeyListener;
-import android.text.method.NumberKeyListener;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -56,9 +49,18 @@ public class DialogBuilder
 		this.position = position;
 	}
 
-	public boolean build(String title, String menu, String strType)
+	public void build(String title, String menu, String strType)
 	{
-		return build(title, menu, strType, null, null);
+		build(title, menu, strType, null);
+	}
+	public void build(String title, String menu, String strType, String[] values)
+	{
+		build(title, menu, strType, null, null, values);
+	}
+	public void build(String title, String menu, String strType, String strIni,
+			String fileDir)
+	{
+		build(title, menu, strType, strIni, fileDir, null);
 	}
 	/**
 	 * 用来根据参数生成一个对话框
@@ -76,7 +78,7 @@ public class DialogBuilder
 	 * @author MC
 	 */
 	public boolean build(String title, String menu, String strType,
-			String strIni, String fileDir)
+			String strIni, String fileDir, String[] values)
 	{
 		String[] contents = menu.split(",");
 		String[] type = strType.split(",");
@@ -118,8 +120,10 @@ public class DialogBuilder
 				views[i] = new EditText(context);
 
 				((EditText) views[i]).setTextSize(25F);
+				((EditText) views[i]).setText(values == null ? "" : values[i]);
 				((EditText) views[i])
 						.setBackgroundResource(android.R.drawable.edit_text);
+				// 输入框有效性检查
 				if (type.length > 1 && type[i].charAt(1) == '0')
 				{
 				}
@@ -143,6 +147,7 @@ public class DialogBuilder
 				views[i] = new Spinner(context);
 
 				((Spinner) views[i]).setAdapter(adapter);
+				((Spinner) views[i]).setSelection(Integer.parseInt(values[i]));
 				if (strIni != null)
 				{
 					((Spinner) views[i]).setSelection(Integer

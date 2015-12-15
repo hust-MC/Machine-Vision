@@ -136,11 +136,17 @@ public class MainActivity extends Activity
 				case NetUtils.MSG_NET_RESULT:
 					bitmap = (Bitmap) msg.obj;
 					photo_imv1.setImageBitmap(bitmap);
+					photo_imv2.setImageBitmap(bitmap);
 
 					Bundle bundle = msg.getData();
+					boolean result = bundle.getBoolean("result");
 					int qualified = bundle.getInt("qualified");				// 获取合格数
 					int disQualified = bundle.getInt("disqualified");		// 获取不合格数
 					DecimalFormat df = new DecimalFormat("#0.00");
+
+					result_imv1.setImageResource(result ? R.drawable.correct
+							: R.drawable.wrong);
+
 					qualified_tv.setText("合格：" + qualified);
 					disqualified_tv.setText("不合格：" + disQualified);
 					qualifiedRate_tv.setText("合格率："
@@ -297,7 +303,7 @@ public class MainActivity extends Activity
 	 */
 	public void onClick_control(View view)
 	{
-		NetUtils.setIp();		//重置IP
+		NetUtils.setIp();		// 重置IP
 		switch (view.getId())
 		{
 		case R.id.bt_control_test:
