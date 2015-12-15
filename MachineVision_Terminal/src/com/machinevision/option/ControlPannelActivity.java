@@ -65,7 +65,8 @@ abstract class ControlPannelActivity extends Activity
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id)
 			{
-				if (!wholeMenu.subMenu[position].equals(""))
+				if ((position < wholeMenu.subMenu.length)
+						&& !wholeMenu.subMenu[position].equals(""))
 				{
 					DialogBuilder builder = new DialogBuilder(
 							ControlPannelActivity.this);

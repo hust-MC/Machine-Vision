@@ -54,8 +54,10 @@
     <!-- 系统设置菜单数组 -->
     <string-array name="option_sys_settings">
         <item>工作模式设置</item>
-        <item>主要参数设置</item>
-        <item>设备参数设置</item>
+        <item>触发参数设置</item>
+        <item>本地IP设置</item>
+        <item>AD9849</item>
+        <item>传感器设置</item>
     </string-array>
     <!-- 系统设置子菜单 -->
     <string-array name="option_sys_settings_sub">
@@ -196,13 +198,8 @@
 
     <!-- 系统设置→设备参数设置内容 -->
     <string-array name="device_setting">
-        <item>常规</item>
-        <item>触发</item>
-        <item>AD9849</item>
         <item>MT9V032</item>
         <item>ISL12026</item>
-        <item>NET</item>
-        <item>UARTHECC</item>
         <item>AT25040</item>
     </string-array>
 

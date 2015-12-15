@@ -369,13 +369,13 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		List<View> list = new ArrayList<View>();
 
-		list.add(getPage1());
-		list.add(getPage2());
-		list.add(getPage3());
+		// list.add(getPage1());
+		// list.add(getPage2());
+		// list.add(getPage3());
 		list.add(getPage4());
 		list.add(getPage5());
-		list.add(getPage6());
-		list.add(getPage7());
+		// list.add(getPage6());
+		// list.add(getPage7());
 		list.add(getPage8());
 
 		pagerAdapter = new MyPagerAdapter(vPager, list);

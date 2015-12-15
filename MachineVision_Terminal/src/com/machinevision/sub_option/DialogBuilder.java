@@ -137,7 +137,6 @@ public class DialogBuilder
 							.parseInt(iniReader.next()));
 				}
 			}
-
 			// et.setHint("请输入" + contents[i]);
 			views[i].setLayoutParams(params);
 			views[i].setPadding(8, 2, 5, 2);

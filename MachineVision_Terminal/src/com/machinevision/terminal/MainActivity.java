@@ -1,11 +1,6 @@
 package com.machinevision.terminal;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 
 import com.machinevision.terminal.R;
@@ -137,13 +132,14 @@ public class MainActivity extends Activity
 							+ (tempFloat.length() > 3 ? tempFloat.substring(0,
 									3) : tempFloat));
 					break;
+				// 接收分拣结果
 				case NetUtils.MSG_NET_RESULT:
 					bitmap = (Bitmap) msg.obj;
 					photo_imv1.setImageBitmap(bitmap);
 
 					Bundle bundle = msg.getData();
-					int qualified = bundle.getInt("qualified");
-					int disQualified = bundle.getInt("disqualified");
+					int qualified = bundle.getInt("qualified");				// 获取合格数
+					int disQualified = bundle.getInt("disqualified");		// 获取不合格数
 					DecimalFormat df = new DecimalFormat("#0.00");
 					qualified_tv.setText("合格：" + qualified);
 					disqualified_tv.setText("不合格：" + disQualified);
@@ -243,11 +239,6 @@ public class MainActivity extends Activity
 		@Override
 		public void onClick(View v)
 		{
-			if (netThread != null)
-			{
-				netThread.setCurrentState(CurrentState.onPause);
-			}
-			netHandler.removeMessages(NetUtils.MSG_NET_GET_VIDEO);
 			switch (v.getId())
 			{
 			case R.id.main_bt_file_manager:
@@ -306,8 +297,7 @@ public class MainActivity extends Activity
 	 */
 	public void onClick_control(View view)
 	{
-		// bt_check.setText(DataPack.timeoutCount + "");
-
+		NetUtils.setIp();		//重置IP
 		switch (view.getId())
 		{
 		case R.id.bt_control_test:
