@@ -14,9 +14,14 @@ import com.machinevision.terminal.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.KeyListener;
 import android.text.method.NumberKeyListener;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -117,8 +122,6 @@ public class DialogBuilder
 						.setBackgroundResource(android.R.drawable.edit_text);
 				if (type.length > 1 && type[i].charAt(1) == '0')
 				{
-					((EditText) views[i])
-							.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
 				}
 				if (strIni != null)
 				{
