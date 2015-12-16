@@ -16,6 +16,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.machinevision.terminal.MainActivity;
 import com.machinevision.terminal.R;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
@@ -55,23 +56,18 @@ public class DebugMode extends Activity
 				if (cmdHandle == null)
 				{
 					Message message = handler.obtainMessage();
-					message.what = 0x55;
+					message.what = MainActivity.ERROR_MESSAGE;
 					message.sendToTarget();
+					finish();
 				}
-				try
+				else
 				{
 					while (!stopFlag)
 					{
 						cmdHandle.getVideo(handler);
 					}
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				} catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}
 
+				}
 			}
 		}).start();
 	}
@@ -102,11 +98,11 @@ public class DebugMode extends Activity
 				((DebugMode) mActivity.get()).iv_fullImage
 						.setImageBitmap((Bitmap) msg.obj);
 			}
-			// else if
-			// {
-			// EToast.makeText(mActivity.get(), "网络未连接", Toast.LENGTH_SHORT)
-			// .show();
-			// }
+			else if (msg.what == MainActivity.ERROR_MESSAGE)
+			{
+				EToast.makeText(mActivity.get(), "网络未连接", Toast.LENGTH_SHORT)
+						.show();
+			}
 		}
 	}
 

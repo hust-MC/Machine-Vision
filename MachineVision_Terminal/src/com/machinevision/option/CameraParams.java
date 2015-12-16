@@ -17,11 +17,10 @@ import com.machinevision.sub_option.SystemSetting_devicePacket.Parameters;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Sensor;
 import com.machinevision.sub_option.SystemSetting_devicePacket.UART;
 
-import android.R.integer;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.text.style.ParagraphStyle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -32,6 +31,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class CameraParams extends ControlPannelActivity implements
 		OnDialogClicked
 {
+	public static Activity activity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -41,11 +41,10 @@ public class CameraParams extends ControlPannelActivity implements
 		wholeMenu = new MenuWithSubMenu(R.array.option_camera_params,
 				R.array.option_camera_params_sub,
 				R.array.option_camera_params_type, 0);
-
+		activity = this;
 		init_widget();
 		setListViewClicked();
 	}
-
 	/**
 	 * 根据选择的菜单项获取当前数据，当前数据是指从相机端获取的数据
 	 * 
@@ -97,17 +96,13 @@ public class CameraParams extends ControlPannelActivity implements
 	@Override
 	public void onPositiveButtonClicked(String[] value, int position)
 	{
-		CmdHandle cmdHandle = CmdHandle.getInstance();
 		Gson gson = new Gson();
 		JsonObject json = new JsonObject();
 		switch (position)
 		{
-		case 0:
-			break;
-		case 1:
-			break;
+		// 常规设置
 		case 2:
-
+		{
 			Net net = Parameters.getInstance().net;
 			int i = 0;
 			for (String str : value[0].split("\\."))
@@ -131,17 +126,17 @@ public class CameraParams extends ControlPannelActivity implements
 
 			json.add("net", gson.toJsonTree(net));
 
-			cmdHandle.setJson((json.toString()).getBytes());
 			break;
+		}
+		// HECC设置
 		case 3:
 		{
 			HECC hecc = Parameters.getInstance().hecc;
 			hecc.baudRate = Integer.parseInt(value[0]);
 			json.add("hecc", gson.toJsonTree(hecc));
-			Log.d("CJ", json.toString());
-			cmdHandle.setJson(json.toString().getBytes());
 			break;
 		}
+		// 串口设置
 		case 4:
 		{
 			UART uart = Parameters.getInstance().uart;
@@ -149,17 +144,16 @@ public class CameraParams extends ControlPannelActivity implements
 			uart.work_mode |= (Integer.parseInt(value[1]) & 0x03);
 			json.add("uart", gson.toJsonTree(uart));
 
-			cmdHandle.setJson(json.toString().getBytes());
 			break;
 		}
 		default:
 			break;
 		}
+		sendJson(json);
 	}
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
-		final CmdHandle cmdHandle = CmdHandle.getInstance();
 		final JsonObject json = new JsonObject();
 		final Gson gson = new Gson();
 		switch (position)
@@ -270,10 +264,8 @@ public class CameraParams extends ControlPannelActivity implements
 							json.add("mode", gson.toJsonTree(mode));
 							JsonObject jsonSensor = new JsonObject();
 							jsonSensor.add("sensor", gson.toJsonTree(sensor));
-							Log.d("CJ", "mode:  " + json.toString());
-							Log.d("CJ", "sensor:  " + jsonSensor.toString());
-							cmdHandle.setJson(json.toString().getBytes());
-							cmdHandle.setJson((jsonSensor.toString().getBytes()));
+							sendJson(json);
+							sendJson(jsonSensor);
 						}
 					}).setNegativeButton("取消", null).create();
 			dialog.show();

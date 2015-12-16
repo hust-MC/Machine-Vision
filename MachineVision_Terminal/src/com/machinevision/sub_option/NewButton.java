@@ -16,6 +16,7 @@ import com.machinevision.net.CmdHandle;
 import com.machinevision.net.NetUtils;
 import com.machinevision.option.MachineLearning;
 import com.machinevision.terminal.FileDirectory;
+import com.machinevision.terminal.MainActivity;
 import com.machinevision.terminal.R;
 import com.machinevision.terminal.R.id;
 
@@ -94,7 +95,7 @@ public class NewButton extends Activity
 				fullImage = (Bitmap) msg.obj;
 				imageView.setImageBitmap((Bitmap) msg.obj);
 				break;
-			case 0x55:
+			case MainActivity.ERROR_MESSAGE:
 				EToast.makeText(NewButton.this, "网络未连接", Toast.LENGTH_SHORT)
 						.show();
 				break;
@@ -131,23 +132,14 @@ public class NewButton extends Activity
 						if (cmdHandle == null)
 						{
 							Message message = handler.obtainMessage();
-							message.what = 0x55;
+							message.what = MainActivity.ERROR_MESSAGE;
 							message.sendToTarget();
 						}
 						else
 						{
-							try
+							while (!stopFlag)
 							{
-								while (!stopFlag)
-								{
-									cmdHandle.getVideo(handler);
-								}
-							} catch (IOException e)
-							{
-								e.printStackTrace();
-							} catch (InterruptedException e)
-							{
-								e.printStackTrace();
+								cmdHandle.getVideo(handler);
 							}
 						}
 

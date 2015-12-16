@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
@@ -18,7 +17,6 @@ public class CmdHandle
 	private static CmdHandle cmdHandle;
 	private OutputStream os;
 	private InputStream is;
-	private Context context;
 
 	private CmdHandle(Socket socket) throws IOException
 	{
@@ -30,10 +28,10 @@ public class CmdHandle
 	{
 		return cmdHandle;
 	}
-
 	public synchronized static CmdHandle getInstance(Socket socket)
 			throws IOException
 	{
+
 		if (cmdHandle == null)
 		{
 			cmdHandle = new CmdHandle(socket);
@@ -54,11 +52,9 @@ public class CmdHandle
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public void getVideo(Handler handler) throws IOException,
-			InterruptedException
+	public void getVideo(Handler handler)
 	{
 		NetPacketContext context = new NetPacketContext(MSG_NET_GET_VIDEO);
-
 		NetReceiveThread.setHandler(handler);
 		context.sendPacket(os);
 	}
@@ -71,6 +67,7 @@ public class CmdHandle
 	 * @param algorithm
 	 *            要选择的算法编号
 	 */
+
 	public void normal(int algorithm)
 	{
 		NetPacketContext context = new NetPacketContext(MSG_NET_NORMAL);

@@ -10,7 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.google.gson.JsonObject;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.EToast;
+import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.DialogBuilder;
 import com.machinevision.sub_option.FileManager_fileExplorer;
 
@@ -45,6 +48,20 @@ abstract class ControlPannelActivity extends Activity
 	{
 		return null;
 	}
+
+	protected void sendJson(JsonObject json)
+	{
+		CmdHandle cmdHandle = CmdHandle.getInstance();
+		if (cmdHandle == null)
+		{
+			EToast.makeText(this, "网络未连接", EToast.LENGTH_SHORT).show();
+		}
+		else
+		{
+			cmdHandle.setJson(json.toString().getBytes());
+		}
+	}
+
 	/**
 	 * 初始化listview控件
 	 * 

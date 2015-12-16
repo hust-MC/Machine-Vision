@@ -22,6 +22,7 @@ import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -42,6 +43,8 @@ public class MainActivity extends Activity
 	final int REQUEST_CODE_FASTENER_SETTINGS = 4;
 	final int REQUEST_CODE_MACHINE_LEARNING = 5;
 	final int REQUEST_CODE_HELP = 6;
+
+	public static final int ERROR_MESSAGE = 0x5555;
 
 	private boolean netFlag = false; 						// 网络连接状态标志
 	ProgressDialog dialog;
@@ -204,7 +207,6 @@ public class MainActivity extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		NetUtils.setIp();
-
 		setContentView(R.layout.activity_main);
 		init_widget(); // 初始化控件
 	}

@@ -186,7 +186,6 @@ public class SysSettings extends ControlPannelActivity implements
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
-		final CmdHandle cmdHandle = CmdHandle.getInstance();
 		final Gson gson = new Gson();
 		final JsonObject json = new JsonObject();
 		switch (position)
@@ -246,7 +245,7 @@ public class SysSettings extends ControlPannelActivity implements
 									.getText().toString());
 
 							json.add("trigger", gson.toJsonTree(trigger));
-							cmdHandle.setJson((json.toString()).getBytes());
+							sendJson(json);
 						}
 					}).setNegativeButton("取消", null).create();
 			dialog.show();
@@ -348,7 +347,6 @@ public class SysSettings extends ControlPannelActivity implements
 						{
 							Gson gson = new Gson();
 							JsonObject json = new JsonObject();
-							int count = 0;
 							AD9849 ad9849 = Parameters.getInstance().ad9849;
 							// 第一列
 							int vga = seekBarEditLayouts[0][0].getValue();
@@ -380,8 +378,7 @@ public class SysSettings extends ControlPannelActivity implements
 									.getValue();
 
 							json.add("ad9849", gson.toJsonTree(ad9849));
-							Log.d("CJ", json.toString());
-							cmdHandle.setJson((json.toString()).getBytes());
+							sendJson(json);
 						}
 					}).setNegativeButton("取消", null).create();
 			dialog.show();
@@ -442,8 +439,6 @@ public class SysSettings extends ControlPannelActivity implements
 	 */
 	class ApplyButton implements OnClickListener
 	{
-		CmdHandle cmdHandle = CmdHandle.getInstance();
-
 		private void sendPackage()
 		{
 			View page = pagerAdapter.getCurrentView();
@@ -496,7 +491,7 @@ public class SysSettings extends ControlPannelActivity implements
 			}
 			default:
 			}
-			cmdHandle.setJson((json.toString()).getBytes());
+			sendJson(json);
 		}
 		@Override
 		public void onClick(DialogInterface dialog, int which)
@@ -549,6 +544,7 @@ public class SysSettings extends ControlPannelActivity implements
 		case 0:
 			startActivity(new Intent(this, DebugMode.class));
 			break;
+		// 设置IP
 		case 2:
 			String[] strs = value[0].split("\\.");
 			try

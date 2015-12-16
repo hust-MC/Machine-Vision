@@ -76,7 +76,7 @@ public class SciThread extends Thread implements CommunicationInterface
 		// 串口存在，打开fd=null则说明没有执行权限
 		{
 			Message message = Message.obtain();
-			message.what = 0x55;
+			message.what = MainActivity.ERROR_MESSAGE;
 			sciHandler.sendMessage(message);
 		}
 	}

@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -120,7 +121,13 @@ public class DialogBuilder
 				views[i] = new EditText(context);
 
 				((EditText) views[i]).setTextSize(25F);
-				((EditText) views[i]).setText(values == null ? "" : values[i]);
+				try
+				{
+					((EditText) views[i]).setText(values[i]);
+				} catch (Exception e)
+				{
+					Log.e("error", "dialogBuilder: " + e.getMessage());
+				}
 				((EditText) views[i])
 						.setBackgroundResource(android.R.drawable.edit_text);
 				// 输入框有效性检查
@@ -147,8 +154,15 @@ public class DialogBuilder
 				views[i] = new Spinner(context);
 
 				((Spinner) views[i]).setAdapter(adapter);
-				((Spinner) views[i]).setSelection(values == null ? 0 : Integer
-						.parseInt(values[i]));
+
+				try
+				{
+					((Spinner) views[i]).setSelection(Integer
+							.parseInt(values[i]));
+				} catch (Exception e)
+				{
+					Log.e("error", "dialogBuilder: " + e.getMessage());
+				}
 				if (strIni != null)
 				{
 					((Spinner) views[i]).setSelection(Integer
