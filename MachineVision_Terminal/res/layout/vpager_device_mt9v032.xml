@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <com.machinevision.sub_option.SeekBarEditLayout
+        <com.machinevision.common_widget.SeekBarEditLayout
             android:id="@+id/device_setting_auto_agc"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <com.machinevision.sub_option.SeekBarEditLayout
+        <com.machinevision.common_widget.SeekBarEditLayout
             android:id="@+id/device_setting_auto_aec"
             android:layout_width="300dp"
             android:layout_height="wrap_content"

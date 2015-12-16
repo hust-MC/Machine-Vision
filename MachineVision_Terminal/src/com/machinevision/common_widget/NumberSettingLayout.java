@@ -1,4 +1,4 @@
-package com.machinevision.sub_option;
+package com.machinevision.common_widget;
 
 import com.machinevision.terminal.R;
 
