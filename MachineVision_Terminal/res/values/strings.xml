@@ -60,10 +60,12 @@
     <string-array name="option_sys_settings_sub">
         <item>模式选择</item>
         <item></item>
+        <item>IP地址,TCP端口</item>
     </string-array>
     <!-- 系统设置子菜单类型 -->
     <string-array name="option_sys_settings_type">
         <item>1分捡模式n演示模式n调试模式</item>
+        <item>0,0,0,0</item>
         <item>0,0,0,0</item>
     </string-array>
 

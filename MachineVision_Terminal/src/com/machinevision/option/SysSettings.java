@@ -10,7 +10,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.machinevision.terminal.R;
 import com.machinevision.common_widget.DialogWindow;
+import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
+import com.machinevision.net.NetUtils;
 import com.machinevision.sub_option.DebugMode;
 import com.machinevision.sub_option.SeekBarEditLayout;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
@@ -39,7 +41,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,14 +63,14 @@ public class SysSettings extends ControlPannelActivity implements
 	 * 
 	 * @return
 	 */
-	private View getPage2()
+	private View getPage1()
 	{
-		View page4 = getLayoutInflater().inflate(
+		View page1 = getLayoutInflater().inflate(
 				R.layout.vpager_device_mt9v032, null);
 
 		Net net = Parameters.getInstance().net;
 
-		return page4;
+		return page1;
 	}
 
 	/**
@@ -77,64 +78,11 @@ public class SysSettings extends ControlPannelActivity implements
 	 * 
 	 * @return
 	 */
-	private View getPage5()
+	private View getPage2()
 	{
-		View page5 = getLayoutInflater().inflate(
+		View page2 = getLayoutInflater().inflate(
 				R.layout.vpager_device_isl12026, null);
-		return page5;
-	}
-
-	/**
-	 * 串口和can设置界面
-	 * 
-	 * @return
-	 */
-	private View getPage7()
-	{
-		View page7 = getLayoutInflater().inflate(
-				R.layout.vpager_device_uart_hecc, null);
-		UART uart = Parameters.getInstance().uart;
-		byte baurate = (byte) uart.baudRate;
-		byte work_mode = (byte) uart.work_mode;
-
-		Spinner uart_baudrate = (Spinner) page7
-				.findViewById(R.id.uart_baudrate);
-		Spinner parity = (Spinner) page7.findViewById(R.id.parity);
-		Spinner stop_bit = (Spinner) page7.findViewById(R.id.stop_bit);
-		Spinner data_len = (Spinner) page7.findViewById(R.id.data_len);
-		Spinner hecc_baudrate = (Spinner) page7
-				.findViewById(R.id.hecc_baudrate);
-
-		ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,
-				R.layout.spinner2, getResources().getStringArray(
-						R.array.uart_baudrate));
-		uart_baudrate.setAdapter(adapter1);
-		uart_baudrate.setSelection(baurate - 1);
-
-		ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,
-				R.layout.spinner2, getResources()
-						.getStringArray(R.array.parity));
-		parity.setAdapter(adapter2);
-		parity.setSelection(work_mode & 0x03);
-
-		ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this,
-				R.layout.spinner2, getResources().getStringArray(
-						R.array.stop_bit));
-		stop_bit.setAdapter(adapter3);
-		stop_bit.setSelection((work_mode & 0x08) >> 3);
-
-		ArrayAdapter<String> adapter4 = new ArrayAdapter<String>(this,
-				R.layout.spinner2, getResources().getStringArray(
-						R.array.data_len));
-		data_len.setAdapter(adapter4);
-		data_len.setSelection(((work_mode & 0xf0) >> 4) - 5);
-
-		ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(this,
-				R.layout.spinner2, getResources().getStringArray(
-						R.array.hecc_baurate));
-		hecc_baudrate.setAdapter(adapter5);
-
-		return page7;
+		return page2;
 	}
 
 	/**
@@ -142,24 +90,24 @@ public class SysSettings extends ControlPannelActivity implements
 	 * 
 	 * @return
 	 */
-	private View getPage8()
+	private View getPage3()
 	{
-		View page8 = getLayoutInflater().inflate(
+		View page3 = getLayoutInflater().inflate(
 				R.layout.vpager_device_at25040, null);
 		Version version = Parameters.getInstance().version;
 
-		((EditText) page8.findViewById(R.id.camera_id)).setText(version.id[0]
+		((EditText) page3.findViewById(R.id.camera_id)).setText(version.id[0]
 				+ "." + version.id[1] + "." + version.id[2] + "."
 				+ version.id[3]);
-		((EditText) page8.findViewById(R.id.version)).setText(version.version
+		((EditText) page3.findViewById(R.id.version)).setText(version.version
 				+ "");
 
-		((EditText) page8.findViewById(R.id.write_time))
+		((EditText) page3.findViewById(R.id.write_time))
 				.setText(version.write_time[0] + "" + version.write_time[1]
 						+ "." + version.write_time[2] + "."
 						+ version.write_time[3]);
 
-		return page8;
+		return page3;
 	}
 
 	/**
@@ -169,9 +117,9 @@ public class SysSettings extends ControlPannelActivity implements
 	{
 		List<View> list = new ArrayList<View>();
 
+		list.add(getPage1());
 		list.add(getPage2());
-		list.add(getPage5());
-		list.add(getPage8());
+		list.add(getPage3());
 
 		pagerAdapter = new MyPagerAdapter(vPager, list);
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
@@ -217,6 +165,24 @@ public class SysSettings extends ControlPannelActivity implements
 		});
 	}
 
+	@Override
+	protected String[] getCurrentValue(int position)
+	{
+		String[] currentValue = new String[getResources().getStringArray(
+				R.array.option_camera_params_sub).length];
+		int count = 0;
+		switch (position)
+		{
+		// 获取当前网络设置
+		case 2:
+		{
+			currentValue[count++] = NetUtils.ip;
+			currentValue[count++] = NetUtils.port + "";
+			break;
+		}
+		}
+		return currentValue;
+	}
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
@@ -286,32 +252,7 @@ public class SysSettings extends ControlPannelActivity implements
 			dialog.show();
 			break;
 		}
-		case 2:
-		{
-			//
-			// String[] strs = value[0].split("\\.");
-			// try
-			// {
-			//
-			// if (strs.length == 4 && Integer.parseInt(strs[0]) < 255
-			// && Integer.parseInt(strs[1]) < 255
-			// && Integer.parseInt(strs[2]) < 255
-			// && Integer.parseInt(strs[3]) < 255)
-			// {
-			// NetUtils.setIp(value[0]);
-			// }
-			// else
-			// {
-			// EToast.makeText(this, "输入的IP有误", Toast.LENGTH_SHORT);
-			// }
-			// } catch (NumberFormatException e)
-			// {
-			// EToast.makeText(this, "输入的IP有误", Toast.LENGTH_SHORT);
-			// Log.e("MC", e.getMessage());
-			// }
 
-			break;
-		}
 		// AD9849菜单
 		case 3:
 		{
@@ -603,9 +544,35 @@ public class SysSettings extends ControlPannelActivity implements
 	@Override
 	public void onPositiveButtonClicked(String[] value, int position)
 	{
-		if (position == 0)
+		switch (position)
 		{
+		case 0:
 			startActivity(new Intent(this, DebugMode.class));
+			break;
+		case 2:
+			String[] strs = value[0].split("\\.");
+			try
+			{
+
+				if (strs.length == 4 && Integer.parseInt(strs[0]) < 255
+						&& Integer.parseInt(strs[1]) < 255
+						&& Integer.parseInt(strs[2]) < 255
+						&& Integer.parseInt(strs[3]) < 255)
+				{
+					NetUtils.setIp(value[0]);
+				}
+				else
+				{
+					EToast.makeText(this, "输入的IP有误", EToast.LENGTH_SHORT)
+							.show();
+				}
+			} catch (NumberFormatException e)
+			{
+				EToast.makeText(this, "输入的IP有误", EToast.LENGTH_SHORT).show();
+				Log.e("MC", e.getMessage());
+			}
+		default:
+			break;
 		}
 	}
 

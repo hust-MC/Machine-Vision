@@ -111,6 +111,7 @@ public class NetUtils
 			dos.writeBytes("ifconfig eth0 " + ip + "\n");
 			dos.writeBytes("exit\n");
 			dos.flush();
+			NetUtils.ip = ip;
 		} catch (IOException e)
 		{
 			e.printStackTrace();

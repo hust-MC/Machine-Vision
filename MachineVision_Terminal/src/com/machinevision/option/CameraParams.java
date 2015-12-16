@@ -10,6 +10,7 @@ import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.NumberSettingLayout;
 import com.machinevision.sub_option.SeekBarEditLayout;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
+import com.machinevision.sub_option.SystemSetting_devicePacket.HECC;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Mode;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Net;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Parameters;
@@ -65,7 +66,6 @@ public class CameraParams extends ControlPannelActivity implements
 		case 2:
 		{
 			Net net = Parameters.getInstance().net;
-			currentValue = new String[4];
 			currentValue[count++] = net.ip_address[0] + "." + net.ip_address[1]
 					+ "." + net.ip_address[2] + "." + net.ip_address[3];
 			currentValue[count++] = net.remote_ip[0] + "." + net.remote_ip[1]
@@ -75,6 +75,12 @@ public class CameraParams extends ControlPannelActivity implements
 					+ net.mac_address[3] + ":" + net.mac_address[4] + ":"
 					+ net.mac_address[5];
 			currentValue[count++] = net.port + "";
+			break;
+		}
+		case 3:
+		{
+			HECC hecc = Parameters.getInstance().hecc;
+			currentValue[count++] = hecc.baudRate + "";
 			break;
 		}
 		case 4:
@@ -124,14 +130,26 @@ public class CameraParams extends ControlPannelActivity implements
 			net.port = Integer.parseInt(value[3]);
 
 			json.add("net", gson.toJsonTree(net));
-			Log.d("CJ", json.toString());
+
 			cmdHandle.setJson((json.toString()).getBytes());
 			break;
+		case 3:
+		{
+			HECC hecc = Parameters.getInstance().hecc;
+			hecc.baudRate = Integer.parseInt(value[0]);
+			json.add("hecc", gson.toJsonTree(hecc));
+			Log.d("CJ", json.toString());
+			cmdHandle.setJson(json.toString().getBytes());
+			break;
+		}
 		case 4:
 		{
 			UART uart = Parameters.getInstance().uart;
 			uart.baudRate = Integer.parseInt(value[0]);
 			uart.work_mode |= (Integer.parseInt(value[1]) & 0x03);
+			json.add("uart", gson.toJsonTree(uart));
+
+			cmdHandle.setJson(json.toString().getBytes());
 			break;
 		}
 		default:
