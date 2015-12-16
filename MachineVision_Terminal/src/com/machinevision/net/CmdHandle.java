@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ public class CmdHandle
 	private static CmdHandle cmdHandle;
 	private OutputStream os;
 	private InputStream is;
+	private Context context;
 
 	private CmdHandle(Socket socket) throws IOException
 	{

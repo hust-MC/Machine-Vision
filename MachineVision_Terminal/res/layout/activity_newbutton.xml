@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/top_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/new_button"
+            android:text="图像获取" />
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/new_button"
+            android:text="基本信息配置" />
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/new_button"
+            android:text="详细参数获取" />
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/new_button"
+            android:text="算法配置" />
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/new_button"
+            android:text="判决标准设置" />
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/top_ly"
+        android:layout_gravity="center" />
+
+</RelativeLayout>

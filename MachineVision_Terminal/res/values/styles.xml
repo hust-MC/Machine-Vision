@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -54,7 +54,7 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textSize=">20sp</item>
-    </style>
+    </style>
     -->
     <style name="top_button">
         <item name="android:layout_height">match_parent</item>
@@ -132,6 +132,37 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:textSize">25sp</item>
+    </style>
+    
+    <!-- 机器学习→新建钮扣样本 -->
+    <style name="new_button">
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:background">@drawable/bg_title</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="bottom_button">
+        <item name="android:layout_height">100px</item>
+        <item name="android:layout_width">150px</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:background">@drawable/bg_control_bt</item>
+    </style>
+
+    <style name="query_item">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="query_spinner">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:textSize">30sp</item>
     </style>
 
 </resources>

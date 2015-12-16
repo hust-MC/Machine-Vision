@@ -89,6 +89,10 @@
             android:name="com.machinevision.sub_option.ButtonInfo"
             android:label="@string/title_activity_button_sample" >
         </activity>
+        <activity
+            android:name="com.machinevision.sub_option.NewButton"
+            android:label="@string/title_activity_new_button" >
+        </activity>
     </application>
 
 </manifest>

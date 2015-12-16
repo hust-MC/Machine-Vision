@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="钮扣："
+            android:textSize="22sp" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:hint="钮扣ID号"
+            android:textSize="22sp" >
+        </EditText>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=".ini"
+            android:textSize="22sp" >
+        </TextView>
+    </TableRow>
+
+</TableLayout>
