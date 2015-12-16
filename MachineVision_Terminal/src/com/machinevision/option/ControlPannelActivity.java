@@ -41,7 +41,10 @@ abstract class ControlPannelActivity extends Activity
 	protected void onSpecialItemClicked(int position)
 	{
 	}
-
+	protected String[] getCurrentValue(int position)
+	{
+		return null;
+	}
 	/**
 	 * 初始化listview控件
 	 * 
@@ -68,11 +71,12 @@ abstract class ControlPannelActivity extends Activity
 				if ((position < wholeMenu.subMenu.length)
 						&& !wholeMenu.subMenu[position].equals(""))
 				{
+					String[] currentValue = getCurrentValue(position);
 					DialogBuilder builder = new DialogBuilder(
 							ControlPannelActivity.this, position);
 					builder.build(wholeMenu.menu[position],
 							wholeMenu.subMenu[position],
-							wholeMenu.subMenuType[position]);
+							wholeMenu.subMenuType[position], currentValue);
 				}
 				else
 				{

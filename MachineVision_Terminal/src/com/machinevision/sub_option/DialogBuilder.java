@@ -124,7 +124,7 @@ public class DialogBuilder
 				((EditText) views[i])
 						.setBackgroundResource(android.R.drawable.edit_text);
 				// 输入框有效性检查
-				if (type.length > 1 && type[i].charAt(1) == '0')
+				if (type[i].length() > 1 && type[i].charAt(1) == '0')
 				{
 				}
 				if (strIni != null)
@@ -147,7 +147,8 @@ public class DialogBuilder
 				views[i] = new Spinner(context);
 
 				((Spinner) views[i]).setAdapter(adapter);
-				((Spinner) views[i]).setSelection(Integer.parseInt(values[i]));
+				((Spinner) views[i]).setSelection(values == null ? 0 : Integer
+						.parseInt(values[i]));
 				if (strIni != null)
 				{
 					((Spinner) views[i]).setSelection(Integer

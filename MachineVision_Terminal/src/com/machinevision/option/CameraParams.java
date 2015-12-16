@@ -1,13 +1,29 @@
 package com.machinevision.option;
 
+import com.emercy.dropdownlist.DropDownList;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.common_widget.EToast;
-import com.machinevision.net.NetUtils;
+import com.machinevision.net.CmdHandle;
+import com.machinevision.sub_option.NumberSettingLayout;
+import com.machinevision.sub_option.SeekBarEditLayout;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
+import com.machinevision.sub_option.SystemSetting_devicePacket.Mode;
+import com.machinevision.sub_option.SystemSetting_devicePacket.Net;
+import com.machinevision.sub_option.SystemSetting_devicePacket.Parameters;
+import com.machinevision.sub_option.SystemSetting_devicePacket.Sensor;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 public class CameraParams extends ControlPannelActivity implements
 		OnDialogClicked
@@ -26,34 +42,81 @@ public class CameraParams extends ControlPannelActivity implements
 		setListViewClicked();
 	}
 
+	/**
+	 * 根据选择的菜单项获取当前数据，当前数据是指从相机端获取的数据
+	 * 
+	 * @param position
+	 *            用户点击的菜单项
+	 * @return 相机端传来的数据
+	 */
+	@Override
+	protected String[] getCurrentValue(int position)
+	{
+		String[] currentValue = null;
+		switch (position)
+		{
+
+		// NET选项
+		case 2:
+		{
+			Net net = Parameters.getInstance().net;
+			currentValue = new String[4];
+			currentValue[0] = net.ip_address[0] + "." + net.ip_address[1] + "."
+					+ net.ip_address[2] + "." + net.ip_address[3];
+			currentValue[1] = net.remote_ip[0] + "." + net.remote_ip[1] + "."
+					+ net.remote_ip[2] + "." + net.remote_ip[3];
+
+			currentValue[2] = net.mac_address[0] + ":" + net.mac_address[1]
+					+ ":" + net.mac_address[2] + ":" + net.mac_address[3] + ":"
+					+ net.mac_address[4] + ":" + net.mac_address[5];
+
+			currentValue[3] = net.port + "";
+			break;
+		}
+
+		}
+		return currentValue;
+	}
+
 	@Override
 	public void onPositiveButtonClicked(String[] value, int position)
 	{
+		CmdHandle cmdHandle = CmdHandle.getInstance();
+		Gson gson = new Gson();
+		JsonObject json = new JsonObject();
 		switch (position)
 		{
 		case 0:
 			break;
+		case 1:
+			break;
 		case 2:
-			String[] strs = value[0].split("\\.");
-			try
-			{
 
-				if (strs.length == 4 && Integer.parseInt(strs[0]) < 255
-						&& Integer.parseInt(strs[1]) < 255
-						&& Integer.parseInt(strs[2]) < 255
-						&& Integer.parseInt(strs[3]) < 255)
-				{
-					NetUtils.setIp(value[0]);
-				}
-				else
-				{
-					EToast.makeText(this, "输入的IP有误", Toast.LENGTH_SHORT);
-				}
-			} catch (NumberFormatException e)
+			Net net = Parameters.getInstance().net;
+			int i = 0;
+			for (String str : value[0].split("\\."))
 			{
-				EToast.makeText(this, "输入的IP有误", Toast.LENGTH_SHORT);
-				Log.e("MC", e.getMessage());
+				net.ip_address[i++] = Integer.parseInt(str);
 			}
+			i = 0;
+			for (String str : value[1].split("\\."))
+			{
+				net.remote_ip[i++] = Integer.parseInt(str);
+
+			}
+			i = 0;
+			for (String str : value[2].split("\\:"))
+			{
+				net.mac_address[i++] = Integer.parseInt(str);
+
+			}
+
+			net.port = Integer.parseInt(value[3]);
+
+			json.add("net", gson.toJsonTree(net));
+			Log.d("CJ", json.toString());
+			cmdHandle.setJson((json.toString()).getBytes());
+			break;
 		default:
 			break;
 		}
@@ -61,8 +124,125 @@ public class CameraParams extends ControlPannelActivity implements
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{
+		final CmdHandle cmdHandle = CmdHandle.getInstance();
+		final JsonObject json = new JsonObject();
+		final Gson gson = new Gson();
 		switch (position)
 		{
+		case 1:
+			final View viewGeneral = getLayoutInflater().inflate(
+					R.layout.vpager_device_general, null);
+			Sensor sensor = Parameters.getInstance().sensor;
+			Mode mode = Parameters.getInstance().mode;
+
+			// 以下两句设置下拉菜单的内容
+			((DropDownList) viewGeneral
+					.findViewById(R.id.device_setting_input_type))
+					.setItem(R.array.device_setting_input_type);
+			((DropDownList) viewGeneral
+					.findViewById(R.id.device_setting_output_type))
+					.setItem(R.array.device_setting_output_type);
+			((SeekBarEditLayout) viewGeneral
+					.findViewById(R.id.device_setting_exposure)).setMax(65536);
+			((NumberSettingLayout) viewGeneral
+					.findViewById(R.id.device_setting_start_x))
+					.setValue(sensor.startPixel_width);
+			((NumberSettingLayout) viewGeneral
+					.findViewById(R.id.device_setting_start_y))
+					.setValue(sensor.startPixel_height);
+			((NumberSettingLayout) viewGeneral
+					.findViewById(R.id.device_setting_input_w))
+					.setValue(sensor.width_input);
+			((NumberSettingLayout) viewGeneral
+					.findViewById(R.id.device_setting_input_h))
+					.setValue(sensor.height_input);
+
+			((SeekBarEditLayout) viewGeneral
+					.findViewById(R.id.device_setting_exposure))
+					.setValue(mode.expoTime);
+
+			if (mode.bitType == 8)
+				((RadioButton) viewGeneral
+						.findViewById(R.id.device_setting_bit_radio0))
+						.setSelected(true);
+			else
+				((RadioButton) viewGeneral
+						.findViewById(R.id.device_setting_bit_radio1))
+						.setSelected(true);
+
+			if (mode.trigger == 0)
+				((CheckBox) viewGeneral
+						.findViewById(R.id.device_setting_mode_checkbox0))
+						.setChecked(true);
+			else if (mode.trigger == 1)
+				((CheckBox) viewGeneral
+						.findViewById(R.id.device_setting_mode_checkbox1))
+						.setChecked(true);
+			else
+				((CheckBox) viewGeneral
+						.findViewById(R.id.device_setting_mode_checkbox2))
+						.setChecked(true);
+			DialogWindow dialog = new DialogWindow.Builder(this)
+					.setTitle(
+							getResources().getStringArray(
+									R.array.option_sys_settings)[position])
+					.setView(viewGeneral)
+					.setPositiveButton("应用", new OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Sensor sensor = Parameters.getInstance().sensor;
+							Mode mode = Parameters.getInstance().mode;
+
+							sensor.startPixel_width = ((NumberSettingLayout) viewGeneral
+									.findViewById(R.id.device_setting_start_x))
+									.getValue();
+							sensor.startPixel_height = ((NumberSettingLayout) viewGeneral
+									.findViewById(R.id.device_setting_start_y))
+									.getValue();
+							sensor.width_input = ((NumberSettingLayout) viewGeneral
+									.findViewById(R.id.device_setting_input_w))
+									.getValue();
+							sensor.height_input = ((NumberSettingLayout) viewGeneral
+									.findViewById(R.id.device_setting_input_h))
+									.getValue();
+
+							mode.expoTime = ((SeekBarEditLayout) viewGeneral
+									.findViewById(R.id.device_setting_exposure))
+									.getValue();
+							mode.bitType = ((RadioButton) viewGeneral
+									.findViewById(R.id.device_setting_bit_radio0))
+									.isChecked() ? 8 : 16;
+
+							if (((CheckBox) viewGeneral
+									.findViewById(R.id.device_setting_mode_checkbox0))
+									.isChecked())
+							{
+								mode.trigger = 0;
+							}
+							else if (((CheckBox) viewGeneral
+									.findViewById(R.id.device_setting_mode_checkbox1))
+									.isChecked())
+							{
+								mode.trigger = 1;
+							}
+							else
+							{
+								mode.trigger = 2;
+							}
+
+							json.add("mode", gson.toJsonTree(mode));
+							JsonObject jsonSensor = new JsonObject();
+							jsonSensor.add("sensor", gson.toJsonTree(sensor));
+							Log.d("CJ", "mode:  " + json.toString());
+							Log.d("CJ", "sensor:  " + jsonSensor.toString());
+							cmdHandle.setJson(json.toString().getBytes());
+							cmdHandle.setJson((jsonSensor.toString().getBytes()));
+						}
+					}).setNegativeButton("取消", null).create();
+			dialog.show();
+			dialog.getWindow().setLayout(800, LayoutParams.WRAP_CONTENT);
 		case 5:
 			EToast.makeText(this, "设置文件已保存", Toast.LENGTH_SHORT).show();
 			break;

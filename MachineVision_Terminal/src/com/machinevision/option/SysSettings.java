@@ -345,71 +345,28 @@ public class SysSettings extends ControlPannelActivity implements
 		}
 		case 2:
 		{
-			final View viewNet = getLayoutInflater().inflate(
-					R.layout.vpager_device_net, null);
-			Net net = Parameters.getInstance().net;
-			((EditText) viewNet.findViewById(R.id.device_setting_mac_address))
-					.setText(net.mac_address[0] + ":" + net.mac_address[1]
-							+ ":" + net.mac_address[2] + ":"
-							+ net.mac_address[3] + ":" + net.mac_address[4]
-							+ ":" + net.mac_address[5]);
+			//
+			// String[] strs = value[0].split("\\.");
+			// try
+			// {
+			//
+			// if (strs.length == 4 && Integer.parseInt(strs[0]) < 255
+			// && Integer.parseInt(strs[1]) < 255
+			// && Integer.parseInt(strs[2]) < 255
+			// && Integer.parseInt(strs[3]) < 255)
+			// {
+			// NetUtils.setIp(value[0]);
+			// }
+			// else
+			// {
+			// EToast.makeText(this, "输入的IP有误", Toast.LENGTH_SHORT);
+			// }
+			// } catch (NumberFormatException e)
+			// {
+			// EToast.makeText(this, "输入的IP有误", Toast.LENGTH_SHORT);
+			// Log.e("MC", e.getMessage());
+			// }
 
-			((EditText) viewNet.findViewById(R.id.device_setting_ip_address))
-					.setText(net.ip_address[0] + "." + net.ip_address[1] + "."
-							+ net.ip_address[2] + "." + net.ip_address[3]);
-
-			((EditText) viewNet
-					.findViewById(R.id.device_setting_server_ip_address))
-					.setText(net.remote_ip[0] + "." + net.remote_ip[1] + "."
-							+ net.remote_ip[2] + "." + net.remote_ip[3]);
-
-			((EditText) viewNet.findViewById(R.id.device_setting_tcp_port))
-					.setText(net.port + "");
-
-			DialogWindow dialog = new DialogWindow.Builder(this)
-					.setTitle(
-							getResources().getStringArray(
-									R.array.option_sys_settings)[position])
-					.setView(viewNet)
-					.setPositiveButton("应用", new OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							Gson gson = new Gson();
-							JsonObject json = new JsonObject();
-							Net net = Parameters.getInstance().net;
-							int i = 0;
-							for (String str : ((EditText) viewNet
-									.findViewById(R.id.device_setting_mac_address))
-									.getText().toString().split("."))
-							{
-								net.mac_address[i++] = Integer.parseInt(str);
-							}
-							i = 0;
-							for (String str : ((EditText) viewNet
-									.findViewById(R.id.device_setting_ip_address))
-									.getText().toString().split("."))
-							{
-								net.ip_address[i++] = Integer.parseInt(str);
-							}
-							i = 0;
-							for (String str : ((EditText) viewNet
-									.findViewById(R.id.device_setting_server_ip_address))
-									.getText().toString().split("."))
-							{
-								net.remote_ip[i++] = Integer.parseInt(str);
-							}
-
-							net.port = Integer.parseInt(((EditText) viewNet
-									.findViewById(R.id.device_setting_tcp_port))
-									.getText().toString());
-
-							json.add("net", gson.toJsonTree(net));
-							cmdHandle.setJson((json.toString()).getBytes());
-						}
-					}).setNegativeButton("取消", null).create();
-			dialog.show();
 			break;
 		}
 		// AD9849菜单
@@ -653,7 +610,6 @@ public class SysSettings extends ControlPannelActivity implements
 				cmdHandle.setJson((jsonSonsor.toString() + "\0").getBytes());
 				break;
 			case 1:
-
 				UART uart = Parameters.getInstance().uart;
 
 				Spinner uart_baudrate = (Spinner) page
@@ -671,7 +627,6 @@ public class SysSettings extends ControlPannelActivity implements
 				break;
 
 			case 2:
-
 			{
 				Version version = Parameters.getInstance().version;
 
