@@ -14,10 +14,13 @@ import com.machinevision.sub_option.SystemSetting_devicePacket.Mode;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Net;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Parameters;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Sensor;
+import com.machinevision.sub_option.SystemSetting_devicePacket.UART;
 
+import android.R.integer;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.text.style.ParagraphStyle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -52,7 +55,9 @@ public class CameraParams extends ControlPannelActivity implements
 	@Override
 	protected String[] getCurrentValue(int position)
 	{
-		String[] currentValue = null;
+		String[] currentValue = new String[getResources().getStringArray(
+				R.array.option_camera_params_sub).length];
+		int count = 0;
 		switch (position)
 		{
 
@@ -61,23 +66,28 @@ public class CameraParams extends ControlPannelActivity implements
 		{
 			Net net = Parameters.getInstance().net;
 			currentValue = new String[4];
-			currentValue[0] = net.ip_address[0] + "." + net.ip_address[1] + "."
-					+ net.ip_address[2] + "." + net.ip_address[3];
-			currentValue[1] = net.remote_ip[0] + "." + net.remote_ip[1] + "."
-					+ net.remote_ip[2] + "." + net.remote_ip[3];
-
-			currentValue[2] = net.mac_address[0] + ":" + net.mac_address[1]
-					+ ":" + net.mac_address[2] + ":" + net.mac_address[3] + ":"
-					+ net.mac_address[4] + ":" + net.mac_address[5];
-
-			currentValue[3] = net.port + "";
+			currentValue[count++] = net.ip_address[0] + "." + net.ip_address[1]
+					+ "." + net.ip_address[2] + "." + net.ip_address[3];
+			currentValue[count++] = net.remote_ip[0] + "." + net.remote_ip[1]
+					+ "." + net.remote_ip[2] + "." + net.remote_ip[3];
+			currentValue[count++] = net.mac_address[0] + ":"
+					+ net.mac_address[1] + ":" + net.mac_address[2] + ":"
+					+ net.mac_address[3] + ":" + net.mac_address[4] + ":"
+					+ net.mac_address[5];
+			currentValue[count++] = net.port + "";
+			break;
+		}
+		case 4:
+		{
+			UART uart = Parameters.getInstance().uart;
+			currentValue[count++] = uart.baudRate + "";
+			currentValue[count++] = (uart.work_mode & 0x03) + "";
 			break;
 		}
 
 		}
 		return currentValue;
 	}
-
 	@Override
 	public void onPositiveButtonClicked(String[] value, int position)
 	{
@@ -117,6 +127,13 @@ public class CameraParams extends ControlPannelActivity implements
 			Log.d("CJ", json.toString());
 			cmdHandle.setJson((json.toString()).getBytes());
 			break;
+		case 4:
+		{
+			UART uart = Parameters.getInstance().uart;
+			uart.baudRate = Integer.parseInt(value[0]);
+			uart.work_mode |= (Integer.parseInt(value[1]) & 0x03);
+			break;
+		}
 		default:
 			break;
 		}
@@ -243,6 +260,7 @@ public class CameraParams extends ControlPannelActivity implements
 					}).setNegativeButton("取消", null).create();
 			dialog.show();
 			dialog.getWindow().setLayout(800, LayoutParams.WRAP_CONTENT);
+			break;
 		case 5:
 			EToast.makeText(this, "设置文件已保存", Toast.LENGTH_SHORT).show();
 			break;

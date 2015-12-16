@@ -12,14 +12,11 @@ import com.machinevision.terminal.R;
 import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.DebugMode;
-import com.machinevision.sub_option.NumberSettingLayout;
 import com.machinevision.sub_option.SeekBarEditLayout;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
 import com.machinevision.sub_option.SystemSetting_devicePacket.AD9849;
-import com.machinevision.sub_option.SystemSetting_devicePacket.Mode;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Net;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Parameters;
-import com.machinevision.sub_option.SystemSetting_devicePacket.Sensor;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Trigger;
 import com.machinevision.sub_option.SystemSetting_devicePacket.UART;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Version;
@@ -40,12 +37,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -61,58 +56,6 @@ public class SysSettings extends ControlPannelActivity implements
 	ViewPager vPager;
 	DropDownList dropList;				// viewPager页卡切换下拉菜单
 	MyPagerAdapter pagerAdapter;
-
-	/**
-	 * 通用界面设置
-	 * 
-	 * @return
-	 */
-	private View getPage1()
-	{
-		View page1 = getLayoutInflater().inflate(
-				R.layout.vpager_device_general, null);
-		Sensor sensor = Parameters.getInstance().sensor;
-		Mode mode = Parameters.getInstance().mode;
-
-		// 以下两句设置下拉菜单的内容
-		((DropDownList) page1.findViewById(R.id.device_setting_input_type))
-				.setItem(R.array.device_setting_input_type);
-		((DropDownList) page1.findViewById(R.id.device_setting_output_type))
-				.setItem(R.array.device_setting_output_type);
-		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
-				.setMax(65536);
-
-		((NumberSettingLayout) page1.findViewById(R.id.device_setting_start_x))
-				.setValue(sensor.startPixel_width);
-		((NumberSettingLayout) page1.findViewById(R.id.device_setting_start_y))
-				.setValue(sensor.startPixel_height);
-		((NumberSettingLayout) page1.findViewById(R.id.device_setting_input_w))
-				.setValue(sensor.width_input);
-		((NumberSettingLayout) page1.findViewById(R.id.device_setting_input_h))
-				.setValue(sensor.height_input);
-
-		((SeekBarEditLayout) page1.findViewById(R.id.device_setting_exposure))
-				.setValue(mode.expoTime);
-
-		if (mode.bitType == 8)
-			((RadioButton) page1.findViewById(R.id.device_setting_bit_radio0))
-					.setSelected(true);
-		else
-			((RadioButton) page1.findViewById(R.id.device_setting_bit_radio1))
-					.setSelected(true);
-
-		if (mode.trigger == 0)
-			((CheckBox) page1.findViewById(R.id.device_setting_mode_checkbox0))
-					.setChecked(true);
-		else if (mode.trigger == 1)
-			((CheckBox) page1.findViewById(R.id.device_setting_mode_checkbox1))
-					.setChecked(true);
-		else
-			((CheckBox) page1.findViewById(R.id.device_setting_mode_checkbox2))
-					.setChecked(true);
-
-		return page1;
-	}
 
 	/**
 	 * agc和aec设置界面
@@ -567,48 +510,6 @@ public class SysSettings extends ControlPannelActivity implements
 			JsonObject json = new JsonObject();
 			switch (vPager.getCurrentItem())
 			{
-			case 0:
-				Sensor sensor = Parameters.getInstance().sensor;
-				Mode mode = Parameters.getInstance().mode;
-
-				sensor.startPixel_width = ((NumberSettingLayout) page
-						.findViewById(R.id.device_setting_start_x)).getValue();
-				sensor.startPixel_height = ((NumberSettingLayout) page
-						.findViewById(R.id.device_setting_start_y)).getValue();
-				sensor.width_input = ((NumberSettingLayout) page
-						.findViewById(R.id.device_setting_input_w)).getValue();
-				sensor.height_input = ((NumberSettingLayout) page
-						.findViewById(R.id.device_setting_input_h)).getValue();
-
-				mode.expoTime = ((SeekBarEditLayout) page
-						.findViewById(R.id.device_setting_exposure)).getValue();
-				mode.bitType = ((RadioButton) page
-						.findViewById(R.id.device_setting_bit_radio0))
-						.isChecked() ? 8 : 16;
-
-				if (((CheckBox) page
-						.findViewById(R.id.device_setting_mode_checkbox0))
-						.isChecked())
-				{
-					mode.trigger = 0;
-				}
-				else if (((CheckBox) page
-						.findViewById(R.id.device_setting_mode_checkbox1))
-						.isChecked())
-				{
-					mode.trigger = 1;
-				}
-				else
-				{
-					mode.trigger = 2;
-				}
-
-				json.add("mode", gson.toJsonTree(mode));
-				JsonObject jsonSonsor = new JsonObject();
-				jsonSonsor.add("sensor", gson.toJsonTree(sensor));
-
-				cmdHandle.setJson((jsonSonsor.toString() + "\0").getBytes());
-				break;
 			case 1:
 				UART uart = Parameters.getInstance().uart;
 
