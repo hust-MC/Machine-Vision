@@ -214,7 +214,7 @@ public class CameraParams extends ControlPannelActivity implements
 			DialogWindow dialog = new DialogWindow.Builder(this)
 					.setTitle(
 							getResources().getStringArray(
-									R.array.option_sys_settings)[position])
+									R.array.option_camera_params)[position])
 					.setView(viewGeneral)
 					.setPositiveButton("应用", new OnClickListener()
 					{
@@ -269,7 +269,7 @@ public class CameraParams extends ControlPannelActivity implements
 						}
 					}).setNegativeButton("取消", null).create();
 			dialog.show();
-			dialog.getWindow().setLayout(800, LayoutParams.WRAP_CONTENT);
+			dialog.setWindowWidth(800);
 			break;
 		case 5:
 			EToast.makeText(this, "设置文件已保存", Toast.LENGTH_SHORT).show();

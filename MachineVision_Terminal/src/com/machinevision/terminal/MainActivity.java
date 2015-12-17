@@ -22,7 +22,6 @@ import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -74,7 +73,7 @@ public class MainActivity extends Activity
 		@Override
 		public void handleMessage(Message msg)
 		{
-			if (msg.what == 0x55)				// 等于0x55说明串口权限不对
+			if (msg.what == MainActivity.ERROR_MESSAGE)				// 串口权限不对
 			{
 				EToast.makeText(MainActivity.this, "尚未获取串口权限",
 						Toast.LENGTH_SHORT).show();

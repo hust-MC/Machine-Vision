@@ -249,6 +249,7 @@ public class SysSettings extends ControlPannelActivity implements
 						}
 					}).setNegativeButton("取消", null).create();
 			dialog.show();
+			dialog.setWindowWidth(800);
 			break;
 		}
 
