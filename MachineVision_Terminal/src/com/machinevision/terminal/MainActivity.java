@@ -148,7 +148,8 @@ public class MainActivity extends Activity
 
 					result_imv1.setImageResource(result ? R.drawable.correct
 							: R.drawable.wrong);
-
+					result_imv2.setImageResource(result ? R.drawable.correct
+							: R.drawable.wrong);
 					qualified_tv.setText("合格：" + qualified);
 					disqualified_tv.setText("不合格：" + disQualified);
 					qualifiedRate_tv.setText("合格率："

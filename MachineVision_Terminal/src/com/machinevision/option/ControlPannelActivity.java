@@ -1,8 +1,6 @@
 package com.machinevision.option;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +13,6 @@ import com.machinevision.terminal.R;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.DialogBuilder;
-import com.machinevision.sub_option.FileManager_fileExplorer;
 
 /**
  * 用于封装控制面板功能 。继承此类之后，必须在setContentView方法之后调用setListData()来设置面板左侧的内容

@@ -200,12 +200,12 @@ public class NetReceiveThread extends Thread
 					if (rxBuf[rxBuf.length - 1] == 0)
 					{
 						++countDisqualified;
-						bundle.putBoolean("result", false);
+						bundle.putBoolean("result", true);
 					}
 					else
 					{
 						++countQualified;
-						bundle.putBoolean("result", true);
+						bundle.putBoolean("result", false);
 					}
 					bundle.putInt("qualified", countDisqualified);
 					bundle.putInt("disqualified", countQualified);
