@@ -60,7 +60,7 @@ public class DataPack
 	}
 	public static NetPacket recvDataPack(InputStream is)
 	{
-		long time, time1, time2 = 0, time3, time4;
+		// long time, time1, time2 = 0, time3, time4;
 		NetPacket revPacket = new NetPacket();
 		boolean hasMagicRead = false;
 		int bufCount = 0;
@@ -69,12 +69,12 @@ public class DataPack
 
 		try
 		{
-			time = System.currentTimeMillis();
+			// time = System.currentTimeMillis();
 			bufCount = is.read(rxBuf);
-			time1 = System.currentTimeMillis();
-			Log.d("MC", "time1 :" + (time1 - time));
+			// time1 = System.currentTimeMillis();
+			// Log.d("MC", "time1 :" + (time1 - time));
 
-			Log.d("NET", "read count = " + bufCount);
+			// Log.d("NET", "read count = " + bufCount);
 
 			/*
 			 * 判断帧头标示
@@ -111,25 +111,27 @@ public class DataPack
 				 */
 				DataInputStream dis = new DataInputStream(
 						new ByteArrayInputStream(rxBuf));
-				dis.skip(startPos + 4);
+				dis.skip(startPos + 16);
 
-				int versionData = readLittleInt(dis);
-				if (versionData != version)
-				{
-					Log.e("ZY", "Version=" + versionData);
-					return null;
-				}
-
-				int type = readLittleInt(dis);
-				int block = readLittleInt(dis);
+				// int versionData = readLittleInt(dis);
+				// if (versionData != version)
+				// {
+				// Log.e("ZY", "Version=" + versionData);
+				// return null;
+				// }
+				//
+				// int type = readLittleInt(dis);
+				// int block = readLittleInt(dis);
 				int length = readLittleInt(dis);
 				int len = length - offset;
 				int testOff = 0;
-				if ((testOff = readLittleInt(dis)) != offset)
-				{
-					Log.e("ZY", "offset=" + testOff);
-					return null;
-				}
+
+				dis.skip(startPos + 4);
+				// if ((testOff = readLittleInt(dis)) != offset)
+				// {
+				// Log.e("ZY", "offset=" + testOff);
+				// return null;
+				// }
 
 				revPacket.minid = readLittleInt(dis);
 
@@ -141,20 +143,20 @@ public class DataPack
 					int tempCount = 0;
 					int tempPos = 0;
 					int restCount = length - availableCount;
-					time2 = System.currentTimeMillis();
+					// time2 = System.currentTimeMillis();
 					do
 					{
 						tempCount = is.read(rxBuf, bufCount + tempPos,
 								restCount - tempPos);
 						tempPos += tempCount;
-						Log.d("MC", "while :" + tempCount);
+//						Log.d("MC", "while :" + tempCount);
 					} while (tempPos < restCount);
 				}
 				else if (availableCount > length)
 				{
 					Log.e("ZY", "availableCount > length : " + availableCount);
 				}
-				time3 = System.currentTimeMillis();
+//				time3 = System.currentTimeMillis();
 
 				/*
 				 * 接收data数组
@@ -170,10 +172,10 @@ public class DataPack
 						pos += count;
 					} while (count > 0 && pos < len);
 				}
-				Log.d("MC", "time1 = " + (time1 - time));
-				Log.d("MC", "time2 = " + (time2 - time1));
-				Log.d("MC", "time3 = " + (time3 - time2));
-				Log.d("MC", "end read:" + (System.currentTimeMillis() - time2));
+				// Log.d("MC", "time1 = " + (time1 - time));
+				// Log.d("MC", "time2 = " + (time2 - time1));
+				// Log.d("MC", "time3 = " + (time3 - time2));
+				// Log.d("MC", "end read:" + (System.currentTimeMillis() - time2));
 				return revPacket;
 			}
 			else

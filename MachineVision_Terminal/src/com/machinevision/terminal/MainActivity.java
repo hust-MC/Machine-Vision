@@ -63,6 +63,7 @@ public class MainActivity extends Activity
 	SciThread serialThread;						// 创建串口线程
 	NetThread netThread;						// 创建网络线程
 
+	private boolean buttonPicture = false;		// 钮扣图片开关
 	private boolean netHandleFlag = true;
 
 	/*
@@ -139,42 +140,44 @@ public class MainActivity extends Activity
 				// 接收分拣结果
 				case NetUtils.MSG_NET_RESULT:
 
-					byte[] packageData = (byte[]) msg.obj;
-					int[] data = new int[12];
-					for (int i = 0; i < 12; i++)
+					if (buttonPicture)
 					{
-						data[i] = packageData[i] & 0xFF;
+						byte[] packageData = (byte[]) msg.obj;
+						int[] data = new int[12];
+						for (int i = 0; i < 12; i++)
+						{
+							data[i] = packageData[i] & 0xFF;
+						}
+
+						int len = data[0] | data[1] << 8 | data[2] << 16
+								| data[3] << 24;
+						int width = data[4] | data[5] << 8 | data[6] << 16
+								| data[7] << 24;
+						int height = data[8] | data[9] << 8 | data[10] << 16
+								| data[11] << 24;
+
+						if (bitmap == null || bitmap.getWidth() != width
+								|| bitmap.getHeight() != height)
+						{
+							bitmap = Bitmap.createBitmap(width, height,
+									Config.ARGB_8888);
+						}
+
+						int[] image = new int[len];
+
+						for (int i = 0; i < len / 3; i++)
+						{
+							int r = 0, g = 0, b = 0;
+							r = packageData[12 + i * 3] & 0xff;
+							g = packageData[12 + i * 3 + 1] & 0xff;
+							b = packageData[12 + i * 3 + 2] & 0xff;
+
+							image[i] = (0xFF000000 | r << 16 | g << 8 | b);
+						}
+						bitmap.setPixels(image, 0, width, 0, 0, width, height);
+						photo_imv1.setImageBitmap(bitmap);
+						photo_imv2.setImageBitmap(bitmap);
 					}
-
-					int len = data[0] | data[1] << 8 | data[2] << 16
-							| data[3] << 24;
-					int width = data[4] | data[5] << 8 | data[6] << 16
-							| data[7] << 24;
-					int height = data[8] | data[9] << 8 | data[10] << 16
-							| data[11] << 24;
-
-					if (bitmap == null || bitmap.getWidth() != width
-							|| bitmap.getHeight() != height)
-					{
-						bitmap = Bitmap.createBitmap(width, height,
-								Config.ARGB_8888);
-					}
-
-					int[] image = new int[len];
-
-					for (int i = 0; i < len / 3; i++)
-					{
-						int r = 0, g = 0, b = 0;
-						r = packageData[12 + i * 3] & 0xff;
-						g = packageData[12 + i * 3 + 1] & 0xff;
-						b = packageData[12 + i * 3 + 2] & 0xff;
-
-						image[i] = (0xFF000000 | r << 16 | g << 8 | b);
-					}
-					bitmap.setPixels(image, 0, width, 0, 0, width, height);
-					photo_imv1.setImageBitmap(bitmap);
-					photo_imv2.setImageBitmap(bitmap);
-
 					Bundle bundle = msg.getData();
 					boolean result = bundle.getBoolean("result");
 					int qualified = bundle.getInt("qualified");				// 获取合格数
@@ -333,6 +336,11 @@ public class MainActivity extends Activity
 				break;
 			}
 		}
+	}
+
+	public void onClick_buttonPicture(View view)
+	{
+		buttonPicture = buttonPicture ? false : true;
 	}
 
 	/*
