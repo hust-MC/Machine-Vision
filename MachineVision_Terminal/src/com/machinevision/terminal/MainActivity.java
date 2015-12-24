@@ -25,6 +25,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Bitmap.Config;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -107,6 +108,7 @@ public class MainActivity extends Activity
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg)
 		{
+			Bitmap bitmap = null;
 			if (netHandleFlag)
 			{
 				switch (msg.what)
@@ -124,7 +126,7 @@ public class MainActivity extends Activity
 							Toast.LENGTH_SHORT).show();
 					break;
 				case NetUtils.MSG_NET_GET_VIDEO: // 获取图像
-					Bitmap bitmap = (Bitmap) msg.obj;
+					bitmap = (Bitmap) msg.obj;
 					photo_imv1.setImageBitmap(bitmap);
 					break;
 				case NetUtils.MSG_NET_STATE:
@@ -136,7 +138,40 @@ public class MainActivity extends Activity
 					break;
 				// 接收分拣结果
 				case NetUtils.MSG_NET_RESULT:
-					bitmap = (Bitmap) msg.obj;
+
+					byte[] packageData = (byte[]) msg.obj;
+					int[] data = new int[12];
+					for (int i = 0; i < 12; i++)
+					{
+						data[i] = packageData[i] & 0xFF;
+					}
+
+					int len = data[0] | data[1] << 8 | data[2] << 16
+							| data[3] << 24;
+					int width = data[4] | data[5] << 8 | data[6] << 16
+							| data[7] << 24;
+					int height = data[8] | data[9] << 8 | data[10] << 16
+							| data[11] << 24;
+
+					if (bitmap == null || bitmap.getWidth() != width
+							|| bitmap.getHeight() != height)
+					{
+						bitmap = Bitmap.createBitmap(width, height,
+								Config.ARGB_8888);
+					}
+
+					int[] image = new int[len];
+
+					for (int i = 0; i < len / 3; i++)
+					{
+						int r = 0, g = 0, b = 0;
+						r = packageData[12 + i * 3] & 0xff;
+						g = packageData[12 + i * 3 + 1] & 0xff;
+						b = packageData[12 + i * 3 + 2] & 0xff;
+
+						image[i] = (0xFF000000 | r << 16 | g << 8 | b);
+					}
+					bitmap.setPixels(image, 0, width, 0, 0, width, height);
 					photo_imv1.setImageBitmap(bitmap);
 					photo_imv2.setImageBitmap(bitmap);
 

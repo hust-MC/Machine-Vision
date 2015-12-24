@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:layout_marginLeft="50dp"
+    android:layout_marginTop="50dp">
+
+    <Button
+        android:id="@+id/bt_svm_use"
+        style="@style/button_query"
+        android:text="svm使用" >
+    </Button>
+
+    <Button
+        android:id="@+id/bt_svm_exit"
+        style="@style/button_query"
+        android:text="退出" >
+    </Button>
+
+</LinearLayout>
