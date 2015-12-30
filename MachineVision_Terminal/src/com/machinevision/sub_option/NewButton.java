@@ -295,17 +295,18 @@ public class NewButton extends Activity
 			subLayout.setOrientation(LinearLayout.HORIZONTAL);
 			subLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
-			LayoutParams params = new LayoutParams(250,
+			LayoutParams params1 = new LayoutParams(250,
 					LayoutParams.WRAP_CONTENT, 0);
 			/*
 			 * 创建一个文本框并设置参数
 			 */
 			TextView tv = new TextView(context);
-			tv.setLayoutParams(params);
+			tv.setLayoutParams(params1);
 			tv.setText(contents[i] + "：");
 			tv.setTextSize(27F);
 
-			params.width = 150;
+			LayoutParams params2 = new LayoutParams(150,
+					LayoutParams.WRAP_CONTENT, 0);
 			if (type[i].startsWith("0"))
 			{
 				viewsTop[i] = new EditText(context);
@@ -324,7 +325,7 @@ public class NewButton extends Activity
 				((Spinner) viewsTop[i]).setAdapter(adapter);
 			}
 
-			viewsTop[i].setLayoutParams(params);
+			viewsTop[i].setLayoutParams(params2);
 			viewsTop[i].setPadding(8, 2, 5, 2);
 			subLayout.addView(tv);
 			subLayout.addView(viewsTop[i]);
@@ -499,7 +500,9 @@ public class NewButton extends Activity
 		LinearLayout layoutOuter = new LinearLayout(this);
 		layoutOuter.setOrientation(LinearLayout.VERTICAL);
 		layoutOuter.setPadding(10, 50, 40, 20);
-
+		LayoutParams paramOuter = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 0);
+		layoutOuter.setLayoutParams(paramOuter);
+	
 		LinearLayout layoutTop = getTopView(this, Menu, strType, viewArr5);
 		LinearLayout layoutBottom = new LinearLayout(this);
 		layoutBottom.setOrientation(LinearLayout.HORIZONTAL);
