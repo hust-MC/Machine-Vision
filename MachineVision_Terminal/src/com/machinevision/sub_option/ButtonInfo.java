@@ -43,7 +43,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 
-public class ButtonInfo extends Activity {
+public class ButtonInfo extends Activity
+{
 	private File file;
 
 	protected ListView listview1;
@@ -75,7 +76,8 @@ public class ButtonInfo extends Activity {
 	String[] subMenuType;
 	private int currentItem;
 
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.button_info);
@@ -114,8 +116,10 @@ public class ButtonInfo extends Activity {
 		File f = new File(MachineLearning.FILE_DIR);
 		File[] files = f.listFiles();
 
-		for (int i = 0; i < files.length; i++) {
-			if (files[i].getName().equals(filename)) {
+		for (int i = 0; i < files.length; i++)
+		{
+			if (files[i].getName().equals(filename))
+			{
 				file = files[i];
 				break;
 			}
@@ -137,11 +141,14 @@ public class ButtonInfo extends Activity {
 		value3 = new String[subMenu[2].split(",").length];
 	}
 
-	class MyButtonListener implements OnClickListener {
+	class MyButtonListener implements OnClickListener
+	{
 		@Override
-		public void onClick(View arg0) {
+		public void onClick(View arg0)
+		{
 			// TODO Auto-generated method stub
-			switch (arg0.getId()) {
+			switch (arg0.getId())
+			{
 			case R.id.bt_modify:
 				modifyInformation();
 				break;
@@ -149,21 +156,26 @@ public class ButtonInfo extends Activity {
 				saveAs();
 				break;
 			case R.id.bt_overwrite:
-				DialogWindow dialog_overwrite = new DialogWindow.Builder(ButtonInfo.this)
+				DialogWindow dialog_overwrite = new DialogWindow.Builder(
+						ButtonInfo.this)
 						.setTitle("你将覆盖原有的配置文件,是否继续？")
 						.setPositiveButton("确定",
-								new DialogInterface.OnClickListener() {
+								new DialogInterface.OnClickListener()
+								{
 									@Override
 									public void onClick(DialogInterface arg0,
-											int arg1) {
+											int arg1)
+									{
 										SimpleDateFormat myFmt = new SimpleDateFormat(
 												"yyyy-MM-dd HH:mm:ss");
 										Date now = new Date(System
 												.currentTimeMillis());
-										try {
+										try
+										{
 											json.put("time", myFmt.format(now)
 													.toString());
-										} catch (JSONException e) {
+										} catch (JSONException e)
+										{
 											// TODO Auto-generated catch block
 											e.printStackTrace();
 										}
@@ -175,16 +187,19 @@ public class ButtonInfo extends Activity {
 									}
 
 								}).setNegativeButton("取消", null).create();
-				dialog_overwrite.myshow();
+				dialog_overwrite.showWrapContent();
 				break;
 			case R.id.bt_delete:
-				DialogWindow dialog_delete = new DialogWindow.Builder(ButtonInfo.this)
+				DialogWindow dialog_delete = new DialogWindow.Builder(
+						ButtonInfo.this)
 						.setTitle("确定删除？")
 						.setPositiveButton("确定",
-								new DialogInterface.OnClickListener() {
+								new DialogInterface.OnClickListener()
+								{
 									@Override
 									public void onClick(DialogInterface arg0,
-											int arg1) {
+											int arg1)
+									{
 										FileManager_fileExplorer
 												.deleteDirectory(file);
 										EToast.makeText(ButtonInfo.this,
@@ -192,9 +207,8 @@ public class ButtonInfo extends Activity {
 												.show();
 										onButtonClicked(RESULT_OK);
 									}
-
 								}).setNegativeButton("取消", null).create();
-				dialog_delete.myshow();
+				dialog_delete.showWrapContent();
 				break;
 			case R.id.exit:
 				EToast.makeText(ButtonInfo.this, "退出成功", Toast.LENGTH_SHORT)
@@ -208,20 +222,24 @@ public class ButtonInfo extends Activity {
 		}
 	}
 
-	public static String getImgPath(String id) {
+	public static String getImgPath(String id)
+	{
 		return MachineLearning.FILE_DIR + id + "/" + id + ".jpg";
 	}
 
-	void saveAs() {
+	void saveAs()
+	{
 		LayoutInflater inflater = (LayoutInflater) ButtonInfo.this
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
 		final View view = inflater.inflate(R.layout.edit_text, null);
 
-		DialogWindow dialog_saveAs = new DialogWindow.Builder(ButtonInfo.this).setTitle("配置文件命名")
-				.setView(view)
-				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+		DialogWindow dialog_saveAs = new DialogWindow.Builder(ButtonInfo.this)
+				.setTitle("配置文件命名").setView(view)
+				.setPositiveButton("确定", new DialogInterface.OnClickListener()
+				{
 					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
+					public void onClick(DialogInterface arg0, int arg1)
+					{
 						EditText nameEditText = (EditText) view
 								.findViewById(R.id.editText1);
 						String saveName = nameEditText.getText().toString();
@@ -229,15 +247,18 @@ public class ButtonInfo extends Activity {
 						/*
 						 * 存入配置文件中
 						 */
-						try {
+						try
+						{
 							File file = new File(NewButton.getIniFile(saveName));
-							if (!file.getParentFile().exists()) {
+							if (!file.getParentFile().exists())
+							{
 								file.getParentFile().mkdirs();
 							}
 							FileWriter writer = new FileWriter(file);
 							writer.write(json.toString());
 							writer.close();
-						} catch (IOException e) {
+						} catch (IOException e)
+						{
 							e.printStackTrace();
 						}
 
@@ -248,20 +269,24 @@ public class ButtonInfo extends Activity {
 					}
 
 				}).setNegativeButton("取消", null).create();
-		dialog_saveAs.myshow();
+		dialog_saveAs.showWrapContent();
 	}
 
-	void modifyInformation() {
+	void modifyInformation()
+	{
 		layout = LayoutInflater.from(this).inflate(R.layout.button_configure,
 				null);
 		initViewPager();
 		AlertDialog dialog = new AlertDialog.Builder(ButtonInfo.this)
 				.setTitle("配置文件修改").setView(layout)
-				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				.setPositiveButton("确定", new DialogInterface.OnClickListener()
+				{
 					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
+					public void onClick(DialogInterface arg0, int arg1)
+					{
 						// TODO Auto-generated method stub
-						switch (currentItem) {
+						switch (currentItem)
+						{
 						case 0:
 							NewButton.saveInfomation(json,
 									subMenu[0].split(","),
@@ -310,23 +335,29 @@ public class ButtonInfo extends Activity {
 				.setTextSize(27F);
 	}
 
-	private View getPage1() {
+	private View getPage1()
+	{
 		return NewButton.getTopView(this, subMenu[0], subMenuType[0], viewArr1);
 	}
 
-	private View getPage2() {
+	private View getPage2()
+	{
 		return NewButton.getTopView(this, subMenu[1], subMenuType[1], viewArr2);
 	}
 
-	private View getPage3() {
+	private View getPage3()
+	{
 		return NewButton.getTopView(this, subMenu[2], subMenuType[2], viewArr3);
 	}
 
-	private Bitmap getBitmap(File file) {
+	private Bitmap getBitmap(File file)
+	{
 		Bitmap bm = null;
 		File[] f = file.listFiles();
-		for (int j = 0; j < f.length; j++) {
-			if (f[j].getName().endsWith("jpg")) {
+		for (int j = 0; j < f.length; j++)
+		{
+			if (f[j].getName().endsWith("jpg"))
+			{
 				bm = BitmapFactory.decodeFile(f[j].getAbsolutePath());
 				break;
 			}
@@ -337,7 +368,8 @@ public class ButtonInfo extends Activity {
 	/**
 	 * 设置ViewPager的内容
 	 */
-	private void initViewPager() {
+	private void initViewPager()
+	{
 		List<View> list = new ArrayList<View>();
 
 		View page1 = getPage1();
@@ -356,11 +388,14 @@ public class ButtonInfo extends Activity {
 		vPager.setOffscreenPageLimit(2);
 		vPager.setAdapter(new MyPagerAdapter(vPager, list));
 
-		vPager.setOnPageChangeListener(new OnPageChangeListener() {
+		vPager.setOnPageChangeListener(new OnPageChangeListener()
+		{
 			@Override
-			public void onPageSelected(int arg0) {
+			public void onPageSelected(int arg0)
+			{
 				currentItem = arg0;
-				switch (currentItem) {
+				switch (currentItem)
+				{
 				case 0:
 					text1.setBackgroundResource(R.drawable.bg_top_bt);
 					text2.setBackgroundResource(R.drawable.bg_title);
@@ -384,53 +419,64 @@ public class ButtonInfo extends Activity {
 			}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			public void onPageScrolled(int arg0, float arg1, int arg2)
+			{
 			}
 
 			@Override
-			public void onPageScrollStateChanged(int arg0) {
+			public void onPageScrollStateChanged(int arg0)
+			{
 			}
 		});
 	}
 
-	private final class CustomAdapter extends BaseAdapter {
+	private final class CustomAdapter extends BaseAdapter
+	{
 
 		private String[] names = null;
 		private int images = R.drawable.correct;
 
 		private LayoutInflater mInflater;
 
-		public CustomAdapter(int resid) {
+		public CustomAdapter(int resid)
+		{
 			names = getResources().getString(resid).split(",");
 			mInflater = getLayoutInflater();
 		}
 
 		// 描述adpter的大小（确定了listView的条目）
 		@Override
-		public int getCount() {
+		public int getCount()
+		{
 			return names.length;
 		}
 
 		// Adapter对于的position的数据
 		@Override
-		public Object getItem(int position) {
+		public Object getItem(int position)
+		{
 			return names[position];
 		}
 
 		// 得到item 在adapter所对应的位置
 		@Override
-		public long getItemId(int position) {
+		public long getItemId(int position)
+		{
 			return position;
 		}
 
 		// 创建listview的item条目，把数据绑定给item int position, Adapter的下标 View
 		// convertView, 缓存的第一屏item的布局文件 ViewGroup parent ListView
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(int position, View convertView, ViewGroup parent)
+		{
 			View view = null;
-			if (convertView != null) {
+			if (convertView != null)
+			{
 				view = convertView;
-			} else {
+			}
+			else
+			{
 				view = mInflater.inflate(R.layout.list_buttoninfo, parent,
 						false);
 			}
@@ -442,15 +488,20 @@ public class ButtonInfo extends Activity {
 
 			iv_header.setImageResource(images);
 			tv_name.setText(names[position] + ":");
-			if (json.has(names[position])) {
-				try {
+			if (json.has(names[position]))
+			{
+				try
+				{
 					tv_content.setText(json.getString(names[position])
 							.toString());
-				} catch (JSONException e) {
+				} catch (JSONException e)
+				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else {
+			}
+			else
+			{
 				tv_content.setText("未设置");
 			}
 
@@ -458,35 +509,41 @@ public class ButtonInfo extends Activity {
 		}
 	}
 
-	private class MyPagerAdapter extends PagerAdapter {
+	private class MyPagerAdapter extends PagerAdapter
+	{
 		private List<View> list;
 
-		public MyPagerAdapter(ViewPager vPager, List<View> list) {
+		public MyPagerAdapter(ViewPager vPager, List<View> list)
+		{
 			Log.d("CJ", "MyPager");
 			this.list = list;
 		}
 
 		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
+		public void destroyItem(ViewGroup container, int position, Object object)
+		{
 			Log.d("CJ", "remove");
 			((ViewPager) container).removeView(list.get(position));
 		}
 
 		@Override
-		public Object instantiateItem(View container, int position) {
+		public Object instantiateItem(View container, int position)
+		{
 			Log.d("CJ", "instantiate");
 			((ViewPager) container).addView(list.get(position));
 			return list.get(position);
 		}
 
 		@Override
-		public int getCount() {
+		public int getCount()
+		{
 			Log.d("CJ", "getCount");
 			return list.size();
 		}
 
 		@Override
-		public boolean isViewFromObject(View arg0, Object arg1) {
+		public boolean isViewFromObject(View arg0, Object arg1)
+		{
 			Log.d("CJ", "from");
 			return arg0 == arg1;
 		}
@@ -497,7 +554,8 @@ public class ButtonInfo extends Activity {
 	 * 
 	 * @author MC
 	 */
-	private void finishWithAnim() {
+	private void finishWithAnim()
+	{
 		finish();
 		overridePendingTransition(0, R.anim.top_out);
 	}
@@ -509,7 +567,8 @@ public class ButtonInfo extends Activity {
 	 *            按键的ID
 	 * @author MC
 	 */
-	public void onButtonClicked(int resId) {
+	public void onButtonClicked(int resId)
+	{
 		setResult(resId);
 		finishWithAnim();
 	}
