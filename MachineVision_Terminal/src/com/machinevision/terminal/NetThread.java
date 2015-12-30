@@ -98,9 +98,10 @@ public class NetThread extends Thread implements CommunicationInterface
 					/*
 					 * 以下代码正式开始发送
 					 */
-
+					
 					while (currentState != CurrentState.onStop)
 					{
+
 						lock.lock();
 						if (currentState == CurrentState.onPause)
 						{
@@ -111,7 +112,7 @@ public class NetThread extends Thread implements CommunicationInterface
 						else
 						{
 							currentState = CurrentState.onSending;
-							Thread.sleep(2000);
+							// Thread.sleep(2000);
 							cmdHandle.getState(handler);
 						}
 						lock.unlock();

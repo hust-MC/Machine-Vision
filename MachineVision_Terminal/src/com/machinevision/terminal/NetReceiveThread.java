@@ -151,13 +151,11 @@ public class NetReceiveThread extends Thread
 					ad.pageContents[13] = ad.hxdrv[1];
 					ad.pageContents[14] = ad.hxdrv[2];
 					ad.pageContents[15] = ad.hxdrv[3];
-
 					break;
 				}
 				case NetUtils.MSG_NET_RESULT:
 				{
 					byte[] rxBuf = revPacket.data;
-
 					Message message = Message.obtain();
 					message.what = NetUtils.MSG_NET_RESULT;
 

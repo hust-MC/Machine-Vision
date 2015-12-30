@@ -15,25 +15,26 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/test"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="钮扣设置："
-            android:textSize="27sp" />
-        <com.emercy.dropdownlist.DropDownList
-            android:id="@+id/device_setting_droplist"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </com.emercy.dropdownlist.DropDownList>
+            android:id="@+id/textConfig1"
+            style="@style/new_button"
+            android:background="@drawable/bg_top_bt"
+            android:text="基本信息" />
+
+        <TextView
+            android:id="@+id/textConfig2"
+            style="@style/new_button"
+            android:text="算法配置" />
+
+        <TextView
+            android:id="@+id/textConfig3"
+            style="@style/new_button"
+            android:text="判决标准" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:background="#759A8F" />
 
     <android.support.v4.view.ViewPager

@@ -256,8 +256,8 @@ public class FileManager_fileExplorer extends ListActivity
 						{
 							deleteDirectory(file);
 							refreshListView();
-							EToast.makeText(CONTEXT, "文件已删除", Toast.LENGTH_SHORT)
-									.show();
+							EToast.makeText(CONTEXT, "文件已删除",
+									Toast.LENGTH_SHORT).show();
 						}
 					}).setNegativeButton("取消", null).show();
 			break;
@@ -267,7 +267,7 @@ public class FileManager_fileExplorer extends ListActivity
 		}
 		return super.onContextItemSelected(item);
 	}
-	private void deleteDirectory(File file)
+	static void deleteDirectory(File file)
 	{
 		if (file.isFile())
 		{

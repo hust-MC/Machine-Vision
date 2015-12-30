@@ -16,19 +16,19 @@ import org.json.JSONObject;
 import com.machinevision.terminal.R;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.option.MachineLearning;
-import com.machinevision.terminal.FileDirectory;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -41,37 +41,69 @@ public class ButtonCfgLlist extends ListActivity
 
 	public static final int SHOW_INFO = 102;
 
-	private Button button;
 	private Spinner spiner1, spiner2, spiner3, spiner4, spiner5;
+	private String[] vals =
+	{ null, null, null, null, null };
 
-	private ArrayList<HashMap<String, Object>> listItems; // 存放文字、图片信息
+	private CheckBox checkBox1, checkBox2;
+	private EditText Button_ID;
+	private Button Button_Query, Button_Exit;
 
+	private ArrayList<HashMap<String, Object>> listItems = new ArrayList<HashMap<String, Object>>(); // 存放文字、图片信息
 	private SimpleAdapter listItemAdapter; // 适配器
 	File[] files;
-	String[] vals =
-	{ null, null, null, null, null };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.button_cfglist);
 
-		System.out.println("--------buttoncfglist->");
-		setContentView(R.layout.button_cfg_list);
+		Button_Query = (Button) findViewById(R.id.bt_query);
+		Button_Query.setText("查询");
 
-		button = (Button) findViewById(R.id.bt_query);
-		button.setText("查询");
-
-		button.setOnClickListener(new View.OnClickListener()
+		Button_Query.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
 			{
 				// Perform action on click
-				String[] strs = getResources().getStringArray(
-						R.array.option_machine_learning_ini);
-				String[] keys = strs[0].split(",");
-				queryButton(null, keys, vals);
-				listItemAdapter.notifyDataSetChanged();
+				if (!checkBox1.isChecked() && !checkBox2.isChecked())
+				{
+					EToast.makeText(ButtonCfgLlist.this, "请选择查询方式",
+							Toast.LENGTH_SHORT).show();
+				}
+				else if (checkBox1.isChecked())
+				{
+					String str1 = Button_ID.getText().toString();
+					if (TextUtils.isEmpty(str1))
+						EToast.makeText(ButtonCfgLlist.this, "请输入钮扣ID号",
+								Toast.LENGTH_SHORT).show();
+					else
+					{
+						CheckID(str1);
+						listItemAdapter.notifyDataSetChanged();
+					}
+				}
+				else
+				{
+					String str2 = getResources().getString(
+							R.string.option_machine_check_condition);
+					String[] keys = str2.split(",");
+					QueryButton(keys, vals);
+					listItemAdapter.notifyDataSetChanged();
+				}
+			}
+		});
+
+		Button_Exit = (Button) findViewById(R.id.bt_exit);
+		Button_Exit.setOnClickListener(new View.OnClickListener()
+		{
+
+			@Override
+			public void onClick(View v)
+			{
+				// TODO Auto-generated method stub
+				finishWithAnim();
 			}
 		});
 
@@ -87,18 +119,13 @@ public class ButtonCfgLlist extends ListActivity
 		spiner4.setOnItemSelectedListener(new SpinnerOnSelectedListener4());
 		spiner5.setOnItemSelectedListener(new SpinnerOnSelectedListener5());
 
-		initSpiner(getResources().getStringArray(
-				R.array.option_machine_learning_type));
+		checkBox1 = (CheckBox) findViewById(R.id.machine_learing_query_option1);
+		checkBox2 = (CheckBox) findViewById(R.id.machine_learing_query_option2);
+		Button_ID = (EditText) findViewById(R.id.machine_learning_button_id);
+
+		initSpiner(getResources().getString(R.string.option_machine_query_item));
 		initListView();
 		ButtonCfgLlist.this.setListAdapter(listItemAdapter);
-	}
-
-	void myprintf(String[] val)
-	{
-		for (int i = 0; i < val.length; i++)
-		{
-			System.out.println("---->" + val[i]);
-		}
 	}
 
 	class SpinnerOnSelectedListener1 implements OnItemSelectedListener
@@ -109,9 +136,8 @@ public class ButtonCfgLlist extends ListActivity
 		{
 			String selected = adapterView.getItemAtPosition(position)
 					.toString();
-			System.out.println("---->" + selected);
 			vals[0] = selected;
-			myprintf(vals);
+
 		}
 
 		@Override
@@ -149,7 +175,6 @@ public class ButtonCfgLlist extends ListActivity
 		{
 			String selected = adapterView.getItemAtPosition(position)
 					.toString();
-			System.out.println("---->" + selected);
 			vals[2] = selected;
 		}
 
@@ -169,7 +194,6 @@ public class ButtonCfgLlist extends ListActivity
 		{
 			String selected = adapterView.getItemAtPosition(position)
 					.toString();
-			System.out.println("---->" + selected);
 			vals[3] = selected;
 		}
 
@@ -189,7 +213,6 @@ public class ButtonCfgLlist extends ListActivity
 		{
 			String selected = adapterView.getItemAtPosition(position)
 					.toString();
-			System.out.println("---->" + selected);
 			vals[4] = selected;
 		}
 
@@ -209,19 +232,17 @@ public class ButtonCfgLlist extends ListActivity
 	{
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
-		EToast.makeText(this, "你点击了第" + position + "行", Toast.LENGTH_SHORT)
-				.show();
 
 		Intent intent = new Intent(this, ButtonInfo.class);
-		String string = (String) listItems.get(position).get("ItemTitle");
-		intent.putExtra("file", string);
+		String name = ((String) listItems.get(position).get("ItemTitle"))
+				.split(":")[1];
+		intent.putExtra("file", name);
 		startActivityForResult(intent, SHOW_INFO);
 	}
 
-	void initSpiner(String[] strType)
+	private void initSpiner(String strType)
 	{
-		String[] type = strType[0].split(",");
-
+		String[] type = strType.split(",");
 		ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,
 				R.layout.spinner1, type[0].substring(1).split("n"));
 		spiner1.setAdapter(adapter1);
@@ -248,22 +269,27 @@ public class ButtonCfgLlist extends ListActivity
 	 */
 	private void initListView()
 	{
-		listItems = new ArrayList<HashMap<String, Object>>();
-		File[] files = new File(MachineLearning.FILE_DIR).listFiles();
+
+		File parentFile = new File(MachineLearning.FILE_DIR);
+		if (!parentFile.exists())
+			parentFile.mkdirs();
+
+		files = new File(MachineLearning.FILE_DIR).listFiles();
+		listItems.clear();
 		for (int i = 0; i < files.length; i++)
 		{
 			listItems.add(getData(files[i]));
 		}
-
-		// 生成适配器的Item和动态数组对应的元素
 		listItemAdapter = new SimpleAdapter(this, listItems, // listItems数据源
 				R.layout.list_item, // ListItem的XML布局实现
 				new String[]
-				{ "ItemTitle", "ItemImage" }, // 动态数组与ImageItem对应的子项
+				{ "ItemTitle", "ItemImage", "EditTime" }, // 动态数组与ImageItem对应的子项
+															// 的ID
 				new int[]
-				{ R.id.ItemTitle, R.id.ItemImage } // list_item.xml布局文件里面的一个ImageView的ID,一个TextView
-													// 的ID
+				{ R.id.ItemTitle, R.id.ItemImage, R.id.EditTime }
+
 		);
+
 		listItemAdapter.setViewBinder(new SimpleAdapter.ViewBinder()
 		{
 			public boolean setViewValue(View view, Object data,
@@ -285,6 +311,7 @@ public class ButtonCfgLlist extends ListActivity
 	HashMap<String, Object> getData(File file)
 	{
 		HashMap<String, Object> map = new HashMap<String, Object>();
+
 		if (file.isDirectory())
 		{
 			File[] f = file.listFiles();
@@ -302,7 +329,7 @@ public class ButtonCfgLlist extends ListActivity
 
 						String name = f[j].getName();
 						map.put("ItemTitle",
-								name.substring(0, name.length() - 4)); // 文字
+								"钮扣:" + name.substring(0, name.length() - 4)); // 文字
 					} catch (FileNotFoundException e)
 					{
 						e.printStackTrace();
@@ -310,6 +337,21 @@ public class ButtonCfgLlist extends ListActivity
 					break;
 				}
 			}
+
+			JSONObject JsonFile = getJsonStr(file);
+			if (JsonFile.has("time"))
+			{
+				try
+				{
+					map.put("EditTime", JsonFile.getString("time"));
+				} catch (JSONException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else
+				map.put("EditTime", "未设置");
 		}
 		return map;
 	}
@@ -338,8 +380,9 @@ public class ButtonCfgLlist extends ListActivity
 		return true;
 	}
 
-	JSONObject getJsonStr(File file)
+	public static JSONObject getJsonStr(File file)
 	{
+
 		JSONObject json = null;
 
 		File[] f = file.listFiles();
@@ -374,11 +417,24 @@ public class ButtonCfgLlist extends ListActivity
 		return json;
 	}
 
-	void queryButton(String fileDir, String[] keys, String[] values)
+	void CheckID(String id)
+	{
+		listItems.clear();
+		for (int i = 0; i < files.length; i++)
+		{
+			File file = files[i];
+			if (file.getName().contains(id))
+				listItems.add(getData(file));
+		}
+	}
+
+	void QueryButton(String[] keys, String[] values)
 	{
 		JSONObject json = null;
 		if (files.length == 0)
+		{
 			return;
+		}
 
 		listItems.clear();
 
@@ -404,5 +460,16 @@ public class ButtonCfgLlist extends ListActivity
 			initListView();
 			ButtonCfgLlist.this.setListAdapter(listItemAdapter);
 		}
+	}
+
+	/**
+	 * 关闭时触发切换动画
+	 * 
+	 * @author MC
+	 */
+	private void finishWithAnim()
+	{
+		finish();
+		overridePendingTransition(0, R.anim.top_out);
 	}
 }

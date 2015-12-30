@@ -7,14 +7,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="100dp"
         android:layout_weight="4"
         android:orientation="horizontal" >
 
         <ImageView
             android:id="@+id/machine_learning_page1_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter" />
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginRight="50dp" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/LineChart"
+            android:layout_width="300dp"
+            android:layout_height="300dp" />
     </LinearLayout>
 
     <LinearLayout

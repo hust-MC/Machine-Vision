@@ -243,7 +243,7 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+		Log.d("SYSTEM", "send Json : " + "{\"net\":{\"port\":6030}}");
 		NetUtils.setIp();
 		setContentView(R.layout.activity_main);
 		init_widget(); // 初始化控件

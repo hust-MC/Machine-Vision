@@ -5,41 +5,44 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
 import com.machinevision.net.NetUtils;
-import com.machinevision.option.MachineLearning;
 import com.machinevision.terminal.FileDirectory;
-import com.machinevision.terminal.MainActivity;
+import com.machinevision.terminal.NetReceiveThread;
 import com.machinevision.terminal.R;
-import com.machinevision.terminal.R.id;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewStub;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,11 +58,12 @@ public class NewButton extends Activity
 	public static final String FILE_DIR = FileDirectory.getAppDirectory()
 			+ "Learning/";
 
-	private boolean stopFlag = false;
 	private ViewPager viewPager;
 
 	private ImageView imageView;
-	private String ButtonID;
+	private LineChart mLineChart;
+	
+	private static String ButtonID = null;
 	public static Bitmap fullImage = null;
 
 	private List<View> lists = new ArrayList<View>();
@@ -83,6 +87,7 @@ public class NewButton extends Activity
 
 	private String[] menu;
 	private String[] type;
+	
 	JSONObject json = null;
 
 	private Handler handler = new Handler() // 接收网络子线程数据并更新UI
@@ -95,28 +100,31 @@ public class NewButton extends Activity
 				fullImage = (Bitmap) msg.obj;
 				imageView.setImageBitmap((Bitmap) msg.obj);
 				break;
-			case MainActivity.ERROR_MESSAGE:
+			case 0x55:
 				EToast.makeText(NewButton.this, "网络未连接", Toast.LENGTH_SHORT)
 						.show();
 				break;
 			default:
-				EToast.makeText(NewButton.this, "网络异常", Toast.LENGTH_SHORT)
-						.show();
+				fullImage = (Bitmap) msg.obj;
+				imageView.setImageBitmap(fullImage);	
 				break;
 			}
 		}
 	};
 
+	
 	private View getPage1()
 	{
-
 		View page1 = getLayoutInflater().inflate(R.layout.vpage1_new_button,
 				null);
 		imageView = (ImageView) page1
 				.findViewById(R.id.machine_learning_page1_image);
+		mLineChart = (LineChart) page1.findViewById(R.id.LineChart);		
+		Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.correct);
+		new MyChart(mLineChart, bitmap).show();
+		
 		Button bt_get = (Button) page1
 				.findViewById(R.id.machine_learning_page1_get);
-
 		bt_get.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -129,20 +137,17 @@ public class NewButton extends Activity
 					public void run()
 					{
 						CmdHandle cmdHandle = CmdHandle.getInstance();
+						NetReceiveThread.setHandler(handler);
 						if (cmdHandle == null)
 						{
 							Message message = handler.obtainMessage();
-							message.what = MainActivity.ERROR_MESSAGE;
+							message.what = 0x55;
 							message.sendToTarget();
 						}
 						else
 						{
-							while (!stopFlag)
-							{
-								cmdHandle.getVideo(handler);
-							}
+							cmdHandle.getVideo(handler);
 						}
-
 					}
 				}).start();
 			}
@@ -156,39 +161,39 @@ public class NewButton extends Activity
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				stopFlag = true;
-				LayoutInflater inflater = (LayoutInflater) NewButton.this
-						.getSystemService(LAYOUT_INFLATER_SERVICE);
-				final View view = inflater.inflate(R.layout.file_rname, null);
-
-				new AlertDialog.Builder(NewButton.this)
-						.setTitle("配置文件命名")
-						.setView(view)
-						.setPositiveButton("确定",
-								new DialogInterface.OnClickListener()
-								{
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which)
+				if (fullImage == null)
+					EToast.makeText(NewButton.this, "请先获取图像",
+							Toast.LENGTH_SHORT).show();
+				else
+				{
+					LayoutInflater inflater = (LayoutInflater) NewButton.this
+							.getSystemService(LAYOUT_INFLATER_SERVICE);
+					final View view = inflater.inflate(R.layout.file_rname,
+							null);
+					new AlertDialog.Builder(NewButton.this)
+							.setTitle("配置文件命名")
+							.setView(view)
+							.setPositiveButton("确定",
+									new DialogInterface.OnClickListener()
 									{
-										// TODO Auto-generated method stub
-										EditText nameEditText = (EditText) view
-												.findViewById(R.id.editText1);
-										ButtonID = nameEditText.getText()
-												.toString();
-										if (fullImage != null)
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which)
 										{
+											// TODO Auto-generated method stub
+											EditText nameEditText = (EditText) view
+													.findViewById(R.id.editText1);
+											ButtonID = nameEditText.getText()
+													.toString();
 											saveMyBitmap(fullImage, ButtonID);
+											write2sd(null, ButtonID);
 											EToast.makeText(NewButton.this,
 													"图像保存成功",
 													Toast.LENGTH_SHORT).show();
 										}
-										else
-											EToast.makeText(NewButton.this,
-													"图像未获取", Toast.LENGTH_SHORT)
-													.show();
-									}
-								}).setNegativeButton("取消", null).show();
+									}).setNegativeButton("取消", null).show();
+				}
 			}
 		});
 
@@ -213,12 +218,12 @@ public class NewButton extends Activity
 		return FILE_DIR + id + "/" + id + ".jpg";
 	}
 
-	String getIniFile(String id)
+	public static String getIniFile(String id)
 	{
 		return FILE_DIR + id + "/" + id + ".ini";
 	}
 
-	private void saveMyBitmap(Bitmap mBitmap, String bitName)
+	public static void saveMyBitmap(Bitmap mBitmap, String bitName)
 	{
 		File f = new File(getImgPath(bitName));
 		if (!f.getParentFile().exists())
@@ -251,11 +256,28 @@ public class NewButton extends Activity
 			e.printStackTrace();
 		}
 	}
+	
+	public static void write2sd(JSONObject json, String ButtonID)
+	{
+		try
+		{
+			FileWriter writer = new FileWriter(getIniFile(ButtonID));
+			if (json == null)
+				writer.write("");
+			else
+				writer.write(json.toString());			
+			writer.close();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-	private LinearLayout getTopView(String menu, String strType, View[] viewsTop)
+	public static LinearLayout getTopView(Context context, String menu,
+			String strType, View[] viewsTop)
 	{
 
-		LinearLayout layoutTop = new LinearLayout(this);
+		LinearLayout layoutTop = new LinearLayout(context);
 		layoutTop.setOrientation(LinearLayout.VERTICAL);
 
 		String[] contents = menu.split(",");
@@ -263,13 +285,13 @@ public class NewButton extends Activity
 
 		if (viewsTop.length != contents.length)
 		{
-			EToast.makeText(NewButton.this, "长度不等", Toast.LENGTH_SHORT).show();
+			EToast.makeText(context, "长度不等", Toast.LENGTH_SHORT).show();
 			return null;
 		}
 
 		for (int i = 0; i < contents.length; i++)
 		{
-			LinearLayout subLayout = new LinearLayout(this);
+			LinearLayout subLayout = new LinearLayout(context);
 			subLayout.setOrientation(LinearLayout.HORIZONTAL);
 			subLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -278,7 +300,7 @@ public class NewButton extends Activity
 			/*
 			 * 创建一个文本框并设置参数
 			 */
-			TextView tv = new TextView(this);
+			TextView tv = new TextView(context);
 			tv.setLayoutParams(params);
 			tv.setText(contents[i] + "：");
 			tv.setTextSize(27F);
@@ -286,7 +308,7 @@ public class NewButton extends Activity
 			params.width = 150;
 			if (type[i].startsWith("0"))
 			{
-				viewsTop[i] = new EditText(this);
+				viewsTop[i] = new EditText(context);
 
 				((EditText) viewsTop[i]).setTextSize(25F);
 				((EditText) viewsTop[i])
@@ -294,9 +316,10 @@ public class NewButton extends Activity
 			}
 			else
 			{
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-						R.layout.spiner, type[i].substring(1).split("n"));
-				viewsTop[i] = new Spinner(this);
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						context, R.layout.spiner, type[i].substring(1).split(
+								"n"));
+				viewsTop[i] = new Spinner(context);
 
 				((Spinner) viewsTop[i]).setAdapter(adapter);
 			}
@@ -324,11 +347,10 @@ public class NewButton extends Activity
 
 	private View getPage2(String Menu, String strType)
 	{
-
 		LinearLayout layoutOuter = new LinearLayout(this);
 		layoutOuter.setOrientation(LinearLayout.VERTICAL);
 		layoutOuter.setPadding(10, 50, 40, 20);
-		LinearLayout layoutTop = getTopView(Menu, strType, viewArr2);
+		LinearLayout layoutTop = getTopView(this, Menu, strType, viewArr2);
 		LinearLayout layoutBottom = new LinearLayout(this);
 		layoutBottom.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -358,16 +380,22 @@ public class NewButton extends Activity
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				saveInfomation(json, menu[0].split(","), type[0].split(","),
-						viewArr2, value2);
-				EToast.makeText(NewButton.this, "保存成功", Toast.LENGTH_SHORT)
-						.show();
+				if (ButtonID == null)
+					EToast.makeText(NewButton.this, "样本图片未保存",
+							Toast.LENGTH_SHORT).show();
+				else
+				{
+					saveInfomation(json, menu[0].split(","),
+							type[0].split(","), viewArr2, value2);
+					write2sd(json, ButtonID);
+					EToast.makeText(NewButton.this, "保存成功", Toast.LENGTH_SHORT)
+							.show();
+				}
 			}
 		});
 
 		((Button) viewsBottom[1]).setOnClickListener(new View.OnClickListener()
 		{
-
 			@Override
 			public void onClick(View v)
 			{
@@ -400,7 +428,7 @@ public class NewButton extends Activity
 		layoutOuter.setOrientation(LinearLayout.VERTICAL);
 		layoutOuter.setPadding(10, 50, 40, 20);
 
-		LinearLayout layoutTop = getTopView(Menu, strType, viewArr4);
+		LinearLayout layoutTop = getTopView(this, Menu, strType, viewArr4);
 		LinearLayout layoutBottom = new LinearLayout(this);
 		layoutBottom.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -430,10 +458,17 @@ public class NewButton extends Activity
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				saveInfomation(json, menu[1].split(","), type[1].split(","),
-						viewArr2, value2);
-				EToast.makeText(NewButton.this, "保存成功", Toast.LENGTH_SHORT)
-						.show();
+				if (ButtonID == null)
+					EToast.makeText(NewButton.this, "样本图片未保存",
+							Toast.LENGTH_SHORT).show();
+				else
+				{
+					saveInfomation(json, menu[1].split(","),
+							type[1].split(","), viewArr2, value2);
+					write2sd(json, ButtonID);
+					EToast.makeText(NewButton.this, "保存成功", Toast.LENGTH_SHORT)
+							.show();
+				}
 			}
 		});
 
@@ -465,7 +500,7 @@ public class NewButton extends Activity
 		layoutOuter.setOrientation(LinearLayout.VERTICAL);
 		layoutOuter.setPadding(10, 50, 40, 20);
 
-		LinearLayout layoutTop = getTopView(Menu, strType, viewArr5);
+		LinearLayout layoutTop = getTopView(this, Menu, strType, viewArr5);
 		LinearLayout layoutBottom = new LinearLayout(this);
 		layoutBottom.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -494,10 +529,18 @@ public class NewButton extends Activity
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				saveInfomation(json, menu[2].split(","), type[2].split(","),
-						viewArr5, value5);
-				EToast.makeText(NewButton.this, "保存成功", Toast.LENGTH_SHORT)
-						.show();
+				if (ButtonID == null)
+					EToast.makeText(NewButton.this, "样本图片未保存",
+							Toast.LENGTH_SHORT).show();
+				else
+				{
+					saveInfomation(json, menu[2].split(","),
+							type[2].split(","), viewArr5, value5);
+					write2sd(json, ButtonID);
+					EToast.makeText(NewButton.this, "保存成功", Toast.LENGTH_SHORT)
+							.show();
+				}
+
 			}
 		});
 
@@ -508,7 +551,6 @@ public class NewButton extends Activity
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				System.out.println("-------" + json.toString());
 				EToast.makeText(NewButton.this, "退出成功", Toast.LENGTH_SHORT)
 						.show();
 				finishWithAnim();
@@ -524,8 +566,8 @@ public class NewButton extends Activity
 
 	}
 
-	private void saveInfomation(JSONObject json, String[] keys, String[] type,
-			View[] viewArr, String[] values)
+	public static void saveInfomation(JSONObject json, String[] keys,
+			String[] type, View[] viewArr, String[] values)
 	{
 
 		for (int i = 0; i < viewArr.length; i++)
@@ -548,28 +590,27 @@ public class NewButton extends Activity
 				if (type[i].equals("0"))
 				{
 					if (TextUtils.isEmpty(values[i]))
-						json.put(keys[i], null);
+					{
+						json.put(keys[i], "未设置");
+					}
 					else
-						json.put(keys[i], Integer.valueOf(values[i]));
+					{
+						json.put(keys[i], values[i]);
+					}
 				}
 				else
 					json.put(keys[i], type[i].substring(1).split("n")[Integer
 							.valueOf(values[i])]);
 			}
+
+			SimpleDateFormat myFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date now = new Date(System.currentTimeMillis());
+			json.put("time", myFmt.format(now).toString());
 		} catch (JSONException e)
 		{
 			e.printStackTrace();
 		}
 
-		try
-		{
-			FileWriter writer = new FileWriter(getIniFile(ButtonID));
-			writer.write(json.toString());
-			writer.close();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -875,5 +916,144 @@ public class NewButton extends Activity
 	{
 		finish();
 		overridePendingTransition(0, R.anim.top_out);
-	}
+	}	
+	
+	private class MyChart
+	{
+		private LineChart lineChart;
+		private Bitmap bitmap;
+		private int[] hist = new int[256];
+		
+		public MyChart(LineChart mlineChart, Bitmap mbitmap) {
+			// TODO Auto-generated constructor stub
+			lineChart = mlineChart;
+			bitmap = mbitmap;
+		}
+		
+		int imhist()
+		{
+			int max = 0;		
+			for (int i = 0; i < 256; i++)
+			{
+				hist[i] = 0;
+			}
+			
+			for (int i = 0; i < bitmap.getHeight(); i++)
+				for (int j = 0; j < bitmap.getWidth(); j++)
+				{
+					int a = bitmap.getPixel(j, i);
+					int b = (a & 0xff);
+					hist[b] ++;
+				}
+
+			for (int i = 0; i < 256; i++)
+			{
+				max = (max > hist[i]) ? max: hist[i];
+			}		
+			return max;
+		}
+		
+		// 设置显示的样式
+		private void showChart(LineChart lineChart, LineData lineData, int color) {
+//			lineChart.setDrawBorders(false); // 是否在折线图上添加边框
+
+			// no description text
+			lineChart.setDescription("");// 数据描述
+			// 如果没有数据的时候，会显示这个，类似listview的emtpyview
+			lineChart.setNoDataTextDescription("You need to provide data for the chart.");
+
+			// enable / disable grid background
+			lineChart.setDrawGridBackground(false); // 是否显示表格颜色
+			lineChart.setGridBackgroundColor(Color.WHITE & 0x70FFFFFF); // 表格的的颜色，在这里是是给颜色设置一个透明度
+
+			// enable touch gestures
+			lineChart.setTouchEnabled(true); // 设置是否可以触摸
+
+			// enable scaling and dragging
+			lineChart.setDragEnabled(true);// 是否可以拖拽
+			lineChart.setScaleEnabled(true);// 是否可以缩放
+
+			// if disabled, scaling can be done on x- and y-axis separately
+			lineChart.setPinchZoom(false);//
+
+			lineChart.setBackgroundColor(color);// 设置背景
+
+			// add data
+			lineChart.setData(lineData); // 设置数据
+
+			// get the legend (only possible after setting data)
+			Legend mLegend = lineChart.getLegend(); // 设置比例图标示，就是那个一组y的value的
+
+			// modify the legend ...
+			// mLegend.setPosition(LegendPosition.LEFT_OF_CHART);
+			mLegend.setForm(LegendForm.CIRCLE);// 样式
+			mLegend.setFormSize(6f);// 字体
+			mLegend.setTextColor(Color.WHITE);// 颜色
+			// mLegend.setTypeface(mTf);// 字体
+
+			lineChart.animateX(2500); // 立即执行的动画,x轴
+		}
+		
+		
+		/**
+		 * 生成一个数据
+		 * 
+		 * @param count
+		 *            表示图表中有多少个坐标点
+		 * @param range
+		 *            用来生成range以内的随机数
+		 * @return
+		 */
+		private LineData getLineData(int count, float range) {
+			ArrayList<String> xValues = new ArrayList<String>();
+			for (int i = 0; i < count; i++) {
+				// x轴显示的数据，这里默认使用数字下标显示
+				xValues.add("" + i);
+			}
+
+			// y轴的数据
+			ArrayList<Entry> yValues = new ArrayList<Entry>();
+			for (int i = 0; i < count; i++) {
+				float value = (float) hist[i];
+				yValues.add(new Entry(value, i));
+			}
+
+			// create a dataset and give it a type
+			// y轴的数据集合
+			LineDataSet lineDataSet = new LineDataSet(yValues, "直方图" /* 显示在比例图上 */);
+			// mLineDataSet.setFillAlpha(110);
+			// mLineDataSet.setFillColor(Color.RED);
+
+			// 用y轴的集合来设置参数
+			lineDataSet.setLineWidth(1.75f); // 线宽
+			lineDataSet.setCircleSize(3f);// 显示的圆形大小
+			lineDataSet.setColor(Color.WHITE);// 显示颜色
+			lineDataSet.setCircleColor(Color.WHITE);// 圆形的颜色
+			lineDataSet.setHighLightColor(Color.WHITE); // 高亮的线的颜色
+	
+/*			lineDataSet.setDrawCircleHole(false);
+			lineDataSet.setLineWidth(10.5f); // 线宽
+			lineDataSet.setDrawCubic(false);
+			lineDataSet.setCubicIntensity(0.1f);
+			lineDataSet.setDrawFilled(true);
+			lineDataSet.setFillColor(Color.rgb(255, 0, 0));
+			*/
+			ArrayList<LineDataSet> lineDataSets = new ArrayList<LineDataSet>();
+			lineDataSets.add(lineDataSet); // add the datasets
+
+			// create a data object with the datasets
+			LineData lineData = new LineData(xValues, lineDataSets);
+
+			return lineData;
+		}
+
+		void show()
+		{
+			int max = imhist();
+			LineData mLineData = getLineData(256, max);
+			showChart(mLineChart, mLineData, Color.rgb(114, 188, 223));
+		}
+	};
+	
+	
 }
