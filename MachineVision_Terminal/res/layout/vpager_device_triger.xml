@@ -17,7 +17,7 @@
             style="@style/device_setting_trigger_tv_front"
             android:layout_alignBottom="@id/device_setting_trigger_delay"
             android:layout_toLeftOf="@id/device_setting_trigger_delay"
-            android:text="传感器触发距离" />
+            android:text="传感器触发距离：" />
 
         <TextView
             style="@style/device_setting_trigger_tv_back"
@@ -38,7 +38,7 @@
             style="@style/device_setting_trigger_tv_front"
             android:layout_alignBottom="@id/device_setting_trigger_part_delay"
             android:layout_toLeftOf="@id/device_setting_trigger_part_delay"
-            android:text="分拣触发距离" />
+            android:text="分拣触发距离：" />
 
         <TextView
             style="@style/device_setting_trigger_tv_back"

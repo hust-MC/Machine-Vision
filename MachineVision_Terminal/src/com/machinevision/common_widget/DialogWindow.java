@@ -30,6 +30,39 @@ public class DialogWindow extends AlertDialog
 		getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(27F);
 	}
 
+	public void showWrapContent()
+	{
+		super.show();
+		getWindow().setLayout(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+		getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(27F);
+		getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(27F);
+	}
+
+	/**
+	 * 设置弹窗的宽度，此时高度默认为wrap_content
+	 * 
+	 * @param width
+	 *            弹窗的宽度大小
+	 */
+	public void setWindowWidth(int width)
+	{
+		setWindowSize(width, LayoutParams.WRAP_CONTENT);
+	}
+
+	/**
+	 * 设置弹窗的宽度和高度
+	 * 
+	 * @param width
+	 *            弹窗的宽度
+	 * @param height
+	 *            弹窗的高度
+	 */
+	public void setWindowSize(int width, int height)
+	{
+		getWindow().setLayout(width, height);
+	}
+
 	public static class Builder
 	{
 		Context context;

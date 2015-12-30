@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="钮扣："
-            android:textSize="22sp" >
+            android:textSize="30sp" >
         </TextView>
 
         <EditText
@@ -22,14 +22,14 @@
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:hint="钮扣ID号"
-            android:textSize="22sp" >
+            android:textSize="30sp" >
         </EditText>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=".ini"
-            android:textSize="22sp" >
+            android:textSize="30sp" >
         </TextView>
     </TableRow>
 

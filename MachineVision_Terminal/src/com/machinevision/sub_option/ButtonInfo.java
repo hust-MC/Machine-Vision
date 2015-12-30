@@ -1,50 +1,40 @@
 package com.machinevision.sub_option;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.emercy.dropdownlist.DropDownList;
-import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
+import com.machinevision.sub_option.SystemSetting_devicePacket.Parameters;
+import com.machinevision.sub_option.SystemSetting_devicePacket.Trigger;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.option.MachineLearning;
-import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
-import com.machinevision.terminal.FileDirectory;
 
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
-import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -56,6 +46,7 @@ import android.graphics.Point;
 public class ButtonInfo extends Activity
 {
 	private File file;
+
 	protected ListView listview1;
 	protected ListView listview2;
 	protected ListView listview3;
@@ -74,17 +65,16 @@ public class ButtonInfo extends Activity
 	private CustomAdapter mAdapter2;
 	private CustomAdapter mAdapter3;
 
-	View layout;
-	ViewPager vPager;
-	DropDownList dropList;
-	JSONObject json = null;
-	Bitmap pic = null;
+	private View layout;
+	private ViewPager vPager;
+	private JSONObject json = null;
 
 	public static Bitmap fullImage = null;
 
 	String[] menu;
 	String[] subMenu;
 	String[] subMenuType;
+	private int currentItem;
 
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -96,20 +86,23 @@ public class ButtonInfo extends Activity
 		listview2 = (ListView) this.findViewById(R.id.MyListView2);
 		listview3 = (ListView) this.findViewById(R.id.MyListView3);
 
-		Button button1 = (Button) this.findViewById(R.id.bt_saveAs);
-		Button button2 = (Button) this.findViewById(R.id.bt_modify);
-		Button button3 = (Button) this.findViewById(R.id.bt_delete);
+		Button bt_modify = (Button) this.findViewById(R.id.bt_modify);
+		Button bt_delete = (Button) this.findViewById(R.id.bt_delete);
+		Button bt_exit = (Button) this.findViewById(R.id.exit);
+		Button bt_save_as = (Button) this.findViewById(R.id.bt_save_as);
+		Button bt_save = (Button) this.findViewById(R.id.bt_overwrite);
 		image = (ImageView) findViewById(R.id.button_pic);
 
 		MyButtonListener buttonListener = new MyButtonListener();
-		button1.setOnClickListener(buttonListener);
-		button2.setOnClickListener(buttonListener);
-		button3.setOnClickListener(buttonListener);
+		bt_modify.setOnClickListener(buttonListener);
+		bt_delete.setOnClickListener(buttonListener);
+		bt_exit.setOnClickListener(buttonListener);
+		bt_save_as.setOnClickListener(buttonListener);
+		bt_save.setOnClickListener(buttonListener);
 
 		mAdapter1 = new CustomAdapter(R.string.option_machine_learning_info);
 		mAdapter2 = new CustomAdapter(R.string.option_machine_alg_config);
 		mAdapter3 = new CustomAdapter(R.string.option_machine_criteria_config);
-
 		listview1.setAdapter(mAdapter1);
 		listview2.setAdapter(mAdapter2);
 		listview3.setAdapter(mAdapter3);
@@ -132,8 +125,10 @@ public class ButtonInfo extends Activity
 			}
 		}
 
-		json = getJsonStr(file);
+		currentItem = 0;
+		json = ButtonCfgLlist.getJsonStr(file);
 		image.setImageBitmap(getBitmap(file));
+
 		menu = getResources().getStringArray(R.array.buttoninfo_config);
 		subMenu = getResources().getStringArray(R.array.buttoninfo_menu);
 		subMenuType = getResources().getStringArray(R.array.buttoninfo_type);
@@ -154,16 +149,71 @@ public class ButtonInfo extends Activity
 			// TODO Auto-generated method stub
 			switch (arg0.getId())
 			{
-			case R.id.bt_saveAs:
-				break;
 			case R.id.bt_modify:
 				modifyInformation();
 				break;
+			case R.id.bt_save_as:
+				saveAs();
+				break;
+			case R.id.bt_overwrite:
+				DialogWindow dialog_overwrite = new DialogWindow.Builder(
+						ButtonInfo.this)
+						.setTitle("你将覆盖原有的配置文件,是否继续？")
+						.setPositiveButton("确定",
+								new DialogInterface.OnClickListener()
+								{
+									@Override
+									public void onClick(DialogInterface arg0,
+											int arg1)
+									{
+										SimpleDateFormat myFmt = new SimpleDateFormat(
+												"yyyy-MM-dd HH:mm:ss");
+										Date now = new Date(System
+												.currentTimeMillis());
+										try
+										{
+											json.put("time", myFmt.format(now)
+													.toString());
+										} catch (JSONException e)
+										{
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										NewButton.write2sd(json, file.getName());
+										EToast.makeText(ButtonInfo.this,
+												"保存成功", Toast.LENGTH_SHORT)
+												.show();
+										onButtonClicked(RESULT_OK);
+									}
+
+								}).setNegativeButton("取消", null).create();
+				dialog_overwrite.showWrapContent();
+				break;
 			case R.id.bt_delete:
-				deleteDirectory(file);
-				EToast.makeText(ButtonInfo.this, "删除成功", Toast.LENGTH_SHORT)
+				DialogWindow dialog_delete = new DialogWindow.Builder(
+						ButtonInfo.this)
+						.setTitle("确定删除？")
+						.setPositiveButton("确定",
+								new DialogInterface.OnClickListener()
+								{
+									@Override
+									public void onClick(DialogInterface arg0,
+											int arg1)
+									{
+										FileManager_fileExplorer
+												.deleteDirectory(file);
+										EToast.makeText(ButtonInfo.this,
+												"删除成功", Toast.LENGTH_SHORT)
+												.show();
+										onButtonClicked(RESULT_OK);
+									}
+								}).setNegativeButton("取消", null).create();
+				dialog_delete.showWrapContent();
+				break;
+			case R.id.exit:
+				EToast.makeText(ButtonInfo.this, "退出成功", Toast.LENGTH_SHORT)
 						.show();
-				onButtonClicked(R.id.bt_delete);
+				onButtonClicked(RESULT_OK);
 				break;
 			default:
 				break;
@@ -172,120 +222,96 @@ public class ButtonInfo extends Activity
 		}
 	}
 
-	void myprintf(String[] val)
+	public static String getImgPath(String id)
 	{
-		for (int i = 0; i < val.length; i++)
-		{
-			System.out.println("---->" + val[i]);
-		}
+		return MachineLearning.FILE_DIR + id + "/" + id + ".jpg";
 	}
 
-	String getIniFile(File file)
+	void saveAs()
 	{
-		return file.getAbsolutePath() + "/" + file.getName() + ".ini";
-	}
+		LayoutInflater inflater = (LayoutInflater) ButtonInfo.this
+				.getSystemService(LAYOUT_INFLATER_SERVICE);
+		final View view = inflater.inflate(R.layout.edit_text, null);
 
-	void saveInfomation(String[] keys, String[] type, String[] values)
-	{
-		try
-		{
-			for (int i = 0; i < keys.length; i++)
-			{
-				if (type[i].equals("0"))
-					json.put(keys[i], Integer.valueOf(values[i]));
-				else
-					json.put(keys[i], type[i].substring(1).split("n")[Integer
-							.valueOf(values[i])]);
-			}
-		} catch (JSONException e)
-		{
-			e.printStackTrace();
-		}
+		DialogWindow dialog_saveAs = new DialogWindow.Builder(ButtonInfo.this)
+				.setTitle("配置文件命名").setView(view)
+				.setPositiveButton("确定", new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface arg0, int arg1)
+					{
+						EditText nameEditText = (EditText) view
+								.findViewById(R.id.editText1);
+						String saveName = nameEditText.getText().toString();
 
-		try
-		{
-			FileWriter writer = new FileWriter(getIniFile(file));
-			writer.write(json.toString());
-			writer.close();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+						/*
+						 * 存入配置文件中
+						 */
+						try
+						{
+							File file = new File(NewButton.getIniFile(saveName));
+							if (!file.getParentFile().exists())
+							{
+								file.getParentFile().mkdirs();
+							}
+							FileWriter writer = new FileWriter(file);
+							writer.write(json.toString());
+							writer.close();
+						} catch (IOException e)
+						{
+							e.printStackTrace();
+						}
+
+						fullImage = getBitmap(file);
+						NewButton.saveMyBitmap(fullImage, saveName);
+						EToast.makeText(ButtonInfo.this, "另存为成功",
+								Toast.LENGTH_SHORT).show();
+					}
+
+				}).setNegativeButton("取消", null).create();
+		dialog_saveAs.showWrapContent();
 	}
 
 	void modifyInformation()
 	{
 		layout = LayoutInflater.from(this).inflate(R.layout.button_configure,
 				null);
-
 		initViewPager();
-		initDropDownList();
-
 		AlertDialog dialog = new AlertDialog.Builder(ButtonInfo.this)
-				.setTitle("钮扣文件配置").setView(layout)
+				.setTitle("配置文件修改").setView(layout)
 				.setPositiveButton("确定", new DialogInterface.OnClickListener()
 				{
 					@Override
 					public void onClick(DialogInterface arg0, int arg1)
 					{
 						// TODO Auto-generated method stub
-						switch (dropList.getCurrentIndex())
+						switch (currentItem)
 						{
 						case 0:
-							for (int i = 0; i < viewArr1.length; i++)
-							{
-								if (viewArr1[i] instanceof EditText)
-								{
-									value1[i] = ((EditText) viewArr1[i])
-											.getText().toString();
-								}
-								else if (viewArr1[i] instanceof Spinner)
-								{
-									value1[i] = String
-											.valueOf(((Spinner) viewArr1[i])
-													.getSelectedItemPosition());
-								}
-							}
-							saveInfomation(subMenu[0].split(","),
-									subMenuType[0].split(","), value1);
+							NewButton.saveInfomation(json,
+									subMenu[0].split(","),
+									subMenuType[0].split(","), viewArr1, value1);
+							EToast.makeText(ButtonInfo.this, "修改成功",
+									Toast.LENGTH_SHORT).show();
 							mAdapter1.notifyDataSetChanged();
 							break;
 						case 1:
-							for (int i = 0; i < viewArr2.length; i++)
-							{
-								if (viewArr2[i] instanceof EditText)
-								{
-									value2[i] = ((EditText) viewArr2[i])
-											.getText().toString();
-								}
-								else if (viewArr2[i] instanceof Spinner)
-								{
-									value2[i] = String
-											.valueOf(((Spinner) viewArr2[i])
-													.getSelectedItemPosition());
-								}
-							}
-							saveInfomation(subMenu[1].split(","),
-									subMenuType[1].split(","), value2);
+
+							NewButton.saveInfomation(json,
+									subMenu[1].split(","),
+									subMenuType[1].split(","), viewArr2, value2);
+							EToast.makeText(ButtonInfo.this, "修改成功",
+									Toast.LENGTH_SHORT).show();
+
 							mAdapter2.notifyDataSetChanged();
 							break;
 						case 2:
-							for (int i = 0; i < viewArr3.length; i++)
-							{
-								if (viewArr3[i] instanceof EditText)
-								{
-									value3[i] = ((EditText) viewArr3[i])
-											.getText().toString();
-								}
-								else if (viewArr2[i] instanceof Spinner)
-								{
-									value3[i] = String
-											.valueOf(((Spinner) viewArr3[i])
-													.getSelectedItemPosition());
-								}
-							}
-							saveInfomation(subMenu[2].split(","),
-									subMenuType[2].split(","), value3);
+							NewButton.saveInfomation(json,
+									subMenu[2].split(","),
+									subMenuType[2].split(","), viewArr3, value3);
+							EToast.makeText(ButtonInfo.this, "修改成功",
+									Toast.LENGTH_SHORT).show();
+
 							mAdapter3.notifyDataSetChanged();
 							break;
 						default:
@@ -298,7 +324,7 @@ public class ButtonInfo extends Activity
 		getWindowManager().getDefaultDisplay().getSize(size);
 
 		dialog.getWindow()
-				.setLayout((int) (size.x * 0.8), (int) (size.y * 0.7));
+				.setLayout((int) (size.x * 0.8), (int) (size.y * 0.9));
 		// 让对话框能够弹出输入法
 		dialog.getWindow().clearFlags(
 				WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
@@ -311,52 +337,17 @@ public class ButtonInfo extends Activity
 
 	private View getPage1()
 	{
-		return getView(menu[0], subMenu[0], subMenuType[0], viewArr1);
+		return NewButton.getTopView(this, subMenu[0], subMenuType[0], viewArr1);
 	}
 
 	private View getPage2()
 	{
-		return getView(menu[1], subMenu[1], subMenuType[1], viewArr2);
+		return NewButton.getTopView(this, subMenu[1], subMenuType[1], viewArr2);
 	}
 
 	private View getPage3()
 	{
-		return getView(menu[2], subMenu[2], subMenuType[2], viewArr3);
-	}
-
-	private JSONObject getJsonStr(File file)
-	{
-		JSONObject json = null;
-		File[] f = file.listFiles();
-		for (int j = 0; j < f.length; j++)
-		{
-			if (f[j].getName().endsWith("ini"))
-			{
-				try
-				{
-					String str = null;
-					StringBuffer strBuf = new StringBuffer();
-					BufferedReader reader = new BufferedReader(new FileReader(
-							f[j]));
-					while (!TextUtils.isEmpty(str = reader.readLine()))
-					{
-						strBuf.append(str);
-					}
-					json = new JSONObject(strBuf.toString());
-				} catch (FileNotFoundException e)
-				{
-					e.printStackTrace();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				} catch (JSONException e)
-				{
-					e.printStackTrace();
-				}
-				break;
-			}
-		}
-		return json;
+		return NewButton.getTopView(this, subMenu[2], subMenuType[2], viewArr3);
 	}
 
 	private Bitmap getBitmap(File file)
@@ -374,66 +365,6 @@ public class ButtonInfo extends Activity
 		return bm;
 	}
 
-	public View getView(String title, String menu, String strType, View[] views)
-	{
-		String[] contents = menu.split(",");
-		String[] type = strType.split(",");
-
-		ScrollView scrollView = new ScrollView(this);
-		scrollView.setPadding(0, 0, 0, 10);
-
-		LinearLayout layout = new LinearLayout(this);
-		layout.setOrientation(LinearLayout.VERTICAL);
-		layout.setPadding(10, 20, 40, 20);
-		for (int i = 0; i < contents.length; i++)
-		{
-			LinearLayout subLayout = new LinearLayout(this);
-			subLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-			LayoutParams params = new LayoutParams(400,
-					LayoutParams.WRAP_CONTENT, 1);
-
-			/*
-			 * 创建一个文本框并设置参数
-			 */
-			TextView tv = new TextView(this);
-			tv.setLayoutParams(params);
-			tv.setText(contents[i] + "：");
-			tv.setTextSize(27F);
-
-			/*
-			 * 解析R.array.option_camera_params_sub并创建对应的输入框， 设置参数，用以接收输入的数据
-			 */
-			params.weight = 1.5F;
-			if (type[i].startsWith("0"))
-			{
-				views[i] = new EditText(this);
-
-				((EditText) views[i]).setTextSize(25F);
-				((EditText) views[i])
-						.setBackgroundResource(android.R.drawable.edit_text);
-			}
-			else
-			{
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-						R.layout.spiner, type[i].substring(1).split("n"));
-				views[i] = new Spinner(this);
-				((Spinner) views[i]).setAdapter(adapter);
-			}
-
-			// et.setHint("请输入" + contents[i]);
-			views[i].setLayoutParams(params);
-			views[i].setPadding(8, 2, 5, 2);
-
-			subLayout.addView(tv);
-			subLayout.addView(views[i]);
-
-			layout.addView(subLayout);
-		}
-		scrollView.addView(layout);
-		return scrollView;
-	}
-
 	/**
 	 * 设置ViewPager的内容
 	 */
@@ -449,6 +380,10 @@ public class ButtonInfo extends Activity
 		list.add(page2);
 		list.add(page3);
 
+		final TextView text1 = (TextView) layout.findViewById(R.id.textConfig1);
+		final TextView text2 = (TextView) layout.findViewById(R.id.textConfig2);
+		final TextView text3 = (TextView) layout.findViewById(R.id.textConfig3);
+
 		vPager = (ViewPager) layout.findViewById(R.id.device_setting_vpager);
 		vPager.setOffscreenPageLimit(2);
 		vPager.setAdapter(new MyPagerAdapter(vPager, list));
@@ -458,7 +393,29 @@ public class ButtonInfo extends Activity
 			@Override
 			public void onPageSelected(int arg0)
 			{
-				dropList.setSelection(arg0);
+				currentItem = arg0;
+				switch (currentItem)
+				{
+				case 0:
+					text1.setBackgroundResource(R.drawable.bg_top_bt);
+					text2.setBackgroundResource(R.drawable.bg_title);
+					text3.setBackgroundResource(R.drawable.bg_title);
+
+					break;
+				case 1:
+					text1.setBackgroundResource(R.drawable.bg_title);
+					text2.setBackgroundResource(R.drawable.bg_top_bt);
+					text3.setBackgroundResource(R.drawable.bg_title);
+
+					break;
+				case 2:
+					text1.setBackgroundResource(R.drawable.bg_title);
+					text2.setBackgroundResource(R.drawable.bg_title);
+					text3.setBackgroundResource(R.drawable.bg_top_bt);
+					break;
+				default:
+					break;
+				}
 			}
 
 			@Override
@@ -471,50 +428,6 @@ public class ButtonInfo extends Activity
 			{
 			}
 		});
-	}
-
-	private void initDropDownList()
-	{
-		dropList = (DropDownList) layout
-				.findViewById(R.id.device_setting_droplist);
-		dropList.setItem(getResources().getStringArray(
-				R.array.buttoninfo_config));
-
-		dropList.setOnListClickListener(new OnDropListClickListener()
-		{
-			@Override
-			public void onListItemClick(DropDownList dropDownList, int which)
-			{
-				if (vPager != null)
-				{
-					vPager.setCurrentItem(which);
-				}
-			}
-		});
-	}
-
-	private void deleteDirectory(File file)
-	{
-		if (file.isFile())
-		{
-			file.delete();
-		}
-		else if (file.isDirectory())
-		{
-			File[] files = file.listFiles();
-			if (files == null || files.length == 0)
-			{
-				file.delete();
-			}
-			else
-			{
-				for (File subFile : files)
-				{
-					deleteDirectory(subFile);
-				}
-			}
-			file.delete();
-		}
 	}
 
 	private final class CustomAdapter extends BaseAdapter

@@ -22,10 +22,10 @@ import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Bitmap.Config;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -63,6 +63,7 @@ public class MainActivity extends Activity
 	SciThread serialThread;						// 创建串口线程
 	NetThread netThread;						// 创建网络线程
 
+	private boolean buttonPicture = false;		// 钮扣图片开关
 	private boolean netHandleFlag = true;
 
 	/*
@@ -74,7 +75,7 @@ public class MainActivity extends Activity
 		@Override
 		public void handleMessage(Message msg)
 		{
-			if (msg.what == 0x55)				// 等于0x55说明串口权限不对
+			if (msg.what == MainActivity.ERROR_MESSAGE)				// 串口权限不对
 			{
 				EToast.makeText(MainActivity.this, "尚未获取串口权限",
 						Toast.LENGTH_SHORT).show();
@@ -108,6 +109,7 @@ public class MainActivity extends Activity
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg)
 		{
+			Bitmap bitmap = null;
 			if (netHandleFlag)
 			{
 				switch (msg.what)
@@ -125,7 +127,7 @@ public class MainActivity extends Activity
 							Toast.LENGTH_SHORT).show();
 					break;
 				case NetUtils.MSG_NET_GET_VIDEO: // 获取图像
-					Bitmap bitmap = (Bitmap) msg.obj;
+					bitmap = (Bitmap) msg.obj;
 					photo_imv1.setImageBitmap(bitmap);
 					break;
 				case NetUtils.MSG_NET_STATE:
@@ -137,10 +139,45 @@ public class MainActivity extends Activity
 					break;
 				// 接收分拣结果
 				case NetUtils.MSG_NET_RESULT:
-					bitmap = (Bitmap) msg.obj;
-					photo_imv1.setImageBitmap(bitmap);
-					photo_imv2.setImageBitmap(bitmap);
 
+					if (buttonPicture)
+					{
+						byte[] packageData = (byte[]) msg.obj;
+						int[] data = new int[12];
+						for (int i = 0; i < 12; i++)
+						{
+							data[i] = packageData[i] & 0xFF;
+						}
+
+						int len = data[0] | data[1] << 8 | data[2] << 16
+								| data[3] << 24;
+						int width = data[4] | data[5] << 8 | data[6] << 16
+								| data[7] << 24;
+						int height = data[8] | data[9] << 8 | data[10] << 16
+								| data[11] << 24;
+
+						if (bitmap == null || bitmap.getWidth() != width
+								|| bitmap.getHeight() != height)
+						{
+							bitmap = Bitmap.createBitmap(width, height,
+									Config.ARGB_8888);
+						}
+
+						int[] image = new int[len];
+
+						for (int i = 0; i < len / 3; i++)
+						{
+							int r = 0, g = 0, b = 0;
+							r = packageData[12 + i * 3] & 0xff;
+							g = packageData[12 + i * 3 + 1] & 0xff;
+							b = packageData[12 + i * 3 + 2] & 0xff;
+
+							image[i] = (0xFF000000 | r << 16 | g << 8 | b);
+						}
+						bitmap.setPixels(image, 0, width, 0, 0, width, height);
+						photo_imv1.setImageBitmap(bitmap);
+						photo_imv2.setImageBitmap(bitmap);
+					}
 					Bundle bundle = msg.getData();
 					boolean result = bundle.getBoolean("result");
 					int qualified = bundle.getInt("qualified");				// 获取合格数
@@ -149,7 +186,8 @@ public class MainActivity extends Activity
 
 					result_imv1.setImageResource(result ? R.drawable.correct
 							: R.drawable.wrong);
-
+					result_imv2.setImageResource(result ? R.drawable.correct
+							: R.drawable.wrong);
 					qualified_tv.setText("合格：" + qualified);
 					disqualified_tv.setText("不合格：" + disQualified);
 					qualifiedRate_tv.setText("合格率："
@@ -205,7 +243,7 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+		Log.d("SYSTEM", "send Json : " + "{\"net\":{\"port\":6030}}");
 		NetUtils.setIp();
 		setContentView(R.layout.activity_main);
 		init_widget(); // 初始化控件
@@ -298,6 +336,11 @@ public class MainActivity extends Activity
 				break;
 			}
 		}
+	}
+
+	public void onClick_buttonPicture(View view)
+	{
+		buttonPicture = buttonPicture ? false : true;
 	}
 
 	/*

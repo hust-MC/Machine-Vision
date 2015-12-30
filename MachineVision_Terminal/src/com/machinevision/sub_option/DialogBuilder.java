@@ -39,6 +39,9 @@ public class DialogBuilder
 	private int position;
 	private Context context;
 
+	private int height;
+	private int width;
+
 	/**
 	 * 对话框中的输入控件
 	 */
@@ -195,10 +198,24 @@ public class DialogBuilder
 				.setTextSize(27F);
 
 		WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-		params.width = LayoutParams.WRAP_CONTENT;
-		params.height = LayoutParams.WRAP_CONTENT;
+		params.width = width == 0 ? LayoutParams.WRAP_CONTENT : width;
+		params.height = height == 0 ? LayoutParams.WRAP_CONTENT : height;
 		dialog.getWindow().setAttributes(params);
 		return true;
+	}
+
+	/**
+	 * 设置弹窗大小
+	 * 
+	 * @param width
+	 *            弹窗的宽度
+	 * @param height
+	 *            弹窗的高度
+	 */
+	public void setSize(int width, int height)
+	{
+		this.height = height;
+		this.width = width;
 	}
 
 	/**

@@ -250,5 +250,7 @@
     <string name="option_machine_alg_config">外形缺陷,线孔缺陷,色差缺陷,表面缺陷</string>
     <string name="option_machine_criteria_config">外形缺陷标准,线孔缺陷标准,色差缺陷标准,表面缺陷标准</string>
     <string name="title_activity_new_button">新建钮扣样本</string>
+    <string name="option_machine_check_condition">外形,线孔个数,颜色,字符,花纹,透光特性,材质</string>
+    <string name="option_machine_query_item">1圆形n方形n心形n三角形,14n2,1深色n浅色,1本色n异色n无,1本色n异色n无,1透明n半透明n不透明,1树脂n塑料n金属n木材n贝壳n牛角</string>
 
 </resources>

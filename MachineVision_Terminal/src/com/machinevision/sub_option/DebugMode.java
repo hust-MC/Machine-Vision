@@ -1,6 +1,5 @@
 package com.machinevision.sub_option;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import android.app.Activity;
@@ -66,7 +65,6 @@ public class DebugMode extends Activity
 					{
 						cmdHandle.getVideo(handler);
 					}
-
 				}
 			}
 		}).start();

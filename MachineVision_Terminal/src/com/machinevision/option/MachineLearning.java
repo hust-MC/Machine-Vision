@@ -1,40 +1,14 @@
 package com.machinevision.option;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.machinevision.terminal.MainActivity;
-import com.machinevision.terminal.NetThread;
 import com.machinevision.terminal.R;
-import com.machinevision.net.CmdHandle;
-import com.machinevision.net.NetUtils;
 import com.machinevision.sub_option.ButtonCfgLlist;
-import com.machinevision.sub_option.DebugMode;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
 import com.machinevision.sub_option.NewButton;
+import com.machinevision.sub_option.SVM;
 import com.machinevision.terminal.FileDirectory;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 public class MachineLearning extends ControlPannelActivity implements
 		OnDialogClicked
@@ -54,11 +28,12 @@ public class MachineLearning extends ControlPannelActivity implements
 				R.array.option_machine_learning_sub,
 				R.array.option_machine_learning_type,
 				R.array.option_machine_learning_ini);
-				
+						
 		init_widget();
 		setListViewClicked();
 	}
 
+	
 	@Override
 	protected void onSpecialItemClicked(int position)
 	{	
@@ -71,11 +46,13 @@ public class MachineLearning extends ControlPannelActivity implements
 			break;
 		case 1:
 			intent = new Intent(this, ButtonCfgLlist.class);
-			intent.putExtra("firstDir", FILE_DIR);
 			startActivityForResult(intent, QUERY_FILE);
 			super.onSpecialItemClicked(position);
 			break;
 		case 2:
+			intent = new Intent(this, SVM.class);
+			startActivityForResult(intent, QUERY_FILE);
+			super.onSpecialItemClicked(position);
 			break;
 		default:
 			break;

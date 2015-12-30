@@ -8,7 +8,6 @@ import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.common_widget.NumberSettingLayout;
 import com.machinevision.common_widget.SeekBarEditLayout;
-import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
 import com.machinevision.sub_option.SystemSetting_devicePacket.HECC;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Mode;
@@ -21,12 +20,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
 
 public class CameraParams extends ControlPannelActivity implements
 		OnDialogClicked
@@ -214,7 +211,7 @@ public class CameraParams extends ControlPannelActivity implements
 			DialogWindow dialog = new DialogWindow.Builder(this)
 					.setTitle(
 							getResources().getStringArray(
-									R.array.option_sys_settings)[position])
+									R.array.option_camera_params)[position])
 					.setView(viewGeneral)
 					.setPositiveButton("应用", new OnClickListener()
 					{
@@ -269,7 +266,7 @@ public class CameraParams extends ControlPannelActivity implements
 						}
 					}).setNegativeButton("取消", null).create();
 			dialog.show();
-			dialog.getWindow().setLayout(800, LayoutParams.WRAP_CONTENT);
+			dialog.setWindowWidth(800);
 			break;
 		case 5:
 			EToast.makeText(this, "设置文件已保存", Toast.LENGTH_SHORT).show();

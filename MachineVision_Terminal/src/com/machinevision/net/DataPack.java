@@ -14,6 +14,8 @@ import com.machinevision.net.NetUtils.NetPacket;
 
 public class DataPack
 {
+	static byte[] rxBuf = new byte[100 * 1024];
+
 	final static int magic = 0x695a695a;
 	final static int version = 0;
 	final static int offset = 28;
@@ -58,19 +60,22 @@ public class DataPack
 	}
 	public static NetPacket recvDataPack(InputStream is)
 	{
-		Log.d("MC", "start read:");
+		// long time, time1, time2 = 0, time3, time4;
 		NetPacket revPacket = new NetPacket();
 		boolean hasMagicRead = false;
 		int bufCount = 0;
 		int startPos = 0;
 		int availableCount = 0;
 
-		byte[] rxBuf = new byte[2 * 1024 * 1024];
-
 		try
 		{
+			// time = System.currentTimeMillis();
 			bufCount = is.read(rxBuf);
-			Log.d("MC", "rxBuf read finish,count = " + bufCount);
+			// time1 = System.currentTimeMillis();
+			// Log.d("MC", "time1 :" + (time1 - time));
+
+			// Log.d("NET", "read count = " + bufCount);
+
 			/*
 			 * 判断帧头标示
 			 */
@@ -84,7 +89,7 @@ public class DataPack
 
 					if (startPos != 0)
 					{
-						Log.e("MC", "startPos=" + startPos);
+						Log.e("NET", "startPos=" + startPos);
 					}
 					break;
 				}
@@ -106,43 +111,52 @@ public class DataPack
 				 */
 				DataInputStream dis = new DataInputStream(
 						new ByteArrayInputStream(rxBuf));
-				dis.skip(startPos + 4);
+				dis.skip(startPos + 16);
 
-				int versionData = readLittleInt(dis);
-				if (versionData != version)
-				{
-					Log.e("ZY", "Version=" + versionData);
-					return null;
-				}
-
-				int type = readLittleInt(dis);
-				int block = readLittleInt(dis);
+				// int versionData = readLittleInt(dis);
+				// if (versionData != version)
+				// {
+				// Log.e("ZY", "Version=" + versionData);
+				// return null;
+				// }
+				//
+				// int type = readLittleInt(dis);
+				// int block = readLittleInt(dis);
 				int length = readLittleInt(dis);
 				int len = length - offset;
 				int testOff = 0;
-				if ((testOff = readLittleInt(dis)) != offset)
-				{
-					Log.e("MC", "offset=" + testOff);
-					return null;
-				}
+
+				dis.skip(startPos + 4);
+				// if ((testOff = readLittleInt(dis)) != offset)
+				// {
+				// Log.e("ZY", "offset=" + testOff);
+				// return null;
+				// }
 
 				revPacket.minid = readLittleInt(dis);
 
 				if (availableCount < length)								// 判断整包是否接收完毕
 				{
+					Log.d("NET", "not enough,availableCount : "
+							+ availableCount);
 					// 将剩余部分接收完并拼接到一起
 					int tempCount = 0;
 					int tempPos = 0;
-					byte[] temp = new byte[length - availableCount];
+					int restCount = length - availableCount;
+					// time2 = System.currentTimeMillis();
 					do
 					{
-						tempCount = is.read(temp, tempPos, temp.length
-								- tempPos);
+						tempCount = is.read(rxBuf, bufCount + tempPos,
+								restCount - tempPos);
 						tempPos += tempCount;
-					} while (tempPos < length - availableCount);
-					System.arraycopy(temp, 0, rxBuf, startPos + availableCount,
-							tempPos);
+//						Log.d("MC", "while :" + tempCount);
+					} while (tempPos < restCount);
 				}
+				else if (availableCount > length)
+				{
+					Log.e("ZY", "availableCount > length : " + availableCount);
+				}
+//				time3 = System.currentTimeMillis();
 
 				/*
 				 * 接收data数组
@@ -151,15 +165,17 @@ public class DataPack
 				{
 					revPacket.data = new byte[len];
 					int count = 0, pos = 0;
-					byte[] temp = new byte[len];
+					byte[] temp = revPacket.data;
 					do
 					{
-						count = dis.read(temp, pos, temp.length - pos);
+						count = dis.read(temp, pos, len - pos);
 						pos += count;
 					} while (count > 0 && pos < len);
-					System.arraycopy(temp, 0, revPacket.data, 0, pos);
 				}
-				Log.d("MC", "end read:");
+				// Log.d("MC", "time1 = " + (time1 - time));
+				// Log.d("MC", "time2 = " + (time2 - time1));
+				// Log.d("MC", "time3 = " + (time3 - time2));
+				// Log.d("MC", "end read:" + (System.currentTimeMillis() - time2));
 				return revPacket;
 			}
 			else
