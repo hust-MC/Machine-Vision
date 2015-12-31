@@ -21,6 +21,9 @@ public class DialogWindow extends AlertDialog
 		this.context = context;
 	}
 
+	/**
+	 * 显示对话框。调用此函数默认宽为自定义600，适用于对话框内容比较宽的场景。
+	 */
 	@Override
 	public void show()
 	{
@@ -30,6 +33,9 @@ public class DialogWindow extends AlertDialog
 		getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(27F);
 	}
 
+	/**
+	 * 显示对话框。调用此函数宽高均为系统自动适应内容模式，适用于对话框内容比较窄的场景。
+	 */
 	public void showWrapContent()
 	{
 		super.show();
