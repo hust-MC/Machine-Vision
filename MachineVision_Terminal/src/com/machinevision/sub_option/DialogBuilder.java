@@ -301,6 +301,8 @@ public class DialogBuilder
 							.getSelectedItemPosition());
 				}
 			}
+			
+			// activity实现了OnDialogClicked接口
 			if (context instanceof OnDialogClicked)
 			{
 				((OnDialogClicked) context).onPositiveButtonClicked(value,

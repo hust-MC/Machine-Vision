@@ -15,17 +15,19 @@ import android.app.Activity;
 public class SVM extends Activity
 {
 
-	private Button button1, button2;
+	private Button bt_getSample, bt_stop, bt_exit, bt_train;
 
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_svm);
-		button1 = (Button) findViewById(R.id.bt_svm_use);
-		button2 = (Button) findViewById(R.id.bt_svm_exit);
+		bt_getSample = (Button) findViewById(R.id.machine_learning_svm_get);
+		bt_stop = (Button) findViewById(R.id.machine_learning_svm_stop);
+		bt_train = (Button) findViewById(R.id.machine_learning_svm_train);
+		bt_exit = (Button) findViewById(R.id.machine_learning_svm_exit);
 
-		button1.setOnClickListener(new View.OnClickListener()
+		bt_getSample.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -46,7 +48,7 @@ public class SVM extends Activity
 			}
 		});
 
-		button2.setOnClickListener(new View.OnClickListener()
+		bt_exit.setOnClickListener(new View.OnClickListener()
 		{
 
 			@Override
