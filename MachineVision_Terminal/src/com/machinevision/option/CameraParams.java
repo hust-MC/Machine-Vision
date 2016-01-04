@@ -8,7 +8,6 @@ import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.common_widget.NumberSettingLayout;
 import com.machinevision.common_widget.SeekBarEditLayout;
-import com.machinevision.net.CmdHandle;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
 import com.machinevision.sub_option.SystemSetting_devicePacket.HECC;
 import com.machinevision.sub_option.SystemSetting_devicePacket.Mode;
@@ -21,12 +20,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
 
 public class CameraParams extends ControlPannelActivity implements
 		OnDialogClicked
