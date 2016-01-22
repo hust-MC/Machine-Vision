@@ -20,14 +20,16 @@ import com.machinevision.sub_option.SystemSetting_devicePacket.Parameters;
 
 public class NetReceiveThread extends Thread
 {
+	private NetThread netThread;
 	private InputStream is;
 	private static Handler handler;
 	private NetPacket revPacket = new NetPacket();
 
 	int countQualified, countDisqualified;
 
-	public NetReceiveThread(InputStream is)
+	public NetReceiveThread(InputStream is, NetThread netThread)
 	{
+		this.netThread = netThread;
 		this.is = is;
 	}
 
@@ -40,6 +42,7 @@ public class NetReceiveThread extends Thread
 	{
 		return handler;
 	}
+	
 	public static void setHandler(Handler handler)
 	{
 		NetReceiveThread.handler = handler;
@@ -48,10 +51,9 @@ public class NetReceiveThread extends Thread
 	@Override
 	public void run()
 	{
-		while (NetThread.currentState != NetThread.CurrentState.onStop)
+		while (netThread.getCurrentState() != NetThread.CurrentState.onStop)
 		{
 			double time1 = System.currentTimeMillis();
-
 			revPacket.recvDataPack(is);
 			if (revPacket.type != 0xaa)// 如果数据正常，表示网络通畅
 			{
@@ -63,7 +65,6 @@ public class NetReceiveThread extends Thread
 					Bitmap bitmap = null;
 
 					byte[] rxBuf = revPacket.data;
-
 					int[] data = new int[12];
 					for (int i = 0; i < 12; i++)
 					{
@@ -192,7 +193,8 @@ public class NetReceiveThread extends Thread
 				Log.e("MC", "packet == null");
 			}
 
-		}
+		}	
+		System.out.println("------------------receive end-----");
 	}
 	private native int[] pictureProcess(byte[] data);
 }

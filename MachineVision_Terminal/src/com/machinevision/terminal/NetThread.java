@@ -1,6 +1,5 @@
 package com.machinevision.terminal;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,43 +14,56 @@ import com.machinevision.net.NetUtils;
 import com.machinevision.net.UdpServerSocket;
 
 import android.os.Handler;
+import android.os.Message;
+import android.text.GetChars;
 import android.util.Log;
 
 /**
  * 网络通信线程
  */
 public class NetThread extends Thread implements CommunicationInterface
-{
+{	
 	public static boolean sendSwitch = false;
-
+	
 	public static final int TIMEOUT = 5000;
 	public static final int CONNECT_SUCCESS = 100;
 	public static final int CONNECT_FAIL = 101;
 	private final int RXBUF_SIZE = 300 * 1024;
 
-	public static CurrentState currentState = CurrentState.onStop;
+	public CurrentState currentState = CurrentState.onStop;
+
 	private Lock lock = new ReentrantLock();
 	private Condition cond = lock.newCondition();
-
+	private int CameraID;
+	
 	Socket socket;
+	
 	UdpServerSocket udpSocket;
 	ServerSocket serverSocket;
+	
 	Handler handler;
 
 	private boolean udpConnecteSuccess = false;					// UDP连接是否成功
 
-	public static CurrentState getCurrentState()
+	public Socket getSocket()
+	{
+		return socket;
+	}
+	
+	public CurrentState getCurrentState()
 	{
 		return currentState;
 	}
-	public void setCurrentState(CurrentState currentState)
+	
+	public void setCurrentState(CurrentState _currentState)
 	{
-		NetThread.currentState = currentState;
+		currentState = _currentState;
 	}
 
-	public NetThread(Handler netHandler)
+	public NetThread(Handler netHandler, int CameraNum)
 	{
 		handler = netHandler;
+		CameraID = CameraNum;
 	}
 
 	public void signalThread()
@@ -61,6 +73,7 @@ public class NetThread extends Thread implements CommunicationInterface
 		currentState = CurrentState.onReady;
 		lock.unlock();
 	}
+	
 	@Override
 	public void run()
 	{
@@ -74,34 +87,39 @@ public class NetThread extends Thread implements CommunicationInterface
 			{
 				try
 				{
-					Log.d("MC", "netConnectint");
+					Log.d("MC", "netConnecting");
 					serverSocket = new ServerSocket(NetUtils.port);
 					serverSocket.setSoTimeout(TIMEOUT);
 					socket = serverSocket.accept();
 					socket.setSoTimeout(TIMEOUT);
 					// socket.setReceiveBufferSize(RXBUF_SIZE);
+					Message msg = Message.obtain();
+					msg.arg1 = CameraID;
+					msg.what = CONNECT_SUCCESS;
+					handler.sendMessage(msg);
+					
+					NetReceiveThread receiveThread = new NetReceiveThread(socket.getInputStream(), NetThread.this);
+					receiveThread.setName("receive thread");
+					receiveThread.start();		
+					NetReceiveThread.setHandler(handler);
+		
+					currentState = CurrentState.onReady;				// 转换为发送状态
 					udpConnecteSuccess = true;
 					udpSocket.close();
 					udpSocket = null;
 					Log.d("MC", "netConnected");
-					handler.sendEmptyMessage(CONNECT_SUCCESS);
-
-					currentState = CurrentState.onReady;				// 转换为发送状态
-
-					new NetReceiveThread(socket.getInputStream()).start();
-					NetReceiveThread.setHandler(handler);
-
-					CmdHandle cmdHandle = CmdHandle.getInstance(socket);
-					currentState = CurrentState.onSending;
-					cmdHandle.getJson();
-					cmdHandle.getJson();
+					currentState = CurrentState.onSending;				
+					
+					CmdHandle cmdHandle = null;
+					while (cmdHandle == null) {
+						cmdHandle = MainActivity.getCmdHandle(CameraID);
+					}
+					
 					/*
 					 * 以下代码正式开始发送
 					 */
-					
 					while (currentState != CurrentState.onStop)
 					{
-
 						lock.lock();
 						if (currentState == CurrentState.onPause)
 						{
@@ -109,21 +127,20 @@ public class NetThread extends Thread implements CommunicationInterface
 							cond.await();
 							Log.d("CJ", "unlock");
 						}
-						else
+						else if (currentState != CurrentState.onStop)
 						{
 							currentState = CurrentState.onSending;
-							// Thread.sleep(2000);
 							cmdHandle.getState(handler);
+							Thread.sleep(5000);
 						}
 						lock.unlock();
 					}
-
-					CmdHandle.clear();									// 清空单例cmdhandle，便于之后重新生成
-				} catch (Exception e)
+				} 
+				catch (Exception e)
 				{
 					close();
 				}
-			}
+			}	
 		}).start();
 
 		try
@@ -138,7 +155,6 @@ public class NetThread extends Thread implements CommunicationInterface
 					udpSocket.response(NetUtils.ip + "\0", NetUtils.sendIpPort);
 				}
 			}
-
 		} catch (Exception e)
 		{
 			if (udpSocket != null)
@@ -147,12 +163,16 @@ public class NetThread extends Thread implements CommunicationInterface
 				udpSocket = null;
 			}
 			if (!udpConnecteSuccess)
-			{
-				handler.sendEmptyMessage(CONNECT_FAIL);
+			{				
+				Message msg = Message.obtain();
+				msg.arg1 = CameraID	;
+				msg.what = CONNECT_FAIL;
+				handler.sendMessage(msg);
 			}
 			e.printStackTrace();
 		}
 	}
+	
 	@Override
 	public void open()
 	{
@@ -162,13 +182,13 @@ public class NetThread extends Thread implements CommunicationInterface
 	@Override
 	public void send(byte[] data, int cmd)
 	{
-		OutputStream os;
+		OutputStream os1;		
 		try
 		{
-			os = socket.getOutputStream();
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			DataOutputStream dos = new DataOutputStream(baos);
-			dos.write(data);
+			os1 = socket.getOutputStream();
+//			ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+			DataOutputStream dos1 = new DataOutputStream(os1);
+			dos1.write(data);
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -191,6 +211,7 @@ public class NetThread extends Thread implements CommunicationInterface
 				socket.close();
 				socket = null;
 			}
+
 			if (udpSocket != null)
 			{
 				udpSocket.close();
@@ -206,6 +227,5 @@ public class NetThread extends Thread implements CommunicationInterface
 	public static enum CurrentState
 	{
 		onReady, onSending, onPause, onStop
-
 	}
 }

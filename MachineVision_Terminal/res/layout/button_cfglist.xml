@@ -133,7 +133,8 @@
 
             <Button
                 android:id="@+id/bt_query"
-                style="@style/button_query" >
+                style="@style/button_query"
+                android:text="查询" >
             </Button>
         </LinearLayout>
     </LinearLayout>

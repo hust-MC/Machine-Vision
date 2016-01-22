@@ -17,6 +17,7 @@ import com.machinevision.terminal.R;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.option.MachineLearning;
 
+import android.R.integer;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -38,12 +39,10 @@ import android.widget.Toast;
 
 public class ButtonCfgLlist extends ListActivity
 {
-
-	public static final int SHOW_INFO = 102;
+	public static final int SHOW_INFO = 1;
 
 	private Spinner spiner1, spiner2, spiner3, spiner4, spiner5;
-	private String[] vals =
-	{ null, null, null, null, null };
+	private String[] vals = { null, null, null, null, null };
 
 	private CheckBox checkBox1, checkBox2;
 	private EditText Button_ID;
@@ -60,8 +59,6 @@ public class ButtonCfgLlist extends ListActivity
 		setContentView(R.layout.button_cfglist);
 
 		Button_Query = (Button) findViewById(R.id.bt_query);
-		Button_Query.setText("查询");
-
 		Button_Query.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
@@ -98,7 +95,6 @@ public class ButtonCfgLlist extends ListActivity
 		Button_Exit = (Button) findViewById(R.id.bt_exit);
 		Button_Exit.setOnClickListener(new View.OnClickListener()
 		{
-
 			@Override
 			public void onClick(View v)
 			{
@@ -113,11 +109,11 @@ public class ButtonCfgLlist extends ListActivity
 		spiner4 = (Spinner) findViewById(R.id.spinnerId4);
 		spiner5 = (Spinner) findViewById(R.id.spinnerId5);
 
-		spiner1.setOnItemSelectedListener(new SpinnerOnSelectedListener1());
-		spiner2.setOnItemSelectedListener(new SpinnerOnSelectedListener2());
-		spiner3.setOnItemSelectedListener(new SpinnerOnSelectedListener3());
-		spiner4.setOnItemSelectedListener(new SpinnerOnSelectedListener4());
-		spiner5.setOnItemSelectedListener(new SpinnerOnSelectedListener5());
+		new SpinnerOnSelectedListener(spiner1, vals[0]).bind();
+		new SpinnerOnSelectedListener(spiner2, vals[1]).bind();
+		new SpinnerOnSelectedListener(spiner3, vals[2]).bind();
+		new SpinnerOnSelectedListener(spiner4, vals[3]).bind();
+		new SpinnerOnSelectedListener(spiner5, vals[4]).bind();
 
 		checkBox1 = (CheckBox) findViewById(R.id.machine_learing_query_option1);
 		checkBox2 = (CheckBox) findViewById(R.id.machine_learing_query_option2);
@@ -128,99 +124,41 @@ public class ButtonCfgLlist extends ListActivity
 		ButtonCfgLlist.this.setListAdapter(listItemAdapter);
 	}
 
-	class SpinnerOnSelectedListener1 implements OnItemSelectedListener
+	
+	class SpinnerOnSelectedListener
 	{
-		@Override
-		public void onItemSelected(AdapterView<?> adapterView, View view,
-				int position, long id)
+		private Spinner spinner;
+		private String val;
+		
+		SpinnerOnSelectedListener(Spinner _spinner, String _val)
 		{
-			String selected = adapterView.getItemAtPosition(position)
-					.toString();
-			vals[0] = selected;
-
+			spinner = _spinner;
+			val = _val;
 		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> adapterView)
+		
+		void bind()
 		{
-			// TODO Auto-generated method stub
-			System.out.println("nothingSelected");
+			ActionListener actionListener = new ActionListener();
+			spinner.setOnItemSelectedListener(actionListener);
 		}
-	};
-
-	class SpinnerOnSelectedListener2 implements OnItemSelectedListener
-	{
-		@Override
-		public void onItemSelected(AdapterView<?> adapterView, View view,
-				int position, long id)
+		
+		class ActionListener implements OnItemSelectedListener
 		{
-			String selected = adapterView.getItemAtPosition(position)
-					.toString();
-			vals[1] = selected;
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> adapterView)
-		{
-			// TODO Auto-generated method stub
-			System.out.println("nothingSelected");
-		}
-	};
-
-	class SpinnerOnSelectedListener3 implements OnItemSelectedListener
-	{
-		@Override
-		public void onItemSelected(AdapterView<?> adapterView, View view,
-				int position, long id)
-		{
-			String selected = adapterView.getItemAtPosition(position)
-					.toString();
-			vals[2] = selected;
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> adapterView)
-		{
-			// TODO Auto-generated method stub
-			System.out.println("nothingSelected");
-		}
-	};
-
-	class SpinnerOnSelectedListener4 implements OnItemSelectedListener
-	{
-		@Override
-		public void onItemSelected(AdapterView<?> adapterView, View view,
-				int position, long id)
-		{
-			String selected = adapterView.getItemAtPosition(position)
-					.toString();
-			vals[3] = selected;
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> adapterView)
-		{
-			// TODO Auto-generated method stub
-			System.out.println("nothingSelected");
-		}
-	};
-
-	class SpinnerOnSelectedListener5 implements OnItemSelectedListener
-	{
-		@Override
-		public void onItemSelected(AdapterView<?> adapterView, View view,
-				int position, long id)
-		{
-			String selected = adapterView.getItemAtPosition(position)
-					.toString();
-			vals[4] = selected;
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> adapterView)
-		{
-			// TODO Auto-generated method stub
-			System.out.println("nothingSelected");
+			public void onItemSelected(AdapterView<?> adapterView, View view,
+					int position, long id)
+			{
+				String selected = adapterView.getItemAtPosition(position)
+						.toString();
+				val = selected;		
+				System.out.println("---->" + val);
+			}
+	
+			@Override
+			public void onNothingSelected(AdapterView<?> adapterView)
+			{
+				// TODO Auto-generated method stub
+				System.out.println("nothingSelected");
+			}
 		}
 	}
 
@@ -232,7 +170,6 @@ public class ButtonCfgLlist extends ListActivity
 	{
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
-
 		Intent intent = new Intent(this, ButtonInfo.class);
 		String name = ((String) listItems.get(position).get("ItemTitle"))
 				.split(":")[1];
@@ -269,7 +206,6 @@ public class ButtonCfgLlist extends ListActivity
 	 */
 	private void initListView()
 	{
-
 		File parentFile = new File(MachineLearning.FILE_DIR);
 		if (!parentFile.exists())
 			parentFile.mkdirs();
@@ -280,13 +216,14 @@ public class ButtonCfgLlist extends ListActivity
 		{
 			listItems.add(getData(files[i]));
 		}
+		
 		listItemAdapter = new SimpleAdapter(this, listItems, // listItems数据源
 				R.layout.list_item, // ListItem的XML布局实现
 				new String[]
-				{ "ItemTitle", "ItemImage", "EditTime" }, // 动态数组与ImageItem对应的子项
+				{ "ItemTitle", "ItemManufature", "ItemImage", "EditTime" }, // 动态数组与ImageItem对应的子项
 															// 的ID
 				new int[]
-				{ R.id.ItemTitle, R.id.ItemImage, R.id.EditTime }
+				{ R.id.ItemTitle, R.id.ItemManufature, R.id.ItemImage, R.id.EditTime }
 
 		);
 
@@ -352,6 +289,20 @@ public class ButtonCfgLlist extends ListActivity
 			}
 			else
 				map.put("EditTime", "未设置");
+			
+			if (JsonFile.has("Manufature"))
+			{
+				try
+				{
+					map.put("ItemManufature", "厂家:" + JsonFile.getString("Manufature"));
+				} catch (JSONException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else
+				map.put("Manufature", "未设置");
 		}
 		return map;
 	}
@@ -435,7 +386,10 @@ public class ButtonCfgLlist extends ListActivity
 		{
 			return;
 		}
-
+		
+		for (int i=0; i < values.length;i++)
+			System.out.println("--->"+ vals[i]);
+		
 		listItems.clear();
 
 		for (int i = 0; i < files.length; i++)

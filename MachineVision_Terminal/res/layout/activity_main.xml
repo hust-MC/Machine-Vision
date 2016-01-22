@@ -281,18 +281,66 @@
             android:gravity="center_vertical"
             android:padding="20dp" >
 
-            <Button
-                style="@style/control_button"
-                android:onClick="onClick_net"
-                android:text="网络连接"
-                android:textSize="40sp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="20dp" >
 
-            <Button
-                style="@style/control_button"
-                android:layout_marginLeft="20dp"
-                android:onClick="onClick_close_net"
-                android:text="断开连接"
-                android:textSize="40sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="相机1："
+                        android:textSize="40sp" />
+
+                    <ToggleButton
+                        android:id="@+id/net_link1"
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:button="@drawable/toggle_btn"
+                        android:checked="false"
+                        android:textOff="未连接"
+                        android:textOn="连接成功"
+                        android:textSize="40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="相机2："
+                        android:textSize="40sp" />
+
+                    <ToggleButton
+                        android:id="@+id/net_link2"
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:button="@drawable/toggle_btn"
+                        android:checked="false"
+                        android:textOff="未连接"
+                        android:textOn="连接成功"
+                        android:textSize="40sp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

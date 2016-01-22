@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.google.gson.JsonObject;
+import com.machinevision.terminal.MainActivity;
 import com.machinevision.terminal.R;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
@@ -48,7 +49,7 @@ abstract class ControlPannelActivity extends Activity
 
 	protected void sendJson(JsonObject json)
 	{
-		CmdHandle cmdHandle = CmdHandle.getInstance();
+		CmdHandle cmdHandle = MainActivity.getCmdHandle(1);
 		if (cmdHandle == null)
 		{
 			EToast.makeText(this, "网络未连接", EToast.LENGTH_SHORT).show();

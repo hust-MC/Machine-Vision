@@ -1,6 +1,8 @@
 package com.machinevision.terminal;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.Socket;
 import java.text.DecimalFormat;
 
 import com.machinevision.terminal.R;
@@ -19,6 +21,7 @@ import com.machinevision.terminal.NetThread.CurrentState;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -30,13 +33,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
 	final int REQUEST_CODE_FILE_MANAGER = 1;
 	final int REQUEST_CODE_CAMERA_PARAMS = 2;
 	final int REQUEST_CODE_SYS_SETTINGS = 3;
@@ -46,85 +50,104 @@ public class MainActivity extends Activity
 
 	public static final int ERROR_MESSAGE = 0x5555;
 
-	private boolean netFlag = false; 						// 网络连接状态标志
+	private boolean netFlag1 = false; // 网络连接状态标志
+	private boolean netFlag2 = false; // 网络连接状态标志
+	ToggleButton net_btn1; // 网络开关按钮
+	ToggleButton net_btn2; // 网络开关按钮
+	NetThread netThread1, netThread2; // 创建网络线程
+
 	ProgressDialog dialog;
 
 	TextView temperature_tv, qualified_tv, disqualified_tv, qualifiedRate_tv;
-	ToggleButton net_btn;									// 网络开关按钮
-	ToggleButton sci_btn; 									// 串口开关按钮
-	ImageView photo_imv1, photo_imv2, result_imv1, result_imv2;						// 图片显示区域
+	ImageView photo_imv1, photo_imv2, result_imv1, result_imv2; // 图片显示区域
 
 	Button bt_fileManager, bt_cameraParams, bt_sysSettings,
 			bt_fasternerSettings, bt_machineLearning, bt_help;
 	Button bt_test, bt_pause, bt_stop;
 
-	String sciRevBuf;							// 串口接收数据
+//	String sciRevBuf; // 串口接收数据
+//	SciThread serialThread; // 创建串口线程
 
-	SciThread serialThread;						// 创建串口线程
-	NetThread netThread;						// 创建网络线程
-
-	private boolean buttonPicture = false;		// 钮扣图片开关
+	private boolean buttonPicture = false; // 钮扣图片开关
 	private boolean netHandleFlag = true;
 
-	/*
-	 * 与串口子线程通信函数
-	 */
-	@SuppressLint("HandlerLeak")
-	private Handler sciHandler = new Handler()
-	{
-		@Override
-		public void handleMessage(Message msg)
-		{
-			if (msg.what == MainActivity.ERROR_MESSAGE)				// 串口权限不对
-			{
-				EToast.makeText(MainActivity.this, "尚未获取串口权限",
-						Toast.LENGTH_SHORT).show();
-				sci_btn.setChecked(false);
-			}
-			else if (msg.obj != null)			// 正常接收数据
-			{
-				EToast.makeText(MainActivity.this,
-						getResources().getString(R.string.openSCI_sucssess),
-						Toast.LENGTH_SHORT).show();
-				sciRevBuf = (String) msg.obj + "back";
-				serialThread.send(sciRevBuf.getBytes(), 1);
-			}
-			else
-			{
-				EToast.makeText(MainActivity.this, "本地串口不存在",
-						Toast.LENGTH_SHORT).show();
-				sci_btn.setChecked(false);
-			}
+	private static CmdHandle cmdHandle1;
+	private static CmdHandle cmdHandle2;
+
+	public static CmdHandle getCmdHandle(int num) {
+		if (num == 1)
+			return cmdHandle1;
+		else {
+			return cmdHandle2;
 		}
-	};
+	}
+
+	public static void setCmdHandle(CmdHandle cmdHandle, int num) {
+		if (num == 1)
+			cmdHandle1 = cmdHandle;
+		else 
+			cmdHandle2 = cmdHandle;
+	}
 
 	/**
-	 * 与网络子线程通信Handler
+	 * 与网络子线程通信Handle 处理
 	 * 
 	 * @author MC
 	 */
 	@SuppressLint("HandlerLeak")
-	private Handler netHandler = new Handler()		    // 接收网络子线程数据并更新UI
+	private Handler netHandler = new Handler() // 接收网络子线程数据并更新UI
 	{
-		@SuppressLint("ShowToast")
-		public void handleMessage(Message msg)
-		{
+		public void handleMessage(Message msg) {
 			Bitmap bitmap = null;
-			if (netHandleFlag)
+			if (netHandleFlag) 
 			{
-				switch (msg.what)
-				{
+				switch (msg.what) {
 				case NetThread.CONNECT_SUCCESS: // 网络连接成功
 					dialog.dismiss();
-					netFlag = true;
-					EToast.makeText(MainActivity.this, "网络连接成功",
-							Toast.LENGTH_SHORT).show();
+					if (msg.arg1 == 1) 
+					{
+						EToast.makeText(MainActivity.this, "相机1连接成功",
+								Toast.LENGTH_SHORT).show();
+						netFlag1 = true;
+						try {
+							setCmdHandle(new CmdHandle(netThread1.getSocket()), 1);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					} 
+					else 
+					{
+						EToast.makeText(MainActivity.this, "相机2连接成功",
+								Toast.LENGTH_SHORT).show();
+						netFlag2 = true;
+							try {
+								setCmdHandle(new CmdHandle(netThread2.getSocket()), 2);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+					}
 					break;
 				case NetThread.CONNECT_FAIL:
 					dialog.dismiss();
-					netFlag = false;
-					EToast.makeText(MainActivity.this, "连接失败，请检查网络连接",
-							Toast.LENGTH_SHORT).show();
+					if (msg.arg1 == 1) 
+					{
+						EToast.makeText(MainActivity.this, "相机1连接失败",
+								Toast.LENGTH_SHORT).show();
+						netFlag1 = false;
+						net_btn1.setChecked(false);
+						cmdHandle1 = null;
+					} 
+					else 
+					{
+						EToast.makeText(MainActivity.this, "相机2连接失败",
+								Toast.LENGTH_SHORT).show();
+						netFlag2 = false;
+						net_btn2.setChecked(false);
+						cmdHandle2 = null;
+					}
 					break;
 				case NetUtils.MSG_NET_GET_VIDEO: // 获取图像
 					bitmap = (Bitmap) msg.obj;
@@ -140,12 +163,10 @@ public class MainActivity extends Activity
 				// 接收分拣结果
 				case NetUtils.MSG_NET_RESULT:
 
-					if (buttonPicture)
-					{
+					if (buttonPicture) {
 						byte[] packageData = (byte[]) msg.obj;
 						int[] data = new int[12];
-						for (int i = 0; i < 12; i++)
-						{
+						for (int i = 0; i < 12; i++) {
 							data[i] = packageData[i] & 0xFF;
 						}
 
@@ -157,16 +178,14 @@ public class MainActivity extends Activity
 								| data[11] << 24;
 
 						if (bitmap == null || bitmap.getWidth() != width
-								|| bitmap.getHeight() != height)
-						{
+								|| bitmap.getHeight() != height) {
 							bitmap = Bitmap.createBitmap(width, height,
 									Config.ARGB_8888);
 						}
 
 						int[] image = new int[len];
 
-						for (int i = 0; i < len / 3; i++)
-						{
+						for (int i = 0; i < len / 3; i++) {
 							int r = 0, g = 0, b = 0;
 							r = packageData[12 + i * 3] & 0xff;
 							g = packageData[12 + i * 3 + 1] & 0xff;
@@ -176,17 +195,14 @@ public class MainActivity extends Activity
 						}
 						bitmap.setPixels(image, 0, width, 0, 0, width, height);
 						photo_imv1.setImageBitmap(bitmap);
-						photo_imv2.setImageBitmap(bitmap);
 					}
 					Bundle bundle = msg.getData();
 					boolean result = bundle.getBoolean("result");
-					int qualified = bundle.getInt("qualified");				// 获取合格数
-					int disQualified = bundle.getInt("disqualified");		// 获取不合格数
+					int qualified = bundle.getInt("qualified"); // 获取合格数
+					int disQualified = bundle.getInt("disqualified"); // 获取不合格数
 					DecimalFormat df = new DecimalFormat("#0.00");
 
 					result_imv1.setImageResource(result ? R.drawable.correct
-							: R.drawable.wrong);
-					result_imv2.setImageResource(result ? R.drawable.correct
 							: R.drawable.wrong);
 					qualified_tv.setText("合格：" + qualified);
 					disqualified_tv.setText("不合格：" + disQualified);
@@ -207,8 +223,7 @@ public class MainActivity extends Activity
 	 * 
 	 * @author MC
 	 */
-	private void init_widget()
-	{
+	private void init_widget() {
 		temperature_tv = (TextView) findViewById(R.id.tv_temperature);
 		qualified_tv = (TextView) findViewById(R.id.tv_qualified);
 		disqualified_tv = (TextView) findViewById(R.id.tv_disqualified);
@@ -236,11 +251,78 @@ public class MainActivity extends Activity
 		photo_imv2 = (ImageView) findViewById(R.id.main_imv_photo2);
 		result_imv1 = (ImageView) findViewById(R.id.main_imv_result1);
 		result_imv2 = (ImageView) findViewById(R.id.main_imv_result2);
+
+		net_btn1 = (ToggleButton) findViewById(R.id.net_link1); // 获取到控件
+		net_btn1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				// TODO Auto-generated method stub
+				if (isChecked) 
+				{
+					dialog = ProgressBox.show(MainActivity.this,
+							"正在连接智能相机1，请稍候..."); // 进程弹窗
+					netThread1 = new NetThread(netHandler, 1);
+					netThread1.setName("tcp-link1");
+					netThread1.start();
+				} 
+				else 
+				{
+					String toastText = "连接尚未建立";
+					if (netFlag1) 
+					{
+						if (netThread1 != null) 
+						{
+							toastText = "连接已断开";
+							netThread1.close();
+							netThread1 = null;
+						}
+						netFlag1 = false;
+					}
+					EToast.makeText(MainActivity.this, toastText,
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});// 添加监听事件
+
+		net_btn2 = (ToggleButton) findViewById(R.id.net_link2); // 获取到控件
+		net_btn2.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				// TODO Auto-generated method stub
+				if (isChecked) {
+					// 选中
+					dialog = ProgressBox.show(MainActivity.this,
+							"正在连接智能相机2，请稍候..."); // 进程弹窗
+					netThread2 = new NetThread(netHandler, 2);
+					netThread2.setName("tcp-link2");
+					netThread2.start();
+				} 
+				else 
+				{
+					String toastText = "连接尚未建立";
+					if (netFlag2) 
+					{
+						if (netThread2 != null) 
+						{
+							toastText = "连接已断开";
+							netThread2.close();
+							netThread2 = null;
+						}
+						netFlag2 = false;
+					}
+					EToast.makeText(MainActivity.this, toastText,
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});// 添加监听事件
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		Log.d("SYSTEM", "send Json : " + "{\"net\":{\"port\":6030}}");
@@ -248,45 +330,48 @@ public class MainActivity extends Activity
 		setContentView(R.layout.activity_main);
 		init_widget(); // 初始化控件
 	}
-	@Override
-	protected void onRestart()
-	{
 
+	@Override
+	protected void onRestart() {
 		netHandleFlag = true;
-		if (netThread != null)
-		{
-			netThread.signalThread();
+		if (netThread1 != null) {
+			netThread1.signalThread();
+		}
+		if (netThread2 != null) {
+			netThread2.signalThread();
 		}
 		super.onResume();
 	}
+
 	@Override
-	protected void onPause()
-	{
+	protected void onPause() {
 		netHandleFlag = false;
-		if (netThread != null)
-		{
-			netThread.setCurrentState(CurrentState.onPause);
+		if (netThread1 != null) {
+			netThread1.setCurrentState(CurrentState.onPause);
+		}
+		if (netThread2 != null) {
+			netThread2.setCurrentState(CurrentState.onPause);
 		}
 		super.onPause();
 	}
+
 	@Override
-	protected void onDestroy()
-	{
-		if (netThread != null)
-		{
+	protected void onDestroy() {
+		if (netThread1 != null) {
 			Log.d("MC", "onDestroy");
-			netThread.close();
+			netThread1.close();
+		}
+		if (netThread2 != null) {
+			Log.d("MC", "onDestroy");
+			netThread2.close();
 		}
 		super.onDestroy();
 	}
 
-	class ButtonListern implements android.view.View.OnClickListener
-	{
+	class ButtonListern implements android.view.View.OnClickListener {
 		@Override
-		public void onClick(View v)
-		{
-			switch (v.getId())
-			{
+		public void onClick(View v) {
+			switch (v.getId()) {
 			case R.id.main_bt_file_manager:
 				startActivityForResult(new Intent(MainActivity.this,
 						FileManager.class), REQUEST_CODE_FILE_MANAGER);
@@ -321,36 +406,30 @@ public class MainActivity extends Activity
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		/*
 		 * 设置成功之后处理设置的数据
 		 */
-		if (resultCode == RESULT_OK)
-		{
+		if (resultCode == RESULT_OK) {
 			// netThread.signalThread();
 			EToast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show();
-			switch (requestCode)
-			{
+			switch (requestCode) {
 			default:
 				break;
 			}
 		}
 	}
 
-	public void onClick_buttonPicture(View view)
-	{
+	public void onClick_buttonPicture(View view) {
 		buttonPicture = buttonPicture ? false : true;
 	}
 
 	/*
 	 * 检查是否出错，并显示出错次数
 	 */
-	public void onClick_control(View view)
-	{
-		NetUtils.setIp();		// 重置IP
-		switch (view.getId())
-		{
+	public void onClick_control(View view) {
+		NetUtils.setIp(); // 重置IP
+		switch (view.getId()) {
 		case R.id.bt_control_test:
 			bt_test.setBackgroundColor(Color.GREEN);
 			bt_pause.setBackgroundResource(R.drawable.bg_control_bt);
@@ -370,67 +449,5 @@ public class MainActivity extends Activity
 		}
 
 	}
-	/**
-	 * 网络连接函数
-	 * 
-	 * @param view
-	 *            连接的按钮对象
-	 */
-	public void onClick_net(View view)
-	{
-		if (netFlag)
-		{
-			EToast.makeText(this, "设备已经连接上", Toast.LENGTH_SHORT).show();
-		}
-		else
-		{
-			dialog = ProgressBox.show(this, "正在连接智能相机，请稍候..."); // 进程弹窗
 
-			netThread = new NetThread(netHandler);
-			netThread.start();
-		}
-	}
-
-	public void onClick_close_net(View view)
-	{
-		String toastText = "连接尚未建立";
-		if (netFlag)
-		{
-			if (netThread != null)
-			{
-				toastText = "连接已断开";
-				netThread.close();
-				netThread = null;
-			}
-			netFlag = false;
-			CmdHandle.clear();
-		}
-		EToast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
-	}
-
-	/*
-	 * 串口连接函数
-	 */
-	public void onClick_Sci(View view)
-	{
-		if (new File(SciThread.SERIAL_PORT).exists())
-		{
-			if (sci_btn.isChecked())
-			{
-				serialThread = new SciThread(sciHandler);
-				serialThread.open();
-			}
-			else
-			{
-				serialThread.close();
-				EToast.makeText(this, getString(R.string.closeSCI_sucssess),
-						Toast.LENGTH_SHORT).show();
-			}
-		}
-		else
-		{
-			EToast.makeText(this, "本地串口不存在", Toast.LENGTH_SHORT).show();
-			sci_btn.setChecked(false);
-		}
-	}
 }
