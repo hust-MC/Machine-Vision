@@ -282,9 +282,8 @@
             android:padding="20dp" >
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:padding="20dp" >
@@ -308,11 +307,12 @@
                         android:layout_width="250dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:button="@drawable/toggle_btn"
+                        android:button="@null"
+                        android:background="@drawable/toggle_btn"
                         android:checked="false"
                         android:textOff="未连接"
                         android:textOn="连接成功"
-                        android:textSize="40sp" />
+                        android:textSize="30sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -334,11 +334,12 @@
                         android:layout_width="250dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:button="@drawable/toggle_btn"
+                        android:button="@null"
+                        android:background="@drawable/toggle_btn"
                         android:checked="false"
                         android:textOff="未连接"
                         android:textOn="连接成功"
-                        android:textSize="40sp" />
+                        android:textSize="30sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

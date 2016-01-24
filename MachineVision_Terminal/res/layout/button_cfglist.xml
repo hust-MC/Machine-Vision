@@ -24,9 +24,18 @@
 
                 <CheckBox
                     android:id="@+id/machine_learing_query_option1"
-                    android:layout_width="200dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/btn_check"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
                     android:layout_marginRight="50dp"
                     android:text="ID查询"
                     android:textSize="30sp" />
@@ -51,13 +60,21 @@
 
                 <CheckBox
                     android:id="@+id/machine_learing_query_option2"
-                    android:layout_width="200dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/btn_check"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
                     android:layout_marginRight="50dp"
                     android:text="条件查询"
                     android:textSize="30sp" />
-
                 <TextView
                     android:id="@+id/shape"
                     style="@style/query_item"

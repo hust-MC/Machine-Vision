@@ -42,11 +42,11 @@ public class ButtonCfgLlist extends ListActivity
 	public static final int SHOW_INFO = 1;
 
 	private Spinner spiner1, spiner2, spiner3, spiner4, spiner5;
-	private String[] vals = { null, null, null, null, null };
+	private String[] vals = { null, null, null, null, null};
 
 	private CheckBox checkBox1, checkBox2;
 	private EditText Button_ID;
-	private Button Button_Query, Button_Exit;
+	private Button   Button_Query, Button_Exit;
 
 	private ArrayList<HashMap<String, Object>> listItems = new ArrayList<HashMap<String, Object>>(); // 存放文字、图片信息
 	private SimpleAdapter listItemAdapter; // 适配器
@@ -109,11 +109,11 @@ public class ButtonCfgLlist extends ListActivity
 		spiner4 = (Spinner) findViewById(R.id.spinnerId4);
 		spiner5 = (Spinner) findViewById(R.id.spinnerId5);
 
-		new SpinnerOnSelectedListener(spiner1, vals[0]).bind();
-		new SpinnerOnSelectedListener(spiner2, vals[1]).bind();
-		new SpinnerOnSelectedListener(spiner3, vals[2]).bind();
-		new SpinnerOnSelectedListener(spiner4, vals[3]).bind();
-		new SpinnerOnSelectedListener(spiner5, vals[4]).bind();
+		new SpinnerOnSelectedListener(spiner1, 0).bind();
+		new SpinnerOnSelectedListener(spiner2, 1).bind();
+		new SpinnerOnSelectedListener(spiner3, 2).bind();
+		new SpinnerOnSelectedListener(spiner4, 3).bind();
+		new SpinnerOnSelectedListener(spiner5, 4).bind();
 
 		checkBox1 = (CheckBox) findViewById(R.id.machine_learing_query_option1);
 		checkBox2 = (CheckBox) findViewById(R.id.machine_learing_query_option2);
@@ -128,12 +128,12 @@ public class ButtonCfgLlist extends ListActivity
 	class SpinnerOnSelectedListener
 	{
 		private Spinner spinner;
-		private String val;
+		private int num;
 		
-		SpinnerOnSelectedListener(Spinner _spinner, String _val)
+		SpinnerOnSelectedListener(Spinner _spinner, int _num)
 		{
 			spinner = _spinner;
-			val = _val;
+			num = _num;
 		}
 		
 		void bind()
@@ -149,8 +149,8 @@ public class ButtonCfgLlist extends ListActivity
 			{
 				String selected = adapterView.getItemAtPosition(position)
 						.toString();
-				val = selected;		
-				System.out.println("---->" + val);
+				vals[num] = selected;		
+				System.out.println("---->" + selected);
 			}
 	
 			@Override
@@ -211,6 +211,7 @@ public class ButtonCfgLlist extends ListActivity
 			parentFile.mkdirs();
 
 		files = new File(MachineLearning.FILE_DIR).listFiles();
+
 		listItems.clear();
 		for (int i = 0; i < files.length; i++)
 		{

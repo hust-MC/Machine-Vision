@@ -25,21 +25,19 @@ import com.machinevision.net.CmdHandle;
 import com.machinevision.net.NetUtils;
 import com.machinevision.terminal.FileDirectory;
 import com.machinevision.terminal.MainActivity;
-import com.machinevision.terminal.NetReceiveThread;
 import com.machinevision.terminal.R;
 
-import android.R.integer;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.graphics.Color;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -213,18 +211,22 @@ public class NewButton extends Activity {
 													.toString();
 											ManufatureID = Manufature.getText()
 													.toString();
-											
-											if (TextUtils.isEmpty(ButtonID) || TextUtils.isEmpty(ManufatureID))
-											{
+
+											if (TextUtils.isEmpty(ButtonID)
+													|| TextUtils
+															.isEmpty(ManufatureID)) {
 												EToast.makeText(NewButton.this,
 														"输入不能为空",
-														Toast.LENGTH_SHORT).show();	
+														Toast.LENGTH_SHORT)
+														.show();
 												return;
 											}
 											try {
-												json.put("Manufature", ManufatureID);
+												json.put("Manufature",
+														ManufatureID);
 											} catch (JSONException e) {
-												// TODO Auto-generated catch block
+												// TODO Auto-generated catch
+												// block
 												e.printStackTrace();
 											}
 											saveMyBitmap(fullImage, ButtonID);
@@ -239,7 +241,8 @@ public class NewButton extends Activity {
 			}
 		});
 
-		Button bt_exit = (Button) page1.findViewById(R.id.machine_learning_page1_exit);
+		Button bt_exit = (Button) page1
+				.findViewById(R.id.machine_learning_page1_exit);
 		bt_exit.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -977,6 +980,38 @@ public class NewButton extends Activity {
 			int max = imhist();
 			LineData mLineData = getLineData(256, max);
 			showChart(mLineChart, mLineData, Color.rgb(114, 188, 223));
+		}
+	};
+
+	class ViewPagerAdapter extends PagerAdapter {
+		List<View> viewLists;
+
+		public ViewPagerAdapter(List<View> lists) {
+			viewLists = lists;
+		}
+
+		// 获得size
+		@Override
+		public int getCount() {
+			return viewLists.size();
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
+
+		// 销毁Item
+		@Override
+		public void destroyItem(View view, int position, Object object) {
+			((ViewPager) view).removeView(viewLists.get(position));
+		}
+
+		// 实例化Item
+		@Override
+		public Object instantiateItem(View view, int position) {
+			((ViewPager) view).addView(viewLists.get(position), 0);
+			return viewLists.get(position);
 		}
 	};
 
