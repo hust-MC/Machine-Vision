@@ -7,8 +7,9 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp" >
+        
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -37,7 +38,7 @@
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="50dp"
                     android:text="ID查询"
-                    android:textSize="30sp" />
+                    android:textSize="40sp" />
 
                 <TextView
                     style="@style/query_item"
@@ -54,6 +55,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <CheckBox
@@ -72,7 +74,7 @@
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="50dp"
                     android:text="条件查询"
-                    android:textSize="30sp" />
+                    android:textSize="40sp" />
 
                 <TextView
                     android:id="@+id/shape"
@@ -193,7 +195,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="无法找到符合条件的钮扣"
-                android:textSize="30sp" />
+                android:textSize="40sp" />
         </LinearLayout>
 
         <TextView

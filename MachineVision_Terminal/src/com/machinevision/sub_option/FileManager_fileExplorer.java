@@ -73,8 +73,6 @@ public class FileManager_fileExplorer extends ListActivity
 		getWindow().setAttributes(p);
 	}
 	
- 
-	
 	private List<Map<String, Object>> getData()
 	{
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();

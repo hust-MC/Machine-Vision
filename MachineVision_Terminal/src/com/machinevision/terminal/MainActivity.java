@@ -3,7 +3,10 @@ package com.machinevision.terminal;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
+import com.machinevision.sub_option.ButtonInfo;
+import com.machinevision.sub_option.FileManager_fileExplorer;
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.common_widget.ProgressBox;
 import com.machinevision.net.CmdHandle;
@@ -22,6 +25,7 @@ import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -418,6 +422,29 @@ public class MainActivity extends Activity {
 			// netThread.signalThread();
 			EToast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show();
 			switch (requestCode) {
+			case REQUEST_CODE_FILE_MANAGER:
+				if (data != null)
+				{
+					if (data.getStringExtra("ShutDown").equals("y"))
+							{
+							DialogWindow dialog_exit = new DialogWindow.Builder(
+									MainActivity.this)
+									.setTitle("确定退出系统？")
+									.setPositiveButton("确定",
+											new DialogInterface.OnClickListener()
+											{
+												@Override
+												public void onClick(DialogInterface arg0,
+														int arg1)
+												{
+													finish();
+												}
+											}).setNegativeButton("取消", null).create();
+							dialog_exit.showWrapContent();
+							}
+				}	
+				break;
+				
 			default:
 				break;
 			}
