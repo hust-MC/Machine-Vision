@@ -166,12 +166,7 @@ public class NewButton extends Activity {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						CmdHandle cmdHandle = null;
-						if (MainActivity.netThread1 != null)
-							cmdHandle = MainActivity.getCmdHandle(1);
-						else {
-							cmdHandle = MainActivity.getCmdHandle(2);							
-						}
+						CmdHandle cmdHandle = MainActivity.getCmdHandle(1);
 						if (cmdHandle == null) {
 							Message message = handler.obtainMessage();
 							message.what = 0x55;
@@ -839,7 +834,7 @@ public class NewButton extends Activity {
 			}
 		});
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

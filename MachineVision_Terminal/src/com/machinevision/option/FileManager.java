@@ -70,14 +70,6 @@ public class FileManager extends ControlPannelActivity {
 							+ "SD卡剩余：" + romSDcardInfo.getSDAvailableSize());
 					textView.setVisibility(View.VISIBLE);
 					break;
-				case 5:
-					Intent intent1 = new Intent();
-					Bundle bundle = new Bundle();
-					bundle.putString("ShutDown", "y");
-					intent1.putExtras(bundle);
-					setResult(RESULT_OK, intent1);
-					finish();
-					break;
 				default:
 					startActivityForResult(intent, REQUEST_FILE);
 					break;

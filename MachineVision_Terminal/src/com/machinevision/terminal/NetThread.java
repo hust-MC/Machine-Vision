@@ -136,7 +136,6 @@ public class NetThread extends Thread implements CommunicationInterface
 						}
 						else if (currentState != CurrentState.onStop)
 						{
-							System.out.println("------loop");
 							currentState = CurrentState.onSending;
 							cmdHandle.getState(handler);
 							Thread.sleep(5000);
