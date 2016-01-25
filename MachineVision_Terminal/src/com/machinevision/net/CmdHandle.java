@@ -8,6 +8,7 @@ import java.net.Socket;
 import android.os.Handler;
 import android.util.Log;
 
+import com.machinevision.terminal.MainActivity;
 import com.machinevision.terminal.NetReceiveThread;
 
 import static com.machinevision.net.NetUtils.*;
@@ -24,7 +25,6 @@ public class CmdHandle {
 
 	/**
 	 * 向相机端发送获取一张图片的命令，在发送前修改接收handler
-	 * 
 	 * @param handler
 	 *            处理网络数据的handler
 	 * @throws IOException
@@ -32,7 +32,18 @@ public class CmdHandle {
 	 */
 	public void getVideo(Handler handler) {
 		NetPacketContext context = new NetPacketContext(MSG_NET_GET_VIDEO);
-		NetReceiveThread.setHandler(handler);
+		if (MainActivity.netThread1 != null)
+		{
+			System.out.println("-----enter1");
+			MainActivity.netThread1.seRecvHandler(handler);
+		}
+		
+		if (MainActivity.netThread2 != null)
+		{
+			System.out.println("-----enter2");
+			MainActivity.netThread2.seRecvHandler(handler);
+		}
+
 		context.sendPacket(os);
 	}
 
@@ -59,13 +70,33 @@ public class CmdHandle {
 	 */
 	public void getState(Handler handler) {
 		NetPacketContext context = new NetPacketContext(MSG_NET_STATE);
-		NetReceiveThread.setHandler(handler);
+		if (MainActivity.netThread1 != null)
+		{
+			System.out.println("-----enter1");
+			MainActivity.netThread1.seRecvHandler(handler);
+		}
+		
+		if (MainActivity.netThread2 != null)
+		{
+			System.out.println("-----enter2");
+			MainActivity.netThread2.seRecvHandler(handler);
+		}
 		context.sendPacket(os);
 	}
 
 	public void getParam(Handler handler) {
 		NetPacketContext context = new NetPacketContext(MSG_NET_GET_PARAM);
-		NetReceiveThread.setHandler(handler);
+		if (MainActivity.netThread1 != null)
+		{
+			System.out.println("-----enter1");
+			MainActivity.netThread1.seRecvHandler(handler);
+		}
+		
+		if (MainActivity.netThread2 != null)
+		{
+			System.out.println("-----enter2");
+			MainActivity.netThread2.seRecvHandler(handler);
+		}
 		context.sendPacket(os);
 	}
 

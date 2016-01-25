@@ -152,7 +152,6 @@ abstract class ControlPannelActivity extends Activity
 			break;
 		}
 		listview.smoothScrollToPosition(position);
-
 	}
 
 	/**

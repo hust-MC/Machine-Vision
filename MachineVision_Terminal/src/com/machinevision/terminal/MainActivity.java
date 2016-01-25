@@ -275,6 +275,7 @@ public class MainActivity extends Activity {
 							toastText = "连接已断开";
 							netThread1.close();
 							netThread1 = null;
+							cmdHandle1 = null;
 						}
 						netFlag1 = false;
 					}
@@ -309,6 +310,7 @@ public class MainActivity extends Activity {
 							toastText = "连接已断开";
 							netThread2.close();
 							netThread2 = null;
+							cmdHandle2 = null;
 						}
 						netFlag2 = false;
 					}
@@ -357,11 +359,15 @@ public class MainActivity extends Activity {
 	protected void onDestroy() {
 		if (netThread1 != null) {
 			Log.d("MC", "onDestroy");
+			cmdHandle1 = null;
 			netThread1.close();
+			netThread1 = null;
 		}
 		if (netThread2 != null) {
 			Log.d("MC", "onDestroy");
+			cmdHandle2 = null;
 			netThread2.close();
+			netThread2 = null;
 		}
 		super.onDestroy();
 	}

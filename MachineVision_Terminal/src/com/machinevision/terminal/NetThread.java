@@ -50,6 +50,12 @@ public class NetThread extends Thread implements CommunicationInterface
 	{
 		return socket;
 	}
+
+	public void seRecvHandler(Handler _handler)
+	{
+		if (recthread != null)
+			recthread.setHandler(_handler);
+	}
 	
 	public CurrentState getCurrentState()
 	{
@@ -99,11 +105,10 @@ public class NetThread extends Thread implements CommunicationInterface
 					msg.what = CONNECT_SUCCESS;
 					handler.sendMessage(msg);
 					
-					NetReceiveThread receiveThread = new NetReceiveThread(socket.getInputStream(), NetThread.this);
-					receiveThread.setName("receive thread");
-					receiveThread.start();		
-					receiveThread.setHandler(handler);
-					recthread = receiveThread;
+					recthread = new NetReceiveThread(socket.getInputStream(), NetThread.this);
+					recthread.setName("receive thread");
+					recthread.start();		
+					recthread.setHandler(handler);
 		
 					currentState = CurrentState.onReady;				// 转换为发送状态
 					udpConnecteSuccess = true;
@@ -219,6 +224,7 @@ public class NetThread extends Thread implements CommunicationInterface
 				udpSocket.close();
 				udpSocket = null;
 			}
+			recthread = null;
 		} catch (IOException e)
 		{
 			Log.e("MC", "closeNet" + e.getMessage());

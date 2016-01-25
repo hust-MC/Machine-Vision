@@ -22,7 +22,7 @@ public class NetReceiveThread extends Thread
 {
 	private NetThread netThread;
 	private InputStream is;
-	private static Handler handler;
+	private  Handler handler;
 	private NetPacket revPacket = new NetPacket();
 
 	int countQualified, countDisqualified;
@@ -38,12 +38,12 @@ public class NetReceiveThread extends Thread
 		System.loadLibrary("picture_process");
 	}
 
-	public static Handler getHandler()
+	public Handler getHandler()
 	{
 		return handler;
 	}
 	
-	public static void setHandler(Handler _handler)
+	public void setHandler(Handler _handler)
 	{
 		handler = _handler;
 	}
