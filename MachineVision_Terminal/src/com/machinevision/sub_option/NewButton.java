@@ -25,6 +25,7 @@ import com.machinevision.net.CmdHandle;
 import com.machinevision.net.NetUtils;
 import com.machinevision.terminal.FileDirectory;
 import com.machinevision.terminal.MainActivity;
+import com.machinevision.terminal.NetThread;
 import com.machinevision.terminal.R;
 
 import android.app.Activity;
@@ -172,6 +173,7 @@ public class NewButton extends Activity {
 							message.sendToTarget();
 						} else {
 							cmdHandle.getVideo(handler);
+							
 						}
 					}
 				}).start();

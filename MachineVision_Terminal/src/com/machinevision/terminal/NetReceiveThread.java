@@ -43,9 +43,9 @@ public class NetReceiveThread extends Thread
 		return handler;
 	}
 	
-	public static void setHandler(Handler handler)
+	public static void setHandler(Handler _handler)
 	{
-		NetReceiveThread.handler = handler;
+		handler = _handler;
 	}
 
 	@Override

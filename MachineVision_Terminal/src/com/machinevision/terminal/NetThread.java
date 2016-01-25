@@ -31,6 +31,7 @@ public class NetThread extends Thread implements CommunicationInterface
 	private final int RXBUF_SIZE = 300 * 1024;
 
 	public CurrentState currentState = CurrentState.onStop;
+	public NetReceiveThread recthread;
 
 	private Lock lock = new ReentrantLock();
 	private Condition cond = lock.newCondition();
@@ -101,7 +102,8 @@ public class NetThread extends Thread implements CommunicationInterface
 					NetReceiveThread receiveThread = new NetReceiveThread(socket.getInputStream(), NetThread.this);
 					receiveThread.setName("receive thread");
 					receiveThread.start();		
-					NetReceiveThread.setHandler(handler);
+					receiveThread.setHandler(handler);
+					recthread = receiveThread;
 		
 					currentState = CurrentState.onReady;				// 转换为发送状态
 					udpConnecteSuccess = true;

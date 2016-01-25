@@ -1,8 +1,6 @@
 package com.machinevision.terminal;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.Socket;
 import java.text.DecimalFormat;
 
 import com.machinevision.terminal.R;
@@ -21,7 +19,6 @@ import com.machinevision.terminal.NetThread.CurrentState;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -54,7 +51,8 @@ public class MainActivity extends Activity {
 	private boolean netFlag2 = false; // 网络连接状态标志
 	ToggleButton net_btn1; // 网络开关按钮
 	ToggleButton net_btn2; // 网络开关按钮
-	NetThread netThread1, netThread2; // 创建网络线程
+	public static NetThread netThread1; // 创建网络线程
+	public static NetThread netThread2;
 
 	ProgressDialog dialog;
 
