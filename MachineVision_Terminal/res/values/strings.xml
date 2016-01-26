@@ -14,7 +14,6 @@
 
     <!-- 文件管理菜单 -->
     <string-array name="option_file_manager">
-        <item>调入配置文件</item>
         <item>发送文件</item>   
         <item>从U盘读取到SD卡</item>
         <item>从SD卡保存到U盘</item>

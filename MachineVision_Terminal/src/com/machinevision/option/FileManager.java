@@ -34,6 +34,7 @@ public class FileManager extends ControlPannelActivity {
 	public static final int REQUEST_FILE = 1; //
 	public static final int TRANSFER_FILE = 2; // 从U盘拷贝文件
 	public static final int SEND_FILE = 3; // 从U盘拷贝文件
+	public static final int MOVE_FILE = 4; // 从U盘拷贝文件
 
 	static Handler handler = new Handler() {
 		@Override
@@ -51,15 +52,19 @@ public class FileManager extends ControlPannelActivity {
 				Intent intent = new Intent(FileManager.this,
 						FileManager_fileExplorer.class);
 				switch (arg2) {
-				case 1:
-					startActivityForResult(new Intent(FileManager.this,
-							FileManager_fileExplorer.class), SEND_FILE);
+				case 0:
+					intent.putExtra("firstDir", FileDirectory.getAppDirectory());
+					startActivityForResult(intent, SEND_FILE);
 					break;
-				case 2:
+				case 1:
 					intent.putExtra("firstDir", FileDirectory.getUsbDirectory());
 					startActivityForResult(intent, TRANSFER_FILE);
 					break;
-				case 4:
+				case 2:
+					intent.putExtra("firstDir", FileDirectory.getAppDirectory());
+					startActivityForResult(intent, MOVE_FILE);
+					break;
+				case 3:
 					ROMandSDcardInfo romSDcardInfo = new ROMandSDcardInfo(
 							FileManager.this);
 					TextView textView = ((TextView) findViewById(R.id.file_manager_tv));
@@ -69,6 +74,14 @@ public class FileManager extends ControlPannelActivity {
 							+ "SD卡总量：" + romSDcardInfo.getSDTotalSize() + "\n"
 							+ "SD卡剩余：" + romSDcardInfo.getSDAvailableSize());
 					textView.setVisibility(View.VISIBLE);
+					break;
+				case 4:
+					Intent intent1 = new Intent();
+					Bundle bundle = new Bundle();
+					bundle.putString("ShutDown", "y");
+					intent1.putExtras(bundle);
+					setResult(RESULT_OK, intent1);
+					finish();
 					break;
 				default:
 					startActivityForResult(intent, REQUEST_FILE);
@@ -137,6 +150,27 @@ public class FileManager extends ControlPannelActivity {
 						.show();
 			}
 
+			
+			if (requestCode == MOVE_FILE) {
+				String name = i.getStringExtra(FileManager_fileExplorer.RESULT_FILE_NAME);
+				File file = new File(FileDirectory.getAlgUSBDirectory() + name);
+				if (!file.getParentFile().exists()) {
+					file.getParentFile().mkdirs();
+				}
+
+				FileWriter writer;
+				try {
+					writer = new FileWriter(file);
+					writer.write(content.toString());
+					writer.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				EToast.makeText(FileManager.this, "写入U盘成功", Toast.LENGTH_SHORT)
+						.show();
+			}
+			
 			if (requestCode == SEND_FILE) {
 				String name = i
 						.getStringExtra(FileManager_fileExplorer.RESULT_FILE_NAME);

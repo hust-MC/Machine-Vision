@@ -12,6 +12,7 @@ public class FileDirectory
 
 	private static final String AlgDirectory = Environment
 			.getExternalStorageDirectory() + "/MachineVision/Alg/";
+	private static final String AlgUSBDirectory = UsbDirectory;
 	
 	/**
 	 * 获取App的目录路径
@@ -31,5 +32,10 @@ public class FileDirectory
 	public static String getAlgDirectory()
 	{
 		return AlgDirectory;
+	}
+	
+	public static String getAlgUSBDirectory()
+	{
+		return AlgUSBDirectory;
 	}
 }

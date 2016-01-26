@@ -434,7 +434,7 @@ public class ButtonInfo extends Activity
 	{
 
 		private String[] names = null;
-		private int images = R.drawable.correct;
+		private int images = R.drawable.switch_btn_slipper;
 
 		private LayoutInflater mInflater;
 

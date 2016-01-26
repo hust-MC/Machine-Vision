@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 
 import com.machinevision.terminal.R;
+import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.common_widget.ProgressBox;
 import com.machinevision.net.CmdHandle;
@@ -22,6 +23,7 @@ import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -63,8 +65,8 @@ public class MainActivity extends Activity {
 			bt_fasternerSettings, bt_machineLearning, bt_help;
 	Button bt_test, bt_pause, bt_stop;
 
-//	String sciRevBuf; // 串口接收数据
-//	SciThread serialThread; // 创建串口线程
+	// String sciRevBuf; // 串口接收数据
+	// SciThread serialThread; // 创建串口线程
 
 	private boolean buttonPicture = false; // 钮扣图片开关
 	private boolean netHandleFlag = true;
@@ -83,7 +85,7 @@ public class MainActivity extends Activity {
 	public static void setCmdHandle(CmdHandle cmdHandle, int num) {
 		if (num == 1)
 			cmdHandle1 = cmdHandle;
-		else 
+		else
 			cmdHandle2 = cmdHandle;
 	}
 
@@ -97,49 +99,44 @@ public class MainActivity extends Activity {
 	{
 		public void handleMessage(Message msg) {
 			Bitmap bitmap = null;
-			if (netHandleFlag) 
-			{
+			if (netHandleFlag) {
 				switch (msg.what) {
 				case NetThread.CONNECT_SUCCESS: // 网络连接成功
 					dialog.dismiss();
-					if (msg.arg1 == 1) 
-					{
+					if (msg.arg1 == 1) {
 						EToast.makeText(MainActivity.this, "相机1连接成功",
 								Toast.LENGTH_SHORT).show();
 						netFlag1 = true;
 						try {
-							setCmdHandle(new CmdHandle(netThread1.getSocket()), 1);
+							setCmdHandle(new CmdHandle(netThread1.getSocket()),
+									1);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						
-					} 
-					else 
-					{
+
+					} else {
 						EToast.makeText(MainActivity.this, "相机2连接成功",
 								Toast.LENGTH_SHORT).show();
 						netFlag2 = true;
-							try {
-								setCmdHandle(new CmdHandle(netThread2.getSocket()), 2);
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+						try {
+							setCmdHandle(new CmdHandle(netThread2.getSocket()),
+									2);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 					break;
 				case NetThread.CONNECT_FAIL:
 					dialog.dismiss();
-					if (msg.arg1 == 1) 
-					{
+					if (msg.arg1 == 1) {
 						EToast.makeText(MainActivity.this, "相机1连接失败",
 								Toast.LENGTH_SHORT).show();
 						netFlag1 = false;
 						net_btn1.setChecked(false);
 						cmdHandle1 = null;
-					} 
-					else 
-					{
+					} else {
 						EToast.makeText(MainActivity.this, "相机2连接失败",
 								Toast.LENGTH_SHORT).show();
 						netFlag2 = false;
@@ -257,21 +254,16 @@ public class MainActivity extends Activity {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				// TODO Auto-generated method stub
-				if (isChecked) 
-				{
+				if (isChecked) {
 					dialog = ProgressBox.show(MainActivity.this,
 							"正在连接智能相机1，请稍候..."); // 进程弹窗
 					netThread1 = new NetThread(netHandler, 1);
 					netThread1.setName("tcp-link1");
 					netThread1.start();
-				} 
-				else 
-				{
+				} else {
 					String toastText = "连接尚未建立";
-					if (netFlag1) 
-					{
-						if (netThread1 != null) 
-						{
+					if (netFlag1) {
+						if (netThread1 != null) {
 							toastText = "连接已断开";
 							netThread1.close();
 							netThread1 = null;
@@ -299,14 +291,10 @@ public class MainActivity extends Activity {
 					netThread2 = new NetThread(netHandler, 2);
 					netThread2.setName("tcp-link2");
 					netThread2.start();
-				} 
-				else 
-				{
+				} else {
 					String toastText = "连接尚未建立";
-					if (netFlag2) 
-					{
-						if (netThread2 != null) 
-						{
+					if (netFlag2) {
+						if (netThread2 != null) {
 							toastText = "连接已断开";
 							netThread2.close();
 							netThread2 = null;
@@ -418,6 +406,26 @@ public class MainActivity extends Activity {
 			// netThread.signalThread();
 			EToast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show();
 			switch (requestCode) {
+			case REQUEST_CODE_FILE_MANAGER:
+				if (data != null) {
+					if (data.getStringExtra("ShutDown").equals("y")) {
+						DialogWindow dialog_exit = new DialogWindow.Builder(
+								MainActivity.this)
+								.setTitle("确定退出系统？")
+								.setPositiveButton("确定",
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface arg0,
+													int arg1) {
+												finish();
+											}
+										}).setNegativeButton("取消", null)
+								.create();
+						dialog_exit.showWrapContent();
+					}
+				}
+				break;
 			default:
 				break;
 			}
