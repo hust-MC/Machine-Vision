@@ -58,6 +58,7 @@ public class DataPack
 		}
 		return false;
 	}
+
 	public static NetPacket recvDataPack(InputStream is)
 	{
 		// long time, time1, time2 = 0, time3, time4;
@@ -89,11 +90,12 @@ public class DataPack
 
 					if (startPos != 0)
 					{
-						Log.e("NET", "startPos=" + startPos);
+						Log.e("ZY", "startPos=" + startPos);
 					}
 					break;
 				}
 			}
+			
 			if (!hasMagicRead)
 			{
 				Log.d("ZY", "hasn't read magic");

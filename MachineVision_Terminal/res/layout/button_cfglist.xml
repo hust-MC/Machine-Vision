@@ -19,14 +19,22 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="#dddddd"
                 android:orientation="horizontal" >
 
                 <CheckBox
                     android:id="@+id/machine_learing_query_option1"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="75dp"
+                    android:layout_height="45dp"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/btn_check"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
                     android:layout_marginRight="50dp"
                     android:text="ID查询"
                     android:textSize="30sp" />
@@ -46,14 +54,22 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="#dddddd"
                 android:orientation="horizontal" >
 
                 <CheckBox
                     android:id="@+id/machine_learing_query_option2"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="75dp"
+                    android:layout_height="45dp"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/btn_check"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
                     android:layout_marginRight="50dp"
                     android:text="条件查询"
                     android:textSize="30sp" />
@@ -85,13 +101,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="#dddddd"
                 android:orientation="horizontal" >
 
                 <TextView
                     android:id="@+id/color"
                     style="@style/query_item"
-                    android:layout_marginLeft="285dp"
+                    android:layout_marginLeft="240dp"
                     android:text="颜色" >
                 </TextView>
 
@@ -133,7 +148,8 @@
 
             <Button
                 android:id="@+id/bt_query"
-                style="@style/button_query" >
+                style="@style/button_query"
+                android:text="查询" >
             </Button>
         </LinearLayout>
     </LinearLayout>
@@ -188,9 +204,28 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_marginTop="300dp"
             android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/bt_control_up"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="50dp"
+                android:background="#0000"
+                android:scaleType="fitXY"
+                android:src="@drawable/control_pannel_top" />
+
+            <ImageButton
+                android:id="@+id/bt_control_down"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="100dp"
+                android:background="#0000"
+                android:scaleType="fitXY"
+                android:src="@drawable/control_pannel_bottom" />
 
             <Button
                 android:id="@+id/bt_exit"

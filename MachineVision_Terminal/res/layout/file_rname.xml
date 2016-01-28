@@ -13,6 +13,27 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="厂家:"
+            android:textSize="30sp" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/Manufacturer"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:textSize="30sp" >
+        </EditText>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="钮扣："
             android:textSize="30sp" >
         </TextView>
@@ -21,7 +42,6 @@
             android:id="@+id/editText1"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:hint="钮扣ID号"
             android:textSize="30sp" >
         </EditText>
 

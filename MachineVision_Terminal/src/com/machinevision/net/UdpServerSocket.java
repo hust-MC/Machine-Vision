@@ -66,7 +66,6 @@ public class UdpServerSocket
 
 	/**
 	 * 绑定监听地址和端口.
-	 * 
 	 * @param host
 	 *            主机IP
 	 * @param port
@@ -81,7 +80,6 @@ public class UdpServerSocket
 
 	/**
 	 * 接收数据包，该方法会造成线程阻塞.
-	 * 
 	 * @return 返回接收的数据串信息
 	 * @throws IOException
 	 */

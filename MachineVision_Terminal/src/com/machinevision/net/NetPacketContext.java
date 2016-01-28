@@ -12,7 +12,6 @@ public class NetPacketContext
 
 	/**
 	 * 采用策略模式生成算法
-	 * 
 	 * @param type
 	 *            根据类型判断需要生成的包
 	 */
@@ -40,6 +39,9 @@ public class NetPacketContext
 			break;
 		case NetUtils.MSG_NET_SET_JSON:
 			packet = new SetJson();
+			break;
+		case NetUtils.MSG_NET_SEND_BINARY:
+			packet = new SendBinary();
 			break;
 		default:
 			Log.e("MC", "netPacketContext: netPacket error");

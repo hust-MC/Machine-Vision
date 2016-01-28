@@ -51,7 +51,7 @@ public class DebugMode extends Activity
 			@Override
 			public void run()
 			{
-				CmdHandle cmdHandle = CmdHandle.getInstance();
+				CmdHandle cmdHandle = MainActivity.getCmdHandle(1);
 				if (cmdHandle == null)
 				{
 					Message message = handler.obtainMessage();

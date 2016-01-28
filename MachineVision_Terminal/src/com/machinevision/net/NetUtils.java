@@ -26,6 +26,7 @@ public class NetUtils
 	public final static int sendIpPort = 6018;
 	public final static int port = 6020;
 	public static String ip = "115.156.211.190";
+	
 	/**
 	 * 指令集常量定义
 	 */
@@ -53,6 +54,7 @@ public class NetUtils
 	public final static int MSG_NET_GET_JSON = 26;
 	public final static int MSG_NET_SET_JSON = 27;
 	public final static int MSG_NET_RESULT = 28;
+	public final static int MSG_NET_SEND_BINARY = 29;
 
 	public final static int MSG_NET_ALGRESULT = 200;
 
@@ -118,6 +120,7 @@ public class NetUtils
 		}
 	}
 
+	
 	/**
 	 * 网络数据包
 	 */
@@ -144,6 +147,7 @@ public class NetUtils
 			}		// 线程延时100ms,降低发送频率
 
 		}
+		
 		public void recvDataPack(InputStream is)
 		{
 			NetPacket packet = DataPack.recvDataPack(is);
@@ -243,6 +247,16 @@ public class NetUtils
 		public SetJson()
 		{
 			minid = MSG_NET_SET_JSON;
+			type = 0;
+			block = 0;
+		}
+	}
+	
+	public static class SendBinary extends NetPacket
+	{
+		public SendBinary()
+		{
+			minid = MSG_NET_SEND_BINARY;
 			type = 0;
 			block = 0;
 		}
