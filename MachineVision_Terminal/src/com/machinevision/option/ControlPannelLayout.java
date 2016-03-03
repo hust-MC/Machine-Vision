@@ -28,7 +28,6 @@ public class ControlPannelLayout extends LinearLayout implements
 	public ControlPannelLayout(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
-
 		this.context = context;
 		// 在构造函数中将Xml中定义的布局解析出来。
 		LayoutInflater.from(context).inflate(R.layout.control_pannel, this,

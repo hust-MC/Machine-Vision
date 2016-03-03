@@ -130,7 +130,6 @@ abstract class ControlPannelActivity extends Activity
 	 */
 	public void onDirectionClicked(int resId)
 	{
-
 		switch (resId)
 		{
 		case R.id.bt_control_pannel_top:

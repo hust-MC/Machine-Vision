@@ -5,4 +5,16 @@
     <color name="red">#ff0000</color>
     <color name="white">#ffffffff</color>
     <color name="transparent">#00000000</color>
+
+    <drawable name="list_item_selected">#dfdfdf</drawable>
+    <drawable name="gray">#95a5a6</drawable>
+    <drawable name="gray_highlight">#7f8c8d</drawable>
+    <drawable name="light_blue">#21aabd</drawable>
+    <drawable name="blue">#0066ff</drawable>
+    <drawable name="light_blue_highlight">#15707c</drawable>
+    <drawable name="light_green">#2ecc71</drawable>
+    <drawable name="light_green_highlight">#27ae60</drawable>
+    <drawable name="red">#e74c3c</drawable>
+    <drawable name="red_highlight">#c0392b</drawable>
+
 </resources>

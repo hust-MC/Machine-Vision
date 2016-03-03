@@ -8,6 +8,7 @@ import com.emercy.dropdownlist.DropDownList;
 import com.emercy.dropdownlist.DropDownList.OnDropListClickListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.machineversion.inverter.InverterActivity;
 import com.machinevision.terminal.R;
 import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.common_widget.EToast;
@@ -412,6 +413,11 @@ public class SysSettings extends ControlPannelActivity implements
 					.setTextSize(27F);
 			((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE)
 					.setTextSize(27F);
+			break;
+		}
+		case 5:
+		{
+			startActivity(new Intent(this, InverterActivity.class));
 			break;
 		}
 		default:
