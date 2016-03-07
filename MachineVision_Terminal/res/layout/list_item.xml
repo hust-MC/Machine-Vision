@@ -38,7 +38,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/EditTime"
+            android:id="@+id/ItemTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp" />

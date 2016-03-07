@@ -16,9 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MachineLearning extends ControlPannelActivity implements
 		OnDialogClicked
 {
-	public static final String FILE_DIR = FileDirectory.getAppDirectory()
-			+ "Learning/";
-	
+	public static final String FILE_DIR = FileDirectory.getLeaningDirectory();	
 	private final int NEW_FILE = 1;
 	private final int QUERY_FILE = 2;
 	private final int SVM_USE = 3;

@@ -155,9 +155,9 @@ public class MainActivity extends Activity {
 							+ (tempFloat.length() > 3 ? tempFloat.substring(0,
 									3) : tempFloat));
 					break;
+					
 				// 接收分拣结果
 				case NetUtils.MSG_NET_RESULT:
-
 					if (buttonPicture) {
 						byte[] packageData = (byte[]) msg.obj;
 						int[] data = new int[12];

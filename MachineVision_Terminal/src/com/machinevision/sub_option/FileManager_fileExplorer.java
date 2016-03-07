@@ -298,7 +298,9 @@ public class FileManager_fileExplorer extends ListActivity
 				}
 			}
 		}
+		file.delete();
 	}
+	
 	private void finishWithResult(String path, String name)
 	{
 		Intent intent = new Intent();

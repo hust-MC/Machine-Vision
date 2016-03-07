@@ -38,4 +38,9 @@ public class FileDirectory
 	{
 		return AlgUSBDirectory;
 	}
+
+	public static String getLeaningDirectory()
+	{
+		return appDirectory + "Learning/";
+	}	
 }
