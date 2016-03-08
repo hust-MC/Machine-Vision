@@ -70,7 +70,6 @@ abstract class ControlPannelActivity extends Activity
 		listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.menu_list_item, wholeMenu.menu));
-
 	}
 	/**
 	 * 设置统一的菜单点击事件
