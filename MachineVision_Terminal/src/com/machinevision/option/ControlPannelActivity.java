@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.google.gson.JsonObject;
+import com.machinevision.terminal.MainActivity;
 import com.machinevision.terminal.R;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
@@ -48,7 +49,7 @@ abstract class ControlPannelActivity extends Activity
 
 	protected void sendJson(JsonObject json)
 	{
-		CmdHandle cmdHandle = CmdHandle.getInstance();
+		CmdHandle cmdHandle = MainActivity.getCmdHandle(1);
 		if (cmdHandle == null)
 		{
 			EToast.makeText(this, "网络未连接", EToast.LENGTH_SHORT).show();
@@ -69,7 +70,6 @@ abstract class ControlPannelActivity extends Activity
 		listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.menu_list_item, wholeMenu.menu));
-
 	}
 	/**
 	 * 设置统一的菜单点击事件
@@ -150,7 +150,6 @@ abstract class ControlPannelActivity extends Activity
 			break;
 		}
 		listview.smoothScrollToPosition(position);
-
 	}
 
 	/**

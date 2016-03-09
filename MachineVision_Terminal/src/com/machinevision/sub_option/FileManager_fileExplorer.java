@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.io.File;
 
 import com.machinevision.common_widget.EToast;
+import com.machinevision.option.FileManager;
 import com.machinevision.terminal.R;
 
 public class FileManager_fileExplorer extends ListActivity
@@ -41,11 +42,13 @@ public class FileManager_fileExplorer extends ListActivity
 	private List<Map<String, Object>> mData;
 	private final String ROOT_DIRECTORY = Environment
 			.getExternalStorageDirectory().getPath();
+	
 	private String mDir;
 	MyAdapter adapter;
 	private final Context CONTEXT = this;
 
 	public static final String RESULT_FILE_PATH = "filePath";
+	public static final String RESULT_FILE_NAME = "filename";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -54,9 +57,7 @@ public class FileManager_fileExplorer extends ListActivity
 
 		mDir = getIntent().getStringExtra("firstDir");
 		if (mDir == null)
-		{
 			mDir = ROOT_DIRECTORY;
-		}
 
 		adapter = new MyAdapter(this);
 		mData = getData();
@@ -71,13 +72,22 @@ public class FileManager_fileExplorer extends ListActivity
 		p.width = (int) (d.getWidth() * 0.95);
 		getWindow().setAttributes(p);
 	}
+	
+ 
+	
 	private List<Map<String, Object>> getData()
 	{
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = null;
-		File f = new File(mDir);
+		
+		File f = new File(mDir);	
+		if (!f.exists()) {
+			EToast.makeText(FileManager_fileExplorer.this, "U盘设备无法识别",
+					Toast.LENGTH_SHORT).show();
+			return list;
+		}
+		
 		File[] files = f.listFiles();
-
 		if (!mDir.equals(ROOT_DIRECTORY))
 		{
 			map = new HashMap<String, Object>();
@@ -111,7 +121,7 @@ public class FileManager_fileExplorer extends ListActivity
 		mData = getData();
 		adapter.notifyDataSetChanged();
 	}
-
+		
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
@@ -122,7 +132,7 @@ public class FileManager_fileExplorer extends ListActivity
 		}
 		else
 		{
-			finishWithResult((String) mData.get(position).get("info"));
+			finishWithResult((String) mData.get(position).get("info"), (String) mData.get(position).get("title")) ;
 		}
 	}
 
@@ -288,12 +298,16 @@ public class FileManager_fileExplorer extends ListActivity
 				}
 			}
 		}
+		file.delete();
 	}
-	private void finishWithResult(String path)
+	
+	private void finishWithResult(String path, String name)
 	{
 		Intent intent = new Intent();
 		Bundle bundle = new Bundle();
 		bundle.putString(RESULT_FILE_PATH, path);
+		
+		bundle.putString(RESULT_FILE_NAME, name);
 		intent.putExtras(bundle);
 		setResult(RESULT_OK, intent);
 		finish();

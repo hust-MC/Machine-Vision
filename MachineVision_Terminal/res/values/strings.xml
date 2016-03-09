@@ -16,12 +16,10 @@
     
     <!-- 文件管理菜单 -->
     <string-array name="option_file_manager">
-        <item>调入配置文件</item>
-        <item>保存配置文件</item>
-        <item>调入样品照片</item>
-        <item>保存样品照片</item>
+        <item>发送文件</item>   
         <item>从U盘读取到SD卡</item>
         <item>从SD卡保存到U盘</item>
+        <item>内存及SD卡使用情况</item>
         <item>退出系统</item>
     </string-array>
 
@@ -105,21 +103,6 @@
         <item>查询钮扣样本</item>
         <item>SVM学习</item>
     </string-array>
-    <string-array name="option_machine_learning_sub">
-        <item></item>
-        <item></item>
-        <item></item>
-    </string-array>
-    <string-array name="option_machine_learning_type">
-        <item></item>
-        <item></item>
-        <item></item>
-    </string-array>
-    <string-array name="option_machine_learning_ini">
-        <item></item>
-        <item></item>
-        <item></item>
-    </string-array>
 
     <!-- 钮扣信息配置菜单 -->
     <string-array name="buttoninfo_config">
@@ -137,6 +120,28 @@
         <item>1是n否,1是n否,1是n否,1是n否</item>
         <item>0,0,0,0</item>
     </string-array>
+    
+    <!-- 钮扣信息配置菜单 -->
+    <string-array name="newbuttoninfo_config">
+        <item>钮扣图片</item>
+        <item>基本信息</item>
+        <item>算法配置</item>
+        <item>判别标准配置</item>
+    </string-array>
+    <string-array name="newbuttoninfo_menu">
+        <item></item>
+        <item>外形,线孔个数,颜色,字符,花纹,透光特性,材质</item>
+        <item>外形缺陷,线孔缺陷,色差缺陷,表面缺陷</item>
+        <item>外形缺陷标准,线孔缺陷标准,色差缺陷标准,表面缺陷标准</item>
+    </string-array>
+    <string-array name="newbuttoninfo_type">
+        <item></item>
+        <item>1圆形n方形n心形n三角形,14n2,1深色n浅色,1本色n异色n无,1本色n异色n无,1透明n半透明n不透明,1树脂n塑料n金属n木材n贝壳n牛角</item>
+        <item>1是n否,1是n否,1是n否,1是n否</item>
+        <item>0,0,0,0</item>
+    </string-array>
+    
+    
 
     <!-- 帮助菜单选项 -->
     <string-array name="option_help">
@@ -253,7 +258,7 @@
     <string name="option_machine_alg_config">外形缺陷,线孔缺陷,色差缺陷,表面缺陷</string>
     <string name="option_machine_criteria_config">外形缺陷标准,线孔缺陷标准,色差缺陷标准,表面缺陷标准</string>
     <string name="title_activity_new_button">新建钮扣样本</string>
-    <string name="option_machine_check_condition">外形,线孔个数,颜色,字符,花纹,透光特性,材质</string>
+    <string name="option_machine_check_condition">外形,线孔个数,颜色,字符,花纹</string>
     <string name="option_machine_query_item">1圆形n方形n心形n三角形,14n2,1深色n浅色,1本色n异色n无,1本色n异色n无,1透明n半透明n不透明,1树脂n塑料n金属n木材n贝壳n牛角</string>
 
     <!-- 变频器 -->

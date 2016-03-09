@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.machinevision.terminal.MainActivity;
 import com.machinevision.terminal.R;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.net.CmdHandle;
@@ -128,15 +129,26 @@ public class FastenerSettings extends ControlPannelActivity implements
 		/*
 		 * 发送配置文件到SC280
 		 */
-		CmdHandle cmdHandle = CmdHandle.getInstance();
+		CmdHandle cmdHandle = MainActivity.getCmdHandle(1);
 		if (cmdHandle == null)
 		{
-			EToast.makeText(this, "请检查网络连接", Toast.LENGTH_SHORT).show();
+			EToast.makeText(this, "请检查网络连接1", Toast.LENGTH_SHORT).show();
 		}
 		else
 		{
 
 			cmdHandle.normal(Integer.parseInt(value[0]));
 		}
+		
+		cmdHandle = MainActivity.getCmdHandle(2);
+		if (cmdHandle == null)
+		{
+			EToast.makeText(this, "请检查网络连接2", Toast.LENGTH_SHORT).show();
+		}
+		else
+		{
+			cmdHandle.normal(Integer.parseInt(value[0]));
+		}
+
 	}
 }

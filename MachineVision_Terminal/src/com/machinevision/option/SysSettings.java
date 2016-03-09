@@ -338,8 +338,7 @@ public class SysSettings extends ControlPannelActivity implements
 			viewAd9849.addView(layoutRight, paramsRight);
 
 			DialogWindow dialog = new DialogWindow.Builder(this)
-					.setTitle(
-							getResources().getStringArray(
+					.setTitle(getResources().getStringArray(
 									R.array.option_sys_settings)[position])
 					.setView(viewAd9849)
 					.setPositiveButton("应用", new OnClickListener()
