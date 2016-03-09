@@ -7,10 +7,9 @@
         android:id="@+id/text_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="25dp"
+        android:layout_margin="@dimen/inverter_marginsz"
         android:text="@string/text_head"
-        android:textSize="22sp" />
+        android:textSize="@dimen/inverter_textsz" />
 
     <RelativeLayout
         android:id="@+id/layout_inverter_main"
@@ -22,33 +21,36 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin" >
 
-        <Button
-            android:id="@+id/btn_reset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/btn_light_blue"
-            android:gravity="center"
-            android:onClick="onButtonClick"
-            android:text="@string/btn_reset"
-            android:textColor="#fff"
-            android:textSize="25sp" />
+        
 
         <RelativeLayout
             android:id="@+id/layout_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="20dp" >
+            android:layout_margin="@dimen/inverter_innersz" >
 
+            <Button
+	            android:id="@+id/btn_reset"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentRight="true"
+	            android:layout_alignParentTop="true"
+	            android:layout_margin="10dp"
+	            android:background="@drawable/btn_light_blue"
+	            android:gravity="center"
+	            android:onClick="onButtonClick"
+	            android:text="@string/btn_reset"
+	            android:textColor="#fff"
+	            android:textSize="@dimen/inverter_textsz" />
+            
             <LinearLayout
                 android:id="@+id/layout_sci"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="@dimen/inverter_innersz"
+                android:layout_marginRight="@dimen/inverter_innersz"
+                android:layout_marginBottom="@dimen/inverter_innersz"
                 android:orientation="horizontal" >
 
                 <Button
@@ -59,7 +61,7 @@
                     android:layout_marginRight="20dp"
                     android:onClick="onSciClick"
                     android:text="开启串口"
-                    android:textSize="23sp" />
+                    android:textSize="@dimen/inverter_textsz" />
 
                 <Button
                     android:id="@+id/Sci_close"
@@ -69,7 +71,7 @@
                     android:layout_marginRight="20dp"
                     android:onClick="onSciClick"
                     android:text="关闭串口"
-                    android:textSize="23sp" />
+                    android:textSize="@dimen/inverter_textsz" />
             </LinearLayout>
 
             <LinearLayout
@@ -77,20 +79,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layout_sci"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_margin="@dimen/inverter_innersz"
                 android:orientation="horizontal" >
 
                 <LinearLayout
                     android:id="@+id/bg_run"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:padding="5dp" >
 
                     <Button
                         android:id="@+id/button_run"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@drawable/btn_light_green"
                         android:onClick="onButtonClick"
@@ -100,19 +103,21 @@
                         android:paddingTop="5dp"
                         android:text="正转"
                         android:textColor="#fff"
-                        android:textSize="30sp" />
+                        android:textSize="@dimen/inverter_textsz" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/bg_reverse"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:padding="5dp" >
 
                     <Button
                         android:id="@+id/button_reverse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@drawable/btn_gray"
                         android:onClick="onButtonClick"
@@ -122,7 +127,7 @@
                         android:paddingTop="5dp"
                         android:text="反转"
                         android:textColor="#fff"
-                        android:textSize="30sp" />
+                        android:textSize="@dimen/inverter_textsz" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -130,14 +135,16 @@
                 android:id="@+id/bg_stop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/layout_move" >
+                android:layout_below="@id/layout_move"
+                android:layout_marginTop="@dimen/inverter_innersz"
+                android:layout_marginLeft="35dp"
+                android:textSize="@dimen/inverter_textsz"
+                android:padding="5dp" >
 
                 <Button
                     android:id="@+id/button_stop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:layout_weight="1"
                     android:background="@drawable/btn_red"
                     android:onClick="onButtonClick"
                     android:paddingBottom="5dp"
@@ -146,112 +153,98 @@
                     android:paddingTop="5dp"
                     android:text="停止"
                     android:textColor="#fff"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/inverter_textsz" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
+                android:layout_below="@id/btn_reset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="130dp"
-                android:layout_marginTop="20dp"
-                android:gravity="right"
-                android:orientation="vertical" >
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="@dimen/inverter_innersz"
+                android:layout_toRightOf="@id/layout_sci"
+                android:background="@drawable/pic_bg"
+                android:gravity="center" >
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/text_status"
-                    android:textSize="25sp" />
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="130dp"
+                    android:gravity="right"
+                    android:orientation="vertical" >
 
-                <TextView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="@string/text_status"
+                        android:textSize="@dimen/inverter_textsz" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="@string/text_velocity"
+                        android:textSize="@dimen/inverter_textsz" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="@string/text_current"
+                        android:textSize="@dimen/inverter_textsz" />
+
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="@string/text_prom_frq"
+                        android:textSize="@dimen/inverter_textsz" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/text_velocity"
-                    android:textSize="25sp" />
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/text_current"
-                    android:textSize="25sp" />
+                    <TextView
+                        android:id="@+id/text_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="正常"
+                        android:textSize="@dimen/inverter_textsz" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/text_ram_frq"
-                    android:textSize="25sp" />
+                    <TextView
+                        android:id="@+id/text_velocity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="0"
+                        android:textSize="@dimen/inverter_textsz" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/text_prom_frq"
-                    android:textSize="25sp" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/text_current"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="0"
+                        android:textSize="@dimen/inverter_textsz" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="20dp"
-                android:gravity="right"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/text_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="正常"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/text_velocity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="0"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/text_current"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="0"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/text_ram"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="0"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/text_prom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="0"
-                    android:textSize="25sp" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/text_prom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="0"
+                        android:textSize="@dimen/inverter_textsz" />
+                </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
@@ -259,13 +252,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/layout_1"
-            android:layout_margin="15dp" >
+            android:layout_margin="@dimen/inverter_innersz" >
 
             <LinearLayout
                 android:id="@+id/layout_setFrq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="@dimen/inverter_innersz"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical" >
@@ -273,16 +266,14 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_margin="@dimen/inverter_innersz"
                     android:orientation="horizontal" >
 
                     <EditText
                         android:id="@+id/edtext_ram"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_margin="@dimen/inverter_innersz"
                         android:layout_weight="1"
                         android:hint="输入频率值"
                         android:imeOptions="actionDone"
@@ -293,27 +284,24 @@
                         android:id="@+id/button_setfrq_ram"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_margin="@dimen/inverter_innersz"
                         android:layout_weight="1"
                         android:onClick="onButtonClick"
                         android:text="设定频率(RAM)"
-                        android:textSize="25sp" />
+                        android:textSize="@dimen/inverter_textsz" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_margin="@dimen/inverter_innersz"
                     android:orientation="horizontal" >
 
                     <EditText
                         android:id="@+id/edtext_prom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_margin="@dimen/inverter_innersz"
                         android:layout_weight="1"
                         android:hint="输入频率值"
                         android:maxLength="2"
@@ -323,12 +311,11 @@
                         android:id="@+id/button_setfrq_prom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_margin="@dimen/inverter_innersz"
                         android:layout_weight="1"
                         android:onClick="onButtonClick"
                         android:text="设定频率(RAM和E2PROM)"
-                        android:textSize="25sp" />
+                        android:textSize="@dimen/inverter_textsz" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -348,7 +335,7 @@
                     android:gravity="center"
                     android:maxLines="2"
                     android:text="频率调节\n（增/减1Hz）"
-                    android:textSize="24sp" />
+                    android:textSize="@dimen/inverter_textsz" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
+
+
 import com.machinevision.serial_jni.SciClass;
 
 import android.util.Log;

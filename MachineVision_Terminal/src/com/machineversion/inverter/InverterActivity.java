@@ -1,29 +1,20 @@
 package com.machineversion.inverter;
 
-
-
 import com.machinevision.terminal.R;
 
 import android.R.color;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,13 +25,6 @@ import android.widget.Toast;
 
 public class InverterActivity extends Activity {
 
-	Button ButtonSciInit;
-	Button ButtonSciClose;
-	Button mButtonReset;
-	Button ButtonRun;
-	Button ButtonReverse;
-	Button ButtonStop;
-	
 	LinearLayout mBgRun;
 	LinearLayout mBgReverse;
 	LinearLayout mBgStop;
@@ -68,18 +52,11 @@ public class InverterActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_inverter);
-		ButtonSciInit = (Button)findViewById(R.id.Sci_init);
-		ButtonSciClose = (Button)findViewById(R.id.Sci_close);
-		mButtonReset = (Button)findViewById(R.id.btn_reset);
-		
-		ButtonRun = (Button)findViewById(R.id.button_run);
-		ButtonReverse = (Button)findViewById(R.id.button_reverse);
-		ButtonStop = (Button)findViewById(R.id.button_stop);
 		
 		TextStatus = (TextView)findViewById(R.id.text_status);
 		TextVelocity = (TextView)findViewById(R.id.text_velocity);
 		TextCurrent = (TextView)findViewById(R.id.text_current);
-		mTextRam = (TextView)findViewById(R.id.text_ram);
+//		mTextRam = (TextView)findViewById(R.id.text_ram);
 		mTextProm = (TextView)findViewById(R.id.text_prom);
 		
 		ButtonSetfrqRam = (Button)findViewById(R.id.button_setfrq_ram);
@@ -88,10 +65,7 @@ public class InverterActivity extends Activity {
 		mEdtextRam = (EditText)findViewById(R.id.edtext_ram);
 		mEdtextProm = (EditText)findViewById(R.id.edtext_prom);
 				
-		
-//		sciModel = SciModel.getInstance(this);
-		
-		//��edittext����ý���
+		//让edittext不获得焦点
 		mLayoutMain = (RelativeLayout)findViewById(R.id.layout_inverter_main);
 		mLayoutMain.setOnTouchListener(new OnTouchListener() {            
             public boolean onTouch(View v, MotionEvent event) {                   
@@ -109,7 +83,7 @@ public class InverterActivity extends Activity {
 	}
 
 	
-	//������Ϊ͸��
+	//按键背景设为透明
 	private void setButtonBgTran() {
 		mBgRun.setBackgroundColor(color.transparent);
 		mBgReverse.setBackgroundColor(color.transparent);
@@ -124,18 +98,18 @@ public class InverterActivity extends Activity {
 				switch (msg.what)
 				{
 				case SciModel.Data_ACK:
-					Toast.makeText(getApplicationContext(), "������ȷ", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "操作正确", Toast.LENGTH_SHORT).show();
 					mLayoutMain.setClickable(true);
 					break;
 				case SciModel.Data_NAK:
 					String daErr = "";
 					if (msg.obj != null)
 						daErr = (String)msg.obj;
-					Toast.makeText(getApplicationContext(), "��ݴ���Ϊ��" + daErr, Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), "数据错误为：" + daErr, Toast.LENGTH_LONG).show();
 					mLayoutMain.setClickable(true);
 					break;
 				case SciModel.Status_Refresh:
-					TextStatus.setText("����");
+					TextStatus.setText("正常工作");
 					break;
 				case SciModel.Current_Refresh:
 					TextCurrent.setText("" + (1.0f * (int)msg.arg1) /100);
@@ -143,24 +117,22 @@ public class InverterActivity extends Activity {
 				case SciModel.OutFrq_Refresh:
 					TextVelocity.setText("" + (1.0f * (int)msg.arg1) /100);
 					break;
-				case SciModel.Frq_Ram:
-					mTextRam.setText("" + (1.0f * (int)msg.arg1) /100);
-					break;
 				case SciModel.Frq_Prom:
 					mTextProm.setText("" + (1.0f * (int)msg.arg1) /100);
 					break;
 				case SciModel.Alarm:
-					TextStatus.setText("����");
+					TextStatus.setText("发生警报");
 					sciModel.setBtnClicked(SendUtils.numGetAlarm);
 				case SciModel.Conn_Error:
 					if(++time == 10) {
 						time = 0;				
-						Toast.makeText(getApplicationContext(), "���ӳ�ʱ,�������", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "连接超时,检查连线", Toast.LENGTH_SHORT).show();
 					}
 					mLayoutMain.setClickable(true);
 					break;
 				case SciModel.Get_Alarm:
 					int aCode = msg.arg1;
+					Toast.makeText(getApplicationContext(), RecvUtils.alarms_title[aCode], Toast.LENGTH_LONG).show();
 					break;
 				}
 			sciModel.setSendFlag(true);
@@ -171,11 +143,10 @@ public class InverterActivity extends Activity {
 	
 	public void onButtonClick(View v) {
 		if(sciModel.isSciOpened()) {
-//			mLoading.show();
 			switch (v.getId()) {
 			case R.id.button_run:
 				if(sciModel.getRun() < 0)
-					Toast.makeText(getApplicationContext(), "����ֹͣ���л�����", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "请先停止再切换方向", Toast.LENGTH_SHORT).show();
 				else {
 					setButtonBgTran();
 					mBgRun.setBackgroundColor(Color.BLACK);
@@ -184,7 +155,7 @@ public class InverterActivity extends Activity {
 				break;
 			case R.id.button_reverse:
 				if(sciModel.getRun() > 0) {
-					Toast.makeText(getApplicationContext(), "����ֹͣ���л�����", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "请先停止再切换方向", Toast.LENGTH_SHORT).show();
 				}
 				else {
 					setButtonBgTran();
@@ -199,21 +170,21 @@ public class InverterActivity extends Activity {
 				break;
 			case R.id.button_setfrq_ram:
 				if(TextUtils.isEmpty(mEdtextRam.getText()))
-					Toast.makeText(getApplicationContext(), "����������Ƶ��", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "请输入设置频率", Toast.LENGTH_SHORT).show();
 				else {
 					int frqRam = Integer.parseInt(mEdtextRam.getText().toString());
 					if(frqRam > 50)
-						Toast.makeText(getApplicationContext(), "��������Ƶ��", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "超过限制频率", Toast.LENGTH_SHORT).show();
 					else sciModel.setFrqRam(frqRam);
 				}
 				break;
 			case R.id.button_setfrq_prom:
 				if(TextUtils.isEmpty(mEdtextProm.getText()))
-					Toast.makeText(getApplicationContext(), "����������Ƶ��", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "请输入设置频率", Toast.LENGTH_SHORT).show();
 				else {
 					int frqProm = Integer.parseInt(mEdtextProm.getText().toString());
 					if(frqProm > 50)
-						Toast.makeText(getApplicationContext(), "��������Ƶ��", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "超过限制频率", Toast.LENGTH_SHORT).show();
 					else sciModel.setFrqRam(frqProm);
 				}
 				break;
@@ -224,27 +195,27 @@ public class InverterActivity extends Activity {
 				sciModel.frqDown();
 				break;
 			case R.id.btn_reset:
-				//����Ƿ�λdialog
+				//跳出是否复位dialog
 				showAlertDialog();
 				break;
 			}
 			mLayoutMain.setClickable(false);
 		}
-		else Toast.makeText(this, "���ȿ�������", Toast.LENGTH_SHORT).show();
+		else Toast.makeText(this, "请先开启串口", Toast.LENGTH_SHORT).show();
 	}
 	
 	private void showAlertDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("ȷ����λ��");
+		builder.setTitle("确定复位吗？");
 		builder.setIcon(R.drawable.ic_launcher);
-		builder.setPositiveButton("ȷ��",
+		builder.setPositiveButton("确定",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						sciModel.setBtnClicked(SendUtils.numReset);
 					}
 				});
-		builder.setNegativeButton("ȡ��",
+		builder.setNegativeButton("取消",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -255,7 +226,7 @@ public class InverterActivity extends Activity {
 	}
 	
 	/*
-	 * �������Ӻ���
+	 * 串口连接函数
 	 */
 	public void onSciClick(View view)
 	{
@@ -269,20 +240,18 @@ public class InverterActivity extends Activity {
 		}
 	}
 	
-	/*************�����رյİ�����****************/
+	/*************开启关闭的按键处理****************/
 	private void open() {
 		if(sciModel.isSciOpened())
-			Toast.makeText(this, "�����ѿ���",
+			Toast.makeText(this, "串口已开启",
 					Toast.LENGTH_SHORT).show();
 		else {
-//			registerBroadcast();
 			sciModel.openSci();		
 		}
 	}
 	
 	private void close() {
 		if(sciModel.isSciOpened()) {
-//			unregisterReceiver(mBroadcastReceiver);
 			sciModel.closeSci();
 		}
 	}
@@ -292,16 +261,10 @@ public class InverterActivity extends Activity {
 		super.onBackPressed();
 	}
 	
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
 		return true;
 	}
 
@@ -312,8 +275,10 @@ public class InverterActivity extends Activity {
 		sciModel = SciModel.getInstance(this);
 		sciModel.setHandler(handler);
 		if(sciModel.isSciOpened()) {
-//			registerBroadcast();
 			sciModel.setSendFlag(true);
+		} else {
+			//开启应用，即时开启串口
+			sciModel.openSci();	
 		}
 	}
 
@@ -322,8 +287,7 @@ public class InverterActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 		if(sciModel.isSciOpened()) {
-//			unregisterReceiver(mBroadcastReceiver);
-			//���ѯ���߳��п�������ͣ
+			//如果询问线程有开启，暂停
 			sciModel.setSendFlag(false);
 		}
 	}

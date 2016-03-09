@@ -22,7 +22,7 @@ public class SendThread extends Thread {
 		while(sModel.isSciOpened()) {
 			while(sendFlag) {
 				if(!sModel.getBtnClicked()) {
-					if(++sendNum > 5)
+					if(++sendNum > 4)
 						sendNum = 1;
 					switch(sendNum) {
 					case SendUtils.numStatus:
@@ -34,47 +34,13 @@ public class SendThread extends Thread {
 					case SendUtils.numCurrent:
 						sModel.send(SendUtils.getCurrent);	
 						break;
-					case SendUtils.numGetRam:
-						sModel.send(SendUtils.getFrqRam);
-						break;
 					case SendUtils.numGetProm:
 						sModel.send(SendUtils.getFrqProm);
 						break;
 					}
 					Log.v("TimeCheck", "send");
 				}
-				else 
-//					switch(btnNum) {
-//					case SendUtils.numRun:
-//						sModel.send(SendUtils.run);
-//						break;
-//					case SendUtils.numReverse:
-//						sModel.send(SendUtils.reverse);
-//						break;
-//					case SendUtils.numStop:
-//						sModel.send(SendUtils.stop);
-//						break;
-//					case SendUtils.numGetRam:
-//						sModel.send(SendUtils.getFrqRam);
-//						break;
-//					case SendUtils.numGetProm:
-//						sModel.send(SendUtils.getFrqProm);
-//						break;
-//					case SendUtils.numSetRam:
-//						sModel.send(SendUtils.setFrqRam);
-//						break;
-//					case SendUtils.numSetProm:
-//						sModel.send(SendUtils.setFrqProm);
-//						break;
-//					case SendUtils.numReset:
-//						sModel.send(SendUtils.reset);
-//						break;
-//					case SendUtils.numGetAlarm:
-//						sModel.send(SendUtils.getAlamrCode);
-//						break;
-//					}
-//					btnClick = false;
-					sModel.btnAction();
+				else sModel.btnAction();
 				
 			}
 		}
