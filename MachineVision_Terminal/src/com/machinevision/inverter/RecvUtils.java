@@ -1,4 +1,4 @@
-package com.machineversion.inverter;
+package com.machinevision.inverter;
 
 
 public class RecvUtils {

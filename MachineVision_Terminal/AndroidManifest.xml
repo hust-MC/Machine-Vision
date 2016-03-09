@@ -94,7 +94,7 @@
             android:label="@string/title_activity_new_button" >
         </activity>
         <activity
-            android:name="com.machineversion.inverter.InverterActivity"
+            android:name="com.machinevision.inverter.InverterActivity"
             android:label="@string/title_activity_inverter"/>
     </application>
 

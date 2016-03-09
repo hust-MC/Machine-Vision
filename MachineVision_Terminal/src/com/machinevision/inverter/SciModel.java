@@ -1,10 +1,10 @@
-package com.machineversion.inverter;
+package com.machinevision.inverter;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
-import com.machineversion.inverter.RecvThread.OnRecvListener;
+import com.machinevision.inverter.RecvThread.OnRecvListener;
 import com.machinevision.serial_jni.SciClass;
 import com.machinevision.terminal.R;
 
