@@ -173,8 +173,10 @@ public class NewButton extends Activity implements OnButtonClick
 		return page1;
 	}
 
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
 		View view = new ButtonCfgPanel(NewButton.this, getResources().getStringArray(R.array.newbuttoninfo_config),
 				getResources().getStringArray(R.array.newbuttoninfo_menu), 
@@ -198,8 +200,6 @@ public class NewButton extends Activity implements OnButtonClick
 		// TODO Auto-generated method stub
 		for (int  i = 0; i < key.length;i++)
 		{
-			Log.d("HY", key[i]);
-			Log.d("HY", value[i]);			
 			try {
 				json.put(key[i], value[i]);
 			} catch (JSONException e) {
@@ -215,5 +215,4 @@ public class NewButton extends Activity implements OnButtonClick
 		// TODO Auto-generated method stub
 		finishWithAnim();
 	};
-
 }
