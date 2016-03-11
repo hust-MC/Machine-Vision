@@ -18,8 +18,7 @@ public class SendUtils {
 	public static final int numStatus 	= 1;
 	public static final int numOutFrq 	= 2;
 	public static final int numCurrent 	= 3;
-	public static final int numGetRam 	= 4;
-	public static final int numGetProm 	= 5;
+	public static final int numGetProm 	= 4;
 	
 	public static final int numRun 		= 10;
 	public static final int numReverse 	= 11;

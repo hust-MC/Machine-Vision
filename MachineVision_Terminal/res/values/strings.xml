@@ -263,13 +263,12 @@
 
     <!-- 变频器 -->
     <string name="text_head">变频器通讯参数设置为：波特率9600，奇校验，数据位8位，停止位1位，站号为0</string>
-    <string name="text_status">变频器状态：</string>
-    <string name="text_velocity">变频器速度为(r/min)：</string>
-    <string name="text_current">变频器电流为(A)：</string>
-    <string name="text_ram_frq">RAM频率为(Hz)：</string>
-    <string name="text_prom_frq">E2PROM频率为(Hz)：</string>
+    <string name="text_status">运行状态 ：</string>
+    <string name="text_velocity">运行速度(Hz) ：</string>
+    <string name="text_current">输出电流(A) ：</string>
+    <string name="text_prom_frq">开机运行频率(Hz) ：</string>
     <string name="menu_alarm_item">报警查询</string>
-    <string name="btn_reset">复位</string>
+    <string name="btn_reset">重置</string>
     <string name="loading">操作中，请稍后</string>
     <string name="setting">参数设置</string>
     <string name="menu_more">设置</string>

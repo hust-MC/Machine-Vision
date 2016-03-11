@@ -9,7 +9,6 @@ import com.machinevision.serial_jni.SciClass;
 import com.machinevision.terminal.R;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -31,7 +30,7 @@ public class SciModel
 	public static final int Conn_Error = 8;
 	public static final int Get_Alarm = 9;
 
-	public static final String SERIAL_PORT = "/dev/ttyO0";
+	public static final String SERIAL_PORT = "/dev/ttyO2";
 	public static final int SERIAL_BAUD = 9600;
 
 	private SciClass sci;
@@ -42,25 +41,13 @@ public class SciModel
 
 	private int outFrq = 0;
 
-	//参数编号
-	private SharedPreferences.Editor editor;
-	
-	//变频器运行方向
-	private int run = 0;    //1为正转  0为停止   -1为反转
-	
-	//按键标号
-	private int btnNum = 0;
-	
 	//串口开启标志
 	private boolean sciOpened = false;
 	
-	//按键按下标示
-	private boolean btnClicked = false;
+	//监控线程开启标志
+	private boolean sThreadOpened = false;
 	
-	//参数询问线程打开标志
-//	private boolean paraFlag = false;
-	
-	//单例模式，方便main 与 setting 两个界面的通信
+	//单例模式
 	private static SciModel instance = null;
 	private static Context mContext;
 	private static Handler mHandler;
@@ -106,23 +93,18 @@ public class SciModel
 					public void OnConnError() {
 						// TODO Auto-generated method stub
 						Log.d("Terminal", "conn_error");
-//							Intent errIntent = new Intent(SciModel.Conn_Error);
-//							mContext.sendBroadcast(errIntent);
 						Message msg = Message.obtain();
 						msg.what = Conn_Error;
 						mHandler.sendMessage(msg);
 					}
 				});
 				
-				connectThread = new SendThread(this);
-				
 				//串口开启标志设置
 				setSciOpened(true);
 				Toast.makeText(mContext, mContext.getResources().getString(R.string.openSCI_sucssess),
 						Toast.LENGTH_SHORT).show();	
 				
-				//发送、接收线程打开
-				connectThread.open();
+				//接收线程打开
 				sciListener.open();
 			}
 			else// 串口存在，打开fd=null则说明没有执行权限
@@ -142,14 +124,21 @@ public class SciModel
 		if(isSciOpened()) {						
 			sci.close(fd);
 			setSciOpened(false);
+			setSTOpened(false);
 			Toast.makeText(mContext, "串口关闭",
 					Toast.LENGTH_SHORT).show();
 		}
 	}
 	
+	//状态监控线程sendThread开启
+	public void sThreadOpen() {
+		connectThread = new SendThread(this);
+		connectThread.open();
+		setSTOpened(true);
+	}
+	
 	//串口发送
 	public void send(byte[] data) {
-		setSendFlag(false);
 		sciWrite(data);		
 	}
 
@@ -169,7 +158,6 @@ public class SciModel
 				}
 			}
 		}).start();
-
 	}
 
 /****************接收数据解析动作**********************/
@@ -180,28 +168,19 @@ public class SciModel
 		switch(response[0]) {
 		//数据代码正确
 		case RecvUtils.ACK:
-//				Toast.makeText(mContext, "操作正确", Toast.LENGTH_SHORT).show();
-//				Intent ackIntent = new Intent(SciModel.Data_ACK);
-//				mContext.sendBroadcast(ackIntent);
 			msg.what = Data_ACK;
 			mHandler.sendMessage(msg);
 			break;
 		//数据代码错误
 		case RecvUtils.NAK:
 			String daErr = RecvUtils.getDataErr(response[3]);
-//				Intent nakIntent = new Intent(SciModel.Data_NAK);
-//				nakIntent.putExtra("dataError", daErr);
-//				mContext.sendBroadcast(nakIntent);
-//				Toast.makeText(mContext, "数据错误为：" + daErr, Toast.LENGTH_LONG).show();
 			msg.what = Data_NAK;
 			msg.obj = daErr;
 			mHandler.sendMessage(msg);
 			break;
 		case RecvUtils.STX:
-//			if(!paraFlag) {
-				//MainActivity的数据处理
-				processData(connectThread.getSendNum(), response);
-//			}
+			//MainActivity的数据处理
+			processData(connectThread.getSendNum(), response);
 			break;	
 		}
 	}
@@ -249,56 +228,6 @@ public class SciModel
 				break;
 			}
 		}
-		
-	
-
-/*****************按键处理*********************/
-	//保存按键标号
-	public void setBtnClicked(int btn) {
-		btnClicked = true;
-		btnNum = btn;
-	}
-	
-	//返回按键标志
-	public boolean getBtnClicked() {
-		return btnClicked;
-	}
-	
-	//按键发送具体数据
-	public void btnAction() {
-		if(btnClicked){
-			switch(btnNum) {
-			case SendUtils.numRun:
-				send(SendUtils.run);
-				break;
-			case SendUtils.numReverse:
-				send(SendUtils.reverse);
-				break;
-			case SendUtils.numStop:
-				send(SendUtils.stop);
-				break;
-			case SendUtils.numGetRam:
-				send(SendUtils.getFrqRam);
-				break;
-			case SendUtils.numGetProm:
-				send(SendUtils.getFrqProm);
-				break;
-			case SendUtils.numSetRam:
-				send(SendUtils.setFrqRam);
-				break;
-			case SendUtils.numSetProm:
-				send(SendUtils.setFrqProm);
-				break;
-			case SendUtils.numReset:
-				send(SendUtils.reset);
-				break;
-			case SendUtils.numGetAlarm:
-				send(SendUtils.getAlamrCode);
-				break;
-			}
-		}
-		btnClicked = false;
-	}
 
 /************频率设置*************/
 	public void setFrqRam(int frq) {
@@ -308,17 +237,17 @@ public class SciModel
 			SendUtils.setFrqRam[6 + i] = num[i];
 		}
 		SendUtils.getCheckSum(SendUtils.setFrqRam);
-		setBtnClicked(SendUtils.numSetRam);
+		send(SendUtils.setFrqRam);
 	}
 
 	public void setFrqProm(int frq) {
 		// TODO Auto-generated method stub
 		byte[] num = getNumBytes(frq * 100);
 		for(int i = 0; i < num.length; i++) {
-			SendUtils.setFrqRam[6 + i] = num[i];
+			SendUtils.setFrqProm[6 + i] = num[i];
 		}
-		SendUtils.getCheckSum(SendUtils.setFrqRam);
-		setBtnClicked(SendUtils.numSetProm);
+		SendUtils.getCheckSum(SendUtils.setFrqProm);
+		send(SendUtils.setFrqProm);
 	}
 	
 	public void frqUp() {
@@ -344,13 +273,6 @@ public class SciModel
 		return st.getBytes();
 	}
 
-	//让循环发送线程先暂停发送
-	public void setSendFlag(boolean b) {
-		// TODO Auto-generated method stub
-//		if(!paraFlag)
-			connectThread.setSendFlag(b);
-	}
-	
 /*****************串口开启状态获取与设置*********************/	
 	public boolean isSciOpened() {
 		return sciOpened;
@@ -360,6 +282,14 @@ public class SciModel
 		sciOpened = b;
 	}
 
+	public boolean isSTOpened() {
+		return sThreadOpened;
+	}
+	
+	public void setSTOpened(boolean b) {
+		sThreadOpened = b;
+	}
+	
 	public SciClass getSci() {
 		return sci;
 	}
@@ -367,22 +297,4 @@ public class SciModel
 	public FileDescriptor getFd() {
 		return fd;
 	}
-
-	//变频器运动状态获取 修改
-	public int getRun() {
-		return run;
-	}
-
-	public void setRun(int run) {
-		this.run = run;
-		switch(run) {
-		case 1:	setBtnClicked(SendUtils.numRun);
-				break;
-		case -1:setBtnClicked(SendUtils.numReverse);
-				break;
-		case 0:	setBtnClicked(SendUtils.numStop);
-				break;		
-		}
-	}
-	
 }

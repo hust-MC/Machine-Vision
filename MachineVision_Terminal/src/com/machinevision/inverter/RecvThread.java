@@ -67,7 +67,7 @@ public class RecvThread extends Thread {
 					e.printStackTrace();
 				}
 			}
-			else if (++num1 == 5000) {
+			else if (sModel.isSTOpened() && ++num1 >= 5000) {
 				num1 = 0;
 				mListener.OnConnError();
 			}

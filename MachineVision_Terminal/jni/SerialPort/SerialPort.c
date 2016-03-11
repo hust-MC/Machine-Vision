@@ -106,7 +106,7 @@ static speed_t getBaudrate(jint baudrate)
  * Method:    open
  * Signature: (Ljava/lang/String;II)Ljava/io/FileDescriptor;
  */
-JNIEXPORT jobject JNICALL Java_com_machineversion_serial_1jni_SciClass_open(
+JNIEXPORT jobject JNICALL Java_com_machinevision_serial_1jni_SciClass_open(
 		JNIEnv *env, jclass thiz, jstring path, jint baudrate, jint checkout)
 {
 	int fd;
@@ -203,7 +203,7 @@ JNIEXPORT jobject JNICALL Java_com_machineversion_serial_1jni_SciClass_open(
  * Method:    close
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_machineversion_serial_1jni_SciClass_close
+JNIEXPORT void JNICALL Java_com_machinevision_serial_1jni_SciClass_close
 (JNIEnv *env, jclass thiz)
 {
 	jclass SerialPortClass = (*env)->GetObjectClass(env, thiz);
