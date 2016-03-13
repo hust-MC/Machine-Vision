@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 设置界面确认、退出按钮 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <solid android:color="#CAC7BD" />

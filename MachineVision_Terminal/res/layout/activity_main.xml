@@ -52,17 +52,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3.5"
+        android:layout_weight="3"
         android:orientation="horizontal"
         android:paddingBottom="20dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        android:paddingLeft="20dp"
         android:paddingTop="20dp" >
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.4"
+            android:layout_weight="2"
             android:background="@drawable/pic_bg" >
 
             <!-- 左侧相机1区域 -->
@@ -164,31 +163,50 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/bt_control_test"
-                style="@style/control_button"
-                android:onClick="onClick_control"
-                android:text="检测" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/bt_control_pause"
-                style="@style/control_button"
-                android:layout_marginLeft="12dp"
-                android:onClick="onClick_control"
-                android:text="暂停" />
+                <Button
+                    android:id="@+id/bt_control_test"
+                    style="@style/control_button"
+                    android:onClick="onClick_control"
+                    android:text="检测" />
 
-            <Button
-                android:id="@+id/bt_control_stop"
-                style="@style/control_button"
-                android:layout_marginLeft="12dp"
-                android:onClick="onClick_control"
-                android:text="停止"
-                android:textColor="#F00" />
+                <Button
+                    android:id="@+id/bt_control_pause"
+                    style="@style/control_button"
+                    android:layout_marginLeft="12dp"
+                    android:onClick="onClick_control"
+                    android:text="暂停" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/bt_control_stop"
+                    style="@style/control_button"
+                    android:layout_marginLeft="12dp"
+                    android:onClick="onClick_control"
+                    android:text="停止"
+                    android:textColor="#F00" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <!-- 底部区域 -->
@@ -200,7 +218,7 @@
         android:layout_weight="2"
         android:orientation="horizontal"
         android:paddingBottom="3dp"
-        android:paddingLeft="10dp"
+        android:paddingLeft="20dp"
         android:paddingTop="3dp" >
 
         <!-- 状态窗口 -->
@@ -208,9 +226,10 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="2"
             android:background="@drawable/bg_state"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="20dp" >
 
             <TextView
                 android:layout_width="match_parent"
@@ -220,93 +239,50 @@
                 android:textColor="#3F48CC"
                 android:textSize="30sp" />
 
-            <TableLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:stretchColumns="*" >
+                android:layout_height="0dp"
+                android:layout_weight="1" >
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" >
+                <TextView
+                    android:id="@+id/tv_qualified_rate"
+                    style="@style/status_window"
+                    android:text="合格率：" />
 
-                    <TextView
-                        android:id="@+id/tv_qualified_rate"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_column="0"
-                        android:gravity="center_horizontal"
-                        android:text="合格率："
-                        android:textSize="30sp" />
+                <TextView
+                    android:id="@+id/tv_qualified"
+                    style="@style/status_window"
+                    android:text="合格：" />
 
-                    <TextView
-                        android:id="@+id/tv_qualified"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        android:text="合格："
-                        android:textSize="30sp" />
-
-                    <TextView
-                        android:id="@+id/tv_disqualified"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        android:text="不合格："
-                        android:textSize="30sp" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" >
-
-                    <TextView
-                        android:id="@+id/tv_temperature"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        android:text="温度："
-                        android:textSize="30sp" />
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
-
-        <!-- 底部右侧按钮 -->
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="center_vertical"
-            android:padding="20dp" >
+                <TextView
+                    android:id="@+id/tv_disqualified"
+                    style="@style/status_window"
+                    android:text="不合格：" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:padding="20dp" >
+                android:layout_height="0dp"
+                android:layout_weight="1" >
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="20dp" >
+                    android:orientation="horizontal" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
                         android:text="相机1："
-                        android:textSize="40sp" />
+                        android:textSize="30sp" />
 
                     <ToggleButton
                         android:id="@+id/net_link1"
                         android:layout_width="200dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
                         android:background="@drawable/toggle_btn"
                         android:button="@null"
                         android:checked="false"
@@ -316,25 +292,21 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="20dp" >
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="相机2："
-                        android:textSize="40sp" />
+                        android:textSize="30sp" />
 
                     <ToggleButton
                         android:id="@+id/net_link2"
                         android:layout_width="200dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
                         android:background="@drawable/toggle_btn"
                         android:button="@null"
                         android:checked="false"
@@ -343,6 +315,25 @@
                         android:textSize="30sp" />
                 </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_temperature"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="温度："
+                android:textSize="30sp" />
+        </LinearLayout>
+        <!-- 底部右侧按钮 -->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="20dp" >
         </LinearLayout>
     </LinearLayout>
 
