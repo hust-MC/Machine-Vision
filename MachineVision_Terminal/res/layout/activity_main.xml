@@ -231,11 +231,12 @@
                     android:layout_weight="1" >
 
                     <TextView
-                        android:id="@+id/tv_temperature"
+                        android:id="@+id/tv_qualified_rate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_column="0"
                         android:gravity="center_horizontal"
-                        android:text="温度："
+                        android:text="合格率："
                         android:textSize="30sp" />
 
                     <TextView
@@ -261,12 +262,11 @@
                     android:layout_weight="1" >
 
                     <TextView
-                        android:id="@+id/tv_qualified_rate"
+                        android:id="@+id/tv_temperature"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_column="0"
                         android:gravity="center_horizontal"
-                        android:text="合格率："
+                        android:text="温度："
                         android:textSize="30sp" />
                 </TableRow>
             </TableLayout>
@@ -307,8 +307,8 @@
                         android:layout_width="200dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:button="@null"
                         android:background="@drawable/toggle_btn"
+                        android:button="@null"
                         android:checked="false"
                         android:textOff="未连接"
                         android:textOn="连接成功"
@@ -318,8 +318,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:layout_marginTop="30dp"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="20dp" >
@@ -335,8 +335,8 @@
                         android:layout_width="200dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:button="@null"
                         android:background="@drawable/toggle_btn"
+                        android:button="@null"
                         android:checked="false"
                         android:textOff="未连接"
                         android:textOn="连接成功"
