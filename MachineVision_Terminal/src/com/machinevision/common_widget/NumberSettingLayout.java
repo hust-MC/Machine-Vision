@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +14,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
+/**
+ * 数字输入控件（暂未使用）
+ * @author M
+ *
+ */
 public class NumberSettingLayout extends LinearLayout
 {
 	EditText editText;

@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical" >
 
     <RelativeLayout
         android:id="@+id/layout_inverter_main"
@@ -100,7 +100,7 @@
                         android:textSize="@dimen/inverter_textsz" />
 
                     <TextView
-                        android:id="@+id/text_pro"
+                        android:id="@+id/text_prom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/inverter_innersz"
@@ -207,14 +207,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/layout_1"
-            android:layout_margin="@dimen/inverter_innersz"
             android:gravity="center_vertical" >
 
             <LinearLayout
                 android:id="@+id/layout_setFrq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/inverter_innersz"
+                android:layout_marginLeft="100dp"
+                android:layout_marginRight="60dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical" >
@@ -222,19 +222,37 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/inverter_innersz"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="实时运行频率"
+                        android:textSize="@dimen/inverter_textsz" />
+
+                    <TextView
+                        android:id="@+id/text_ram_set"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text=""
+                        android:textSize="@dimen/inverter_textsz" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
                     <EditText
                         android:id="@+id/edtext_ram"
-                        android:layout_width="wrap_content"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/inverter_innersz"
-                        android:hint="实时运行频率"
                         android:imeOptions="actionDone"
                         android:maxLength="2"
                         android:numeric="integer"
-                        android:padding="20dp"
                         android:textSize="@dimen/inverter_textsz" />
 
                     <Button
@@ -242,28 +260,46 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/inverter_innersz"
-                        android:background="@drawable/bg_control_bt"
                         android:onClick="onButtonClick"
                         android:padding="20dp"
                         android:text="确认设定"
+                        android:background="@drawable/bg_control_bt"
                         android:textSize="@dimen/inverter_textsz" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/inverter_innersz"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text="开机启动频率"
+                        android:textSize="@dimen/inverter_textsz" />
+
+                    <TextView
+                        android:id="@+id/text_prom_set"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/inverter_innersz"
+                        android:text=""
+                        android:textSize="@dimen/inverter_textsz" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
                     <EditText
                         android:id="@+id/edtext_prom"
-                        android:layout_width="wrap_content"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/inverter_innersz"
-                        android:hint="开机自启频率"
                         android:maxLength="2"
                         android:numeric="integer"
-                        android:padding="20dp"
                         android:textSize="@dimen/inverter_textsz" />
 
                     <Button
@@ -271,9 +307,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/inverter_innersz"
-                        android:background="@drawable/bg_control_bt"
                         android:onClick="onButtonClick"
                         android:padding="20dp"
+                        android:background="@drawable/bg_control_bt"
                         android:text="确认设定"
                         android:textSize="@dimen/inverter_textsz" />
                 </LinearLayout>
@@ -282,9 +318,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_margin="@dimen/inverter_innersz"
+                android:layout_marginTop="50dp"
                 android:layout_toRightOf="@id/layout_setFrq"
+                android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:orientation="horizontal" >
 
@@ -327,29 +363,13 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/inverter_marginsz"
-        android:background="@drawable/bg_control_bt"
-        android:onClick="onBtnClick"
-        android:paddingBottom="20dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:paddingTop="20dp"
-        android:text="退出"
-        android:textSize="40sp" />
-
-    <Button
         android:id="@+id/btn_reset"
+        android:background="@drawable/bg_control_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/inverter_marginsz"
-        android:background="@drawable/bg_control_bt"
         android:gravity="center"
         android:onClick="onBtnClick"
         android:paddingBottom="20dp"
@@ -357,6 +377,22 @@
         android:paddingRight="40dp"
         android:paddingTop="20dp"
         android:text="@string/btn_reset"
+        android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/btn_back"
+        android:background="@drawable/bg_control_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/inverter_marginsz"
+        android:onClick="onBtnClick"
+        android:paddingBottom="20dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="20dp"
+        android:text="退出"
         android:textSize="40sp" />
 
 </RelativeLayout>

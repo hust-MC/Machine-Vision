@@ -40,32 +40,32 @@
         <activity
             android:name="com.machinevision.option.FileManager"
             android:label="@string/title_activity_file_manager"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.machinevision.option.CameraParams"
             android:label="@string/title_activity_camera_params"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.machinevision.option.SysSettings"
             android:label="@string/title_activity_sys_settings"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.machinevision.option.FastenerSettings"
             android:label="@string/title_activity_fastener_settings"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.machinevision.option.MachineLearning"
             android:label="@string/title_activity_machine_learning"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.machinevision.option.Help"
             android:label="@string/title_activity_help"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTask" >
         </activity>
 
         <!-- 子菜单类 -->

@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 自定义Toast弹窗样式
+ * @author M
+ *
+ */
 public class EToast extends Toast
 {
 	public EToast(Context context)

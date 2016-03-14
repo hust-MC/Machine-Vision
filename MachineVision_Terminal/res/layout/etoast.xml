@@ -19,7 +19,6 @@
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="#759C90"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
@@ -30,9 +29,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:padding="15dp"
+        android:background="@drawable/bg_toast"
         android:textSize="30sp"
         android:shadowColor="#BB000000"
         android:shadowRadius="2.75"
-        android:textColor="#000" />
+        android:textColor="#EFEFEF" />
 
 </LinearLayout>
