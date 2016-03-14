@@ -1,8 +1,6 @@
 package com.machinevision.common_widget;
 
 import com.machinevision.terminal.R;
-import com.machinevision.terminal.R.id;
-import com.machinevision.terminal.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;

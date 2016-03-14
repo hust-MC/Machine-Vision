@@ -12,8 +12,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
-
+import com.machinevision.common_widget.EToast;
 public class SciModel
 {
 	public static final int Data_ACK = 0;
@@ -44,8 +43,8 @@ public class SciModel
 	//串口开启标志
 	private boolean sciOpened = false;
 	
-	//监控线程开启标志
-	private boolean sThreadOpened = false;
+
+	private boolean isAlarm = false;
 	
 	//单例模式
 	private static SciModel instance = null;
@@ -101,20 +100,23 @@ public class SciModel
 				
 				//串口开启标志设置
 				setSciOpened(true);
-				Toast.makeText(mContext, mContext.getResources().getString(R.string.openSCI_sucssess),
-						Toast.LENGTH_SHORT).show();	
+				EToast.makeText(mContext, mContext.getResources().getString(R.string.openSCI_sucssess),
+						EToast.LENGTH_SHORT).show();	
+				//状态监控线程开启
+				connectThread = new SendThread(this);
+				connectThread.open();
 				
 				//接收线程打开
 				sciListener.open();
 			}
 			else// 串口存在，打开fd=null则说明没有执行权限
 			{
-				Toast.makeText(mContext, "串口没有执行权限", Toast.LENGTH_SHORT).show();
+				EToast.makeText(mContext, "串口没有执行权限", EToast.LENGTH_SHORT).show();
 			}
 		}
 		else
 		{
-			Toast.makeText(mContext, "本地串口不存在", Toast.LENGTH_SHORT).show();
+			EToast.makeText(mContext, "本地串口不存在", EToast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -124,18 +126,18 @@ public class SciModel
 		if(isSciOpened()) {						
 			sci.close(fd);
 			setSciOpened(false);
-			setSTOpened(false);
-			Toast.makeText(mContext, "串口关闭",
-					Toast.LENGTH_SHORT).show();
+//			setSTOpened(false);
+			EToast.makeText(mContext, "串口关闭",
+					EToast.LENGTH_SHORT).show();
 		}
 	}
 	
-	//状态监控线程sendThread开启
-	public void sThreadOpen() {
-		connectThread = new SendThread(this);
-		connectThread.open();
-		setSTOpened(true);
-	}
+//	//状态监控线程sendThread开启
+//	public void sThreadOpen() {
+//		connectThread = new SendThread(this);
+//		connectThread.open();
+////		setSTOpened(true);
+//	}
 	
 	//串口发送
 	public void send(byte[] data) {
@@ -180,7 +182,14 @@ public class SciModel
 			break;
 		case RecvUtils.STX:
 			//MainActivity的数据处理
-			processData(connectThread.getSendNum(), response);
+			if(!isAlarm) {
+				processData(connectThread.getSendNum(), response);
+			}
+			else {
+				//处于报警状态
+				processData(SendUtils.numGetAlarm, response);
+				setAlarm(false);
+			}
 			break;	
 		}
 	}
@@ -196,6 +205,9 @@ public class SciModel
 				if(sData >= 128) {
 					msg.what = SciModel.Alarm;
 					mHandler.sendMessage(msg);
+					//处于报警状态，询问报警代码
+					setAlarm(true);
+					send(SendUtils.getAlamrCode);
 				} else {
 					msg.what = Status_Refresh;
 					mHandler.sendMessage(msg);
@@ -255,7 +267,7 @@ public class SciModel
 			outFrq++;
 			setFrqRam(outFrq);
 		}
-		else Toast.makeText(mContext, "已到限制频率", Toast.LENGTH_SHORT).show();
+		else EToast.makeText(mContext, "已到限制频率", EToast.LENGTH_SHORT).show();
 	}
 	
 	public void frqDown() {
@@ -263,7 +275,7 @@ public class SciModel
 			outFrq--;
 			setFrqRam(outFrq);
 		}
-		else Toast.makeText(mContext, "已到限制频率", Toast.LENGTH_SHORT).show();
+		else EToast.makeText(mContext, "已到限制频率", EToast.LENGTH_SHORT).show();
 	}
 	
 	//发送数据的4个数据位
@@ -282,12 +294,12 @@ public class SciModel
 		sciOpened = b;
 	}
 
-	public boolean isSTOpened() {
-		return sThreadOpened;
+	public boolean isAlarm() {
+		return isAlarm;
 	}
 	
-	public void setSTOpened(boolean b) {
-		sThreadOpened = b;
+	public void setAlarm(boolean b) {
+		isAlarm = b;
 	}
 	
 	public SciClass getSci() {

@@ -22,12 +22,6 @@ public class RecvThread extends Thread {
 
 	int num1 = 0;
 	
-//	public RecvThread(SciClass s, FileDescriptor f) {
-//		// TODO Auto-generated constructor stub
-//		sci = s;
-//		fd = f;
-//	}
-
 	public RecvThread(SciModel sciModel) {
 		// TODO Auto-generated constructor stub
 		sModel = sciModel;
@@ -67,7 +61,7 @@ public class RecvThread extends Thread {
 					e.printStackTrace();
 				}
 			}
-			else if (sModel.isSTOpened() && ++num1 >= 5000) {
+			else if (++num1 >= 5000) {
 				num1 = 0;
 				mListener.OnConnError();
 			}

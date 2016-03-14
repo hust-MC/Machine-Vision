@@ -15,7 +15,7 @@ public class SendThread extends Thread {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(sModel.isSciOpened() && sModel.isSTOpened()) {
+		while(sModel.isSciOpened() && !sModel.isAlarm()) {
 			if(++sendNum > 4)
 				sendNum = 1;
 			switch(sendNum) {

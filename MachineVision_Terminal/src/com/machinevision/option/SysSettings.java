@@ -13,7 +13,6 @@ import com.machinevision.common_widget.DialogWindow;
 import com.machinevision.common_widget.EToast;
 import com.machinevision.common_widget.SeekBarEditLayout;
 import com.machinevision.inverter.InverterActivity;
-import com.machinevision.net.CmdHandle;
 import com.machinevision.net.NetUtils;
 import com.machinevision.sub_option.DebugMode;
 import com.machinevision.sub_option.DialogBuilder.OnDialogClicked;
