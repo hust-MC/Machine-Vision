@@ -28,9 +28,17 @@ abstract class ControlPannelActivity extends Activity
 	 * @author MC
 	 */
 	private int position;
-
+	/**
+	 * 用于显示菜单列表的listview容器
+	 * 
+	 * @author MC
+	 */
 	protected ListView listview;
 
+	/**
+	 * 封装了菜单和子菜单的容器
+	 * @author MC
+	 */
 	protected MenuWithSubMenu wholeMenu;
 
 	/**

@@ -12,6 +12,11 @@ import android.util.Log;
 
 import com.machinevision.net.NetUtils.NetPacket;
 
+/**
+ * ）网络包的打包/解析
+ * @author MC
+ *
+ */
 public class DataPack
 {
 	static byte[] rxBuf = new byte[100 * 1024];

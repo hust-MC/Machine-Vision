@@ -26,6 +26,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.Bitmap.Config;
 import android.util.Log;

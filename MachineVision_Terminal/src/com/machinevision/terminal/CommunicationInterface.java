@@ -1,6 +1,6 @@
-﻿package com.machinevision.terminal;
+package com.machinevision.terminal;
 
-/*
+/**
  * 定义通信接口
  * @author MC
  */

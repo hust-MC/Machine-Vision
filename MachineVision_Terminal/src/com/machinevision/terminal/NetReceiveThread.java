@@ -33,11 +33,6 @@ public class NetReceiveThread extends Thread
 		this.is = is;
 	}
 
-	static
-	{
-		System.loadLibrary("picture_process");
-	}
-
 	public Handler getHandler()
 	{
 		return handler;
@@ -53,11 +48,9 @@ public class NetReceiveThread extends Thread
 	{
 		while (netThread.getCurrentState() != NetThread.CurrentState.onStop)
 		{
-			double time1 = System.currentTimeMillis();
 			revPacket.recvDataPack(is);
 			if (revPacket.type != 0xaa)// 如果数据正常，表示网络通畅
 			{
-				Log.d("CJ", "minid =" + revPacket.minid);
 				switch (revPacket.minid)
 				{
 				case NetUtils.MSG_NET_GET_VIDEO:
@@ -86,8 +79,6 @@ public class NetReceiveThread extends Thread
 					}
 
 					int[] image = new int[len];
-					// image = pictureProcess(Arrays.copyOfRange(rxBuf, 100,
-					// rxBuf.length));
 
 					for (int i = 0; i < len; i++)
 					{
@@ -194,7 +185,5 @@ public class NetReceiveThread extends Thread
 			}
 
 		}	
-		System.out.println("------------------receive end-----");
 	}
-	private native int[] pictureProcess(byte[] data);
 }

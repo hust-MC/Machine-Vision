@@ -6,6 +6,11 @@ import android.util.Log;
 
 import com.machinevision.net.NetUtils.*;
 
+/**
+ * 使用工厂方法模式根据需要创建相应的网络包。
+ * @author MC
+ *
+ */
 public class NetPacketContext
 {
 	NetPacket packet;

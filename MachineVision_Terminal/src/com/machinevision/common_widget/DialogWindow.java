@@ -10,6 +10,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
+/**
+ * 自定义对话框形式，继承自系统提示对话框AlertDialog，这里对其进行了定制，作用是生成软件中默认的对话框
+ * @author M
+ *
+ */
 public class DialogWindow extends AlertDialog
 {
 	Context context;
@@ -69,6 +74,11 @@ public class DialogWindow extends AlertDialog
 		getWindow().setLayout(width, height);
 	}
 
+	/**
+	 * 对话框创建器
+	 * @author M
+	 *
+	 */
 	public static class Builder
 	{
 		Context context;

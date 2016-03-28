@@ -1,0 +1,10 @@
+com.machinevision.common_widget
+com.machinevision.inverter
+com.machinevision.net
+com.machinevision.option
+com.machinevision.serial_command
+com.machinevision.serial_jni
+com.machinevision.sub_option
+com.machinevision.svm
+com.machinevision.svm_src
+com.machinevision.terminal

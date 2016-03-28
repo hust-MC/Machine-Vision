@@ -125,6 +125,10 @@ public class SeekBarEditLayout extends LinearLayout
 		addView(seekBar);
 		addView(editText);
 	}
+	/**
+	 * 获取控件的当前值
+	 * @return 当前控件的值 
+	 */
 	public int getValue()
 	{
 		try
@@ -137,6 +141,10 @@ public class SeekBarEditLayout extends LinearLayout
 			return 0;
 		}
 	}
+	/**
+	 * 设置控件的值
+	 * @param value 需要设置的值
+	 */
 	public void setValue(int value)
 	{
 		if (editText != null)
@@ -144,6 +152,10 @@ public class SeekBarEditLayout extends LinearLayout
 			editText.setText(value + "");
 		}
 	}
+	/**
+	 * 设置滑动条的最大值
+	 * @param max 需要设置的最大值
+	 */
 	public void setMax(int max)
 	{
 		seekBar.setMax(max);
